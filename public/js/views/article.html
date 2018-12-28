@@ -1,0 +1,293 @@
+<div class="article">
+  <div class="aside-rotate">
+    <div ng-if="vm.fr" class="">Edition d'article :<span ng-if="!vm.json_in.newarticle"> {{vm.json_in.article_title_fr}}</span><span ng-if="vm.json_in.newarticle"> nouvel article</span></div>
+    <div ng-if="vm.it" class="">Edizione dell'articolo :<span ng-if="!vm.json_in.newarticle"> {{vm.json_in.article_title_it}}<span ng-if="vm.json_in.newarticle"> nuovo articolo</span></div>
+  </div>
+  <div class="ui container" style="margin-top: 50px;">
+    <div class="ui vertical animated button blue right floated" 
+          ng-if="!vm.isEditing"
+          ng-click="vm.deleteArticle(vm.json_in.article_id)">
+      <div ng-if="vm.fr" class="hidden content">Supprimer</div>
+      <div ng-if="vm.it" class="hidden content">Cancellare</div>
+      <div class="visible content">
+        <i class="trash alternate icon"></i>
+      </div>
+    </div>
+    <div class="ui vertical animated button blue right floated" 
+          ng-if="!vm.isEditing"
+          ng-click="vm.isEditing = !vm.isEditing">
+      <div ng-if="vm.fr" class="hidden content">Editer</div>
+      <div ng-if="vm.it" class="hidden content">Modificare</div>
+      <div class="visible content">
+        <i class="pencil alternate icon"></i>
+      </div>
+    </div>
+    <div class="ui vertical animated button blue right floated large-button" 
+          ng-if="vm.isEditing"
+          ng-click="vm.saveArticle()">
+      <div ng-if="vm.fr" class="hidden content">Enregistrer</div>
+      <div ng-if="vm.it" class="hidden content">Salvare</div>        
+      <div class="visible content">
+        <i class="check icon"></i>
+      </div>
+    </div>
+    <h1 ng-if="vm.json_in.newarticle && vm.fr">Nouvel article</h1>
+    <h1 ng-if="vm.json_in.newarticle && vm.it">Nuovo articolo</h1>    
+    <h1 ng-if="!vm.json_in.newarticle && vm.fr">{{vm.json_in.article_title_fr}}</h1>
+    <h1 ng-if="!vm.json_in.newarticle && vm.it">{{vm.json_in.article_title_it}}</h1>
+  
+    <form class="ui form" method="post" style="margin-top: 80px">
+      <div ng-if="vm.stepOne">
+        <!--TITLE-->
+        <div class="field">
+          <h4 ng-show="vm.fr" class="ui horizontal divider">Titre</h4>
+          <h4 ng-show="vm.it" class="ui horizontal divider">Titolo</h4>          
+          <div class="ui basic segment" ng-if="vm.isEditing">
+            <input ng-show="vm.fr" type="text" class="" placeholder="Titre" ng-model="vm.json_in.article_title_fr">
+            <input ng-show="vm.it" type="text" class="" placeholder="Titolo" ng-model="vm.json_in.article_title_it">
+          </div>
+          <div class="ui basic segment" ng-if="!vm.isEditing">
+            <h3 ng-show="vm.fr">{{vm.json_in.article_title_fr}}</h3>
+            <h3 ng-show="vm.it">{{vm.json_in.article_title_it}}</h3>
+          </div>
+        </div>
+        
+        <!--TRAVEL-->
+        <div class="ui grid">
+          <div class="ui six wide column">
+            <div class="field ui basic segment" ng-show="vm.fr">
+              <h4 ng-show="vm.fr" class="ui horizontal divider">Voyage</h4> 
+              <select class="ui dropdown" 
+                      ng-if="vm.isEditing" 
+                      ng-model="vm.json_in.article_travel_id"
+                      ng-change="vm.getSelectedTravelCountries()">
+                <option ng-show="vm.json_in.article_travel_fr" value="">{{vm.json_in.article_travel_fr}}</option>
+                <option value="{{travel.travel_id}}" ng-repeat="travel in vm.travels">{{travel.travel_title_fr}}</option>
+              </select>
+              <div ng-if="!vm.isEditing">{{vm.json_in.article_travel_fr}}</div>
+            </div>
+            <div class="field ui basic segment" ng-show="vm.it">
+              <h4 ng-show="vm.it" class="ui horizontal divider">Viaggio</h4> 
+              <select class="ui dropdown" 
+                  ng-if="vm.isEditing"
+                  ng-model="vm.json_in.article_travel_id"
+                  ng-change="vm.getSelectedTravelCountries()">
+                <option ng-show="vm.json_in.article_travel_it" value="">{{vm.json_in.article_travel_it}}</option>
+                <option value="{{travel.travel_id}}" ng-repeat="tracel in vm.travels">{{travel.travel_title_it}}</option>
+              </select>
+              <div ng-if="!vm.isEditing">{{vm.json_in.article_travel_it}}</div>
+            </div>
+            <!--
+              <div class="ui vertical animated button right floated" 
+                  ng-if="vm.isEditing"
+                  ng-click="vm.addTravel()">
+                <div class="hidden content">Add</div>
+                <div class="visible content">
+                  <i class="plus icon"></i>
+                </div>
+              </div>
+            -->
+          </div>
+          
+          <!--COUNTRY-->
+          <div class="ui six wide column">
+            <div class="field ui basic segment" ng-show="vm.fr">
+              <h4 ng-show="vm.fr" class="ui horizontal divider">Pays</h4> 
+              <select ng-class="{'ui dropdown': vm.json_in.article_travel_id != '', 'ui dropdown disabled': !vm.json_in.article_travel_id}"
+                      ng-if="vm.isEditing" 
+                      ng-model="vm.json_in.article_country_fr">
+                <option ng-show="vm.json_in.article_country_fr" value="">{{vm.json_in.article_country_fr}}</option>
+                <option value="{{country}}" ng-repeat="country in vm.selectedTravelCountries">{{country}}</option>
+              </select>
+              <div ng-if="!vm.isEditing">{{vm.json_in.article_country_fr}}</div>
+            </div>
+            <div class="field ui basic segment" ng-show="vm.it">
+              <h4 ng-show="vm.it" class="ui horizontal divider">Paese</h4> 
+              <select class="ui dropdown" 
+                  ng-if="vm.isEditing"
+                  ng-model="vm.json_in.article_country_it">
+                <option ng-show="vm.json_in.article_country_it" value="">{{vm.json_in.article_country_it}}</option>
+                <option value="{{country}}" ng-repeat="country in vm.selectedTravelCountries">{{country}}</option>
+              </select>
+              <div ng-if="!vm.isEditing">{{vm.json_in.article_country_it}}</div>
+            </div>
+            <!--
+              <div class="ui vertical animated button right floated" 
+                  ng-if="vm.isEditing"
+                  ng-click="vm.addCountry()">
+                <div class="hidden content">Add</div>
+                <div class="visible content">
+                  <i class="plus icon"></i>
+                </div>
+              </div>
+            -->
+  
+          </div>
+          
+          <!--PLACE-->
+          <div class="field ui basic segment four wide column">
+              <h4 ng-show="vm.fr" class="ui horizontal divider">Lieu</h4>
+              <h4 ng-show="vm.it" class="ui horizontal divider">Luogo</h4>
+            <div class="ui" ng-if="vm.isEditing">
+                <input ng-show="vm.fr" type="text" class="" placeholder="Lieu" ng-model="vm.json_in.article_place_fr">
+                <input ng-show="vm.it" type="text" class="" placeholder="Luogo" ng-model="vm.json_in.article_place_it">
+            </div>
+            <div class="ui" ng-if="!vm.isEditing">
+              <p ng-show="vm.fr">{{vm.json_in.article_place_fr}}</p>
+              <p ng-show="vm.it">{{vm.json_in.article_place_it}}</p>
+            </div>
+          </div>
+        </div>
+        
+        <!--SLUG-->
+        <div class="field">
+          <h4 ng-show="vm.fr" class="ui horizontal divider">Slug</h4>
+          <h4 ng-show="vm.it" class="ui horizontal divider">Slug</h4>
+          <div class="ui basic segment">
+              <input ng-if="vm.isEditing" type="text" class="" placeholder="Url" ng-model="vm.json_in.article_slug">
+              <p ng-if="!vm.isEditing">{{vm.json_in.article_slug}}</p>
+          </div>  
+        </div>
+
+        <!--SHORT DESCRIPTION-->
+        <div class="field">
+          <h4 ng-show="vm.fr" class="ui horizontal divider">Description courte</h4>
+          <h4 ng-show="vm.it" class="ui horizontal divider">Corta descrizione</h4>
+          <div class="ui basic segment" ng-if="vm.isEditing">
+            <input ng-show="vm.fr" type="text" class="" placeholder="Courte description" ng-model="vm.json_in.article_short_desc_fr">
+            <input ng-show="vm.it" type="text" class="" placeholder="Corta descrizione" ng-model="vm.json_in.article_short_desc_it">
+          </div>
+          <div class="ui basic segment" ng-if="!vm.isEditing">
+            <p ng-show="vm.fr">{{vm.json_in.article_short_desc_fr}}</p>
+            <p ng-show="vm.it">{{vm.json_in.article_short_desc_it}}</p>
+          </div>
+        </div>
+
+        <!--GALLERY-->
+        <div class="field">
+          <h4 ng-show="vm.fr" class="ui horizontal divider">Gallerie</h4>
+          <h4 ng-show="vm.it" class="ui horizontal divider">Gallery</h4>
+          <div class="ui basic segment" ng-if="vm.isEditing">
+            <div 
+              class="ui vertical animated button blue left floated"
+              ng-click="vm.editGallery = true"
+              ng-show="!vm.editGallery"
+              ng-disabled="vm.hasGallery"
+            >
+              <div ng-if="vm.fr" class="hidden content">Ajouter</div>
+              <div ng-if="vm.it" class="hidden content">Aggiungere</div>
+              <div class="visible content">
+                <i class="plus icon"></i>
+              </div>
+            </div>
+            <div ng-if="vm.editGallery">
+              <asset-picker
+                assets="vm.articleAssets"
+                actions="false"
+                in-editor=true
+                allow-upload="false"
+                is-gallery=true  
+              >
+              </asset-picker>
+              <div>
+                <button 
+                  ng-click="vm.addArticleGallery()"
+                  class="ui positive right labeled icon button">
+                  <span ng-if="vm.fr">Ajouter</span>
+                  <span ng-if="vm.it">Aggiungere</span>
+                  <i class="checkmark icon"></i>
+                </button>
+                <button 
+                  ng-click="vm.editGallery = false"
+                  class="ui black deny button">
+                  <span ng-if="vm.fr">Annuler</span>
+                  <span ng-if="vm.it">Cancellare</span>
+                </button>
+              </div>
+            </div>
+          </div>
+    
+          <div class="ui basic segment" ng-if="!vm.isEditing">
+            <img  
+              ng-repeat="image in vm.assetsGallery"
+              class="article-gallery-img"
+              ng-src="assets/assets/thumb/mini_{{image.asset_name}}" 
+            >
+          </div>
+        </div>
+  
+        <div class="ui vertical animated button blue right floated" 
+            ng-click="vm.toggleStep()">
+          <div class="hidden content">Next</div>
+          <div class="visible content">
+            <i class="angle right icon"></i>
+          </div>
+        </div>
+      </div>
+          
+      <!--STEP TWO-->
+      <div ng-if="vm.stepTwo">
+        <div class="field">
+          <h4 ng-show="vm.fr" class="ui horizontal divider">Description longue</h4>
+          <h4 ng-show="vm.it" class="ui horizontal divider">Lungha descrizione</h4>
+          <div class="ui basic segment" ng-if="vm.isEditing">
+            <div>
+              <text-editor actions="vm.actions" assets="vm.articleAssets"></text-editor>
+            </div>
+            <!-- <textarea ui-tinymce="vm.tinymceOptionsFr" ng-if="vm.fr == true" class="" placeholder="Longue description" ng-model="vm.json_in.article_long_desc_fr"></textarea>
+            <textarea ui-tinymce="vm.tinymceOptionsIt" ng-if="vm.it == true" class="" placeholder="Lungha descrizione" ng-model="vm.json_in.article_long_desc_it"></textarea>  -->         
+          </div>
+    
+          <div class="ui basic segment" ng-if="!vm.isEditing">
+            <p ng-show="vm.fr" ng-bind-html="vm.json_in.article_long_desc_fr"></p>
+            <p ng-show="vm.it" ng-bind-html="vm.json_in.article_long_desc_it"></p>
+          </div>
+        </div>
+  
+        <div class="ui vertical animated button blue left floated" 
+            ng-click="vm.toggleStep()">
+          <div ng-if="vm.fr" class="hidden content">Précédent</div>
+          <div ng-if="vm.it" class="hidden content">Precedente</div>
+          <div class="visible content">
+            <i class="angle left icon"></i>
+          </div>
+        </div>
+        <div class="ui vertical animated button blue right floated large-button" 
+              ng-if="vm.isEditing"
+              ng-click="vm.saveArticle()">
+          <div ng-if="vm.fr" class="hidden content">Enregistrer</div>
+          <div ng-if="vm.it" class="hidden content">Salvare</div>        
+          <div class="visible content">
+            <i class="check icon"></i>
+          </div>
+        </div>
+  </form>
+      </div>
+        
+        <div class="ui modal asset">
+          <i class="close icon"></i>
+          <div class="header">
+              <span ng-show="vm.fr">Assets</span>
+              <span ng-show="vm.it">Assets</span>      
+          </div>
+          
+          <asset-picker 
+            assets="vm.articleAssets"
+            actions="false"
+            in-editor="true"
+            allow-upload="true">
+          </asset-picker>
+          
+          <div class="actions">
+              <div class="ui black deny button">Cancel</div>
+              <div ng-show="!vm.edit" class="ui positive right labeled icon button" ng-click="vm.saveCountry(vm.country)">Save<i class="checkmark icon"></i></div>
+              <div ng-show="vm.edit" class="ui positive right labeled icon button" ng-click="vm.updateCountry(vm.country, vm.country.country_id)">Save<i class="checkmark icon"></i> </div>           
+              </div>
+          </div>
+        
+      </div>
+
+</div>
+        
+
+<!-- <pre>{{vm.json_in | json}}</pre> -->

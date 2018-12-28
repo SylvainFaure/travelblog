@@ -1,0 +1,14 @@
+<div class="editor-title_container">
+  <h3>Type your title</h3>
+  <div 
+    ng-keyup="vm.getContent($event)"
+    ng-paste="vm.getContent($event)"
+    tabindex="0" 
+    class="editor-title_content" 
+    contenteditable="true"></div>
+  <div>
+    <button 
+      ng-click="vm.addTitle()"
+      class="custom-btn">Add</button>
+  </div>
+</div>

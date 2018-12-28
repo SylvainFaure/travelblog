@@ -1,0 +1,20 @@
+<div class="text-editor_container">
+  <!--<div class="action-button text-editor_edit-button">
+    <div>Add something</div>
+  </div>-->
+  <div ng-show="!vm.TextEditor.isEditingComponent" class="text-editor_action-buttons">
+    <div 
+      class="action-button" 
+      ng-repeat="action in vm.actions"
+      ng-click="vm.triggerAction(action.label)"
+    >
+        {{action.label}} 
+        <i class="{{action.icon}} icon"></i>
+    </div>
+  </div>
+  <div class="text-editor_active-action"></div>
+</div>
+
+<div ng-if="vm.TextEditor.components.length" class="text-editor_title">
+  <pre>{{vm.TextEditor.components | json}}</pre>
+</div>

@@ -1,0 +1,6 @@
+dist/
+semantic/
+node_modules/
+__git
+/build/
+public/assets/

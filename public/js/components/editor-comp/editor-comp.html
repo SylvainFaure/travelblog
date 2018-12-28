@@ -1,0 +1,39 @@
+<div class="editor-comp_container">
+  <div 
+    class="editor-comp_actions"
+    style="">
+    <div 
+      ng-repeat="action in vm.actions" 
+      class="editor-comp_actions-btn"
+      ng-click="vm.execAction(action.action, $event)">
+      <i class="{{action.icon}} icon"></i>
+    </div>
+  
+    <div class="editor-comp_actions-arrow"></div>
+  </div>
+  <div 
+    ng-if="vm.type !== 'image' && vm.type !== 'gallery'"
+    ng-keyup="vm.getContent($event, 'text')"
+    ng-paste="vm.getContent($event, 'text')"
+    ng-mouseup="vm.mouseUpEvent($event)"
+    tabindex="0" 
+    class="editor-comp_content {{vm.type}}-content" 
+    contenteditable="true">
+  </div>
+  <div ng-if="vm.type == 'image'">
+    <asset-picker
+      assets="vm.assets"
+      actions="false"
+      in-editor=true
+      allow-upload="false"  
+    >
+    </asset-picker>
+  </div>
+    <button 
+      ng-click="vm.addContent()"
+      class="ui positive right labeled icon button">Add<i class="checkmark icon"></i></button>
+    <button 
+      ng-click="vm.destroyComponent()"
+      class="ui black deny button">Cancel</button>
+  </div>
+</div>

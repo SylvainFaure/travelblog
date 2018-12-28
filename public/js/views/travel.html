@@ -1,0 +1,95 @@
+<div class="ui vertical animated button blue right floated large-button" 
+      ng-if="!vm.isEditing"
+      ng-click="vm.deleteCountry()">
+  <div ng-if="vm.fr" class="hidden content">Supprimer</div>
+  <div ng-if="vm.it" class="hidden content">Cancellare</div>
+  <div class="visible content">
+    <i class="trash alternate icon"></i>
+  </div>
+</div>
+<div class="ui vertical animated button blue right floated large-button" 
+      ng-if="!vm.isEditing"
+      ng-click="vm.isEditing = !vm.isEditing; vm.activeSortable()">
+  <div ng-if="vm.fr" class="hidden content">Editer</div>
+  <div ng-if="vm.it" class="hidden content">Modificare</div>
+  <div class="visible content">
+    <i class="pencil alternate icon"></i>
+  </div>
+</div>
+
+<h1 ng-if="vm.fr">{{vm.travel.travel_title_fr}}</h1>
+<h1 ng-if="vm.it">{{vm.travel.travel_title_it}}</h1>
+
+
+<div class="country-header">
+  <div class="country-cover-img">
+    <div ng-click="vm.editCover()" ng-if="vm.isEditing" class="image-edit">
+      <i class="pencil alternate icon"></i>
+    </div>
+    <img ng-src="assets/assets/img/{{vm.country.country_cover}}" alt="">
+  </div>
+  
+  <div class="country-description">
+    <h4 ng-show="vm.fr" class="ui horizontal divider">Description</h4>
+    <h4 ng-show="vm.it" class="ui horizontal divider">Descrizione</h4>
+    <div ng-if="!vm.isEditing">
+      <p ng-if="vm.fr">{{vm.travel.travel_desc_fr}}</p>
+      <p ng-if="vm.it">{{vm.travel.travel_desc_it}}</p>
+    </div>
+    <div ng-if="vm.isEditing" class="ui large fluid input">
+      <input ng-show="vm.fr" type="text" class="" placeholder="Description" ng-model="vm.travel.travel_desc_fr">
+      <input ng-show="vm.it" type="text" class="" placeholder="Descrizione" ng-model="vm.travel.travel_desc_it">
+    </div>
+  </div>
+</div>
+
+<div class="country-steps">
+  <table class="ui blue striped table">
+    <thead>
+      <tr>
+        <th>Place</th>
+        <th>Title</th>
+        <th>Position</th>
+      </tr>
+    </thead>
+    <tbody id="sortable">
+      <tr data-article={{article}} ng-repeat="article in vm.travelArticles" style="cursor: pointer;"> 
+        <!--ui-sref="logged.article({resourcePath: article.article_id})"-->
+        <td><p ng-show="vm.fr">{{article.article_place_fr}}</p><p ng-show="vm.it">{{article.article_place_it}}</p></td>
+        <td><p ng-show="vm.fr">{{article.article_title_fr}}</p><p ng-show="vm.it">{{article.article_title_it}}</p></td>
+        <td class="left aligned">
+            <span>{{article.article_position}}</span>
+          <i ng-show="vm.isEditing" class="arrows alternate icon" style="cursor: pointer;"></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="ui vertical animated button blue right floated large-button" 
+        ng-if="vm.isEditing"
+        ng-click="vm.saveCountry()">
+    <div ng-if="vm.fr" class="hidden content">Enregistrer</div>
+    <div ng-if="vm.it" class="hidden content">Salvare</div>        
+    <div class="visible content">
+      <i class="check icon"></i>
+    </div>
+  </div>
+</div>
+
+
+<div class="ui modal country">
+  <i class="close icon"></i>
+  <div class="header">
+    <span ng-show="vm.fr">Choisis une image principale pour ce pays</span>
+    <span ng-show="vm.it">Scegli un'immagine principale per questo paese</span>      
+  </div>
+  <div class="description">
+    <div class="field assets-modal">
+      <asset-picker assets="vm.assets" disable-place="true" in-editor="false"></asset-picker> 
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui black deny button">Cancel</div>
+    <div class="ui positive right labeled icon button" ng-click="vm.saveCountry()">Save<i class="checkmark icon"></i></div>
+  </div>
+</div>

@@ -22,18 +22,14 @@ const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const session = require('express-session');
 const path = require('path');
-//const passport = require('passport-local');
-//const flash = require('./middlewares/flash.js');
-const sha = require('js-sha256').sha256;
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 /***** MODELS ******/
 const User = require('./models/user');
 const Travel = require('./models/travel');
 const Article = require('./models/article');
 const Asset = require('./models/asset');
-
-
-//app.set('view engine', 'ejs');
 
 /** MIDDLEWARE **/
 app.use(webpackMiddleware(webpack(webpackConfig)));
@@ -53,10 +49,6 @@ app.use((req, res, next) => { //allow cross origin requests
 	res.header("Access-Control-Allow-Origin", "http://localhost:8080");
 	next();
 })
-//app.use(flash)
-
-/** ROUTES **/
-
 
 /*** GET ****/
 
@@ -111,13 +103,75 @@ app.get('/api/article/:article', (req, res) => {
 
 
 /*** POST ***/
-app.post('/api/users', (req, res) => {
+/*app.post('/api/users', (req, res) => {
 	var user_username = req.body.user_username
 	var user_password = sha.sha256(req.body.user_password)
 	var user_email = req.body.user_email
 	var user_id = req.body.user_id
 	res.send('POST REQUEST')
-})
+})*/
+/* USER AND AUTHENTICATION */
+app.post('/signup', (req, res) => {
+   /* Check if user is registered in db */
+   const user = User.getUsers().filter(u => {
+	 return u.email == req.body.email
+   })
+   if (user) {
+     bcrypt.hash(req.body.password, 12, (err, hash) => {
+      if(err) {
+         return res.status(500).json({
+            error: 'There was an error during the creation of the password'
+         });
+      } else {
+      	/* Save the encrypted pwd in db */
+	User.saveUserPwd(user, hash, result => {
+	    res.status(200).json(result);
+	})
+      }
+     }
+   /* If not redirect to send request to admin */
+   } else {
+      res.status(500).json({
+         error: 'No such user in database'
+      });
+   }
+});
+
+app.post('/signin', (req, res) => {
+   const user = User.getUsers().filter(user => {
+	 return user.email == req.body.email
+   })
+   if (user) {
+     bcrypt.compare(req.body.password, user.password, (err, result) => {
+         if(err) {
+	    return res.status(401).json({
+	       failed: 'Unauthorized Access'
+	    });
+         }
+         if(result) {
+	    const JWTToken = jwt.sign({
+		email: user.email,
+		_id: user._id
+	      },
+	      'nolandskid',
+	       {
+		 expiresIn: '2h'
+	    });
+            return res.status(200).json({
+               success: 'Success',
+	       token: JWTToken
+            });
+         }
+         return res.status(401).json({
+            failed: 'Unauthorized Access'
+         });
+      });
+   } else {
+      res.status(500).json({
+         error: 'No such user in database'
+      });
+   }
+});
 
 app.post('/api/newtravel', (req, res) => {
 	Travel.addTravel(req.body, results =>{
@@ -193,38 +247,3 @@ app.get('*', (req, res) => {
 app.listen(3000, () => {
   console.log('Listening on port 3000!')
 })
-
-/*app.post('/', (req, res) => {
-	if (req.body.username === undefined || req.body.username === '' || req.body.password === undefined || req.body.password === '') {
-		req.flash('error', "Tous les champs sont obligatoires")
-		res.redirect('/')
-	} else {
-		let User = require('./models/user')
-		let hashPass = sha.sha256(req.body.password)
-		User.getUsers(function (data) {
-			if (data.user_username === req.body.username && data.user_password === sha.sha256(req.body.password)) {
-				res.render('../admin/views/index', {title: 'Carte de voyages'})
-				req.session.auth = {user: req.body.username, pass: hashPass};
-			} else if (data.user_username === req.body.username && data.user_password != sha.sha256(req.body.username)) {
-				req.flash('error', "Le mot de passe est incorrect")
-				res.redirect('/')extract-text-webpack-plugin
-			} else {
-				req.flash('error', "Cet utilisateur n'existe pas")
-				res.redirect('/')
-			}
-		})
-		
-	}
-})
-*/
-
-
-/*app.get('/', function (req, res) {
-	db.connect();
-	db.query('SELECT * FROM countries, articles, assets', function(err, rows, field){
-		if (err) throw err;
-		console.log(rows)
-		res.end(JSON.stringify(rows))
-	})
-})*/
-

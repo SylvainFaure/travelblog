@@ -1,6 +1,4 @@
 const db = require('../db.js');
-//const bcrypt = require('bcrypt-nodejs');
-const sha = require('js-sha256').sha256;
 
 class User {
 
@@ -11,6 +9,18 @@ class User {
 			var users = JSON.parse(records);
 			cb(users)
 		})
+	}
+	static saveUserPwd(user, pwd, cb) {
+	   const user = {
+	    email: user.email,
+            pwd: pwd
+	   }
+	   db.query('UPDATE users SET ? WHERE user_email = ?', [user, user.email], function(err, rows) {
+	   	if (err) throw err;
+		var records = JSON.stringify(rows[0]);
+	        var users = JSON.parse(records);
+		cb(users)
+	   })
 	}
 }
 

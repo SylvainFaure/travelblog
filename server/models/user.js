@@ -1,5 +1,7 @@
 const db = require('../db.js');
 const mail = require ('../mail.js');
+const nodemailer = require('nodemailer');
+const smtpTransport = require('nodemailer-smtp-transport');
 
 class User {
 
@@ -47,13 +49,14 @@ class User {
 	}
 	
 	static sendRequest(email, cb) {
-	   var transporter = nodemailer.createTransport({
-	    service: 'hotmail',
+	   var transporter = nodemailer.createTransport(smtpTransport({
+	    service: 'gmail',
+            host: "smtp.gmail.com",
 	    auth: {
 	      user: 'mail.email',
 	      pass: 'mail.password'
 	    }
-           });
+           }));
 	   transporter.sendMail(mail.mailOptions(email), (error, info) => {
 	    if (error) throw error
 	    cb(info)
@@ -61,5 +64,4 @@ class User {
 	
 	}
 }
-
 module.exports = User

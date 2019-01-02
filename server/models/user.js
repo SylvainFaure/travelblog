@@ -1,4 +1,5 @@
 const db = require('../db.js');
+const mail = require ('../mail.js');
 
 class User {
 
@@ -43,6 +44,21 @@ class User {
 	        var users = JSON.parse(records);
 		cb(users)
 	   })
+	}
+	
+	static sendRequest(email, cb) {
+	   var transporter = nodemailer.createTransport({
+	    service: 'hotmail',
+	    auth: {
+	      user: 'mail.email',
+	      pass: 'mail.password'
+	    }
+           });
+	   transporter.sendMail(mail.mailOptions, (error, info) => {
+	    if (error) throw error
+	    cb(info)
+	   });
+	
 	}
 }
 

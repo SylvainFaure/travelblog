@@ -54,7 +54,7 @@ class User {
 	      pass: 'mail.password'
 	    }
            });
-	   transporter.sendMail(mail.mailOptions, (error, info) => {
+	   transporter.sendMail(mail.mailOptions(email), (error, info) => {
 	    if (error) throw error
 	    cb(info)
 	   });

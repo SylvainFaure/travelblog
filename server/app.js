@@ -60,6 +60,12 @@ app.get('/api/users', (req, res) => {
 	})
 })
 
+app.get('/api/user/:user', (req, res) => {
+       User.getUser(req.params.email, user => {
+		res.json(user)
+	})
+})
+
 app.get('/api/travels', (req, res) => {
 	Travel.getAll(travels => {
 		/*if (err) 

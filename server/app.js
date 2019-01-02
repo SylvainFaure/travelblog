@@ -111,6 +111,12 @@ app.get('/api/article/:article', (req, res) => {
 /*** POST ***/
 
 /* USER AND AUTHENTICATION */
+app.post('api/senduserrequest', (req, res) {
+    User.sendRequest(req.body.email, result => {
+      res.json(result)
+    })
+})
+
 app.post('/api/newuser', (req, res){
     const newUser = req.body.email
     /* Check if already in db */

@@ -103,15 +103,26 @@ app.get('/api/article/:article', (req, res) => {
 
 
 /*** POST ***/
-/*app.post('/api/users', (req, res) => {
-	var user_username = req.body.user_username
-	var user_password = sha.sha256(req.body.user_password)
-	var user_email = req.body.user_email
-	var user_id = req.body.user_id
-	res.send('POST REQUEST')
-})*/
+
 /* USER AND AUTHENTICATION */
-app.post('/signup', (req, res) => {
+app.post('/api/newuser', (req, res){
+    const newUser = req.body.email
+    /* Check if already in db */
+    const userAlreadyRegistered = User.getUsers().filter(u => {
+	 return u.email == newUser
+   }) 
+   if (userAlreadyRegistered) {
+      res.json({
+      	error: 'Already registered'
+      })
+   } else {
+     User.postUser(newUser, result => {
+     	res.status(200).json(result);
+     })
+   }
+})
+
+app.post('/api/signup', (req, res) => {
    /* Check if user is registered in db */
    const user = User.getUsers().filter(u => {
 	 return u.email == req.body.email
@@ -137,7 +148,7 @@ app.post('/signup', (req, res) => {
    }
 });
 
-app.post('/signin', (req, res) => {
+app.post('/api/signin', (req, res) => {
    const user = User.getUsers().filter(user => {
 	 return user.email == req.body.email
    })

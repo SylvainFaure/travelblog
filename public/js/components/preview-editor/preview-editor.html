@@ -1,0 +1,82 @@
+<div class="preview-editor_container">
+  <div
+    class="preview-editor_component"
+    ng-repeat="comp in vm.components | filter:comp.position"
+  >
+    <!--EDIT MODE-->
+    <div ng-if="vm.editable" class="preview-editor_isediting">
+      <div class="preview-editor_desc">
+        <span>{{comp.type | uppercase}}</span>
+      </div>
+      <div class="preview-editor_edit">
+        <div 
+          class="preview-editor_edit-elt preview-editor_edit-edit"
+          ng-click="vm.goToEditMode(comp)"  
+        >
+          <i class="pencil icon"></i>
+        </div>
+        <div 
+          class="preview-editor_edit-elt preview-editor_edit-edit"
+          ng-click="vm.deleteComp(comp)"  
+        >
+          <i class="delete icon"></i>
+        </div>
+        <div 
+          class="preview-editor_edit-elt preview-editor_edit-up"
+          ng-click="vm.changePos(comp, 'up')"
+        >
+          <i class="arrow up icon"></i>
+        </div>
+        <div 
+          class="preview-editor_edit-elt preview-editor_edit-down"
+          ng-click="vm.changePos(comp, 'down')"
+        >
+          <i class="arrow down icon"></i>
+        </div>
+      </div>
+    </div>
+    
+    <!--CONTENT-->
+    <div ng-if="comp.isEditing">
+      <editor-comp 
+        ng-if="comp.type !== 'image'"
+        type="{{comp.type}}"
+        comp="comp"
+      >
+      <div ng-if="comp.type == 'image'">
+        <img 
+          ng-src="assets/assets/thumb/mini_{{comp.content.name}}" 
+          alt=""
+          class="preview-editor_img-{{comp.content.position}} preview-editor_img-{{comp.content.fullWidth}}"
+        >
+        <button 
+          ng-click="vm.changeImage(comp.content)"
+          class="ui positive right labeled icon button"
+        >
+        <span ng-ig="vm.fr">Changer</span>
+        <span ng-ig="vm.it">Cambiare</span>
+        </button>
+      </div>
+      </editor-comp>
+    </div>
+    <div ng-if="!comp.isEditing">
+      <div 
+        ng-if="comp.type == 'paragraph' || comp.type == 'subtitle'"
+        ng-bind-html="comp.content"
+        class="preview-editor_text-{{comp.type}}"
+      >
+      </div>
+      <div ng-if="comp.type == 'image'">
+        <img 
+          ng-src="assets/assets/thumb/mini_{{comp.content.name}}" 
+          alt=""
+          class="preview-editor_img-{{comp.content.position}} preview-editor_img-{{comp.content.fullWidth}}"
+        >
+      </div>
+      <div ng-if="comp.type == 'catch'">
+        <p class="preview-editor_catch">"<span ng-bind-html="comp.content"></span>"</p>
+      </div>
+    </div>
+  </div>
+</div>
+

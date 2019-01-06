@@ -1,11 +1,11 @@
 const BASE_PATH = 'http://localhost:3000';
 const mail = {
-  mail: 'sfaure.campus@gmail.com',
-  password: '191013steinbeck',
+  mail: '',
+  password: '',
   mailOptions: function (email) {
     return {
       from: email,
-      to: 'sfaure.campus@gmail.com',
+      to: 's@gmail.com',
       subject: 'New request user for Travel blog',
       text: 'You have a request for a new user',
       html: ` <html>

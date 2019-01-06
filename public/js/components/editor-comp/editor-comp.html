@@ -1,7 +1,5 @@
 <div class="editor-comp_container">
-  <div 
-    class="editor-comp_actions"
-    style="">
+  <div class="editor-comp_actions">
     <div 
       ng-repeat="action in vm.actions" 
       class="editor-comp_actions-btn"
@@ -12,13 +10,14 @@
     <div class="editor-comp_actions-arrow"></div>
   </div>
   <div 
-    ng-if="vm.type !== 'image' && vm.type !== 'gallery'"
+    ng-if="vm.type !== 'image'"
     ng-keyup="vm.getContent($event, 'text')"
     ng-paste="vm.getContent($event, 'text')"
     ng-mouseup="vm.mouseUpEvent($event)"
     tabindex="0" 
     class="editor-comp_content {{vm.type}}-content" 
     contenteditable="true">
+    <span class="editor-comp_content-edit" ng-if="vm.comp" ng-bind-html="vm.comp.content"></span>
   </div>
   <div ng-if="vm.type == 'image'">
     <asset-picker
@@ -28,10 +27,22 @@
       allow-upload="false"  
     >
     </asset-picker>
+    <div>Size / Position</div>
   </div>
     <button 
-      ng-click="vm.addContent()"
-      class="ui positive right labeled icon button">Add<i class="checkmark icon"></i></button>
+      ng-click="vm.comp ? vm.updateContent() : vm.addContent()"
+      class="ui positive right labeled icon button"
+    > 
+      <span ng-if="!vm.comp">
+        <span ng-show="vm.fr">Ajouter</span>
+        <span ng-show="vm.it">Aggiungere</span>
+      </span>
+      <span ng-if="vm.comp">
+        <span ng-show="vm.fr">Changer</span>
+        <span ng-show="vm.it">Cambiare</span>
+      </span>
+      <i class="checkmark icon"></i>
+    </button>
     <button 
       ng-click="vm.destroyComponent()"
       class="ui black deny button">Cancel</button>

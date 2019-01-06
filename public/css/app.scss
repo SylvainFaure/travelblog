@@ -319,3 +319,62 @@ img {
     }
   }
 }
+
+.preview-editor {
+  &_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &_component {
+    margin: 2em 0;
+  }
+
+  &_isediting {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  &_desc {
+    align-self: center;
+  }
+
+  &_edit {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+
+    &-elt {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0.5em;
+      width: 2em;
+      height: 2em;
+      border: 2px solid black;
+      border-radius: 50%;
+
+      & i {
+        margin: 0 0 0.2em 0;
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+
+    }
+  }
+
+}
+
+.login {
+  &_content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+}

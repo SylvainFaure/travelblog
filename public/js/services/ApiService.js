@@ -8,7 +8,7 @@ export default class ApiService {
 
   this.$http = $http;
   this.$rootScope = $rootScope;
-  //this.Upload = Upload;
+  // this.Upload = Upload;
 
   if (!this.$rootScope.rvm) {
     this.$rootScope.rvm = {};
@@ -65,13 +65,13 @@ export default class ApiService {
   return this.$http.delete(this.BASE_PATH + '/api/delete-article/' + id);  
  }
 
- /*assetsUpload(assets, data) {
+ assetsUpload(assets, data) {
   return this.Upload.upload({
     method: 'POST',
     url: this.BASE_PATH + '/api/newasset', //webAPI exposed to upload the file
     data:{file:assets, infos: data} //pass file as data, should be user ng-model
   })
- }*/
+ }
 
  assetsList() {
   return this.$http.get(this.BASE_PATH + '/api/assets');  
@@ -83,6 +83,22 @@ export default class ApiService {
 
  assetUpdate (asset, id) {
   return this.$http.put(this.BASE_PATH + '/api/update-asset/' + id, asset);
+ }
+
+ loginSignin (email, password) {
+  return this.$http.post(this.BASE_PATH + '/api/signin', {email: email, password: password});
+ }
+
+ loginSendRequest (email) {
+  return this.$http.post(this.BASE_PATH + '/api/senduserrequest', {email: email});   
+ }
+
+ loginLogout (email) {
+
+ }
+
+ loginSignup (email, password) {
+   return this.$http.post(this.BASE_PATH + '/api/signup', {email: email, password: password})
  }
 
 }

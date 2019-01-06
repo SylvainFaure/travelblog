@@ -233,14 +233,21 @@
           <div class="ui basic segment" ng-if="vm.isEditing">
             <div>
               <text-editor actions="vm.actions" assets="vm.articleAssets"></text-editor>
+              <preview-editor 
+                ng-if="vm.articleComponents.length" 
+                components="vm.articleComponents"
+                editable="true"
+              >
+              </preview-editor>
             </div>
-            <!-- <textarea ui-tinymce="vm.tinymceOptionsFr" ng-if="vm.fr == true" class="" placeholder="Longue description" ng-model="vm.json_in.article_long_desc_fr"></textarea>
-            <textarea ui-tinymce="vm.tinymceOptionsIt" ng-if="vm.it == true" class="" placeholder="Lungha descrizione" ng-model="vm.json_in.article_long_desc_it"></textarea>  -->         
           </div>
     
           <div class="ui basic segment" ng-if="!vm.isEditing">
-            <p ng-show="vm.fr" ng-bind-html="vm.json_in.article_long_desc_fr"></p>
-            <p ng-show="vm.it" ng-bind-html="vm.json_in.article_long_desc_it"></p>
+            <preview-editor 
+              ng-if="vm.articleComponents.length" 
+              components="vm.articleComponents"
+              editable="false"
+            >
           </div>
         </div>
   
@@ -263,28 +270,29 @@
         </div>
   </form>
       </div>
-        
-        <div class="ui modal asset">
-          <i class="close icon"></i>
-          <div class="header">
-              <span ng-show="vm.fr">Assets</span>
-              <span ng-show="vm.it">Assets</span>      
+
+      <!--MODAL-->
+      <div class="ui modal">
+        <i class="close icon"></i>
+        <div class="header">
+          <div ng-if="">
+            <span ng-show="vm.fr">Choisis une image principale pour cet article</span>
+            <span ng-show="vm.it">Scegli un'immagine principale per questo articolo</span>      
           </div>
-          
-          <asset-picker 
-            assets="vm.articleAssets"
-            actions="false"
-            in-editor="true"
-            allow-upload="true">
-          </asset-picker>
-          
-          <div class="actions">
-              <div class="ui black deny button">Cancel</div>
-              <div ng-show="!vm.edit" class="ui positive right labeled icon button" ng-click="vm.saveCountry(vm.country)">Save<i class="checkmark icon"></i></div>
-              <div ng-show="vm.edit" class="ui positive right labeled icon button" ng-click="vm.updateCountry(vm.country, vm.country.country_id)">Save<i class="checkmark icon"></i> </div>           
-              </div>
+          <div ng-if="">
+            <span ng-show="vm.fr">Image</span>
+            <span ng-show="vm.it">Immagine</span>      
           </div>
-        
+        </div>
+        <div class="description">
+          <div class="field assets-modal">
+            <asset-picker assets="vm.articleAssets" disable-place="true" in-editor="false"></asset-picker> 
+          </div>
+        </div>
+        <div class="actions">
+          <div class="ui black deny button">Cancel</div>
+          <div class="ui positive right labeled icon button" ng-click="vm.addCover()">Save<i class="checkmark icon"></i></div>
+        </div>
       </div>
 
 </div>

@@ -11,7 +11,6 @@ export default class previewEditorController {
 	}	
 	
 	goToEditMode(comp) {
-		console.log(comp);
 		comp.isEditing = true;
 	}
 	changePos(comp, dir) {
@@ -20,6 +19,10 @@ export default class previewEditorController {
 
 	deleteComp(comp) {
 		this.TextEditor.deleteComponent(comp);
+	}
+
+	changeImage(image) {
+		
 	}
 
 	addContent() {
@@ -38,25 +41,10 @@ export default class previewEditorController {
 		$('editor-comp').remove()
 	}
 
-	setActionsElement(top, left) {
-		$('.editor-comp_actions').fadeIn(400).css({'display':'flex'})
-	}
-	unsetActionsElement() {
-		$('.editor-comp_actions').fadeOut(400).css({'display':'none'})
-	}
-
 	execAction(action) {
 		$('#highlighted-text').addClass(action).removeAttr('id');
 		this.content = $(".editor-comp_content").html();
 		this.unsetActionsElement()
-	}
-
-	getPosition() {
-		if (this.type == "title") {
-			return 0
-		} else {
-			return this.position + 1;
-		}
 	}
 
 }

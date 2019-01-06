@@ -1,0 +1,78 @@
+<div>
+  <div class="ui segment top fixed menu" style="min-height: 50px;">
+    <div class="header-pos change-lang">
+      <h4 class="ui grey inverted right floated header" style="cursor: pointer;">
+        <span ng-click="vm.changeLang()"><i class="france flag"></i> FR</span> | <span ng-click="vm.changeLang()"><i class="italy flag"></i> IT</span>
+      </h4>
+    </div>
+  </div>
+  <div class="row login_content">
+
+    <div ng-if="vm.isSignin">
+      <div class="ui form">
+        <div class="field">
+          <p ng-show="vm.fr">Login</p>
+          <p ng-show="vm.it">Login</p>
+        </div>
+        <div class="field">
+          <input type="email" ng-model="vm.signinMail" placeholder="Email">
+        </div>
+        <div class="field">
+          <input type="password" ng-model="vm.signinPassword" placeholder="Password">
+        </div>
+        <div ng-if="vm.notHaveAccess" class="field">
+            <div ng-if="vm.fr">Vous n'avez pas accès. Reessayez ou demandez l'accès au site</div>
+            <div ng-if="vm.it">Non hai l'accesso. Puoi riprovare o chiedere l'accesso.</div>
+        </div>
+        <div class="field">
+          <div 
+            class="ui vertical animated button blue right floated"
+            ng-click="vm.signin()"
+            ng-disabled="!vm.validForm"
+          >
+            <div ng-if="vm.fr" class="hidden content">Valider</div>
+            <div ng-if="vm.it" class="hidden content">Validare</div>
+            <div class="visible content">
+              <i class="check icon"></i>
+            </div>
+          </div>
+        </div>
+  
+        <div class="field">
+          <p ng-show="vm.fr">Vous n'avez pas encore de compte ?</p>
+          <p ng-show="vm.it">Non hai un conto registrato?</p>
+          <div 
+            class="ui vertical animated button blue right floated"
+            ng-click="vm.isSignin = false; vm.userRequest = true"
+          >
+            <div ng-if="vm.fr" class="hidden content">Demander</div>
+            <div ng-if="vm.it" class="hidden content">Chiedere</div>
+            <div class="visible content">
+              <i class="plus icon"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div ng-if="vm.userRequest" class="ui form">
+      <div class="field">
+        <label>
+          <span ng-if="vm.fr">Insérez votre adresse email</span>
+          <span ng-if="vm.it">Inserire un indirizzo mail valido</span>
+        </label>
+        <input type="text" ng-model="vm.sendRequestMail" placeholder="Email">
+      </div>
+      <div class="field">
+        <button 
+          class="ui button blue"
+          ng-click="vm.sendUserRequest()"
+        >
+          <span ng-if="vm.fr">Envoyer</span>
+          <span ng-if="vm.it">Mandare</span>   
+      </button>
+      </div>
+    </div>
+
+  </div>
+</div>

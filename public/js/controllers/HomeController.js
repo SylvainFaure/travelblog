@@ -8,11 +8,13 @@ class HomeController {
     'ngInject';
     this.articles = ArticlesList 
     this.travels = TravelsList
-
+    console.log('HomeController')
     this.fr = $rootScope.rvm.fr
     this.it = $rootScope.rvm.it
     this.$rootScope = $rootScope
     this.$state = $state
+
+    this.isLogged = $rootScope.rvm.isLogged;
   }
   changeLang() {
     this.$rootScope.rvm.fr = !this.$rootScope.rvm.fr; 

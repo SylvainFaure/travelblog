@@ -111,13 +111,13 @@ app.get('/api/article/:article', (req, res) => {
 /*** POST ***/
 
 /* USER AND AUTHENTICATION */
-app.post('api/senduserrequest', (req, res) {
+app.post('/api/user/sendrequest', (req, res) => {
     User.sendRequest(req.body.email, result => {
       res.json(result)
     })
 })
 
-app.post('/api/newuser', (req, res){
+app.post('/api/newuser', (req, res) => {
     const newUser = req.body.email
     /* Check if already in db */
     const userAlreadyRegistered = User.getUsers().filter(u => {
@@ -134,67 +134,80 @@ app.post('/api/newuser', (req, res){
    }
 })
 
-app.post('/api/signup', (req, res) => {
+app.post('/api/user/signup', (req, res) => {
    /* Check if user is registered in db */
-   const user = User.getUsers().filter(u => {
-	 return u.email == req.body.email
-   })
-   if (user) {
-     bcrypt.hash(req.body.password, 12, (err, hash) => {
-      if(err) {
-         return res.status(500).json({
-            error: 'There was an error during the creation of the password'
-         });
-      } else {
-      	/* Save the encrypted pwd in db */
-	User.saveUserPwd(user, hash, result => {
-	    res.status(200).json(result);
-	})
-      }
-     }
-   /* If not redirect to send request to admin */
-   } else {
-      res.status(500).json({
-         error: 'No such user in database'
-      });
-   }
+   User.getUsers(users => {
+		 	let user = users.filter(u => {
+				return u.user_email == req.body.email
+			})
+			if (user) {
+				user = user[0];
+				bcrypt.hash(req.body.password, 12, (err, hash) => {
+				 if (err) {
+					 return res.status(500).json({
+					 error: 'There was an error during the creation of the password'
+					 });
+				 } else {
+					 /* Save the encrypted pwd in db */
+					 User.saveUserPwd(user, hash, result => {
+						 res.status(200).json(result);
+					 })
+				 }
+				})
+			/* If not redirect to send request to admin */
+			} else {
+				 res.status(500).json({
+					 error: 'No such user in database'
+				 });
+			}
+	 })
 });
 
-app.post('/api/signin', (req, res) => {
-   const user = User.getUsers().filter(user => {
-	 return user.email == req.body.email
-   })
-   if (user) {
-     bcrypt.compare(req.body.password, user.password, (err, result) => {
-         if(err) {
-	    return res.status(401).json({
-	       failed: 'Unauthorized Access'
-	    });
-         }
-         if(result) {
-	    const JWTToken = jwt.sign({
-		email: user.email,
-		_id: user._id
-	      },
-	      'nolandskid',
-	       {
-		 expiresIn: '2h'
-	    });
-            return res.status(200).json({
-               success: 'Success',
-	       token: JWTToken
-            });
-         }
-         return res.status(401).json({
-            failed: 'Unauthorized Access'
-         });
-      });
-   } else {
-      res.status(500).json({
-         error: 'No such user in database'
-      });
-   }
+app.post('/api/user/signin', (req, res) => {
+   User.getUsers(users => {
+		 	let user = users.filter((user) => {
+				return user.user_email == req.body.email
+			})
+			if (user) {
+				user = user[0];
+				bcrypt.compare(req.body.password, user.user_password, (err, result) => {
+				 if (err) {
+					 return res.status(401).json({
+						 failed: 'Unauthorized Access'
+					 });
+					 }
+				 if (result) {
+					 const JWTToken = jwt.sign({
+						 email: user.user_email,
+						 role: user.user_role
+					 },
+					 'nolandskid',
+					 {
+						 expiresIn: '2d'
+					 });
+						 return res.status(200).json({
+							 success: 'Success',
+							 token: JWTToken
+						 });
+					 }
+					 return res.status(401).json({
+						 failed: 'Unauthorized Access'
+					 });
+			 });
+			} else {
+				 res.status(500).json({
+					 error: 'No such user in database'
+				 });
+			}
+	 })
+   
 });
+
+app.post('/api/user/verifytoken', (req, res) => {
+	User.verifyToken(req.body.token, result => {
+		res.json(result)
+	})
+})
 
 app.post('/api/newtravel', (req, res) => {
 	Travel.addTravel(req.body, results =>{

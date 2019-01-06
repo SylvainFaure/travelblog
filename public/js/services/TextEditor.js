@@ -1,10 +1,12 @@
 export default class TextEditor {
   constructor (
+    $rootScope
   ) {
     this.isEditingComponent = false;
     this.components = [];
-    
+    this.$rootScope = $rootScope;
   }
+
 
   addParagraph(para) {
     let paragraphComp = {
@@ -13,6 +15,7 @@ export default class TextEditor {
       position: this.components.length
     }
     this.components.push(paragraphComp);
+    this.$rootScope.$emit("articleComponentsChange", this.components);
   }
 
   addCatchPhrase(catchPhrase) {
@@ -22,6 +25,7 @@ export default class TextEditor {
       position: this.components.length
     }
     this.components.push(catchPhraseComp);
+    this.$rootScope.$emit("articleComponentsChange", this.components);
   }
 
   addSubtitle(subtitle) {
@@ -31,6 +35,7 @@ export default class TextEditor {
       position: this.components.length
     }
     this.components.push(subtitleComp);
+    this.$rootScope.$emit("articleComponentsChange", this.components);
   }
 
   addImage(image) { // asset = {}
@@ -46,6 +51,7 @@ export default class TextEditor {
       position: this.components.length
     }
     this.components.push(imageComp);
+    this.$rootScope.$emit("articleComponentsChange", this.components);
   }
 
   addContent(type, content) {
@@ -65,6 +71,57 @@ export default class TextEditor {
       default:
         // do sthg
     }
+  }
+
+  updateContent(comp, content) {
+    this.components.forEach((c) => {
+      if (_.isEqual(c, comp)) {
+        c.content = content;
+      }
+    })
+    this.$rootScope.$emit("articleComponentsChange", this.components);
+  }
+
+  deleteComponent(comp) {
+    this.components.forEach((component, index) => {
+      if (component.position > comp.position) {
+        component.position -= 1;
+      }
+      if (component.position == comp.position) {
+        if (_.isEqual(component, comp)) {
+          this.components.splice(index, 1);
+        }
+      }
+    })
+    this.$rootScope.$emit("articleComponentsChange", this.components);
+  }
+
+  changePosition(comp, direction) {
+    if (direction == "up") {
+      this.components.forEach((component, index) => {
+        if (component.position == comp.position - 1) {
+          component.position += 1;
+        }
+        if (component.position == comp.position) {
+          if (_.isEqual(component, comp)) {
+            this.components[index].position -= 1;
+          }
+        }
+      })
+    }
+    if (direction == "down") {
+      this.components.forEach((component, index) => {
+        if (component.position == comp.position + 1) {
+          component.position -= 1;
+        }
+        if (component.position == comp.position) {
+          if (_.isEqual(component, comp)) {
+            this.components[index].position += 1;
+          }
+        }
+      })
+    }
+    this.$rootScope.$emit("articleComponentsChange", this.components);
   }
 
 }

@@ -9,6 +9,13 @@ export default class editorCompController {
 		$rootScope.$on('articleAsset', (e, asset) => {
 			this.asset = asset
 		});	
+
+		this.fr = $rootScope.rvm.fr;
+    this.it = $rootScope.rvm.it;
+    $rootScope.$on('changeLang', () => {
+      this.fr = $rootScope.rvm.fr;
+      this.it = $rootScope.rvm.it;
+    })
 	}
 
 	mouseUpEvent(e) {
@@ -56,9 +63,18 @@ export default class editorCompController {
 		} else {
 			content = this.content;
 		}
-		this.TextEditor.addContent(this.type, content)
-		this.destroyComponent()
+		this.TextEditor.addContent(this.type, content);
+		this.destroyComponent();
 	}	
+
+	updateContent() {
+		let content;
+		if (this.comp.type !== "image") {
+			content = $('.editor-comp_content-edit').html();
+		}
+		this.TextEditor.updateContent(this.comp, content);
+		this.comp.isEditing = false;
+	}
 
 	destroyComponent() {
 		this.TextEditor.isEditingComponent = false;
@@ -94,6 +110,7 @@ export const editorCompComponent = {
 	bindings: {
 		type: '@',
 		actions: '<',
-		assets: "<"
+		assets: "<",
+		comp: "<"
 	}
 }

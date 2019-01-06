@@ -25,18 +25,32 @@ class ArticleController {
     this.hasGallery = this.hasGallery();
     this.editGallery = false;
 
+
+    /* Editor */
     if (this.json_in.newarticle) {
       this.assetsGallery = [];
     } else {
       if (this.$rootScope.rvm.fr) {
         let parsed = JSON.parse(this.json_in.article_gallery_fr);
         this.assetsGallery = typeof parsed == "object" && parsed !== null ? parsed : [];
+
+        let parsedComponents = JSON.parse(this.json_in.article_long_desc_fr);
+        this.articleComponents = typeof parsedComponents == "object" && parsedComponents !== null ? parsedComponents : [];
+        this.TextEditor.components = this.articleComponents;
       }
       if (this.$rootScope.rvm.it) {
         let parsed = JSON.parse(this.json_in.article_gallery_it);
         this.assetsGallery = typeof parsed == "object" && parsed !== null ? parsed : [];
+
+        let parsedComponents = JSON.parse(this.json_in.article_long_desc_it);
+        this.articleComponents = typeof parsedComponents == "object" && parsedComponents !== null ? parsedComponents : [];
+        this.TextEditor.components = this.articleComponents;
       }
     }
+    $rootScope.$on("articleComponentsChange", (e, comps) => {
+      this.articleComponents = comps;
+      // $state.reload();
+    })
 
     /* Gallery */
 		$rootScope.$on('addArticleAssetGallery', (e, asset) => {
@@ -145,8 +159,8 @@ class ArticleController {
       if (!article.article_gallery_fr) {
         article.article_gallery_fr = '[]';
       }
-      if (this.TextEditor.components.length) {
-        article.article_long_desc_fr = JSON.stringify(this.TextEditor.components);
+      if (this.articleComponents) {
+        article.article_long_desc_fr = JSON.stringify(this.articleComponents);
         this.resetTextEditor();
       }
       if (!article.article_long_desc_fr) {
@@ -157,8 +171,8 @@ class ArticleController {
       if (!article.article_gallery_it) {
         article.article_gallery_it = '[]';
       }
-      if (this.TextEditor.components.length) {
-        article.article_long_desc_it = JSON.stringify(this.TextEditor.components);
+      if (this.articleComponents) {
+        article.article_long_desc_it = JSON.stringify(this.articleComponents);
         this.resetTextEditor();
       }
       if (!article.article_long_desc_it) {

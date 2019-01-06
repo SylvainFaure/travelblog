@@ -8,7 +8,13 @@ export default function Router ($stateProvider, $urlRouterProvider) {
         home: {
           templateUrl: "views/home.html",
           controller: "HomeController",
-          controllerAs: "vm"}
+          controllerAs: "vm"
+        },
+        login: {
+          templateUrl: "views/login.html",
+          controller: "LoginController",
+          controllerAs: "vm"
+        }
       }, 
       resolve: {
         ArticlesList: (ApiService) => {
@@ -22,11 +28,16 @@ export default function Router ($stateProvider, $urlRouterProvider) {
           return ApiService
             .travelsList()
             .then((r) => {
-              console.log(r.data)
               return r.data;
             })
         }
       }
+    })
+    .state('logged.login', {
+      url: '/login/userrequest/:email',
+      templateUrl: "../assets/js/views/login.html",
+      controller: "LoginController",
+      controllerAs: "vm"
     })
     .state('logged.articles', {
       url: 'articles',

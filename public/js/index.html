@@ -3,7 +3,6 @@
 	<head>
 		<title>Cartes de voyage - Admin</title>
 		<meta charset="utf-8">
-		<!-- <link rel="stylesheet" href="css/app.css"> -->
 		<link href="https://fonts.googleapis.com/css?family=IM+Fell+DW+Pica:400,400i" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
 		<link rel="stylesheet" href="vendors/semantic/semantic.min.css">
@@ -19,30 +18,11 @@
 
 	</head>
 	<body ng-app="admin">
-		<div ui-view="home"></div>
+       <div ng-if="rvm.isLogged">
+        <div ui-view="home"></div>
+      </div>
+      <div ng-if="!rvm.isLogged">
+        <div ui-view="login"></div>
+      </div>
 	</body>		
-		<!-- Modules -->
-	    
-	    <!-- <script src="js/views/initMap.js"></script> -->
-
-		<!-- Components --> 
-		<!-- <script src="assets/js/components/asset-picker/asset-picker.component.js"></script>
-		<script src="assets/js/components/tag/tag.component.js"></script>
-		<script src="assets/js/components/aside-menu/aside-menu.component.js"></script> -->
-		
-		<!--Filters-->
-		<!-- <script src="assets/js/filters/tag.filter.js"></script> -->
-
-	    <!-- Controllers -->
-		<!-- <script src="assets/js/controllers/AdminHomeController.js"></script>	    
-		<script src="assets/js/controllers/AdminCountriesController.js"></script>
-		<script src="assets/js/controllers/AdminCountryController.js"></script>
-		<script src="assets/js/controllers/AdminArticlesController.js"></script>
-		<script src="assets/js/controllers/AddCountryController.js"></script>
-		<script src="assets/js/controllers/ArticleController.js"></script>
-		<script src="assets/js/controllers/AssetsController.js"></script> -->
-
-	    <!-- Services -->
-	    <!-- <script src="assets/js/services/ApiService.js"></script> --> 
-	</body>
 </html>

@@ -2,6 +2,7 @@
 import angular from 'angular';
 import uirouter from '@uirouter/angularjs';
 import ngFileUpload from 'ng-file-upload';
+import ngSanitize from 'angular-sanitize';
 
 import _ from 'lodash';
 import $ from "jquery";
@@ -9,6 +10,7 @@ global.$ = global.jQuery = $;
 
 // Services; factories
 import ApiService from './services/ApiService';
+import AuthService from './services/AuthService';
 import TextEditor from './services/TextEditor';
 
 // Routes, config
@@ -21,6 +23,7 @@ import ArticlesController from './controllers/ArticlesController';
 import TravelsController from './controllers/TravelsController';
 import TravelController from './controllers/TravelController';
 import AssetsController from './controllers/AssetsController';
+import LoginController from './controllers/LoginController';
 
 // Components
 import * as asideMenuComponent from "./components/aside-menu/aside-menu.component";
@@ -28,7 +31,7 @@ import * as assetPickerComponent from "./components/asset-picker/asset-picker.co
 import * as tagComponent from "./components/tag/tag.component";
 import * as textEditorComponent from "./components/text-editor/text-editor.component";
 import * as editorCompComponent from "./components/editor-comp/editor-comp";
-import * as editorCompTitle from "./components/editor-title/editor-title";
+import * as previewEditorComponent from "./components/preview-editor/preview-editor";
 
 // Filters
 import byTag from './filters/tag.filter';
@@ -45,13 +48,15 @@ import '../css/app.scss';
 
 const dependencies = [
   uirouter,
-  ngFileUpload
+  ngFileUpload,
+  ngSanitize
 ]
 
 
 angular
   .module('admin', dependencies)
   .service('ApiService', ApiService)
+  .service('AuthService', AuthService)
   .service('TextEditor', TextEditor)
   .config(Router)
   .controller('HomeController', HomeController)
@@ -60,12 +65,13 @@ angular
   .controller('ArticlesController', ArticlesController)
   .controller('ArticleController', ArticleController)
   .controller('AssetsController', AssetsController)
+  .controller('LoginController', LoginController)
   .component('asideMenu', asideMenuComponent.asideMenuComponent)
   .component('assetPicker', assetPickerComponent.assetPickerComponent)
   .component('tag', tagComponent.tagComponent)
   .component('textEditor', textEditorComponent.textEditorComponent)
   .component('editorComp', editorCompComponent.editorCompComponent)
-  .component('editorTitle', editorCompTitle.editorTitleComponent)
+  .component('previewEditor', previewEditorComponent.previewEditorComponent)
   .filter('byTag', byTag)
   .run($rootScope => {
     if (!$rootScope.rvm) {
@@ -75,5 +81,3 @@ angular
     $rootScope.rvm.fr = true;
     $rootScope.rvm.it = false;
   })
-
-

@@ -15,6 +15,7 @@ class LoginController {
     console.log('LoginController')
     
     this.isSignin = true;
+    this.isSignup = false;
     this.userRequest = false;
     this.userRequestToValid = false;
     this.fr = $rootScope.rvm.fr
@@ -33,33 +34,55 @@ class LoginController {
   signin() {
     this.AuthService.loginSignin(this.signinMail, this.signinPassword).then(res => {
       if (res.status == 200) {
-        this.saveToken(res.data.token)
+        this.saveToken(res.data.token);
+        this.toastr.success("You are correctly identified", "Success !");
+        this.$state.reload();
       }
     }, rej => {
       if (rej.status == 401) {
-        this.notHaveAccess = true
-        setTimeout(() => {
-          this.notHaveAccess = false;
-        }, 5000)
+        this.toast.warning("You don't have a registered access", "Ops !")
       }
     }) 
-  }
+  }  
 
-  signup(email, pass) {
+  signup() {
+    const email = this.signupEmail;
+    const pass = this.signupPass;
+    const confPass = this.signupPassConf;
+    
     this.AuthService.loginSignup(email, pass).then(res => {
-      // confirm that the password is registered
-      // swith to signin form
+      this.toastr.success("You have correctly change your password", "Great !");
+      this.switchSignInSignUp()
+    }, rej => {
+      console.debug(rej);
+      this.toastr.success("There was an error", "Ops !");
     })
+  }
+  
+  switchSignInSignUp() {
+    this.isSignin = !this.isSignin;
+    this.isSignup = !this.isSignup;
+  }
+  
+  confirmPassword() {
+    const pass = this.signupPass;
+    const confPass = this.signupPassConf;
+    return pass == confPass;
+  }
+  
+  confirmEmail(email) {
+    const reg = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+    return reg.test(email)
   }
 
   sendUserRequest() {
-    let email = this.sendRequestMail
+    const email = this.sendRequestMail
     this.AuthService.loginSendRequest(email).then(res => {
       if (res.status == 200) {
         this.toastr.success("Your request has been sent !", "Success !")
-
       }
     }, rej => {
+      console.debug(rej);
       this.toastr.error("There was an unexpected error, please retry !", "Error")
     })
   }
@@ -72,16 +95,16 @@ class LoginController {
       token: token
     }
     this.$window.localStorage.setItem('user', JSON.stringify(userInfo));
-    this.$state.reload();
   }
 
   verifyToken() {
     this.AuthService.isAuthenticated().then(res => {
-      if (!res.data.error) {
+      if (res.status == 200) {
         this.$rootScope.rvm.isLogged = true;
-      } else {
-        this.$rootScope.rvm.isLogged = false;
-      }
+      } 
+    }, rej => {
+      console.debug(rej);
+      this.$rootScope.rvm.isLogged = false;
     })
   }
 

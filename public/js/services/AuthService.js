@@ -27,12 +27,16 @@ export default class ApiService {
    return this.$http.post(this.BASE_PATH + '/api/user/sendrequest', {email: email});   
   }
  
-  loginLogout (email) {
- 
+  loginLogout () {
+    this.$window.localStorage.removeItem('user');
   }
  
   loginSignup (email, password) {
     return this.$http.post(this.BASE_PATH + '/api/user/signup', {email: email, password: password})
+  }
+
+  insertNewUser (user) {
+    return this.$http.post(this.BASE_PATH + '/api/newuser', {user: user});
   }
 
   isAuthenticated () {

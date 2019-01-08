@@ -1,14 +1,15 @@
 export default class ApiService {
  constructor(
    $http,
-   $rootScope
+   $rootScope,
+   Upload
  ) {
   'ngInject'
   this.BASE_PATH = 'http://localhost:3000'
 
   this.$http = $http;
   this.$rootScope = $rootScope;
-  // this.Upload = Upload;
+  this.Upload = Upload;
 
   if (!this.$rootScope.rvm) {
     this.$rootScope.rvm = {};

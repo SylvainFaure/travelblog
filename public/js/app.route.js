@@ -33,10 +33,10 @@ export default function Router ($stateProvider, $urlRouterProvider) {
         }
       }
     })
-    .state('logged.login', {
-      url: '/login/userrequest/:email',
+    .state('logged.userrequest', {
+      url: 'userrequest/:email',
       templateUrl: "../assets/js/views/login.html",
-      controller: "LoginController",
+      controller: "UserRequestController",
       controllerAs: "vm"
     })
     .state('logged.articles', {

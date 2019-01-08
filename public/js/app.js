@@ -3,6 +3,7 @@ import angular from 'angular';
 import uirouter from '@uirouter/angularjs';
 import ngFileUpload from 'ng-file-upload';
 import ngSanitize from 'angular-sanitize';
+import toastr from "angular-toastr";
 
 import _ from 'lodash';
 import $ from "jquery";
@@ -24,6 +25,7 @@ import TravelsController from './controllers/TravelsController';
 import TravelController from './controllers/TravelController';
 import AssetsController from './controllers/AssetsController';
 import LoginController from './controllers/LoginController';
+import UserRequestController from './controllers/UserRequestController';
 
 // Components
 import * as asideMenuComponent from "./components/aside-menu/aside-menu.component";
@@ -45,11 +47,13 @@ import "../vendors/semantic/components/accordion";
 import "../vendors/semantic/components/popup";
 
 import '../css/app.scss';
+import '../../node_modules/angular-toastr/dist/angular-toastr.css';
 
 const dependencies = [
   uirouter,
   ngFileUpload,
-  ngSanitize
+  ngSanitize,
+  toastr
 ]
 
 
@@ -66,6 +70,7 @@ angular
   .controller('ArticleController', ArticleController)
   .controller('AssetsController', AssetsController)
   .controller('LoginController', LoginController)
+  .controller('UserRequestController', UserRequestController)
   .component('asideMenu', asideMenuComponent.asideMenuComponent)
   .component('assetPicker', assetPickerComponent.assetPickerComponent)
   .component('tag', tagComponent.tagComponent)
@@ -73,6 +78,12 @@ angular
   .component('editorComp', editorCompComponent.editorCompComponent)
   .component('previewEditor', previewEditorComponent.previewEditorComponent)
   .filter('byTag', byTag)
+  .config(toastrConfig => {
+    angular.extend(toastrConfig, {
+      positionClass: 'toast-bottom-right',
+      timeOut: 30000
+    });
+  })
   .run($rootScope => {
     if (!$rootScope.rvm) {
       $rootScope.rvm = {}

@@ -27,7 +27,7 @@ const modules = {
       } 
     },
     {
-      test: /\.scss$/,
+      test: /\.css|\.scss$/,
         use: [
           // fallback to style-loader in development
           MiniCssExtractPlugin.loader,

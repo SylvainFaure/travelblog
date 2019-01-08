@@ -25,12 +25,14 @@ class User {
 	}
 	
 	
-	static postUser(email, cb) {
+	static postUser(_user, cb) {
       const user = {
-	    	email: email,
-        pwd: ''
+				user_email: _user.email,
+				user_role: _user.role,
+				user_password: '',
+				user_username: _user.email
 	   }
-	   db.query('INSERT INTO users SET ?', user, function(err, results, fields){
+	   db.query('INSERT INTO users SET ?', user, function(err, results){
 			if (err) throw err;
 			cb(results)			
 	   })	
@@ -67,7 +69,7 @@ class User {
 					pass: admin.user_password
 				}
 			}));
-			const mailOptions = mail.mailOptions(email);
+			const mailOptions = mail.mailOptions(email, admin.user_email);
 			transporter.sendMail(mailOptions, (error, info) => {
 				if (error) throw error
 				cb(info)

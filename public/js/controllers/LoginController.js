@@ -3,15 +3,20 @@ class LoginController {
     $rootScope,
     AuthService,
     $window,
-    $state
+    $state,
+    toastr
   ) {
     this.AuthService = AuthService;
     this.$rootScope = $rootScope;
     this.$window = $window;
     this.$state = $state;
+    this.toastr = toastr;
+
     console.log('LoginController')
+    
     this.isSignin = true;
     this.userRequest = false;
+    this.userRequestToValid = false;
     this.fr = $rootScope.rvm.fr
     this.it = $rootScope.rvm.it
 
@@ -51,11 +56,11 @@ class LoginController {
     let email = this.sendRequestMail
     this.AuthService.loginSendRequest(email).then(res => {
       if (res.status == 200) {
-        // qqch comme 
-        // this.FlashMessage({status: 'success', message: 'The request is done', time: 5000})
+        this.toastr.success("Your request has been sent !", "Success !")
+
       }
     }, rej => {
-
+      this.toastr.error("There was an unexpected error, please retry !", "Error")
     })
   }
 

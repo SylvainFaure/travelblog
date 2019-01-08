@@ -17,9 +17,7 @@ const storage = multer.diskStorage({
 	}
 })
 const upload = multer({ storage: storage })
-const db = require('./db.js');
 const bodyParser = require('body-parser');
-const methodOverride = require('method-override');
 const session = require('express-session');
 const path = require('path');
 const jwt = require('jsonwebtoken');
@@ -118,20 +116,22 @@ app.post('/api/user/sendrequest', (req, res) => {
 })
 
 app.post('/api/newuser', (req, res) => {
-    const newUser = req.body.email
-    /* Check if already in db */
-    const userAlreadyRegistered = User.getUsers().filter(u => {
-	 return u.email == newUser
-   }) 
-   if (userAlreadyRegistered) {
-      res.json({
-      	error: 'Already registered'
-      })
-   } else {
-     User.postUser(newUser, result => {
-     	res.status(200).json(result);
-     })
-   }
+	const newUser = req.body.user
+	/* Check if already in db */
+	User.getUsers(users => {
+		const userAlreadyRegistered = users.filter(u => {
+			return u.email == newUser.email
+		}) 
+		if (userAlreadyRegistered.length) {
+			res.json({
+				error: 'Already registered'
+			})
+		} else {
+			User.postUser(newUser, result => {
+				res.status(200).json(result);
+			})
+		}
+	})
 })
 
 app.post('/api/user/signup', (req, res) => {

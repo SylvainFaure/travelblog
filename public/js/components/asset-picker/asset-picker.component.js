@@ -127,6 +127,9 @@ export default class assetPickerController {
 
   uploadAsset (assets, data) {
     this.isSubmitted = true;
+    if (data == undefined) {
+      data = {}
+    }
     this.ApiService
       .assetsUpload(assets, data)
       .then((resp) => { //upload function returns a promise

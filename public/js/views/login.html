@@ -54,6 +54,40 @@
         </div>
       </div>
     </div>
+    
+    <div ng-if="vm.isSignup" class="ui form">
+      <div class="field">
+        <label>
+          <span ng-if="vm.fr">Email</span>
+          <span ng-if="vm.it">Indirizzo mail</span>
+        </label>
+        <input type="text" ng-model="vm.signupEmail" placeholder="Email">
+      </div>
+      <div class="field">
+        <label>
+          <span ng-if="vm.fr">Mot de passe</span>
+          <span ng-if="vm.it">Password</span>
+        </label>
+        <input type="password" ng-model="vm.signupPass" placeholder="Password">
+      </div>
+      <div class="field">
+        <label>
+          <span ng-if="vm.fr">Confirmez votre mot de passe</span>
+          <span ng-if="vm.it">Conferma del password</span>
+        </label>
+        <input type="password" ng-model="vm.signupPassConf" ng-keypress="vm.confirmPassword()" placeholder="Password">
+      </div>
+      <div class="field">
+        <button 
+          class="ui button blue"
+          ng-click="vm.signup()"
+        >
+          <span ng-if="vm.fr">Envoyer</span>
+          <span ng-if="vm.it">Mandare</span>   
+      </button>
+      </div>
+    </div>
+    
 
     <div ng-if="vm.userRequest" class="ui form">
       <div class="field">
@@ -61,12 +95,13 @@
           <span ng-if="vm.fr">Insérez votre adresse email</span>
           <span ng-if="vm.it">Inserire un indirizzo mail valido</span>
         </label>
-        <input type="text" ng-model="vm.sendRequestMail" placeholder="Email">
+        <input type="text" ng-model="vm.sendRequestMail" ng-keypress="vm.confirmEmail(vm.sendRequestEmail)" placeholder="Email">
       </div>
       <div class="field">
         <button 
           class="ui button blue"
           ng-click="vm.sendUserRequest()"
+          ng-disabled="!vm.confirmEmail(vm.sendRequestEmail)"
         >
           <span ng-if="vm.fr">Envoyer</span>
           <span ng-if="vm.it">Mandare</span>   

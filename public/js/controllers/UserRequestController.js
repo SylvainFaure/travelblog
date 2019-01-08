@@ -35,7 +35,6 @@ class UserRequestController {
     this.AuthService.insertNewUser(user).then(res => {
       console.log(res)
       this.toastr.success("The user is registered correctly in database", "Success");
-      // flash message
       // send mail to user inserted
     }, rej => {
       console.log(rej)
@@ -43,12 +42,9 @@ class UserRequestController {
     })
   }
 
-  updateRole() {
-    console.log(this.userRequestRole) // = this.userRequestRole;
-  }
-
   refuseUserRequest() {
-
+    // new view with textarea and a message to send
+    // api -> send a mail to the user with explanation
   }
 
   signin() {

@@ -18,11 +18,11 @@
 
 	</head>
 	<body ng-app="admin">
-       <div ng-if="rvm.isLogged">
-        <div ui-view="home"></div>
-      </div>
-      <div ng-if="!rvm.isLogged">
-        <div ui-view="login"></div>
-      </div>
+    <div ng-if="rvm.isLogged">
+      <div ui-view="home"></div>
+    </div>
+    <div ng-if="!rvm.isLogged">
+      <div ui-view="login"></div>
+    </div>
 	</body>		
 </html>

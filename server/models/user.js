@@ -79,7 +79,7 @@ class User {
 
 	static verifyToken(token, cb) {
 		jwt.verify(token, 'nolandskid', function(err, decoded) {
-			if (err) throw err
+			if (err) console.debug(err)
 			cb(decoded)
 		});
 	}

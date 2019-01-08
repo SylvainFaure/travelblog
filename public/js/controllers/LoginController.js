@@ -99,7 +99,7 @@ class LoginController {
 
   verifyToken() {
     this.AuthService.isAuthenticated().then(res => {
-      if (res.status == 200) {
+      if (res.status == 200 && res.data !== "") {
         this.$rootScope.rvm.isLogged = true;
       } 
     }, rej => {

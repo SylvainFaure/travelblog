@@ -85,21 +85,4 @@ export default class ApiService {
  assetUpdate (asset, id) {
   return this.$http.put(this.BASE_PATH + '/api/update-asset/' + id, asset);
  }
-
- loginSignin (email, password) {
-  return this.$http.post(this.BASE_PATH + '/api/signin', {email: email, password: password});
- }
-
- loginSendRequest (email) {
-  return this.$http.post(this.BASE_PATH + '/api/senduserrequest', {email: email});   
- }
-
- loginLogout (email) {
-
- }
-
- loginSignup (email, password) {
-   return this.$http.post(this.BASE_PATH + '/api/signup', {email: email, password: password})
- }
-
 }

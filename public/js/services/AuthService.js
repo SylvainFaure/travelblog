@@ -29,6 +29,7 @@ export default class ApiService {
  
   loginLogout () {
     this.$window.localStorage.removeItem('user');
+    this.$rootScope.rvm.isLogged = false;
   }
  
   loginSignup (email, password) {

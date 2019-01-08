@@ -79,17 +79,8 @@ class User {
 
 	static verifyToken(token, cb) {
 		jwt.verify(token, 'nolandskid', function(err, decoded) {
-			let response;
-			if (err) {
-				response = {
-					status: 500,
-					error: "Invalid or inexistent token"
-				}
-			} else {
-				response = decoded
-			}
-			console.log(response)
-			cb(response)
+			if (err) throw err
+			cb(decoded)
 		});
 	}
 }

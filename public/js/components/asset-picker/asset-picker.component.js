@@ -97,7 +97,7 @@ export default class assetPickerController {
 
   
 
-  chooseAsset (asset, event) {
+  chooseAsset (asset, event, from) {
     console.log($(event.target))
     if (this.inEditor) {
       $('.asset-picker-img').css('opacity', '0.5')
@@ -107,7 +107,7 @@ export default class assetPickerController {
       $('.asset-picker-img').css('opacity', '0.5')
       $(event.target).css('opacity', '1')
       this.cover = asset;
-      this.$rootScope.$emit('changeCover', this.cover)
+      this.$rootScope.$emit('changeCover', from, this.cover)
     }
   }
 
@@ -229,6 +229,7 @@ export const assetPickerComponent = {
     inEditor: "<",
     allowUpload: "<",
     disablePlace: "<",
-    isGallery: "<"
+    isGallery: "<",
+    context: "@"
 	}
 }

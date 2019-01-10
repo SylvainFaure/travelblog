@@ -24,8 +24,10 @@ class TravelController {
 		})
 		this.isEditing = false;
 		
-		$rootScope.$on('changeCover', function(e, asset) {
-			this.travel.travel_cover = asset.asset_name
+		$rootScope.$on('changeCover', (e, from, asset) => {
+			if (from == "travel") {
+				this.travel.travel_cover = asset.asset_name
+			}
 		})
 
 		this.setArticlePosition();

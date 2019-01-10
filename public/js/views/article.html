@@ -51,10 +51,42 @@
             <h3 ng-show="vm.it">{{vm.json_in.article_title_it}}</h3>
           </div>
         </div>
+
+        <!--COVER-->
+        <div class="field">
+          <h4 ng-show="vm.fr" class="ui horizontal divider">Photo principale</h4>
+          <h4 ng-show="vm.it" class="ui horizontal divider">Foto principale</h4>          
+          <div class="ui basic segment" ng-if="vm.isEditing">
+            <img 
+              ng-if="vm.json_in.article_cover" 
+              class="article-gallery-img"
+              ng-src="assets/assets/thumb/mini_{{vm.json_in.article_cover}}" 
+            >
+            <div class="ui vertical animated button blue right floated large-button" 
+                  ng-click="vm.editCover()">
+              <div ng-if="vm.fr" class="hidden content">Ajouter</div>
+              <div ng-if="vm.it" class="hidden content">Aggiungere</div>        
+              <div class="visible content">
+                <i class="plus icon"></i>
+              </div>
+            </div>
+          </div>
+          <div class="ui basic segment" ng-if="!vm.isEditing">
+            <img 
+              ng-if="vm.json_in.article_cover" 
+              class="article-gallery-img"
+              ng-src="assets/assets/thumb/mini_{{vm.json_in.article_cover}}" 
+            >
+            <div ng-if="!vm.json_in.article_cover">
+              <h4 ng-show="vm.fr">Insérez une photo principale pour l'article</h4>
+              <h4 ng-show="vm.it">Inserire una foto principale per l'articolo</h4>
+            </div>
+          </div>
+        </div>
         
         <!--TRAVEL-->
         <div class="ui grid">
-          <div class="ui six wide column">
+          <div class="ui five wide column">
             <div class="field ui basic segment" ng-show="vm.fr">
               <h4 ng-show="vm.fr" class="ui horizontal divider">Voyage</h4> 
               <select class="ui dropdown" 
@@ -90,7 +122,7 @@
           </div>
           
           <!--COUNTRY-->
-          <div class="ui six wide column">
+          <div class="ui five wide column">
             <div class="field ui basic segment" ng-show="vm.fr">
               <h4 ng-show="vm.fr" class="ui horizontal divider">Pays</h4> 
               <select ng-class="{'ui dropdown': vm.json_in.article_travel_id != '', 'ui dropdown disabled': !vm.json_in.article_travel_id}"
@@ -126,11 +158,11 @@
           
           <!--PLACE-->
           <div class="field ui basic segment four wide column">
-              <h4 ng-show="vm.fr" class="ui horizontal divider">Lieu</h4>
-              <h4 ng-show="vm.it" class="ui horizontal divider">Luogo</h4>
+            <h4 ng-show="vm.fr" class="ui horizontal divider">Lieu</h4>
+            <h4 ng-show="vm.it" class="ui horizontal divider">Luogo</h4>
             <div class="ui" ng-if="vm.isEditing">
-                <input ng-show="vm.fr" type="text" class="" placeholder="Lieu" ng-model="vm.json_in.article_place_fr">
-                <input ng-show="vm.it" type="text" class="" placeholder="Luogo" ng-model="vm.json_in.article_place_it">
+              <input ng-show="vm.fr" type="text" class="" placeholder="Lieu" ng-model="vm.json_in.article_place_fr">
+              <input ng-show="vm.it" type="text" class="" placeholder="Luogo" ng-model="vm.json_in.article_place_it">
             </div>
             <div class="ui" ng-if="!vm.isEditing">
               <p ng-show="vm.fr">{{vm.json_in.article_place_fr}}</p>
@@ -138,6 +170,27 @@
             </div>
           </div>
         </div>
+
+        <!--DATES-->
+        <div class="field ui basic segment two wide column">
+          <h4 ng-show="vm.fr" class="ui horizontal divider">Dates</h4>
+          <h4 ng-show="vm.it" class="ui horizontal divider">Data</h4>
+          <div class="ui" ng-if="vm.isEditing">
+            <div class="ui vertical animated button blue right floated large-button" 
+              ng-click="vm.editStep()">
+              <div ng-if="vm.fr" class="hidden content">Editer</div>
+              <div ng-if="vm.it" class="hidden content">Editare</div>        
+              <div class="visible content">
+                <i class="plus icon"></i>
+              </div>
+            </div> 
+          </div>
+          <div class="ui" ng-if="!vm.isEditing">
+            <p ng-show="vm.fr">{{vm.json_in.article_step_date}} A MODIFIER AVEC UN JSON de ... à</p>
+            <p ng-show="vm.it">{{vm.json_in.article_step_date}}</p>
+          </div>
+        </div>
+      </div>
         
         <!--SLUG-->
         <div class="field">
@@ -271,27 +324,58 @@
   </form>
       </div>
 
-      <!--MODAL-->
-      <div class="ui modal">
+      <!--MODAL COVER-->
+      <div class="ui modal cover">
         <i class="close icon"></i>
         <div class="header">
           <div ng-if="">
             <span ng-show="vm.fr">Choisis une image principale pour cet article</span>
             <span ng-show="vm.it">Scegli un'immagine principale per questo articolo</span>      
           </div>
-          <div ng-if="">
-            <span ng-show="vm.fr">Image</span>
-            <span ng-show="vm.it">Immagine</span>      
-          </div>
+          <img 
+            ng-if="vm.json_in.article_cover" 
+            class="article-gallery-img"
+            ng-src="assets/assets/thumb/mini_{{vm.json_in.article_cover}}" 
+          >
         </div>
         <div class="description">
           <div class="field assets-modal">
-            <asset-picker assets="vm.articleAssets" disable-place="true" in-editor="false"></asset-picker> 
+            <asset-picker 
+              assets="vm.articleAssets" 
+              disable-place="true" 
+              in-editor="false"
+              context="article"
+            ></asset-picker> 
           </div>
         </div>
         <div class="actions">
-          <div class="ui black deny button">Cancel</div>
-          <div class="ui positive right labeled icon button" ng-click="vm.addCover()">Save<i class="checkmark icon"></i></div>
+          <div class="ui positive right labeled icon button">
+            <span ng-show="vm.fr">Confirmer</span>
+            <span ng-show="vm.it">Confermare</span>
+            <i class="checkmark icon"></i>
+          </div>
+        </div>
+      </div>
+
+      <!--MODAL STEP-->
+      <div class="ui modal cover">
+        <i class="close icon"></i>
+        <div class="header"></div>
+          <span ng-show="vm.fr">Modifie les informations sur cette étape</span>
+          <span ng-show="vm.it">Modificca le informazioni su questa tappa</span>      
+        </div>
+
+        <div class="description">
+          <!--CHOIX DE LA DATE-->
+          <!--checkbox pour date unique ou plusieurs dates-->
+          <!--datepicker ou datepickers en fonction de la checkbox-->
+        </div>
+        <div class="actions">
+          <div class="ui positive right labeled icon button">
+            <span ng-show="vm.fr">Confirmer</span>
+            <span ng-show="vm.it">Confermare</span>
+            <i class="checkmark icon"></i>
+          </div>
         </div>
       </div>
 

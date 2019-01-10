@@ -64,6 +64,12 @@ class ArticleController {
 				}
 			this.assetsGallery = copyAssetGallery;
 			})
+    });
+    
+    $rootScope.$on('changeCover', (e, from, asset) => {
+      if (from == "article") {
+        this.json_in.article_cover = asset.asset_name;
+      }
 		});
     
     /* Lang */
@@ -142,10 +148,18 @@ class ArticleController {
     }
   }
 
-  openModal(asset) {
-    if (asset == 'asset') {
-      $('.ui.modal.asset').modal('show')
+  openModal(type) {
+    if (type == 'cover') {
+      $('.ui.modal.cover').modal('show')
     }
+  }
+
+  editCover() {
+   this.openModal('cover');
+  }
+
+  saveCover() {
+
   }
 
   toggleStep() {

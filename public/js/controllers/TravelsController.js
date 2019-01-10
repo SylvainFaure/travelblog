@@ -25,8 +25,10 @@ class TravelsController {
 		this.it = $rootScope.rvm.it;
 	})
 		
-	$rootScope.$on('changeCover', (e, asset) => {
-		this.travel.travel_cover = asset.asset_name
+	$rootScope.$on('changeCover', (e, from, asset) => {
+		if (from == "travel") {
+			this.travel.travel_cover = asset.asset_name
+		}
 	});
 
 	

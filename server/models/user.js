@@ -3,6 +3,7 @@ const mail = require ('../mail.js');
 const nodemailer = require('nodemailer');
 const smtpTransport = require('nodemailer-smtp-transport');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 class User {
 
@@ -24,6 +25,90 @@ class User {
 		})
 	}
 	
+	static createNewUser(user, cb) {
+	  
+	  this.getUsers(users => {
+		const userAlreadyRegistered = users.filter(u => {
+			return u.email == user.email
+		}) 
+		if (userAlreadyRegistered.length) {
+			res.json({
+				error: 'Already registered'
+			})
+		} else {
+			User.postUser(user, result => {
+				res.status(200).json(result);
+			})
+		}
+	})
+	}
+	
+	static signup(email, password, cb) {
+		this.getUsers(users => {
+		 	let user = users.filter(u => {
+				return u.user_email == req.body.email
+			})
+			if (user) {
+				user = user[0];
+				bcrypt.hash(req.body.password, 12, (err, hash) => {
+				 if (err) {
+					 return  res.status(500).json({
+					 error: 'There was an error during the creation of the password'
+					 });
+				 } else {
+					 /* Save the encrypted pwd in db */
+					 User.saveUserPwd(user, hash, result => {
+						 cb(result);
+					 })
+				 }
+				})
+			/* If not redirect to send request to admin */
+			} else {
+				 res.status(500).json({
+					 error: 'No such user in database'
+				 });
+			}
+	 })
+	}
+	
+	static signin(email, password, cb) {
+		this.getUsers(users => {
+		 	let user = users.filter((user) => {
+				return user.user_email == email
+			})
+			if (user) {
+				user = user[0];
+				bcrypt.compare(password, user.user_password, (err, result) => {
+				 if (err) {
+					 return res.status(401).json({
+						 failed: 'Unauthorized Access'
+					 });
+					 }
+				 if (result) {
+					 const JWTToken = jwt.sign({
+						 email: user.user_email,
+						 role: user.user_role
+					 },
+					 'nolandskid',
+					 {
+						 expiresIn: '2d'
+					 });
+						 return res.status(200).json({
+							 success: 'Success',
+							 token: JWTToken
+						 });
+					 }
+					 return res.status(401).json({
+						 failed: 'Unauthorized Access'
+					 });
+			 });
+			} else {
+				 res.status(500).json({
+					 error: 'No such user in database'
+				 });
+			}
+	 })
+	}
 	
 	static postUser(_user, cb) {
       const user = {

@@ -4,7 +4,8 @@ export default class assetPickerController {
     $scope, 
     $state, 
     $window, 
-    ApiService
+    ApiService,
+    toastr
   ) {
 		'ngInject'
     this.$rootScope = $rootScope;
@@ -12,6 +13,7 @@ export default class assetPickerController {
     this.$window = $window;
     this.$state = $state;
     this.ApiService = ApiService;
+    this.toastr = toastr;
     
     this.isSubmitted = false;
     this.assetToModify = '';
@@ -93,12 +95,9 @@ export default class assetPickerController {
     }
   };
 
-  //$('.ui.checkbox').checkbox();
-
-  
+  //$('.ui.checkbox').checkbox();  
 
   chooseAsset (asset, event, from) {
-    console.log($(event.target))
     if (this.inEditor) {
       $('.asset-picker-img').css('opacity', '0.5')
       $(event.target).css('opacity', '1')
@@ -118,51 +117,46 @@ export default class assetPickerController {
       this.$rootScope.$emit('deleteArticleAssetGallery', asset);
     }
   }
+	
+  updateAssets() {
+      this.ApiService.assetsList()
+          .then((r) => {
+            this.assets = r.data;
+          })
+          this.$state.reload();
+          this.$window.location.reload();
+  }
 
-  submit (){ //function to call on submit
+  submit (){
     if (this.newAssets) { 
       this.uploadAsset(this.newAssets, this.newAssetsData); 
     }
   }
 
-  uploadAsset (assets, data) {
+  uploadAsset(assets, data) {
     this.isSubmitted = true;
     if (data == undefined) {
       data = {}
     }
     this.ApiService
       .assetsUpload(assets, data)
-      .then((resp) => { //upload function returns a promise
-        if(resp.status === 200){ 
+      .then((resp) => {  
           this.newAssets = null
           this.isSubmitted = false;
-          for (var i = 0; i < resp.config.data.file.length; i++) {
-              console.log('Success ' + resp.config.data.file[i].name + ' uploaded.');
-          }
-          // flash message success
-          this.ApiService.assetsList()
-          .then((r) => {
-            console.log(r.data)
-            this.assets = r.data;
+          resp.config.data.file.forEach((file) => {
+              this.toastr.success(`${file.name} correctly uploaded`, "Success !");
           })
-          this.$state.reload();
-          this.$window.location.reload();
-
-        } else {
-          console.warn('An error occured : error status ' + resp.status);
-          // flash message error
-        }
-      }, (resp) => { //catch error
-        console.warn('Error status: ' + resp.status);
+          this.updateAssets();
+      }, (err) => { 
+	this.isSubmitted = false;
+	this.toastr.error(`There was an error ${err.status}`, "Error");
       }, (evt) => {
-        console.log(evt);
         this.progress = parseInt(100.0 * evt.loaded / evt.total);            
       });
   };
   
 
   editAsset(asset) {
-    console.log(asset)
     this.asset = asset
     $('.ui.modal').modal('show')
 
@@ -178,10 +172,14 @@ export default class assetPickerController {
   }
 
   deleteAsset (index, name) {
-    this.ApiService
-      .assetsDelete([index], [name])
-    this.$state.reload()
-    this.$window.location.reload()
+    this.ApiService.assetsDelete([index], [name]).then((resp) => {
+	this.toastr.success(`The file was correctly deleted`, "Success !");
+    	this.$state.reload()
+    	this.$window.location.reload()
+    }, (err) => {
+    	this.toastr.error(`There was an error ${err.status}`, "Error");
+    })
+    
   }
 
   deleteAssets () {
@@ -194,9 +192,13 @@ export default class assetPickerController {
         names.push(toDelete[i].name)
       }
     }
-    this.ApiService.assetsDelete(index, names)
-    this.$state.reload()
-    this.$window.location.reload()
+    this.ApiService.assetsDelete(index, names).then((resp) => {
+	this.toastr.success(`Files were correctly deleted`, "Success !");
+    	this.$state.reload()
+    	this.$window.location.reload()
+    }, (err) => {
+    	this.toastr.error(`There was an error ${err.status}`, "Error");
+    })
   }
 
   dataURItoBlob(dataURI) {

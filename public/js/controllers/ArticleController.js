@@ -175,16 +175,20 @@ class ArticleController {
   initDatepicker() {
     $('#rangestart').calendar({
       type: 'date',
-      endCalendar: $('#rangeend')
+      endCalendar: $('#rangeend'),
+      onChange: function (date, text, mode) {
+	      console.log(date.getDate() + '/' + date.getMonth() + 1 + '/' + date.getFullYear())
+	      console.log(Math.round(new Date(`${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} 00:00:00`).getTime()/1000))
+	}    
     });
     $('#rangeend').calendar({
       type: 'date',
-      startCalendar: $('#rangestart')
+      startCalendar: $('#rangestart'),
+      onChange: function (date, text, mode) {
+	      console.log(date.getDate() + '/' + date.getMonth() + 1 + '/' + date.getFullYear())
+	      console.log(Math.round(new Date(`${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} 00:00:00`).getTime()/1000))
+	}
     });
-  }
-
-  formatDate(event, type) {
-    console.log($("#rangestart").calendar("get date"))
   }
 
   editCover() {

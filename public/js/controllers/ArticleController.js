@@ -185,6 +185,8 @@ class ArticleController {
       type: 'date',
       startCalendar: $('#rangestart'),
       onChange: function (date, text, mode) {
+	      // regex date 22/10/2010 
+	      // (?:[0-2]\d|3[01])\/(?:0\d|1[0-2])\/(?:\d{4}|\d{2})
 	      console.log(date.getDate() + '/' + date.getMonth() + 1 + '/' + date.getFullYear())
 	      console.log(Math.round(new Date(`${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} 00:00:00`).getTime()/1000))
 	}

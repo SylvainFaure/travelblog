@@ -187,6 +187,8 @@ class ArticleController {
       onChange: function (date, text, mode) {
 	      // regex date 22/10/2010 
 	      // (?:[0-2]\d|3[01])\/(?:0\d|1[0-2])\/(?:\d{4}|\d{2})
+	      // regex date 22/10/2010 00:00:00
+	      // (?:[0-2]\d|3[01])\/(?:0\d|1[0-2])\/(?:\d{4}|\d{2})\ (?:[01]\d|2[0-3])\:(?:[0-5]\d)\:(?:[0-5]\d)
 	      console.log(date.getDate() + '/' + date.getMonth() + 1 + '/' + date.getFullYear())
 	      console.log(Math.round(new Date(`${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} 00:00:00`).getTime()/1000))
 	}

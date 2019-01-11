@@ -1,10 +1,8 @@
-const express = require('express');
-const app = express();
+const app = require('express')();
 
 const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
 const webpackConfig = require('../webpack.config.js');
-
 
 const multer  = require('multer');
 const storage = multer.diskStorage({
@@ -16,6 +14,9 @@ const storage = multer.diskStorage({
 	  cb(null, timestamp + '_' + file.originalname)
 	}
 })
+
+const errorHandler = require("./error-handler.js")
+
 const upload = multer({ storage: storage })
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -37,6 +38,8 @@ app.use((req, res, next) => { //allow cross origin requests
 	res.header("Access-Control-Allow-Origin", "http://localhost:8080");
 	next();
 })
+
+app.user(errorHandler());
 
 /*** GET ****/
 

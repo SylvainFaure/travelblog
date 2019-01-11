@@ -18,10 +18,7 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage: storage })
 const bodyParser = require('body-parser');
-const session = require('express-session');
 const path = require('path');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 
 /***** MODELS ******/
 const User = require('./models/user');
@@ -35,13 +32,6 @@ app.use('/assets', express.static('public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.use(session({
-  secret: 'npk',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false }
-}))
-
 app.use((req, res, next) => { //allow cross origin requests
 	res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
 	res.header("Access-Control-Allow-Origin", "http://localhost:8080");
@@ -52,8 +42,6 @@ app.use((req, res, next) => { //allow cross origin requests
 
 app.get('/api/users', (req, res) => {
 	User.getUsers(users => {
-		/*if (err) 
-			res.send(err)*/
 		res.json(users)
 	})
 })
@@ -66,16 +54,12 @@ app.get('/api/user/:user', (req, res) => {
 
 app.get('/api/travels', (req, res) => {
 	Travel.getAll(travels => {
-		/*if (err) 
-			res.send(err)*/
 		res.json(travels)
 	})
 })
 
 app.get('/api/articles', (req, res) => {
 	Article.getAll(allarticles => {
-		/*if (err)
-		res.send(err)*/
 		res.json(allarticles)
 	})
 })
@@ -116,90 +100,23 @@ app.post('/api/user/sendrequest', (req, res) => {
 })
 
 app.post('/api/newuser', (req, res) => {
-	const newUser = req.body.user
-	/* Check if already in db */
-	User.getUsers(users => {
-		const userAlreadyRegistered = users.filter(u => {
-			return u.email == newUser.email
-		}) 
-		if (userAlreadyRegistered.length) {
-			res.json({
-				error: 'Already registered'
-			})
-		} else {
-			User.postUser(newUser, result => {
-				res.status(200).json(result);
-			})
-		}
+	User.createNewUser(req.body.user, (result) => {
+		res.json(result)
 	})
 })
 
 app.post('/api/user/signup', (req, res) => {
-   /* Check if user is registered in db */
-   User.getUsers(users => {
-		 	let user = users.filter(u => {
-				return u.user_email == req.body.email
-			})
-			if (user) {
-				user = user[0];
-				bcrypt.hash(req.body.password, 12, (err, hash) => {
-				 if (err) {
-					 return res.status(500).json({
-					 error: 'There was an error during the creation of the password'
-					 });
-				 } else {
-					 /* Save the encrypted pwd in db */
-					 User.saveUserPwd(user, hash, result => {
-						 res.status(200).json(result);
-					 })
-				 }
-				})
-			/* If not redirect to send request to admin */
-			} else {
-				 res.status(500).json({
-					 error: 'No such user in database'
-				 });
-			}
-	 })
+   User.signup(req.body.email, req.body.password, (result) => {
+   	res.json(result)
+   })
+   
 });
 
 app.post('/api/user/signin', (req, res) => {
-   User.getUsers(users => {
-		 	let user = users.filter((user) => {
-				return user.user_email == req.body.email
-			})
-			if (user) {
-				user = user[0];
-				bcrypt.compare(req.body.password, user.user_password, (err, result) => {
-				 if (err) {
-					 return res.status(401).json({
-						 failed: 'Unauthorized Access'
-					 });
-					 }
-				 if (result) {
-					 const JWTToken = jwt.sign({
-						 email: user.user_email,
-						 role: user.user_role
-					 },
-					 'nolandskid',
-					 {
-						 expiresIn: '2d'
-					 });
-						 return res.status(200).json({
-							 success: 'Success',
-							 token: JWTToken
-						 });
-					 }
-					 return res.status(401).json({
-						 failed: 'Unauthorized Access'
-					 });
-			 });
-			} else {
-				 res.status(500).json({
-					 error: 'No such user in database'
-				 });
-			}
-	 })
+   User.signin(req.body.email, req.body.password, (result) => {
+   	res.json(result)
+   }) 
+  
    
 });
 
@@ -216,7 +133,6 @@ app.post('/api/newtravel', (req, res) => {
 })
 
 app.post('/api/newarticle', (req, res) => {
-	console.log(req.body)
 	Article.postArticle(req.body, results => {
 		res.json(results)
 	})
@@ -237,24 +153,18 @@ app.post('/api/delete-assets', (req, res) => {
 /*** UPDATE ***/
 app.put('/api/update-travel/:id', (req, res) => {
 	Travel.updateTravel(req.body, req.params.id, travel => {
-		/*if (err) 
-			res.send(err)*/
 		res.json(travel)
 	})
 })
 
 app.put('/api/update-article/:id', (req, res) => {
 	Article.updateArticle(req.body, req.params.id, article => {
-		/*if (err) 
-			res.send(err)*/
 		res.json(article)
 	})
 })
 
 app.put('/api/update-asset/:id', (req, res) => {
 	Asset.updateAsset(req.body, req.params.id, asset => {
-		/*if (err) 
-			res.send(err)*/
 		res.json(asset)
 	})
 })

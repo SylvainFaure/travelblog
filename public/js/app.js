@@ -45,6 +45,7 @@ import "../vendors/semantic/components/transition";
 import "../vendors/semantic/components/progress";
 import "../vendors/semantic/components/accordion";
 import "../vendors/semantic/components/popup";
+import "../vendors/semantic/components/calendar";
 
 import '../css/app.scss';
 import '../../node_modules/angular-toastr/dist/angular-toastr.css';

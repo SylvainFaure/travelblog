@@ -86,7 +86,7 @@
         
         <!--TRAVEL-->
         <div class="ui grid">
-          <div class="ui five wide column">
+          <div class="ui four wide column">
             <div class="field ui basic segment" ng-show="vm.fr">
               <h4 ng-show="vm.fr" class="ui horizontal divider">Voyage</h4> 
               <select class="ui dropdown" 
@@ -122,7 +122,7 @@
           </div>
           
           <!--COUNTRY-->
-          <div class="ui five wide column">
+          <div class="ui four wide column">
             <div class="field ui basic segment" ng-show="vm.fr">
               <h4 ng-show="vm.fr" class="ui horizontal divider">Pays</h4> 
               <select ng-class="{'ui dropdown': vm.json_in.article_travel_id != '', 'ui dropdown disabled': !vm.json_in.article_travel_id}"
@@ -169,25 +169,25 @@
               <p ng-show="vm.it">{{vm.json_in.article_place_it}}</p>
             </div>
           </div>
-        </div>
 
-        <!--DATES-->
-        <div class="field ui basic segment two wide column">
-          <h4 ng-show="vm.fr" class="ui horizontal divider">Dates</h4>
-          <h4 ng-show="vm.it" class="ui horizontal divider">Data</h4>
-          <div class="ui" ng-if="vm.isEditing">
-            <div class="ui vertical animated button blue right floated large-button" 
-              ng-click="vm.editStep()">
-              <div ng-if="vm.fr" class="hidden content">Editer</div>
-              <div ng-if="vm.it" class="hidden content">Editare</div>        
-              <div class="visible content">
-                <i class="plus icon"></i>
-              </div>
-            </div> 
-          </div>
-          <div class="ui" ng-if="!vm.isEditing">
-            <p ng-show="vm.fr">{{vm.json_in.article_step_date}} A MODIFIER AVEC UN JSON de ... à</p>
-            <p ng-show="vm.it">{{vm.json_in.article_step_date}}</p>
+          <!--DATES-->
+          <div class="field ui basic segment three wide column">
+            <h4 ng-show="vm.fr" class="ui horizontal divider">Dates</h4>
+            <h4 ng-show="vm.it" class="ui horizontal divider">Data</h4>
+            <div class="ui" ng-if="vm.isEditing">
+              <div class="ui vertical animated button blue right floated large-button" 
+                ng-click="vm.editDates()">
+                <div ng-if="vm.fr" class="hidden content">Editer</div>
+                <div ng-if="vm.it" class="hidden content">Editare</div>        
+                <div class="visible content">
+                  <i class="plus icon"></i>
+                </div>
+              </div> 
+            </div>
+            <div class="ui" ng-if="!vm.isEditing">
+              <p ng-show="vm.fr">{{vm.article_dates}}</p>
+              <p ng-show="vm.it">{{vm.article_dates}}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -358,17 +358,52 @@
       </div>
 
       <!--MODAL STEP-->
-      <div class="ui modal cover">
+      <div class="ui modal dates">
         <i class="close icon"></i>
-        <div class="header"></div>
+        <div class="header">
           <span ng-show="vm.fr">Modifie les informations sur cette étape</span>
           <span ng-show="vm.it">Modificca le informazioni su questa tappa</span>      
         </div>
 
-        <div class="description">
-          <!--CHOIX DE LA DATE-->
-          <!--checkbox pour date unique ou plusieurs dates-->
-          <!--datepicker ou datepickers en fonction de la checkbox-->
+        <div class="content">
+          <div class="ui form">
+            <div class="two fields">
+              <div class="field">
+                <label>
+                  <span ng-show="vm.fr">Début de l'étape</span>
+                  <span ng-show="vm.it">Inizio della tappa</span> 
+                </label>
+                <div class="ui calendar" id="rangestart">
+                  <div class="ui input left icon">
+                    <i class="calendar icon"></i>
+                    <input 
+                      type="text" 
+                      placeholder="Start" 
+                      value="vm.articlesDates.from" 
+                      ng-model="vm.articlesDates.from" 
+                      ng-change="vm.formatDate($event, 'from')">
+                  </div>
+                </div>
+              </div>
+              <div class="field">
+                <label>
+                  <span ng-show="vm.fr">Fin de l'étape</span>
+                  <span ng-show="vm.it">Fine della tappa</span> 
+                </label>
+                <div class="ui calendar" id="rangeend">
+                  <div class="ui input left icon">
+                    <i class="calendar icon"></i>
+                    <input 
+                      type="text" 
+                      placeholder="End" 
+                      value="vm.articlesDates.to" 
+                      ng-model="vm.articlesDates.to"
+                      ng-change="vm.formatDate($event, 'to')">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="actions">
           <div class="ui positive right labeled icon button">

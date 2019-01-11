@@ -26,17 +26,32 @@ class ArticleController {
     this.editGallery = false;
 
 
-    /* Editor */
+    /* Mapping db data */
     if (this.json_in.newarticle) {
       this.assetsGallery = [];
+      this.articleDates = {
+        from: Date.now(),
+        to: null
+      };
     } else {
       if (this.$rootScope.rvm.fr) {
+        /* Gallery */
         let parsed = JSON.parse(this.json_in.article_gallery_fr);
         this.assetsGallery = typeof parsed == "object" && parsed !== null ? parsed : [];
 
+        /* Editor, long desc */
         let parsedComponents = JSON.parse(this.json_in.article_long_desc_fr);
         this.articleComponents = typeof parsedComponents == "object" && parsedComponents !== null ? parsedComponents : [];
         this.TextEditor.components = this.articleComponents;
+
+        /* Dates */
+        this.articleDates = {
+          from: "",
+          to: "",
+        }
+        if (this.json_in.article_step_dates.from && this.json_in.article_step_dates.to) { // timestamp
+          dates
+        }
       }
       if (this.$rootScope.rvm.it) {
         let parsed = JSON.parse(this.json_in.article_gallery_it);
@@ -70,7 +85,7 @@ class ArticleController {
       if (from == "article") {
         this.json_in.article_cover = asset.asset_name;
       }
-		});
+    });
     
     /* Lang */
     this.fr = this.$rootScope.rvm.fr;
@@ -152,10 +167,33 @@ class ArticleController {
     if (type == 'cover') {
       $('.ui.modal.cover').modal('show')
     }
+    if (type == 'dates') {
+      $('.ui.modal.dates').modal('show')
+    }
+  }
+
+  initDatepicker() {
+    $('#rangestart').calendar({
+      type: 'date',
+      endCalendar: $('#rangeend')
+    });
+    $('#rangeend').calendar({
+      type: 'date',
+      startCalendar: $('#rangestart')
+    });
+  }
+
+  formatDate(event, type) {
+    console.log($("#rangestart").calendar("get date"))
   }
 
   editCover() {
    this.openModal('cover');
+  }
+
+  editDates() {
+    this.openModal('dates');
+    this.initDatepicker();
   }
 
   saveCover() {

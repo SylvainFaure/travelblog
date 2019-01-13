@@ -5,18 +5,11 @@ export default class ApiService {
     $window
   ) {
    'ngInject'
-   this.BASE_PATH = 'http://localhost:3000'
+   this.BASE_PATH = process.env.BASE_PATH;
  
    this.$http = $http;
    this.$rootScope = $rootScope;
-   this.$window = $window;
- 
-   if (window.location.hostname === "localhost" && window.location.port === "3000") {
-     this.$rootScope.rvm.debug = true;
-     this.$rootScope.rvm.fr = true;
-     this.$rootScope.rvm.it = false;
-   }
- 
+   this.$window = $window; 
   }
  
   loginSignin (email, password) {

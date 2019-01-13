@@ -8,7 +8,8 @@ class ArticleController {
     Assets, 
     Travels, 
     ApiService,
-    TextEditor
+    TextEditor,
+    DateService
   ) {
     this.$rootScope = $rootScope; 
     this.$scope = $scope;
@@ -20,6 +21,7 @@ class ArticleController {
     this.travels = Travels;
     this.ApiService = ApiService;
     this.TextEditor = TextEditor;
+    this.DateService = DateService;
     
     this.stepOne = true;
     this.hasGallery = this.hasGallery();
@@ -28,12 +30,24 @@ class ArticleController {
 
     /* Mapping db data */
     if (this.json_in.newarticle) {
-      this.assetsGallery = [];
-      this.articleDates = {
-        from: Date.now(),
-        to: null
-      };
+      this.assetsGallery = [];      
     } else {
+      /* Dates */
+      this.articleDates = {
+        from: "",
+        to: ""
+      }
+      if (this.json_in.article_date_from) { 
+        const timestampFrom = this.json_in.article_date_from;
+        this.json_in.article_date_from = this.DateService.fromTimestampToDate(timestampFrom)
+        this.articleDates.from = this.DateService.fromTimestampToDatePickerDate(timestampFrom)
+      }
+      if (this.json_in.article_date_to) {
+        const timestampTo = this.json_in.article_date_to;
+        this.json_in.article_date_to = this.DateService.fromTimestampToDate(timestampTo)
+        this.articleDates.to = this.DateService.fromTimestampToDatePickerDate(timestampTo)
+      }
+      
       if (this.$rootScope.rvm.fr) {
         /* Gallery */
         let parsed = JSON.parse(this.json_in.article_gallery_fr);
@@ -44,14 +58,7 @@ class ArticleController {
         this.articleComponents = typeof parsedComponents == "object" && parsedComponents !== null ? parsedComponents : [];
         this.TextEditor.components = this.articleComponents;
 
-        /* Dates */
-        this.articleDates = {
-          from: "",
-          to: "",
-        }
-        if (this.json_in.article_step_dates.from && this.json_in.article_step_dates.to) { // timestamp
-          dates
-        }
+        this.isPublished = this.json_in.article_published_fr;
       }
       if (this.$rootScope.rvm.it) {
         let parsed = JSON.parse(this.json_in.article_gallery_it);
@@ -60,6 +67,8 @@ class ArticleController {
         let parsedComponents = JSON.parse(this.json_in.article_long_desc_it);
         this.articleComponents = typeof parsedComponents == "object" && parsedComponents !== null ? parsedComponents : [];
         this.TextEditor.components = this.articleComponents;
+
+        this.isPublished = this.json_in.article_published_it;
       }
     }
     $rootScope.$on("articleComponentsChange", (e, comps) => {
@@ -168,7 +177,10 @@ class ArticleController {
       $('.ui.modal.cover').modal('show')
     }
     if (type == 'dates') {
-      $('.ui.modal.dates').modal('show')
+      this.randomClass = "" + Math.floor(Math.random() * 1000);
+      setTimeout(() => {
+        $(`.ui.modal.dates.${this.randomClass}`).modal('show')
+      })
     }
   }
 
@@ -176,22 +188,20 @@ class ArticleController {
     $('#rangestart').calendar({
       type: 'date',
       endCalendar: $('#rangeend'),
-      onChange: function (date, text, mode) {
-	      console.log(date.getDate() + '/' + date.getMonth() + 1 + '/' + date.getFullYear())
-	      console.log(Math.round(new Date(`${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} 00:00:00`).getTime()/1000))
-	}    
+      onChange: (date) => {
+        const timestamp = this.DateService.fromDateToTimestamp(date)
+        this.json_in.article_date_from = this.DateService.fromTimestampToDate(timestamp)
+        this.articleDates.from = this.DateService.fromTimestampToDatePickerDate(timestamp)
+	    }    
     });
     $('#rangeend').calendar({
       type: 'date',
       startCalendar: $('#rangestart'),
-      onChange: function (date, text, mode) {
-	      // regex date 22/10/2010 
-	      // (?:[0-2]\d|3[01])\/(?:0\d|1[0-2])\/(?:\d{4}|\d{2})
-	      // regex date 22/10/2010 00:00:00
-	      // (?:[0-2]\d|3[01])\/(?:0\d|1[0-2])\/(?:\d{4}|\d{2})\ (?:[01]\d|2[0-3])\:(?:[0-5]\d)\:(?:[0-5]\d)
-	      console.log(date.getDate() + '/' + date.getMonth() + 1 + '/' + date.getFullYear())
-	      console.log(Math.round(new Date(`${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} 00:00:00`).getTime()/1000))
-	}
+      onChange: (date) => {
+        const timestamp = this.DateService.fromDateToTimestamp(date)
+        this.json_in.article_date_to = this.DateService.fromTimestampToDate(timestamp)
+        this.articleDates.to = this.DateService.fromTimestampToDatePickerDate(timestamp)
+	    }
     });
   }
 
@@ -204,17 +214,18 @@ class ArticleController {
     this.initDatepicker();
   }
 
-  saveCover() {
-
-  }
-
   toggleStep() {
-    this.stepOne = !this.stepOne
     this.stepTwo = !this.stepTwo
     this.isEditing = false
   }
 
   formatArticle(article) {
+    if (article.article_date_from) {
+      article.article_date_from = this.DateService.fromDateToTimestamp(article.article_date_from)
+    }
+    if (article.article_date_to) {
+      article.article_date_to = this.DateService.fromDateToTimestamp(article.article_date_to)
+    }
     if (this.fr) {
       if (!article.article_gallery_fr) {
         article.article_gallery_fr = '[]';
@@ -263,7 +274,28 @@ class ArticleController {
         console.warn(error)
       })
     }
-    
+  }
+
+  publishArticle() {
+    if (this.$rootScope.rvm.fr) {
+      this.json_in.article_published_fr = true;
+      this.json_in.article_published_date_fr = Date.now() / 1000;
+    }
+    if (this.$rootScope.rvm.it) {
+      this.json_in.article_published_it = true;
+      this.json_in.article_published_date_it = Date.now() / 1000;
+    }
+    this.saveArticle(this.json_in);
+  }
+
+  unpublishArticle() {
+    if (this.$rootScope.rvm.fr) {
+      this.json_in.article_published_fr = false;
+    }
+    if (this.$rootScope.rvm.it) {
+      this.json_in.article_published_it = false;
+    }
+    this.saveArticle(this.json_in);
   }
 
   deleteArticle(id) {

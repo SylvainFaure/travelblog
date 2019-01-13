@@ -46,14 +46,15 @@ class User {
 	static signup(email, password, cb) {
 		this.getUsers(users => {
 		 	let user = users.filter(u => {
-				return u.user_email == req.body.email
+				return u.user_email == email
 			})
 			if (user) {
 				user = user[0];
-				bcrypt.hash(req.body.password, 12, (err, hash) => {
+				bcrypt.hash(password, 12, (err, hash) => {
 				 if (err) {
-					 return  res.status(500).json({
-					 error: 'There was an error during the creation of the password'
+					 return JSON.stringify({
+							status: 500,
+					 		error: 'There was an error during the creation of the password'
 					 });
 				 } else {
 					 /* Save the encrypted pwd in db */
@@ -64,7 +65,8 @@ class User {
 				})
 			/* If not redirect to send request to admin */
 			} else {
-				 res.status(500).json({
+				 return JSON.stringify({
+					 status: 500,
 					 error: 'No such user in database'
 				 });
 			}
@@ -78,34 +80,37 @@ class User {
 			})
 			if (user) {
 				user = user[0];
+				var response;
 				bcrypt.compare(password, user.user_password, (err, result) => {
-				 if (err) {
-					 return res.status(401).json({
-						 failed: 'Unauthorized Access'
-					 });
-					 }
-				 if (result) {
-					 const JWTToken = jwt.sign({
-						 email: user.user_email,
-						 role: user.user_role
-					 },
-					 'nolandskid',
-					 {
-						 expiresIn: '2d'
-					 });
-						 return res.status(200).json({
-							 success: 'Success',
-							 token: JWTToken
-						 });
-					 }
-					 return res.status(401).json({
-						 failed: 'Unauthorized Access'
-					 });
-			 });
+					if (err) {
+						response = {
+							status: 401,
+							failed: 'Unauthorized Access'
+					 	};
+					}
+				 	if (result) {
+					 	const JWTToken = jwt.sign({
+						 	email: user.user_email,
+						 	role: user.user_role
+					},
+					'nolandskid',
+					{
+						expiresIn: '2d'
+					});
+						response = {
+							status: 200,
+							success: 'Success',
+							token: JWTToken
+						};
+					}
+					cb(response);
+			 	});
 			} else {
-				 res.status(500).json({
-					 error: 'No such user in database'
-				 });
+				response = {
+					status: 500,
+					error: 'No such user in database'
+				};
+				cb(response);
 			}
 	 })
 	}
@@ -164,8 +169,11 @@ class User {
 
 	static verifyToken(token, cb) {
 		jwt.verify(token, 'nolandskid', function(err, decoded) {
-			if (err) console.debug(err)
-			cb(decoded)
+			var response = decoded;
+			if (err) {
+				response = err
+			} 
+			cb(response)
 		});
 	}
 }

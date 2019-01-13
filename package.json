@@ -8,14 +8,13 @@
     "angular": "^1.7.2",
     "angular-sanitize": "^1.7.2",
     "angular-toastr": "^2.1.1",
-    "angularjs-toaster": "^2.2.0",
+    "bcrypt": "^2.0.1",
     "body-parser": "^1.18.2",
-    "cookie-parser": "^1.4.3",
+    "cross-env": "^5.2.0",
+    "env-cmd": "^8.0.2",
     "express": "^4.16.2",
-    "express-fileupload": "^0.4.0",
     "express-session": "^1.15.6",
     "jquery": "^3.3.1",
-    "js-sha256": "^0.9.0",
     "jsonwebtoken": "^8.4.0",
     "lodash": "^4.17.10",
     "method-override": "^2.3.10",
@@ -23,12 +22,12 @@
     "mysql": "^2.16.0",
     "ng-file-upload": "^12.2.13",
     "ngmap": "^1.18.4",
+    "nodemailer": "^5.1.1",
     "nodemailer-smtp-transport": "^2.7.4",
     "nodemon": "^1.18.3",
     "semantic-ui": "^2.3.3",
     "semantic-ui-calendar": "0.0.8",
-    "sharp": "^0.20.5",
-    "underscore": "1.8.3"
+    "sharp": "^0.20.5"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -45,12 +44,13 @@
     "sass-loader": "^7.1.0",
     "style-loader": "^0.21.0",
     "ui-router-extras": "^0.1.3",
+    "webpack": "^4.28.4",
     "webpack-dev-middleware": "^3.1.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --inspect --verbose server/app.js",
-    "build": "webpack public/js/app.js"
+    "start": "cross-env NODE_ENV=development env-cmd .env nodemon --inspect --verbose server/app.js",
+    "build": "cross-env NODE_ENV=production env-cmd .env webpack public/js/app.js"
   },
   "author": "",
   "license": "ISC"

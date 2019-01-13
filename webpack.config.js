@@ -43,6 +43,16 @@ const optimization = {
 }
 
 const plugins = [
+  new webpack.DefinePlugin({
+    'process.env': {
+      NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+      BASE_PATH: JSON.stringify(process.env.BASE_PATH)
+    },
+  }),
+  new webpack.ProvidePlugin({
+    $: "jquery",
+    jQuery: "jquery"
+  }),
   new CleanWebpackPlugin('dist', {}),
   new HtmlWebPackPlugin({
     template: "./public/js/index.html",
@@ -60,11 +70,7 @@ const plugins = [
     {from: './public/vendors/semantic/components/*', to: 'vendors/semantic/components', flatten: true},
     {from: './public/vendors/semantic/themes/default/assets/fonts/*', to: 'vendors/semantic/themes/default/assets/fonts', flatten: true},
     {from: './public/vendors/semantic/themes/default/assets/images/*', to: 'vendors/semantic/themes/default/assets/images', flatten: true},
-  ]),
-  new webpack.ProvidePlugin({
-    $: "jquery",
-    jQuery: "jquery"
-  })
+  ])
 ]
 
 module.exports = {

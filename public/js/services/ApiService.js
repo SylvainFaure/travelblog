@@ -5,7 +5,7 @@ export default class ApiService {
    Upload
  ) {
   'ngInject'
-  this.BASE_PATH = 'http://localhost:3000'
+  this.BASE_PATH = process.env.BASE_PATH;
 
   this.$http = $http;
   this.$rootScope = $rootScope;
@@ -14,12 +14,6 @@ export default class ApiService {
   if (!this.$rootScope.rvm) {
     this.$rootScope.rvm = {};
   }
-  if (window.location.hostname === "localhost" && window.location.port === "3000") {
-    this.$rootScope.rvm.debug = true;
-    this.$rootScope.rvm.fr = true;
-    this.$rootScope.rvm.it = false;
-  }
-
  }
 
  travelsList() {
@@ -79,7 +73,7 @@ export default class ApiService {
  }
 
  assetsDelete(ids, names) {
-  return this.$http.post(this.BASE_PATH + '/api/delete-assets', {ids: ids, names: names}); // pass an array  
+  return this.$http.post(this.BASE_PATH + '/api/delete-assets', {ids: ids, names: names}); 
  }
 
  assetUpdate (asset, id) {

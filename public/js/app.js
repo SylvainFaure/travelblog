@@ -13,6 +13,7 @@ global.$ = global.jQuery = $;
 import ApiService from './services/ApiService';
 import AuthService from './services/AuthService';
 import TextEditor from './services/TextEditor';
+import DateService from './services/DateService';
 
 // Routes, config
 import Router from './app.route';
@@ -63,6 +64,7 @@ angular
   .service('ApiService', ApiService)
   .service('AuthService', AuthService)
   .service('TextEditor', TextEditor)
+  .service('DateService', DateService)
   .config(Router)
   .controller('HomeController', HomeController)
   .controller('TravelsController', TravelsController)
@@ -89,7 +91,9 @@ angular
     if (!$rootScope.rvm) {
       $rootScope.rvm = {}
     }
-    $rootScope.rvm.debug = true;
-    $rootScope.rvm.fr = true;
-    $rootScope.rvm.it = false;
+    if (window.location.hostname === "localhost" && window.location.port === "3000") {
+      $rootScope.rvm.debug = true;
+      $rootScope.rvm.fr = true;
+      $rootScope.rvm.it = false;
+    }
   })

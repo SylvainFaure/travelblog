@@ -14,6 +14,24 @@
       </div>
     </div>
     <div class="ui vertical animated button blue right floated" 
+          ng-if="!vm.isEditing && !vm.isPublished"
+          ng-click="vm.publishArticle()">
+      <div ng-if="vm.fr" class="hidden content">Publier</div>
+      <div ng-if="vm.it" class="hidden content">Pubblicare</div>
+      <div class="visible content">
+        <i class="paper plane icon"></i>
+      </div>
+    </div>
+    <div class="ui vertical animated button blue right floated" 
+          ng-if="!vm.isEditing && vm.isPublished"
+          ng-click="vm.unpublishArticle()">
+      <div ng-if="vm.fr" class="hidden content">Dépublier</div>
+      <div ng-if="vm.it" class="hidden content">Depubblicare</div>
+      <div class="visible content">
+        <i class="fire extinguisher icon"></i>
+      </div>
+    </div>
+    <div class="ui vertical animated button blue right floated" 
           ng-if="!vm.isEditing"
           ng-click="vm.isEditing = !vm.isEditing">
       <div ng-if="vm.fr" class="hidden content">Editer</div>
@@ -37,7 +55,7 @@
     <h1 ng-if="!vm.json_in.newarticle && vm.it">{{vm.json_in.article_title_it}}</h1>
   
     <form class="ui form" method="post" style="margin-top: 80px">
-      <div ng-if="vm.stepOne">
+      <div ng-if="!vm.stepTwo">
         <!--TITLE-->
         <div class="field">
           <h4 ng-show="vm.fr" class="ui horizontal divider">Titre</h4>
@@ -185,12 +203,22 @@
               </div> 
             </div>
             <div class="ui" ng-if="!vm.isEditing">
-              <p ng-show="vm.fr">{{vm.article_dates}}</p>
-              <p ng-show="vm.it">{{vm.article_dates}}</p>
+              <div ng-if="vm.json_in.article_date_to">
+                <p>
+                  <span ng-show="vm.fr">du </span>
+                  <span ng-show="vm.it">del </span>
+                  {{vm.json_in.article_date_from}}
+                  <span ng-show="vm.fr">au </span>
+                  <span ng-show="vm.it">al </span>
+                  {{vm.json_in.article_date_to}}
+                </p>
+              </div>
+              <div ng-if="!vm.json_in.article_date_to">
+                <p>{{vm.json_in.article_date_from}}</p>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        </div> <!--row grid-->
         
         <!--SLUG-->
         <div class="field">
@@ -276,8 +304,9 @@
             <i class="angle right icon"></i>
           </div>
         </div>
-      </div>
-          
+
+      </div> <!--END STEP ONE-->
+    
       <!--STEP TWO-->
       <div ng-if="vm.stepTwo">
         <div class="field">
@@ -321,100 +350,99 @@
             <i class="check icon"></i>
           </div>
         </div>
-  </form>
       </div>
+    </form>
 
-      <!--MODAL COVER-->
-      <div class="ui modal cover">
-        <i class="close icon"></i>
-        <div class="header">
-          <div ng-if="">
-            <span ng-show="vm.fr">Choisis une image principale pour cet article</span>
-            <span ng-show="vm.it">Scegli un'immagine principale per questo articolo</span>      
-          </div>
-          <img 
-            ng-if="vm.json_in.article_cover" 
-            class="article-gallery-img"
-            ng-src="assets/assets/thumb/mini_{{vm.json_in.article_cover}}" 
-          >
-        </div>
-        <div class="description">
-          <div class="field assets-modal">
-            <asset-picker 
-              assets="vm.articleAssets" 
-              disable-place="true" 
-              in-editor="false"
-              context="article"
-            ></asset-picker> 
-          </div>
-        </div>
-        <div class="actions">
-          <div class="ui positive right labeled icon button">
-            <span ng-show="vm.fr">Confirmer</span>
-            <span ng-show="vm.it">Confermare</span>
-            <i class="checkmark icon"></i>
-          </div>
-        </div>
+
+  <!--MODAL COVER-->
+  <div class="ui modal cover">
+    <i class="close icon"></i>
+    <div class="header">
+      <div ng-if="">
+        <span ng-show="vm.fr">Choisis une image principale pour cet article</span>
+        <span ng-show="vm.it">Scegli un'immagine principale per questo articolo</span>      
       </div>
+      <img 
+        ng-if="vm.json_in.article_cover" 
+        class="article-gallery-img"
+        ng-src="assets/assets/thumb/mini_{{vm.json_in.article_cover}}" 
+      >
+    </div>
+    <div class="description">
+      <div class="field assets-modal">
+        <asset-picker 
+          assets="vm.articleAssets" 
+          disable-place="true" 
+          in-editor="false"
+          context="article"
+        ></asset-picker> 
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui positive right labeled icon button">
+        <span ng-show="vm.fr">Confirmer</span>
+        <span ng-show="vm.it">Confermare</span>
+        <i class="checkmark icon"></i>
+      </div>
+    </div>
+  </div>
 
-      <!--MODAL STEP-->
-      <div class="ui modal dates">
-        <i class="close icon"></i>
-        <div class="header">
-          <span ng-show="vm.fr">Modifie les informations sur cette étape</span>
-          <span ng-show="vm.it">Modificca le informazioni su questa tappa</span>      
-        </div>
+  <!--MODAL STEP-->
+  <div class="ui modal dates {{vm.randomClass}}">
+    <i class="close icon"></i>
+    <div class="header">
+      <span ng-show="vm.fr">Modifie les informations sur cette étape</span>
+      <span ng-show="vm.it">Modificca le informazioni su questa tappa</span>      
+    </div>
 
-        <div class="content">
-          <div class="ui form">
-            <div class="two fields">
-              <div class="field">
-                <label>
-                  <span ng-show="vm.fr">Début de l'étape</span>
-                  <span ng-show="vm.it">Inizio della tappa</span> 
-                </label>
-                <div class="ui calendar" id="rangestart">
-                  <div class="ui input left icon">
-                    <i class="calendar icon"></i>
-                    <input 
-                      type="text" 
-                      placeholder="Start" 
-                      value="vm.articlesDates.from" 
-                      ng-model="vm.articlesDates.from" 
-                      ng-change="vm.formatDate($event, 'from')">
-                  </div>
-                </div>
+    <div class="content">
+      <div class="ui form">
+        <div class="two fields">
+          <div class="field">
+            <label>
+              <span ng-show="vm.fr">Début de l'étape</span>
+              <span ng-show="vm.it">Inizio della tappa</span> 
+            </label>
+            <div class="ui calendar" id="rangestart">
+              <div class="ui input left icon">
+                <i class="calendar icon"></i>
+                <input 
+                  type="text" 
+                  placeholder="Start" 
+                  value="{{vm.articleDates.from}}" 
+                />
               </div>
-              <div class="field">
-                <label>
-                  <span ng-show="vm.fr">Fin de l'étape</span>
-                  <span ng-show="vm.it">Fine della tappa</span> 
-                </label>
-                <div class="ui calendar" id="rangeend">
-                  <div class="ui input left icon">
-                    <i class="calendar icon"></i>
-                    <input 
-                      type="text" 
-                      placeholder="End" 
-                      value="vm.articlesDates.to" 
-                      ng-model="vm.articlesDates.to"
-                      ng-change="vm.formatDate($event, 'to')">
-                  </div>
-                </div>
+            </div>
+          </div>
+          <div class="field">
+            <label>
+              <span ng-show="vm.fr">Fin de l'étape</span>
+              <span ng-show="vm.it">Fine della tappa</span> 
+            </label>
+            <div class="ui calendar" id="rangeend">
+              <div class="ui input left icon">
+                <i class="calendar icon"></i>
+                <input 
+                  type="text" 
+                  placeholder="End" 
+                  value="{{vm.articleDates.to}}" 
+                />
               </div>
             </div>
           </div>
         </div>
-        <div class="actions">
-          <div class="ui positive right labeled icon button">
-            <span ng-show="vm.fr">Confirmer</span>
-            <span ng-show="vm.it">Confermare</span>
-            <i class="checkmark icon"></i>
-          </div>
-        </div>
       </div>
+    </div>
+    <div class="actions">
+      <div class="ui positive right labeled icon button">
+        <span ng-show="vm.fr">Confirmer</span>
+        <span ng-show="vm.it">Confermare</span>
+        <i class="checkmark icon"></i>
+      </div>
+    </div>
+  </div>
 
-</div>
+
         
 
 <!-- <pre>{{vm.json_in | json}}</pre> -->

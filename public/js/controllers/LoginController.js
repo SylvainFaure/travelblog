@@ -94,13 +94,20 @@ class LoginController {
       role: payload.role,
       token: token
     }
+    if (this.$window.localStorage.getItem('user')) {
+      this.$window.localStorage.removeItem('user');
+    }
     this.$window.localStorage.setItem('user', JSON.stringify(userInfo));
   }
 
   verifyToken() {
     this.AuthService.isAuthenticated().then(res => {
-      if (res.status == 200 && res.data !== "") {
+      if (res.status == 200) {
         this.$rootScope.rvm.isLogged = true;
+        if (res.data.name == "JsonWebTokenError" || res.data.name == "TokenExpiredError") {
+          this.$rootScope.rvm.isLogged = false;
+          console.debug("You are not log in: %s", res.data.name)
+        }
       } 
     }, rej => {
       console.debug(rej);

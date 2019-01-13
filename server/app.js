@@ -1,4 +1,5 @@
-const app = require('express')();
+const express = require('express');
+const app = express();
 
 const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
@@ -14,8 +15,6 @@ const storage = multer.diskStorage({
 	  cb(null, timestamp + '_' + file.originalname)
 	}
 })
-
-const errorHandler = require("./error-handler.js")
 
 const upload = multer({ storage: storage })
 const bodyParser = require('body-parser');
@@ -39,7 +38,24 @@ app.use((req, res, next) => { //allow cross origin requests
 	next();
 })
 
-app.user(errorHandler());
+if (app.get("env") === 'development') {
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: err
+    });
+  });
+}
+if (app.get("env") === "production") {
+	app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: {}
+    });
+	});
+}
 
 /*** GET ****/
 

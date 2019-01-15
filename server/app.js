@@ -4,6 +4,9 @@ const app = express();
 const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
 const webpackConfig = require('../webpack.config.js');
+const webpackHotMiddleware = require('webpack-hot-middleware');
+
+const compiler = webpack(webpackConfig);
 
 const multer  = require('multer');
 const storage = multer.diskStorage({
@@ -27,7 +30,8 @@ const Article = require('./models/article');
 const Asset = require('./models/asset');
 
 /** MIDDLEWARE **/
-app.use(webpackMiddleware(webpack(webpackConfig)));
+app.use(webpackMiddleware(compiler, {}));
+app.use(webpackHotMiddleware(compiler));
 app.use('/assets', express.static('public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))

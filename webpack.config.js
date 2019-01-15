@@ -53,6 +53,8 @@ const plugins = [
     $: "jquery",
     jQuery: "jquery"
   }),
+  new webpack.HotModuleReplacementPlugin(),
+  new webpack.NoEmitOnErrorsPlugin(),
   new CleanWebpackPlugin('dist', {}),
   new HtmlWebPackPlugin({
     template: "./public/js/index.html",

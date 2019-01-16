@@ -98,16 +98,10 @@ export default class assetPickerController {
   //$('.ui.checkbox').checkbox();  
 
   chooseAsset (asset, event, from) {
-    if (this.inEditor) {
-      $('.asset-picker-img').css('opacity', '0.5')
-      $(event.target).css('opacity', '1')
-      this.$rootScope.$emit('articleAsset', asset)
-    } else {
-      $('.asset-picker-img').css('opacity', '0.5')
-      $(event.target).css('opacity', '1')
-      this.cover = asset;
-      this.$rootScope.$emit('changeCover', from, this.cover)
-    }
+    $('.asset-picker-img').css('opacity', '0.5')
+    $(event.target).css('opacity', '1')
+    this.asset = asset;
+    this.$rootScope.$emit('changeAsset', from, this.asset)
   }
 
   toggleAsset(asset, checked) {
@@ -228,7 +222,6 @@ export const assetPickerComponent = {
 	bindings: {
     assets: "=",
     actions: "<",
-    inEditor: "<",
     allowUpload: "<",
     disablePlace: "<",
     isGallery: "<",

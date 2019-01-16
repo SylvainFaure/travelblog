@@ -265,7 +265,6 @@
               <asset-picker
                 assets="vm.articleAssets"
                 actions="false"
-                in-editor=true
                 allow-upload="false"
                 is-gallery=true  
               >
@@ -319,6 +318,7 @@
                 ng-if="vm.articleComponents.length" 
                 components="vm.articleComponents"
                 editable="true"
+                assets="vm.articleAssets"
               >
               </preview-editor>
             </div>
@@ -373,7 +373,6 @@
         <asset-picker 
           assets="vm.articleAssets" 
           disable-place="true" 
-          in-editor="false"
           context="article"
         ></asset-picker> 
       </div>

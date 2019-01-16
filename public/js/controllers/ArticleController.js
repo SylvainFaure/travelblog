@@ -90,7 +90,7 @@ class ArticleController {
 			})
     });
     
-    $rootScope.$on('changeCover', (e, from, asset) => {
+    $rootScope.$on('changeAsset', (e, from, asset) => {
       if (from == "article") {
         this.json_in.article_cover = asset.asset_name;
       }

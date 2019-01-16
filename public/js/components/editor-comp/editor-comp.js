@@ -6,8 +6,10 @@ export default class editorCompController {
 		'ngInject'
 		this.TextEditor = TextEditor;
 		this.init()
-		$rootScope.$on('articleAsset', (e, asset) => {
-			this.asset = asset
+		$rootScope.$on('changeAsset', (e, from, asset) => {
+			if (from == "editorComp") {
+				this.asset = asset
+			}
 		});	
 
 		this.fr = $rootScope.rvm.fr;

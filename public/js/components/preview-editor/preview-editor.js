@@ -5,11 +5,20 @@ export default class previewEditorController {
   ) {
 		'ngInject'
 		this.TextEditor = TextEditor;
-		$rootScope.$on('articleAsset', (e, asset) => {
-			this.asset = asset
-		});	
+		$rootScope.$on('changeAsset', (e, from, asset) => {
+			if (from == "previewEditor") {
+				this.editingImage = asset;
+			}
+		});
 	}	
-	
+
+	$onInit() {
+		if (this.components.length) {
+			this.components.forEach(comp => {
+				comp.isEditing = false;
+			})
+		}
+	}	
 	goToEditMode(comp) {
 		comp.isEditing = true;
 	}
@@ -21,8 +30,30 @@ export default class previewEditorController {
 		this.TextEditor.deleteComponent(comp);
 	}
 
-	changeImage(image) {
-		
+	changeImage(comp) {
+		this.openModal();
+		this.editingComponent = comp;
+		this.editingImage = comp.content.originalAsset || comp.originalAsset;
+	}
+
+	confirmImage() {
+		const content = {
+			name: this.editingImage.asset_name,
+			src: this.editingImage.asset_src,
+			fullWidth: this.editingImageWidth,
+			position: this.editingImagePosition,
+			originalAsset: this.editingImage
+		}
+		this.TextEditor.updateContent(this.editingComponent, content)
+		delete this.editingComponent;
+		delete this.editingImage;
+	}
+
+	openModal() {
+		this.randomModalClass = "" + Math.floor(Math.random() * 1000);
+		setTimeout(() => {
+			$(`.ui.modal.change-image.${this.randomModalClass}`).modal('show')
+		})
 	}
 
 	addContent() {
@@ -54,6 +85,7 @@ export const previewEditorComponent = {
 	controllerAs: 'vm',
 	bindings: {
 		components: "=",
-		editable: "<"
+		editable: "<",
+		assets: "<"
 	}
 }

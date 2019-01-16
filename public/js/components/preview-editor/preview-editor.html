@@ -43,6 +43,7 @@
         type="{{comp.type}}"
         comp="comp"
       >
+      </editor-comp>
       <div ng-if="comp.type == 'image'">
         <img 
           ng-src="assets/assets/thumb/mini_{{comp.content.name}}" 
@@ -50,14 +51,14 @@
           class="preview-editor_img-{{comp.content.position}} preview-editor_img-{{comp.content.fullWidth}}"
         >
         <button 
-          ng-click="vm.changeImage(comp.content)"
+          ng-click="vm.changeImage(comp)"
           class="ui positive right labeled icon button"
         >
-        <span ng-ig="vm.fr">Changer</span>
-        <span ng-ig="vm.it">Cambiare</span>
+        <span ng-if="rvm.fr">Changer</span>
+        <span ng-if="rvm.it">Cambiare</span>
         </button>
       </div>
-      </editor-comp>
+      
     </div>
     <div ng-if="!comp.isEditing">
       <div 
@@ -80,3 +81,57 @@
   </div>
 </div>
 
+
+<!--MODAL CHANGE IMAGE-->
+<div class="ui modal change-image {{vm.randomModalClass}}">
+  <i class="close icon"></i>
+  <div class="header">
+    <div>
+      <span ng-show="vm.fr">Choisis une nouvelle image</span>
+      <span ng-show="vm.it">Scegli un'altra immagine</span>      
+    </div>
+    {{vm.editingImage | json}}
+    <img 
+      ng-if="vm.editingImage"
+      class="article-gallery-img"
+      ng-src="assets/assets/thumb/mini_{{vm.editingImage.asset_name}}" 
+    >
+  </div>
+  <div class="description">
+    <div class="field assets-modal">
+      <asset-picker 
+        assets="vm.assets" 
+        disable-place="true" 
+        context="previewEditor"
+      ></asset-picker> 
+    </div>
+    <div>
+      <span class="right floated">
+        <div class="ui checkbox right floated">
+          <input class="" type="checkbox" name="{{vm.editingImage.asset_name}}" value="{{vm.editingImageWidth}}">
+          <label>Full width</label>
+        </div>
+      </span>
+    </div>
+    <div>
+      <select class="ui dropdown" 
+        ng-if="vm.isEditing" 
+        ng-model="vm.editingImagePosition"
+      >
+        <option value="left">Left</option>
+        <option value="center">Center</option>
+        <option value="left">Right</option>
+      </select>
+    </div>
+  </div>
+  <div class="actions">
+    <div 
+      class="ui positive right labeled icon button"
+      ng-click="vm.confirmImage()"
+    >
+      <span ng-show="vm.fr">Confirmer</span>
+      <span ng-show="vm.it">Confermare</span>
+      <i class="checkmark icon"></i>
+    </div>
+  </div>
+</div>

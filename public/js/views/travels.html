@@ -118,7 +118,12 @@
             <div class="ui basic segment">
               <h4 ng-show="vm.fr" class="ui horizontal divider">Choisis une image principale pour ce pays</h4>
               <h4 ng-show="vm.it" class="ui horizontal divider">Scegli un'immagine principale per questo paese</h4>
-              <asset-picker assets="vm.assets" disable-place="true" in-editor="false"></asset-picker>
+              <asset-picker 
+                assets="vm.assets" 
+                disable-place="true"
+                context="travels"
+              >
+              </asset-picker>
             </div>
           </div>
         </div>

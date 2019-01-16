@@ -50,7 +50,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cross-env NODE_ENV=development env-cmd .env nodemon --inspect server/app.js",
+    "start": "cross-env NODE_ENV=development env-cmd .env node --inspect server/app.js",
     "build": "cross-env NODE_ENV=production env-cmd .env webpack public/js/app.js"
   },
   "author": "",

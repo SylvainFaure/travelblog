@@ -36,29 +36,30 @@ app.use('/assets', express.static('public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.use((req, res, next) => { //allow cross origin requests
-	res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
-	res.header("Access-Control-Allow-Origin", "http://localhost:8080");
-	next();
-})
+
 
 if (app.get("env") === 'development') {
-  app.use(function(err, req, res, next) {
+  app.use((err, req, res, next) => {
     res.status(err.status || 500);
     res.render('error', {
         message: err.message,
         error: err
     });
   });
+  app.use((req, res, next) => { //allow cross origin requests
+	res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
+	res.header("Access-Control-Allow-Origin", "http://localhost:8080");
+	next();
+  })
 }
 if (app.get("env") === "production") {
-	app.use(function(err, req, res, next) {
+  app.use((err, req, res, next) => {
     res.status(err.status || 500);
     res.render('error', {
         message: err.message,
         error: {}
     });
-	});
+  });
 }
 
 /*** GET ****/

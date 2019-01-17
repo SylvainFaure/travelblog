@@ -98,28 +98,36 @@ export default class TextEditor {
 
   changePosition(comp, direction) {
     if (direction == "up") {
+      let isCompUp;
       this.components.forEach((component, index) => {
         if (component.position == comp.position - 1) {
           component.position += 1;
-        }
-        if (component.position == comp.position) {
-          if (_.isEqual(component, comp)) {
-            this.components[index].position -= 1;
-          }
+          isCompUp = true;
         }
       })
+      if (isCompUp) {
+        this.components.forEach((c, i) => {
+          if  (_.isEqual(c, comp)) {
+            this.components[i].position -= 1;
+          }
+        })
+      }
     }
     if (direction == "down") {
+      let isCompDown;
       this.components.forEach((component, index) => {
         if (component.position == comp.position + 1) {
           component.position -= 1;
-        }
-        if (component.position == comp.position) {
-          if (_.isEqual(component, comp)) {
-            this.components[index].position += 1;
-          }
+          isCompDown = true;
         }
       })
+      if (isCompDown) {
+        this.components.forEach((c, i) => {
+          if  (_.isEqual(c, comp)) {
+            this.components[i].position += 1;
+          }
+        })
+      }
     }
     this.$rootScope.$emit("articleComponentsChange", this.components);
   }

@@ -10,6 +10,7 @@ export default class previewEditorController {
 				this.editingImage = asset;
 			}
 		});
+		this.rvm = $rootScope.rvm;
 	}	
 
 	$onInit() {
@@ -19,6 +20,7 @@ export default class previewEditorController {
 			})
 		}
 	}	
+
 	goToEditMode(comp) {
 		comp.isEditing = true;
 	}
@@ -86,6 +88,6 @@ export const previewEditorComponent = {
 	bindings: {
 		components: "=",
 		editable: "<",
-		assets: "<"
+		previewEditorAssets: "="
 	}
 }

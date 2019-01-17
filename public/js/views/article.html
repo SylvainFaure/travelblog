@@ -249,8 +249,13 @@
           <h4 ng-show="vm.fr" class="ui horizontal divider">Gallerie</h4>
           <h4 ng-show="vm.it" class="ui horizontal divider">Gallery</h4>
           <div class="ui basic segment" ng-if="vm.isEditing">
+            <img  
+              ng-repeat="image in vm.assetsGallery"
+              class="article-gallery-img"
+              ng-src="assets/assets/thumb/mini_{{image.asset_name}}" 
+            >
             <div 
-              class="ui vertical animated button blue left floated"
+              class="ui vertical animated button blue right floated"
               ng-click="vm.editGallery = true"
               ng-show="!vm.editGallery"
               ng-disabled="vm.hasGallery"
@@ -318,7 +323,7 @@
                 ng-if="vm.articleComponents.length" 
                 components="vm.articleComponents"
                 editable="true"
-                assets="vm.articleAssets"
+                preview-editor-assets="vm.articleAssets"
               >
               </preview-editor>
             </div>

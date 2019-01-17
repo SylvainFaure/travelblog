@@ -1,7 +1,7 @@
 <div class="preview-editor_container">
   <div
     class="preview-editor_component"
-    ng-repeat="comp in vm.components | filter:comp.position"
+    ng-repeat="comp in vm.components | orderBy:'position'"
   >
     <!--EDIT MODE-->
     <div ng-if="vm.editable" class="preview-editor_isediting">
@@ -45,18 +45,23 @@
       >
       </editor-comp>
       <div ng-if="comp.type == 'image'">
-        <img 
-          ng-src="assets/assets/thumb/mini_{{comp.content.name}}" 
-          alt=""
-          class="preview-editor_img-{{comp.content.position}} preview-editor_img-{{comp.content.fullWidth}}"
-        >
-        <button 
-          ng-click="vm.changeImage(comp)"
-          class="ui positive right labeled icon button"
-        >
-        <span ng-if="rvm.fr">Changer</span>
-        <span ng-if="rvm.it">Cambiare</span>
-        </button>
+        <div class="field">
+          <img 
+            ng-src="assets/assets/thumb/mini_{{comp.content.name}}" 
+            alt=""
+            class="preview-editor_img-{{comp.content.position}} preview-editor_img-{{comp.content.fullWidth}}"
+          >
+        </div>
+        <div class="field">
+          <div 
+            ng-click="vm.changeImage(comp)"
+            class="ui positive right labeled icon button"
+          >
+            <span ng-show="vm.rvm.fr">Changer</span>
+            <span ng-show="vm.rvm.it">Cambiare</span>
+            <i class="checkmark icon"></i>
+          </div>
+        </div>
       </div>
       
     </div>
@@ -87,10 +92,9 @@
   <i class="close icon"></i>
   <div class="header">
     <div>
-      <span ng-show="vm.fr">Choisis une nouvelle image</span>
-      <span ng-show="vm.it">Scegli un'altra immagine</span>      
+      <span ng-show="vm.rvm.fr">Choisis une nouvelle image</span>
+      <span ng-show="vm.rvm.it">Scegli un'altra immagine</span>      
     </div>
-    {{vm.editingImage | json}}
     <img 
       ng-if="vm.editingImage"
       class="article-gallery-img"
@@ -100,37 +104,60 @@
   <div class="description">
     <div class="field assets-modal">
       <asset-picker 
-        assets="vm.assets" 
+        ng-if="vm.previewEditorAssets"
+        assets="vm.previewEditorAssets" 
         disable-place="true" 
         context="previewEditor"
       ></asset-picker> 
     </div>
-    <div>
-      <span class="right floated">
-        <div class="ui checkbox right floated">
-          <input class="" type="checkbox" name="{{vm.editingImage.asset_name}}" value="{{vm.editingImageWidth}}">
-          <label>Full width</label>
+    <div class="ui grid form">
+      
+      <div class="ui seven wide column">
+        <h4 ng-show="vm.rvm.fr" class="ui horizontal divider">Position</h4> 
+        <h4 ng-show="vm.rvm.it" class="ui horizontal divider">Posizione</h4> 
+        <select class="ui fluid dropdown" 
+          ng-model="vm.editingImagePosition"
+        >
+          <option value="left">
+            <span ng-show="vm.rvm.fr">Gauche</span>
+            <span ng-show="vm.rvm.it">Sinistra</span>
+          </option>
+          <option value="center">
+            <span ng-show="vm.rvm.fr">Centre</span>
+            <span ng-show="vm.rvm.it">Centro</span>
+          </option>
+          <option value="left">
+            <span ng-show="vm.rvm.fr">Droite</span>
+            <span ng-show="vm.rvm.it">Destra</span>
+          </option>
+        </select>
+      </div>
+
+      <div class="ui seven wide column">
+        <h4 ng-show="vm.rvm.fr" class="ui horizontal divider">Largeur</h4> 
+        <h4 ng-show="vm.rvm.it" class="ui horizontal divider">Larghezza</h4> 
+        <div class="field">
+          <span class="right floated">
+            <div class="ui checkbox right floated">
+              <input class="" type="checkbox" name="{{vm.editingImage.asset_name}}" value="{{vm.editingImageWidth}}">
+              <label>
+                <span ng-show="vm.rvm.fr">Pleine largeur</span>
+                <span ng-show="vm.rvm.it">Piena larghezza</span>
+              </label>
+            </div>
+          </span>
         </div>
-      </span>
+      </div>
     </div>
-    <div>
-      <select class="ui dropdown" 
-        ng-if="vm.isEditing" 
-        ng-model="vm.editingImagePosition"
-      >
-        <option value="left">Left</option>
-        <option value="center">Center</option>
-        <option value="left">Right</option>
-      </select>
-    </div>
+    
   </div>
   <div class="actions">
     <div 
       class="ui positive right labeled icon button"
       ng-click="vm.confirmImage()"
     >
-      <span ng-show="vm.fr">Confirmer</span>
-      <span ng-show="vm.it">Confermare</span>
+      <span ng-show="vm.rvm.fr">Confirmer</span>
+      <span ng-show="vm.rvm.it">Confermare</span>
       <i class="checkmark icon"></i>
     </div>
   </div>

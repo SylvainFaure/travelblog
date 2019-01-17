@@ -145,7 +145,6 @@ class ArticleController {
     if (this.it) {
       this.json_in.article_gallery_it = JSON.stringify(this.assetsGallery);
     }
-    this.assetsGallery = [];
     this.editGallery = false;
   }
 

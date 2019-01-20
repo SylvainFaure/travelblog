@@ -10,6 +10,10 @@ export default function AuthInterceptor($injector) {
         config.headers['x-access-token'] = token;
       }
       return config
+    },
+    responseError: (res) => {
+      console.log(res)
+      return res;
     }
   }
 }

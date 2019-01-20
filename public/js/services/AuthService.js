@@ -30,7 +30,7 @@ export default class AuthService {
   }
 
   insertNewUser (user) {
-    return this.$http.post(this.BASE_PATH + '/api/newuser', {user: user});
+    return this.$http.post(this.BASE_PATH + '/api/user/newuser', {user: user});
   }
 
   isAuthenticated () {

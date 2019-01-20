@@ -42,6 +42,30 @@ app.use((req, res, next) => { //allow cross origin requests
 	next();
 })
 
+app.use((req, res, next) => { //check x-access-token header
+	const token = req.headers['x-access-token'];
+	if (req.url.indexOf('user') == -1 && token) {
+		User.verifyToken(token, response => {
+			console.log(response)
+			if (response.name == "JsonWebTokenError") {
+				res.status(401).json({
+					error: response.message,
+					message: "You don't provide right user infos"
+				})
+			} else if (response.name == "TokenExpiredError") {
+				res.status(401).json({
+					error: response.message,
+					message: "You have to login again"
+				})
+			} else {
+				next();
+			}
+		})
+	} else {
+		next();
+	}
+})
+
 if (app.get("env") === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
@@ -122,7 +146,7 @@ app.post('/api/user/sendrequest', (req, res) => {
     })
 })
 
-app.post('/api/newuser', (req, res) => {
+app.post('/api/user/newuser', (req, res) => {
 	User.createNewUser(req.body.user, (result) => {
 		res.json(result)
 	})

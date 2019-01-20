@@ -17,6 +17,7 @@ import DateService from './services/DateService';
 
 // Routes, config
 import Router from './app.route';
+import AuthInterceptor from './app.interceptor';
 
 // Controllers
 import HomeController from './controllers/HomeController';
@@ -66,6 +67,9 @@ angular
   .service('TextEditor', TextEditor)
   .service('DateService', DateService)
   .config(Router)
+  .config(($httpProvider) => {
+    $httpProvider.interceptors.push(AuthInterceptor);
+  })
   .controller('HomeController', HomeController)
   .controller('TravelsController', TravelsController)
   .controller('TravelController', TravelController)

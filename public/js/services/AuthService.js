@@ -1,4 +1,4 @@
-export default class ApiService {
+export default class AuthService {
   constructor(
     $http,
     $rootScope,
@@ -34,14 +34,21 @@ export default class ApiService {
   }
 
   isAuthenticated () {
-    let token = "token.token.token";
-    let user = JSON.parse(this.$window.localStorage.getItem('user'));
-    if (user) {
-      token = user.token;
+    const token = this.getToken();
+    if (token.indexOf("token") !== -1) {
       return this.$http.post(this.BASE_PATH + '/api/user/verifytoken', {token: token})
     } else {
       return this.$http.post(this.BASE_PATH + '/api/user/verifytoken', {token: token})
     }
+  }
+
+  getToken () {
+    let token = "token.token.token";
+    let user = JSON.parse(this.$window.localStorage.getItem('user'));
+    if (user) {
+      token = user.token;
+    }
+    return token;
   }
  
  }

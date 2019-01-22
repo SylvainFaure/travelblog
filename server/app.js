@@ -42,7 +42,6 @@ app.use((req, res, next) => { //check x-access-token header
 	const token = req.headers['x-access-token'];
 	if (req.url.indexOf('user') == -1 && token) {
 		User.verifyToken(token, response => {
-			console.log(response)
 			if (response.name == "JsonWebTokenError") {
 				res.status(401).json({
 					error: response.message,

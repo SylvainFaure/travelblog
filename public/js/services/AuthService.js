@@ -44,12 +44,15 @@ export default class AuthService {
 
   getToken () {
     let token = "token.token.token";
-    let user = JSON.parse(this.$window.localStorage.getItem('user'));
+    let user = this.getUser();
     if (user) {
       token = user.token;
     }
     return token;
   }
- 
+  
+  getUser () {
+    return JSON.parse(this.$window.localStorage.getItem('user'));
+  }
  }
  

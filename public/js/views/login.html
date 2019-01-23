@@ -147,6 +147,7 @@
           <button 
             class="ui button blue"
             ng-click="vm.confirmUserRequest()"
+            ng-disabled="!vm.isSuperAdmin"
           >
             <span ng-if="vm.fr">Confirmer</span>
             <span ng-if="vm.it">Confirmare</span>   
@@ -156,6 +157,7 @@
           <button 
             class="ui negative button"
             ng-click="vm.refuseUserRequest()"
+            ng-disabled="!vm.isSuperAdmin"
           >
             <span ng-if="vm.fr">Refuser</span>
             <span ng-if="vm.it">Rifiutare</span>   

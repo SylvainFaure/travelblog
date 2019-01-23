@@ -18,6 +18,8 @@ class UserRequestController {
     this.userRequestEmail = this.$stateParams.email;
     this.fr = $rootScope.rvm.fr
     this.it = $rootScope.rvm.it
+    this.isSuperAdmin = this.AuthService.getUser().role == "superadmin";
+  
   }
 
   changeLang() {

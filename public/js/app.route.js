@@ -34,7 +34,7 @@ export default function Router ($stateProvider, $urlRouterProvider) {
       }
     })
     .state('logged.userrequest', {
-      url: 'userrequest/:email',
+      url: 'userrequest/:email/:role',
       templateUrl: "../assets/js/views/login.html",
       controller: "UserRequestController",
       controllerAs: "vm"

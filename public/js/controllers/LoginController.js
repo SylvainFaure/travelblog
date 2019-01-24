@@ -76,8 +76,9 @@ class LoginController {
   }
 
   sendUserRequest() {
-    const email = this.sendRequestMail
-    this.AuthService.loginSendRequest(email).then(res => {
+    const email = this.sendRequestMail;
+    const role = this.sendRequestRole || "visitor";
+    this.AuthService.loginSendRequest(email, role).then(res => {
       if (res.status == 200) {
         this.toastr.success("Your request has been sent !", "Success !")
       }
@@ -97,14 +98,21 @@ class LoginController {
     if (this.$window.localStorage.getItem('user')) {
       this.$window.localStorage.removeItem('user');
     }
+    this.$rootScope.rvm.userInfo = userInfo;
     this.$window.localStorage.setItem('user', JSON.stringify(userInfo));
   }
 
   verifyToken() {
     this.AuthService.isAuthenticated().then(res => {
       if (res.status == 200) {
+        this.$rootScope.rvm.userInfo = {
+          email: res.data.email,
+          role: res.data.role,
+          token: res.config.data.token
+        };
         this.$rootScope.rvm.isLogged = true;
         if (res.data.name == "JsonWebTokenError" || res.data.name == "TokenExpiredError") {
+          this.$rootScope.rvm.userInfo = {};
           this.$rootScope.rvm.isLogged = false;
           console.debug("You are not log in: %s", res.data.name)
         }

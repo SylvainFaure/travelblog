@@ -16,9 +16,10 @@ class UserRequestController {
     this.userRequest = false;
     this.userRequestToValid = true;
     this.userRequestEmail = this.$stateParams.email;
+    this.userRequestRole = this.$stateParams.role;
     this.fr = $rootScope.rvm.fr
     this.it = $rootScope.rvm.it
-    this.isSuperAdmin = this.AuthService.getUser().role == "superadmin";
+    this.isSuperAdmin = $rootScope.rvm.userInfo.role;
   
   }
 

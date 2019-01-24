@@ -54,5 +54,12 @@ export default class AuthService {
   getUser () {
     return JSON.parse(this.$window.localStorage.getItem('user'));
   }
+
+  sendConfirmToUser(email, role) {
+    return this.$http.post(this.BASE_PATH + '/api/user/confirmrequest', {email: email, role: role})
+  }
+  sendRefuseToUser(email, role) {
+    return this.$http.post(this.BASE_PATH + '/api/user/refuserequest', {email: email, role: role})
+  }
  }
  

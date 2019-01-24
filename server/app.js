@@ -141,9 +141,21 @@ app.get('/api/article/:article', (req, res) => {
 
 /* USER AND AUTHENTICATION */
 app.post('/api/user/sendrequest', (req, res) => {
-    User.sendRequest(req.body.email, result => {
-      res.json(result)
-    })
+	User.sendRequest(req.body.email, req.body.role, result => {
+		res.json(result)
+	})
+})
+
+app.post('/api/user/confirmrequest', (req, res) => {
+	User.confirmRequest(req.body.mail, req.body.role, result => {
+		res.json(result)
+	})
+})
+
+app.post('/api/user/refuserequest', (req, res) => {
+	User.refuseRequest(req.body.mail, req.body.role, result => {
+		res.json(result)
+	})
 })
 
 app.post('/api/user/newuser', (req, res) => {

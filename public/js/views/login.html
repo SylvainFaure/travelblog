@@ -108,6 +108,21 @@
           <input type="text" ng-model="vm.sendRequestMail" ng-keypress="vm.confirmEmail(vm.sendRequestEmail)" placeholder="Email">
         </div>
         <div class="field">
+          <label>
+            <span ng-if="vm.fr">Role demandé</span>
+            <span ng-if="vm.it">Ruolo richiesto</span>
+          </label>
+          <select 
+            class="ui fluid dropdown" 
+            ng-model="vm.sendRequestRole"
+          >
+            <option value="">Role</option>
+            <option value="visitor">Visitor</option>
+            <option value="editor">Editor</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+        <div class="field">
           <button 
             class="ui button blue"
             ng-click="vm.sendUserRequest()"

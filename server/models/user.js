@@ -150,7 +150,7 @@ class User {
 		})
  }
 	
-	static sendRequest(email, cb) {
+	static sendRequest(email, role, cb) {
 		this.getSuperAdmin(admin => {
 			const oauth2Client = new OAuth2(
 				process.env.G_CLIENT_ID,
@@ -174,7 +174,7 @@ class User {
 							 accessToken: accessToken
 					}
 				 });
-				const mailOptions = mail.mailOptions(email, admin.user_email);
+				const mailOptions = mail.mailOptions(email, role, admin.user_email);
 				smtpTransport.sendMail(mailOptions, (error, info) => {
 					if (error) throw error
 					smtpTransport.close();
@@ -182,6 +182,14 @@ class User {
 				});
 			})
 		})	
+	}
+
+	static confirmRequest(email, role, cb) {
+		// appeler une méthode sendMail où juste les options changent
+	}
+	
+	static refuseRequest(email, role, cb) {
+		// appeler une méthode sendMail où juste les options changent
 	}
 
 	static verifyToken(token, cb) {

@@ -1,12 +1,13 @@
 const db = require('../db.js');
 const mail = require ('../mail.js');
 const nodemailer = require('nodemailer');
-const smtpTransport = require('nodemailer-smtp-transport');
+//const smtpTransport = require('nodemailer-smtp-transport');
+const { google } = require("googleapis");
+const OAuth2 = google.auth.OAuth2;
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 class User {
-
 	static getUsers(cb) {
 		db.query('SELECT * FROM users', function(err, rows){
 			if (err) throw err;
@@ -93,7 +94,7 @@ class User {
 						 	email: user.user_email,
 						 	role: user.user_role
 					},
-					'nolandskid',
+					process.env.JWT_SECRET,
 					{
 						expiresIn: '2d'
 					});
@@ -151,24 +152,40 @@ class User {
 	
 	static sendRequest(email, cb) {
 		this.getSuperAdmin(admin => {
-			const transporter = nodemailer.createTransport(smtpTransport({
-				service: 'gmail',
-				host: "smtp.gmail.com",
-				auth: {
-					user: admin.user_email,
-					pass: admin.user_password
-				}
-			}));
-			const mailOptions = mail.mailOptions(email, admin.user_email);
-			transporter.sendMail(mailOptions, (error, info) => {
-				if (error) throw error
-				cb(info)
+			const oauth2Client = new OAuth2(
+				process.env.G_CLIENT_ID,
+				process.env.G_CLIENT_SECRET, 
+				process.env.G_REDIRECT_URL
+			);
+			
+			oauth2Client.setCredentials({
+				refresh_token: process.env.G_REFRESH_TOKEN
 			});
+			oauth2Client.getAccessToken((err, accessToken) => {
+				if (err) throw err;
+				const smtpTransport = nodemailer.createTransport({
+					service: "gmail",
+					auth: {
+							 type: "OAuth2",
+							 user: admin.user_email, 
+							 clientId: process.env.G_CLIENT_ID,
+							 clientSecret: process.env.G_CLIENT_SECRET,
+							 refreshToken: process.env.G_REFRESH_TOKEN,
+							 accessToken: accessToken
+					}
+				 });
+				const mailOptions = mail.mailOptions(email, admin.user_email);
+				smtpTransport.sendMail(mailOptions, (error, info) => {
+					if (error) throw error
+					smtpTransport.close();
+					cb(info)
+				});
+			})
 		})	
 	}
 
 	static verifyToken(token, cb) {
-		jwt.verify(token, 'nolandskid', function(err, decoded) {
+		jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
 			var response = decoded;
 			if (err) {
 				response = err

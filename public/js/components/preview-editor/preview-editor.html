@@ -44,27 +44,15 @@
         comp="comp"
       >
       </editor-comp>
-      <div ng-if="comp.type == 'image'">
-        <div class="field">
-          <img 
-            ng-src="assets/assets/thumb/mini_{{comp.content.name}}" 
-            alt=""
-            class="preview-editor_img-{{comp.content.position}} preview-editor_img-{{comp.content.fullWidth}}"
-          >
-        </div>
-        <div class="field">
-          <div 
-            ng-click="vm.changeImage(comp)"
-            class="ui positive right labeled icon button"
-          >
-            <span ng-show="vm.rvm.fr">Changer</span>
-            <span ng-show="vm.rvm.it">Cambiare</span>
-            <i class="checkmark icon"></i>
-          </div>
-        </div>
-      </div>
-      
+      <editor-comp 
+        ng-if="comp.type == 'image'"
+        type="{{comp.type}}"
+        comp="comp"
+        assets="vm.previewEditorAssets"
+      >
+      </editor-comp>      
     </div>
+    
     <div ng-if="!comp.isEditing">
       <div 
         ng-if="comp.type == 'paragraph' || comp.type == 'subtitle'"
@@ -82,83 +70,6 @@
       <div ng-if="comp.type == 'catch'">
         <p class="preview-editor_catch">"<span ng-bind-html="comp.content"></span>"</p>
       </div>
-    </div>
-  </div>
-</div>
-
-
-<!--MODAL CHANGE IMAGE-->
-<div class="ui modal change-image {{vm.randomModalClass}}">
-  <i class="close icon"></i>
-  <div class="header">
-    <div>
-      <span ng-show="vm.rvm.fr">Choisis une nouvelle image</span>
-      <span ng-show="vm.rvm.it">Scegli un'altra immagine</span>      
-    </div>
-    <img 
-      ng-if="vm.editingImage"
-      class="article-gallery-img"
-      ng-src="assets/assets/thumb/mini_{{vm.editingImage.asset_name}}" 
-    >
-  </div>
-  <div class="description">
-    <div class="field assets-modal">
-      <asset-picker 
-        ng-if="vm.previewEditorAssets"
-        assets="vm.previewEditorAssets" 
-        disable-place="true" 
-        context="previewEditor"
-      ></asset-picker> 
-    </div>
-    <div class="ui grid form">
-      
-      <div class="ui seven wide column">
-        <h4 ng-show="vm.rvm.fr" class="ui horizontal divider">Position</h4> 
-        <h4 ng-show="vm.rvm.it" class="ui horizontal divider">Posizione</h4> 
-        <select class="ui fluid dropdown" 
-          ng-model="vm.editingImagePosition"
-        >
-          <option value="left">
-            <span ng-show="vm.rvm.fr">Gauche</span>
-            <span ng-show="vm.rvm.it">Sinistra</span>
-          </option>
-          <option value="center">
-            <span ng-show="vm.rvm.fr">Centre</span>
-            <span ng-show="vm.rvm.it">Centro</span>
-          </option>
-          <option value="left">
-            <span ng-show="vm.rvm.fr">Droite</span>
-            <span ng-show="vm.rvm.it">Destra</span>
-          </option>
-        </select>
-      </div>
-
-      <div class="ui seven wide column">
-        <h4 ng-show="vm.rvm.fr" class="ui horizontal divider">Largeur</h4> 
-        <h4 ng-show="vm.rvm.it" class="ui horizontal divider">Larghezza</h4> 
-        <div class="field">
-          <span class="right floated">
-            <div class="ui checkbox right floated">
-              <input class="" type="checkbox" name="{{vm.editingImage.asset_name}}" value="{{vm.editingImageWidth}}">
-              <label>
-                <span ng-show="vm.rvm.fr">Pleine largeur</span>
-                <span ng-show="vm.rvm.it">Piena larghezza</span>
-              </label>
-            </div>
-          </span>
-        </div>
-      </div>
-    </div>
-    
-  </div>
-  <div class="actions">
-    <div 
-      class="ui positive right labeled icon button"
-      ng-click="vm.confirmImage()"
-    >
-      <span ng-show="vm.rvm.fr">Confirmer</span>
-      <span ng-show="vm.rvm.it">Confermare</span>
-      <i class="checkmark icon"></i>
     </div>
   </div>
 </div>

@@ -17,7 +17,8 @@ export default class editorCompController {
     $rootScope.$on('changeLang', () => {
       this.fr = $rootScope.rvm.fr;
       this.it = $rootScope.rvm.it;
-    })
+		})
+		this.rvm = $rootScope.rvm;
 	}
 
 	mouseUpEvent(e) {
@@ -44,24 +45,24 @@ export default class editorCompController {
 		setTimeout(()=> {
 			$(`.editor-comp_content`).focus()
 			console.log(this.assets)
+			if (this.type == "image" && !this.comp) {
+				this.comp = {
+					content: {}
+				}
+			}
 		})
 	}
 	
 	
-	getContent(e, type) {
-		let content;
-		if (type == "asset") {
-			content = {};
-		} else {
-			content = e.currentTarget.innerHTML
-		} 
+	getContent(e) {
+		const content = e.currentTarget.innerHTML
 		this.content = content;
 	}
 
 	addContent() {
 		let content;
 		if (this.type == "image") {
-			content = this.asset;
+			content = this.comp.content;
 		} else {
 			content = this.content;
 		}
@@ -73,6 +74,9 @@ export default class editorCompController {
 		let content;
 		if (this.comp.type !== "image") {
 			content = $('.editor-comp_content-edit').html();
+		}
+		if (this.comp.type == "image") {
+			content = this.comp.content;
 		}
 		this.TextEditor.updateContent(this.comp, content);
 		this.comp.isEditing = false;
@@ -102,6 +106,29 @@ export default class editorCompController {
 		} else {
 			return this.position + 1;
 		}
+	}
+
+	chooseImage(content) {
+		this.openModal();
+		this.asset = content.originalAsset;
+	}
+
+	confirmImage() {
+		this.comp.content = {
+			name: this.asset.asset_name,
+			src: this.asset.asset_src,
+			fullWidth: this.comp.content.fullWidth,
+			position: this.comp.content.position,
+			originalAsset: this.asset
+		};
+		this.asset = null;
+	}
+
+	openModal() {
+		this.randomModalClass = "" + Math.floor(Math.random() * 1000);
+		setTimeout(() => {
+			$(`.ui.modal.choose-image.${this.randomModalClass}`).modal('show');
+		})
 	}
 
 }

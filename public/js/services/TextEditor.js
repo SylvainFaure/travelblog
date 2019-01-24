@@ -38,16 +38,10 @@ export default class TextEditor {
     this.$rootScope.$emit("articleComponentsChange", this.components);
   }
 
-  addImage(image) { // asset = {}
+  addImage(image) { 
     const imageComp = {
       type: "image",
-      content: {
-        name: image.asset_name,
-        src: image.asset_src,
-        fullWidth: image.width || "full",
-        position: image.position || "center",
-        originalAsset: image
-      },
+      content: image,
       position: this.components.length
     }
     this.components.push(imageComp);

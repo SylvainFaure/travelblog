@@ -11,35 +11,84 @@
   </div>
   <div 
     ng-if="vm.type !== 'image'"
-    ng-keyup="vm.getContent($event, 'text')"
-    ng-paste="vm.getContent($event, 'text')"
+    ng-keyup="vm.getContent($event)"
+    ng-paste="vm.getContent($event)"
     ng-mouseup="vm.mouseUpEvent($event)"
     tabindex="0" 
     class="editor-comp_content {{vm.type}}-content" 
     contenteditable="true">
     <span class="editor-comp_content-edit" ng-if="vm.comp" ng-bind-html="vm.comp.content"></span>
   </div>
-  <div ng-if="vm.type == 'image'">
-    <asset-picker
-      assets="vm.assets"
-      actions="false"
-      allow-upload="false"  
-      context="editorComp"
-    >
-    </asset-picker>
-    <div>Size / Position</div>
+
+  <div ng-if="vm.type == 'image'" class="editor-comp_image">
+    <div class="editor-comp_image-image">
+      <img 
+        ng-if="vm.comp.content"
+        class="article-gallery-img"
+        ng-src="assets/assets/thumb/mini_{{vm.comp.content.name}}" 
+      >
+    </div>
+    <div class="editor-comp_image-infos">
+      <div>
+        <h4 ng-show="vm.rvm.fr" class="ui horizontal divider no-margin">Position</h4> 
+        <h4 ng-show="vm.rvm.it" class="ui horizontal divider no-margin">Posizione</h4> 
+        <select class="ui fluid dropdown" 
+          ng-model="vm.comp.content.position"
+        >
+          <option value="left">
+            <span ng-if="vm.rvm.fr">Gauche</span>
+            <span ng-if="vm.rvm.it">Sinistra</span>
+          </option>
+          <option value="center">
+            <span ng-if="vm.rvm.fr">Centre</span>
+            <span ng-if="vm.rvm.it">Centro</span>
+          </option>
+          <option value="left">
+            <span ng-if="vm.rvm.fr">Droite</span>
+            <span ng-if="vm.rvm.it">Destra</span>
+          </option>
+        </select>
+      </div>
+    
+      <div>
+        <h4 ng-if="vm.rvm.fr" class="ui horizontal divider">Largeur</h4> 
+        <h4 ng-if="vm.rvm.it" class="ui horizontal divider">Larghezza</h4> 
+        <div class="field">
+          <span class="right floated">
+            <div class="ui checkbox right floated">
+              <input class="" type="checkbox" value="{{vm.comp.content.fullWidth}}">
+              <label>
+                <span ng-if="vm.rvm.fr">Pleine largeur</span>
+                <span ng-if="vm.rvm.it">Piena larghezza</span>
+              </label>
+            </div>
+          </span>
+        </div>
+      </div>
+      <div class="editor-comp_image-infos-btn">
+        <div 
+          ng-click="vm.chooseImage(vm.comp.content)"
+          class="ui positive right labeled icon button"
+        >
+          <span ng-show="vm.rvm.fr">Changer</span>
+          <span ng-show="vm.rvm.it">Cambiare</span>
+          <i class="checkmark icon"></i>
+        </div>
+      </div>
+    </div>
   </div>
+
     <button 
-      ng-click="vm.comp ? vm.updateContent() : vm.addContent()"
+      ng-click="vm.comp.type ? vm.updateContent() : vm.addContent()"
       class="ui positive right labeled icon button"
     > 
       <span ng-if="!vm.comp">
-        <span ng-show="vm.fr">Ajouter</span>
-        <span ng-show="vm.it">Aggiungere</span>
+        <span ng-show="vm.rvm.fr">Ajouter</span>
+        <span ng-show="vm.rvm.it">Aggiungere</span>
       </span>
       <span ng-if="vm.comp">
-        <span ng-show="vm.fr">Changer</span>
-        <span ng-show="vm.it">Cambiare</span>
+        <span ng-show="vm.rvm.fr">Changer</span>
+        <span ng-show="vm.rvm.it">Cambiare</span>
       </span>
       <i class="checkmark icon"></i>
     </button>
@@ -48,3 +97,42 @@
       class="ui black deny button">Cancel</button>
   </div>
 </div>
+
+<!--MODAL IMAGE-->
+<div class="ui modal choose-image {{vm.randomModalClass}}">
+    <i class="close icon"></i>
+    <div class="header">
+      <div>
+        <span ng-show="vm.rvm.fr">Choisis une nouvelle image</span>
+        <span ng-show="vm.rvm.it">Scegli un'altra immagine</span>      
+      </div>
+      <img 
+        ng-if="vm.asset"
+        class="article-gallery-img"
+        ng-src="assets/assets/thumb/mini_{{vm.asset.asset_name}}" 
+      >
+    </div>
+    <div class="description">
+      <div class="field assets-modal">
+        <asset-picker
+          assets="vm.assets"
+          actions="false"
+          allow-upload="false"  
+          context="editorComp"
+        >
+        </asset-picker>
+      </div>
+      
+      
+    </div>
+    <div class="actions">
+      <div 
+        class="ui positive right labeled icon button"
+        ng-click="vm.confirmImage()"
+      >
+        <span ng-show="vm.rvm.fr">Confirmer</span>
+        <span ng-show="vm.rvm.it">Confermare</span>
+        <i class="checkmark icon"></i>
+      </div>
+    </div>
+  </div>

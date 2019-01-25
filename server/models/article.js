@@ -41,6 +41,30 @@ class Article {
 			cb(results)
 		})
 	}
+	
+	static publishArticle(article, id, cb) {
+		db.query('SELECT * FROM published_articles WHERE article_id = ?', id, function(err, rows) {
+			if (err) throw err
+			if (rows) {
+				db.query('UPDATE published_articles SET ? WHERE article_id = ?', [article, id], function(error, results){
+					if (error) throw error
+					cb(results)
+				})
+			} else {
+				db.query('INSERT INTO published_articles SET ?', article, function(error, results){
+					if (error) throw error
+					cb(results)
+				})
+			}
+		}
+	}
+	
+	static unpublishArticle(article, id, cb) {
+		db.query('DELETE FROM published_articles WHERE article_id = ?', id, function(error, result){
+			if (error) throw error
+			cb(result)
+		})
+	}
 
 	static deleteArticle(id, cb) {
 		db.query('DELETE FROM articles WHERE article_id = ?', id, function(error, result){

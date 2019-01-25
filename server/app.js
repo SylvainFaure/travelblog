@@ -197,6 +197,12 @@ app.post('/api/newarticle', (req, res) => {
 	})
 })
 
+app.post('/api/article/publish/:id', (req, res) => {
+	Article.publishArticle(req.body.article, req.body.id, results => {
+		res.json(results)
+	})
+})
+
 
 app.post('/api/newasset', upload.any('file'), (req, res, next) => {
 	Asset.uploadAssets(req.files, req.body.infos, result => {
@@ -237,6 +243,13 @@ app.delete('/api/delete-travel/:id', (req, res) => {
 
 app.delete('/api/delete-article/:id', (req, res) => {
 	Article.deleteArticle(req.params.id, result => {
+		res.send(result)
+	})
+	
+})
+
+app.delete('/api/article/unpublish/:id', (req, res) => {
+	Article.unpublishArticle(req.params.id, result => {
 		res.send(result)
 	})
 	

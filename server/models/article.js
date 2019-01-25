@@ -59,7 +59,7 @@ class Article {
 		}
 	}
 	
-	static unpublishArticle(article, id, cb) {
+	static unpublishArticle(id, cb) {
 		db.query('DELETE FROM published_articles WHERE article_id = ?', id, function(error, result){
 			if (error) throw error
 			cb(result)
@@ -67,10 +67,21 @@ class Article {
 	}
 
 	static deleteArticle(id, cb) {
+		var resultOne = {};
+		var resultTwo = {};
 		db.query('DELETE FROM articles WHERE article_id = ?', id, function(error, result){
 			if (error) throw error
-				cb(result)
+			resultOne = result;
 		})
+		db.query('SELECT * FROM published_articles WHERE article_id = ?', id, function(err, rows) {
+			if (err) throw err
+			if (rows) {
+				this.unpublishArticle(id, (result) => {
+					resultTwo = result;
+				})
+			}
+		}
+		const result = Object.assign({}, resultOne, resultTwo)
 	}
 }
 

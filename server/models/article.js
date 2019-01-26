@@ -45,7 +45,7 @@ class Article {
 	static publishArticle(article, id, cb) {
 		db.query('SELECT * FROM published_articles WHERE article_id = ?', id, function(err, rows) {
 			if (err) throw err
-			if (rows) {
+			if (rows.length) {
 				db.query('UPDATE published_articles SET ? WHERE article_id = ?', [article, id], function(error, results){
 					if (error) throw error
 					cb(results)
@@ -56,7 +56,7 @@ class Article {
 					cb(results)
 				})
 			}
-		}
+		})
 	}
 	
 	static unpublishArticle(id, cb) {
@@ -80,8 +80,9 @@ class Article {
 					resultTwo = result;
 				})
 			}
-		}
+		})
 		const result = Object.assign({}, resultOne, resultTwo)
+		cb(result)
 	}
 }
 

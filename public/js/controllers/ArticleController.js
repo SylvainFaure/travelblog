@@ -9,7 +9,8 @@ class ArticleController {
     Travels, 
     ApiService,
     TextEditor,
-    DateService
+    DateService,
+    toastr
   ) {
     this.$rootScope = $rootScope; 
     this.$scope = $scope;
@@ -22,6 +23,7 @@ class ArticleController {
     this.ApiService = ApiService;
     this.TextEditor = TextEditor;
     this.DateService = DateService;
+    this.toastr = toastr;
     
     this.stepOne = true;
     this.hasGallery = this.hasGallery();
@@ -268,7 +270,7 @@ class ArticleController {
       this.ApiService.articleUpdate(article, article.article_id).then((resp) => {
         console.log(resp)
         this.isEditing = false;
-        this.$state.reload()
+        //this.$state.reload()
       }, (error) => {
         console.warn(error)
       })
@@ -277,14 +279,22 @@ class ArticleController {
 
   publishArticle() {
     if (this.$rootScope.rvm.fr) {
-      this.json_in.article_published_fr = true;
-      this.json_in.article_published_date_fr = Date.now() / 1000;
+      this.json_in.article_published_fr = "true";
+      this.json_in.article_published_date_fr = Date.now();
     }
     if (this.$rootScope.rvm.it) {
-      this.json_in.article_published_it = true;
-      this.json_in.article_published_date_it = Date.now() / 1000;
+      this.json_in.article_published_it = "true";
+      this.json_in.article_published_date_it = Date.now();
     }
     this.saveArticle(this.json_in);
+    this.ApiService.articlePublish(this.json_in.article_id, this.json_in)
+      .then(success => {
+        console.log(success)
+        this.toastr.success("Your article has been published !", "Success !")
+      }, err => {
+        console.log(err)
+        this.toastr.error("There was an unexpected error, please retry !", "Error")
+      })
   }
 
   unpublishArticle() {
@@ -295,6 +305,14 @@ class ArticleController {
       this.json_in.article_published_it = false;
     }
     this.saveArticle(this.json_in);
+    this.ApiService.articleUnpublish(this.json_in.article_id)
+      .then(success => {
+        console.log(success)
+        this.toastr.success("Your article has been unpublished !", "Success !")
+      }, err => {
+        console.log(err)
+        this.toastr.error("There was an unexpected error, please retry !", "Error")
+      })
   }
 
   deleteArticle(id) {

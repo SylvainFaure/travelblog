@@ -198,7 +198,7 @@ app.post('/api/newarticle', (req, res) => {
 })
 
 app.post('/api/article/publish/:id', (req, res) => {
-	Article.publishArticle(req.body.article, req.body.id, results => {
+	Article.publishArticle(req.body.article, req.params.id, results => {
 		res.json(results)
 	})
 })

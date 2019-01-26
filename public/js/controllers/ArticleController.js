@@ -50,6 +50,15 @@ class ArticleController {
         this.articleDates.to = this.DateService.fromTimestampToDatePickerDate(timestampTo)
       }
       
+      /* Travel */
+      if (this.json_in.article_travel_id) {
+        const travel = this.travels.filter(travel => {
+          return travel.travel_id == this.json_in.article_travel_id;
+        })
+        this.json_in.article_travel_fr = travel[0].travel_title_fr;
+        this.json_in.article_travel_it = travel[0].travel_title_it;
+      }
+
       if (this.$rootScope.rvm.fr) {
         /* Gallery */
         let parsed = JSON.parse(this.json_in.article_gallery_fr);

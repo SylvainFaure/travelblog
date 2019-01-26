@@ -46,10 +46,10 @@ export default function Router ($stateProvider, $urlRouterProvider) {
       controller: 'ArticlesController',
       controllerAs: 'vm',
       resolve: {
-        ArticlesList: function (ApiService) {
+        ArticlesList: (ApiService) => {
           return ApiService
             .articlesList()
-            .then(function (r) {
+            .then((r) => {
               return r.data;
             })
         }
@@ -62,17 +62,17 @@ export default function Router ($stateProvider, $urlRouterProvider) {
       controller: "TravelsController",
       controllerAs: "vm",
       resolve: {
-        Travels: function (ApiService) {
+        Travels: (ApiService) => {
           return ApiService
             .travelsList()
-            .then(function (r) {
+            .then((r) => {
               return r.data;
             })
         },
-        Assets: function (ApiService) {
+        Assets: (ApiService) => {
           return ApiService
             .assetsList()
-            .then(function (r){
+            .then((r) => {
               return r.data;
             })
         }
@@ -86,10 +86,10 @@ export default function Router ($stateProvider, $urlRouterProvider) {
       controller: "AssetsController",
       controllerAs: 'vm',
       resolve: {
-        Assets: function (ApiService) {
+        Assets: (ApiService) => {
           return ApiService
             .assetsList()
-            .then(function (r){
+            .then((r) => {
               return r.data;
             })
         }
@@ -102,24 +102,27 @@ export default function Router ($stateProvider, $urlRouterProvider) {
       controller: "TravelController",
       controllerAs: "vm",
       resolve: {
-        Travel: function ($stateParams, ApiService) {
+        Travel: ($stateParams, ApiService, $state) => {
           return ApiService
             .travelDetail($stateParams.travelId)
-            .then(function (r){
+            .then((r) => {
+              if (!r.data.length) {
+                $state.go("logged.travels", {location: "replace"});
+              }
               return r.data[0]
             })
         },
-        TravelArticles: function ($stateParams, ApiService) {
+        TravelArticles: ($stateParams, ApiService) => {
           return ApiService 
             .travelArticles($stateParams.travelId)
-            .then(function (r){
+            .then((r) => {
               return r.data
             })
         },
-        Assets: function (ApiService) {
+        Assets: (ApiService) => {
           return ApiService
             .assetsList()
-            .then(function (r){
+            .then((r) => {
               return r.data;
             })
         }
@@ -139,7 +142,7 @@ export default function Router ($stateProvider, $urlRouterProvider) {
       controller: "ArticleController",
       controllerAs: 'vm',
       resolve: {
-          ArticleDetail: function ($stateParams, ApiService) {
+          ArticleDetail: ($stateParams, ApiService, $state) => {
             if ($stateParams.articleId === 'newarticle') {
               return {
                 newarticle: true
@@ -147,21 +150,24 @@ export default function Router ($stateProvider, $urlRouterProvider) {
             }
             return ApiService
               .articleDetail($stateParams.articleId)
-              .then(function (r) {
+              .then((r) => {
+                if (!r.data.length) {
+                  $state.go("logged.articles", {location: "replace"});
+                }
                 return r.data[0];
-              });
+              })
           },
-          Travels: function(ApiService){
+          Travels: (ApiService) => {
             return ApiService
               .travelsList()
-              .then(function (r){
+              .then((r) => {
                 return r.data
               })
           },
-          Assets: function (ApiService) {
+          Assets: (ApiService) => {
             return ApiService
               .assetsList()
-              .then(function (r){
+              .then((r) => {
                 return r.data;
               })
           }

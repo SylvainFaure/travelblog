@@ -5,6 +5,7 @@ class AssetsController {
     Assets, 
   ) {
     this.assets = Assets;
+    console.log(this.assets)
     this.$rootScope = $rootScope;
     this.$state = $state;
     this.fr = $rootScope.rvm.fr;

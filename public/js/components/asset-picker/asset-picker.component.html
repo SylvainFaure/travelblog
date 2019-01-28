@@ -1,6 +1,6 @@
 <!--ADD AN ASSET-->
-<div class="assets-upload" ng-if="vm.allowUpload" class="ui accordion" ng-init="vm.initAccordion()">
-  <div class="title upload-title">
+<div class="assets_upload ui container" ng-if="vm.allowUpload" class="ui accordion" ng-init="vm.initAccordion()">
+  <div class="title upload_title">
     <i class="dropdown icon"></i>
     <span ng-if="vm.fr" style="font-size: 1.2em">Charger un fichier</span>
     <span ng-if="vm.it" style="font-size: 1.2em">Caricare un file</span>    
@@ -10,11 +10,12 @@
       ngf-select
       ngf-drop 
       ng-model="vm.newAssets"
+      ngf-change="vm.initNewAssetsObjects($files)"
       ngf-multiple="true" 
       ngf-drag-over-class="'dragover'" 
-      class="uploadBox" >
-      <p ng-if="vm.fr" class="uploadLabel"><i class="cloud load icon"></i> Choisis un fichier à télécharger</p>
-      <p ng-if="vm.it" class="uploadLabel"><i class="cloud load icon"></i> Scegli un file da caricare</p>   
+      class="upload_box" >
+      <p ng-if="vm.fr" class="upload_box-label"><i class="cloud load icon"></i> Choisis un fichier à télécharger</p>
+      <p ng-if="vm.it" class="upload_box-label"><i class="cloud load icon"></i> Scegli un file da caricare</p>   
     </div>   
     <div class="ui indicating progress" data-value="vm.progress" id="progressBar" ng-if="vm.isSubmitted">
       <div class="bar">
@@ -33,8 +34,8 @@
           <span ng-show="vm.it">Caricare</span>
         </button>
       </div>
-      <div class="preview-gallery">
-        <div ng-repeat="asset in vm.newAssets" class="preview-upload">
+      <div class="preview_gallery">
+        <div ng-repeat="asset in vm.newAssets" class="preview_upload">
           <div class="ui mini input">
             <input ng-show="vm.fr" ng-model="vm.newAssetsData[$index].title_fr" type="text" placeholder="Titre...">
             <input ng-show="vm.it" ng-model="vm.newAssetsData[$index].title_it" type="text" placeholder="Titolo...">                
@@ -59,113 +60,108 @@
 </div>
 
 <!--LIBRARY-->
-<div class="assets-library-container ui container" ng-init="vm.setCategories()">
+<div class="assets_library-container ui container" ng-init="vm.setCategories()">
+
   <div ng-if="vm.allowUpload">
     <h2 ng-if="vm.fr">Librairie</h2>
     <h2 ng-if="vm.it">Libreria</h2>
   </div>
-  <div class="tags-container">
-    <div class="tags-category">
-      <div class="category-label">
-        <span ng-if="vm.fr">Pays</span>
-        <span ng-if="vm.it">Paese</span> 
+
+  <div class="tags">
+    <div class="tags_category">
+      <div>
+        <div class="tags_category-label">
+          <span ng-if="vm.fr">Pays</span>
+          <span ng-if="vm.it">Paese</span> 
+        </div>
+        <div class="tags_category-label reset" ng-click="vm.resetFilter()">
+          <span ng-if="vm.fr">Reset</span>
+          <span ng-if="vm.it">Reset</span>
+        </div>
       </div>
-      <div class="tags">
-        <tag ng-repeat="tag in vm.travelCategories" label="tag" ng-click="vm.tag = tag; vm.category = 'travel'"></tag>
+      <div class="tags_tag">
+        <tag ng-repeat="tag in vm.travelCategories" label="tag" ng-click="vm.tag = tag; vm.category = 'country'"></tag>
       </div>
     </div>
-    <div ng-if="!vm.disablePlace" class="tags-category">
-      <div class="category-label">
-        <span ng-if="vm.fr">Lieu</span>
-        <span ng-if="vm.it">Luogo</span>
+    <div ng-if="!vm.disablePlace" class="tags_category">
+      <div>
+        <div class="tags_category-label">
+          <span ng-if="vm.fr">Lieu</span>
+          <span ng-if="vm.it">Luogo</span>
+        </div>
+        <div class="tags_category-label reset" ng-click="vm.resetFilter()">
+          <span ng-if="vm.fr">Reset</span>
+          <span ng-if="vm.it">Reset</span>
+        </div>
       </div>
-      <div class="tags">
+      <div class="tags_tag">
         <tag ng-repeat="tag in vm.placeCategories" label="tag" ng-click="vm.tag = tag; vm.category = 'place'"></tag>
       </div>
     </div>
   </div>
+
   <div class="assets-library scrolling content">
-    <div class="card-gallery">
-        <div class="ui special cards">
-          <div class="card" ng-repeat="asset in vm.assets | byTag: vm.tag: vm.category">
-            
-            <div class="blurring dimmable image" ng-init="vm.dimmer()">
-              <div class="ui inverted dimmer">
-                <div class="content">
-                  <div class="center">
-                    <div class="ui primary button" ng-click='vm.editAsset(asset)'>
-                      <span><i class="pencil alternate icon"></i></span>                  
-                    </div>
-                    <div class="negative ui button" ng-click="vm.deleteAsset(asset.asset_id, asset.asset_name)">
-                      <span><i class="trash alternate icon"></i></span>              
-                    </div>
+    <div class="card_gallery">
+      <div class="ui special cards" style="justify-content: space-between">
+        <div class="card" ng-repeat="asset in vm.assets | byTag: vm.tag: vm.category">
+          
+          <div class="blurring dimmable image" ng-init="vm.dimmer()">
+            <div class="ui inverted dimmer">
+              <div class="content">
+                <div class="center">
+                  <div class="ui primary button" ng-click='vm.editAsset(asset)'>
+                    <span><i class="pencil alternate icon"></i></span>                  
+                  </div>
+                  <div class="negative ui button" ng-click="vm.deleteAsset(asset.asset_id, asset.asset_name)">
+                    <span><i class="trash alternate icon"></i></span>              
                   </div>
                 </div>
               </div>
-              <div 
-                ng-if="vm.isGallery" 
-                ng-init="checked = false"
-                class="gallery-check"
-                ng-click="checked = !checked; vm.toggleAsset(asset, checked)"
-              >
-                <input type="checkbox">
-              </div>
-              <img  
-                ng-click="!vm.isGallery ? vm.chooseAsset(asset, $event, vm.context) : ''" 
-                class="asset-picker-img"
-                ng-src="assets/assets/thumb/mini_{{asset.asset_name}}" 
-                style="max-height: 200px"
-              >
             </div>
-            <div ng-if="vm.actions" class="content">
-              <a ng-if="vm.fr" class="header">{{asset.asset_title_fr}}</a>
-              <a ng-if="vm.it" class="header">{{asset.asset_title_it}}</a>              
-              <div class="meta">
-                <span class="date">Uploaded on</span>    
-              </div>
-              <div class="meta">
-                <span>
-                  <span ng-show="vm.fr">Type : {{asset.asset_type}}  / Titre : {{asset.asset_title_fr}}</span>
-                  <span ng-show="vm.it">Type : {{asset.asset_type}}  / Titre : {{asset.asset_title_it}}</span>
-                </span>
-              </div>
+            <div 
+              ng-if="vm.isGallery" 
+              ng-init="checked = false"
+              class="gallery-check"
+              ng-click="checked = !checked; vm.toggleAsset(asset, checked)"
+            >
+              <input type="checkbox">
             </div>
-            <div ng-if="vm.actions" class="extra content">
-              <i ng-class="{'video icon': asset.asset_type == 'video', 'file image icon': asset.asset_type == 'image/jpeg' }"></i>
-                {{asset.type}}
-              <span class="right floated">
-                  <div class="ui checkbox right floated" ng-if="vm.actions">
-                    <input class="delete-assets" type="checkbox" name="{{asset.asset_name}}" value="{{asset.asset_id}}">
-                    <label>Delete</label>
-                  </div>
+            <img  
+              ng-click="!vm.isGallery ? vm.chooseAsset(asset, $event, vm.context) : ''" 
+              class="asset-picker-img"
+              ng-src="assets/assets/thumb/mini_{{asset.asset_name}}" 
+              style="max-height: 200px"
+            >
+          </div>
+          <div ng-if="vm.actions" class="content">
+            <a ng-if="vm.fr" class="header">{{asset.asset_title_fr}}</a>
+            <a ng-if="vm.it" class="header">{{asset.asset_title_it}}</a>              
+            <div class="meta">
+              <span ng-if="vm.fr" class="date">Téléchargé le {{asset.assetDate}}</span>
+              <span ng-if="vm.it" class="date">Scaricato il {{asset.assetDate}}</span>    
+            </div>
+            <div class="meta">
+              <span>
+                <span ng-show="vm.fr">Type : {{asset.asset_type}}  | Titre : {{asset.asset_title_fr}}</span>
+                <span ng-show="vm.it">Type : {{asset.asset_type}}  | Titolo : {{asset.asset_title_it}}</span>
               </span>
             </div>
           </div>
+          <div ng-if="vm.actions" class="extra content">
+            <i ng-class="{'video icon': asset.asset_type == 'video', 'file image icon': asset.asset_type == 'image/jpeg' }"></i>
+              {{asset.type}}
+            <span class="right floated">
+                <div class="ui checkbox right floated" ng-if="vm.actions">
+                  <input class="delete-assets" type="checkbox" name="{{asset.asset_name}}" value="{{asset.asset_id}}">
+                  <label>Delete</label>
+                </div>
+            </span>
+          </div>
         </div>
       </div>
-
-
-
-      <!--<div ng-if="vm.actions">
-        <span ng-show="vm.fr">Type : {{asset.asset_type}}  / Titre : {{asset.asset_title_fr}}</span>
-        <span ng-show="vm.it">Type : {{asset.asset_type}}  / Titre : {{asset.asset_title_it}}</span>
-        <span class="right floated" ng-click='vm.editAsset(asset)'><i class="pencil alternate icon"></i></span>                
-        <span class="right floated" ng-click='vm.deleteAsset(asset.asset_id, asset.asset_name)'><i class="trash alternate icon"></i></span>
-      </div>
-      <img 
-        ng-click="vm.chooseAsset(asset, $event)" 
-        src="assets/assets/thumb/mini_{{asset.asset_name}}" 
-        alt="{{asset.asset_name}}" 
-        style="height: 150px;"
-        class="asset-picker-img">
-      <div class="ui checkbox right floated" ng-if="vm.actions">
-        <input class="delete-assets" type="checkbox" name="{{asset.asset_name}}" value="{{asset.asset_id}}">
-        <label>Delete</label>
-      </div>
     </div>
-  </div>-->
-  <div class="ui row">
-    <div style="width: 80vw">
+
+    <div class="ui row no-padding-right"  style="width: 100%">
       <div class="ui vertical animated button blue right floated" 
         ng-if="(vm.assets | byTag: vm.tag).length && vm.actions"
         ng-click="vm.deleteAssets()">
@@ -176,7 +172,6 @@
       </div>
     </div>
   </div>
-</div>
 
 
 <!--MODAL-->
@@ -210,7 +205,7 @@
         <div class="field"> 
           <div class="ui basic segment">
             <h4 ng-show="vm.fr" class="ui horizontal divider">Nom</h4>
-            <h4 ng-show="vm.it" class="ui horizontal divider">Nomee</h4> 
+            <h4 ng-show="vm.it" class="ui horizontal divider">Nome</h4> 
             <div class="ui large fluid input">
               <input ng-show="vm.fr" type="text" class="" placeholder="Nom" ng-model="vm.asset.asset_title_fr">
               <input ng-show="vm.it" type="text" class="" placeholder="Nome" ng-model="vm.asset.asset_title_it">

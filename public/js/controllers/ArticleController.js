@@ -221,7 +221,9 @@ class ArticleController {
 
   editDates() {
     this.openModal('dates');
-    this.initDatepicker();
+    setTimeout(() => {
+      this.initDatepicker();
+    })
   }
 
   toggleStep() {
@@ -236,6 +238,13 @@ class ArticleController {
     if (article.article_date_to) {
       article.article_date_to = this.DateService.fromDateToTimestamp(article.article_date_to)
     }
+    if (article.article_travel_fr) {
+      delete article.article_travel_fr;
+    }
+    if (article.article_travel_it) {
+      delete article.article_travel_it;
+    }
+
     if (this.fr) {
       if (!article.article_gallery_fr) {
         article.article_gallery_fr = '[]';
@@ -263,7 +272,7 @@ class ArticleController {
     return article;
   }
 
-  saveArticle() {
+  saveArticle(mode) {
     const article = this.formatArticle(this.json_in);
     if (article.newarticle) {
       delete article.newarticle
@@ -279,7 +288,9 @@ class ArticleController {
       this.ApiService.articleUpdate(article, article.article_id).then((resp) => {
         console.log(resp)
         this.isEditing = false;
-        //this.$state.reload()
+        if (mode == 'direct') {
+          this.$state.reload();
+        }
       }, (error) => {
         console.warn(error)
       })

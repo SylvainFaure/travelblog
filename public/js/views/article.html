@@ -3,7 +3,7 @@
     <div ng-if="vm.fr" class="">Edition d'article :<span ng-if="!vm.json_in.newarticle"> {{vm.json_in.article_title_fr}}</span><span ng-if="vm.json_in.newarticle"> nouvel article</span></div>
     <div ng-if="vm.it" class="">Edizione dell'articolo :<span ng-if="!vm.json_in.newarticle"> {{vm.json_in.article_title_it}}<span ng-if="vm.json_in.newarticle"> nuovo articolo</span></div>
   </div>
-  <div class="ui container" style="margin-top: 50px;">
+  <div class="ui container main-container">
     <div class="ui vertical animated button blue right floated" 
           ng-if="!vm.isEditing"
           ng-click="vm.deleteArticle(vm.json_in.article_id)">
@@ -42,7 +42,7 @@
     </div>
     <div class="ui vertical animated button blue right floated large-button" 
           ng-if="vm.isEditing"
-          ng-click="vm.saveArticle()">
+          ng-click="vm.saveArticle('direct')">
       <div ng-if="vm.fr" class="hidden content">Enregistrer</div>
       <div ng-if="vm.it" class="hidden content">Salvare</div>        
       <div class="visible content">
@@ -74,7 +74,7 @@
         <div class="field">
           <h4 ng-show="vm.fr" class="ui horizontal divider">Photo principale</h4>
           <h4 ng-show="vm.it" class="ui horizontal divider">Foto principale</h4>          
-          <div class="ui basic segment" ng-if="vm.isEditing">
+          <div class="ui basic segment no-padding-right" ng-if="vm.isEditing">
             <img 
               ng-if="vm.json_in.article_cover" 
               class="article-gallery-img"
@@ -189,10 +189,20 @@
           </div>
 
           <!--DATES-->
-          <div class="field ui basic segment three wide column">
+          <div class="field ui basic segment four wide column">
             <h4 ng-show="vm.fr" class="ui horizontal divider">Dates</h4>
             <h4 ng-show="vm.it" class="ui horizontal divider">Data</h4>
             <div class="ui" ng-if="vm.isEditing">
+              <div ng-if="vm.json_in.article_date_to">
+                <p>
+                  <span ng-show="vm.fr">du </span>
+                  <span ng-show="vm.it">del </span>
+                  {{vm.json_in.article_date_from}}
+                  <span ng-show="vm.fr">au </span>
+                  <span ng-show="vm.it">al </span>
+                  {{vm.json_in.article_date_to}}
+                </p>
+              </div>
               <div class="ui vertical animated button blue right floated large-button" 
                 ng-click="vm.editDates()">
                 <div ng-if="vm.fr" class="hidden content">Editer</div>
@@ -245,10 +255,10 @@
         </div>
 
         <!--GALLERY-->
-        <div class="field">
+        <div class="field article_gallery">
           <h4 ng-show="vm.fr" class="ui horizontal divider">Gallerie</h4>
           <h4 ng-show="vm.it" class="ui horizontal divider">Gallery</h4>
-          <div class="ui basic segment" ng-if="vm.isEditing">
+          <div class="ui basic segment no-padding-right" ng-if="vm.isEditing">
             <img  
               ng-repeat="image in vm.assetsGallery"
               class="article-gallery-img"
@@ -300,7 +310,7 @@
             >
           </div>
         </div>
-  
+        
         <div class="ui vertical animated button blue right floated" 
             ng-click="vm.toggleStep()">
           <div class="hidden content">Next</div>
@@ -374,7 +384,7 @@
       >
     </div>
     <div class="description">
-      <div class="field assets-modal">
+      <div class="field assets_modal">
         <asset-picker 
           assets="vm.articleAssets" 
           disable-place="true" 

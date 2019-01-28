@@ -5,6 +5,7 @@ export default class assetPickerController {
     $state, 
     $window, 
     ApiService,
+    DateService,
     toastr
   ) {
 		'ngInject'
@@ -13,12 +14,14 @@ export default class assetPickerController {
     this.$window = $window;
     this.$state = $state;
     this.ApiService = ApiService;
+    this.DateService = DateService;
     this.toastr = toastr;
     
     this.isSubmitted = false;
     this.assetToModify = '';
     this.modifiedAsset = '';
     this.areaType = 'rectangle';
+    this.newAssets = [];
     this.newAssetsData = { "0": {} }
     this.removeOriginal = false;
     this.travelCategories = []
@@ -43,25 +46,30 @@ export default class assetPickerController {
       $('#progressBar').progress('increment');
     })
 
-    $scope.$watch('this.newAssets', (n, o) => {
-      if (n) {
-        for (var i = 0; i < this.newAssets.length; i++){
-          vm.newAssetsData[i] = {
-            title_fr: '',
-            title_it: '',
-            place_fr: '',
-            place_it: '',
-            country_fr: '',
-            country_it: '',
-            desc_fr: '',
-            desc_it: ''
-          }
-        }
-      }
-    });
+    setTimeout(() => {
+      this.assets.forEach(asset => {
+        asset.assetDate = this.DateService.fromTimestampToDate(Number(asset.asset_name.split("_")[0]), true);
+      })
+    })
 
   }	
 
+  initNewAssetsObjects(files) {
+    if (files.length) {
+      for (var i = 0; i < this.newAssets.length; i++){
+        this.newAssetsData[i] = {
+          title_fr: '',
+          title_it: '',
+          place_fr: '',
+          place_it: '',
+          country_fr: '',
+          country_it: '',
+          desc_fr: '',
+          desc_it: ''
+        }
+      }
+    }
+  }
   setCategories() {
     this.assets.forEach((asset) => {
       if (this.$rootScope.rvm.fr) {
@@ -193,6 +201,11 @@ export default class assetPickerController {
     }, (err) => {
     	this.toastr.error(`There was an error ${err.status}`, "Error");
     })
+  }
+
+  resetFilter() {
+    this.tag = "";
+    this.category = "";
   }
 
   dataURItoBlob(dataURI) {

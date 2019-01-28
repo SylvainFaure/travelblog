@@ -11,8 +11,13 @@ export default class DateService {
  
   }
  
-  fromTimestampToDate (timestamp) {
-    const a = new Date(timestamp * 1000);
+  fromTimestampToDate (timestamp, milli = false) {
+    var a;
+    if (milli) {
+      a = new Date(timestamp);
+    } else {
+      a = new Date(timestamp * 1000);
+    }
     var year = a.getFullYear();
     var month = a.getMonth()+ 1;
     month = month <= 9 ? "0" + month : month;

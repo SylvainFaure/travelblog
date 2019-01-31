@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
-
+var viewPath;
 if (app.get("env") === 'development') {
 	/**WEBPACK */
 	const webpack = require('webpack');
@@ -25,6 +25,13 @@ if (app.get("env") === 'development') {
 		}
 	})
 	const upload = multer({ storage: storage })
+
+	/**PATH */
+ 	viewPath = '../#!/public/js/views';
+}
+
+if (app.get("env" !== "development")) {
+	viewPath = "../dist/views";
 }
 
 
@@ -262,7 +269,7 @@ app.delete('/api/article/unpublish/:id', (req, res) => {
 
 /*** ANGULAR ONE PAGE APP ***/
 app.get('*', (req, res) => {
-	res.sendFile(path.join(__dirname, '../#!/public/js/views', 'index.html'))
+	res.sendFile(path.join(__dirname, viewPath, 'index.html'))
 
 })
 

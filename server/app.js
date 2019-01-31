@@ -3,6 +3,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 if (app.get("env") === 'development') {
+	/**WEBPACK */
 	const webpack = require('webpack');
 	const webpackMiddleware = require('webpack-dev-middleware');
 	const webpackConfig = require('../webpack.config.js');
@@ -11,18 +12,20 @@ if (app.get("env") === 'development') {
 	const compiler = webpack(webpackConfig);
 	app.use(webpackMiddleware(compiler, {}));
 	app.use(webpackHotMiddleware(compiler));
+
+	/**MULTER */
+	const multer  = require('multer');
+	const storage = multer.diskStorage({
+		destination: (req, file, cb) => {
+			cb(null, 'public/assets/img')
+		},
+		filename: (req, file, cb) => {
+			var timestamp = new Date().getTime()
+			cb(null, timestamp + '_' + file.originalname)
+		}
+	})
 }
 
-const multer  = require('multer');
-const storage = multer.diskStorage({
-	destination: (req, file, cb) => {
-	  cb(null, 'public/assets/img')
-	},
-	filename: (req, file, cb) => {
-	  var timestamp = new Date().getTime()
-	  cb(null, timestamp + '_' + file.originalname)
-	}
-})
 
 const upload = multer({ storage: storage })
 const bodyParser = require('body-parser');

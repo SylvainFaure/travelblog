@@ -30,7 +30,7 @@ if (app.get("env") === 'development') {
  	viewPath = '../#!/public/js/views';
 }
 
-if (app.get("env" !== "development")) {
+if (app.get("env") !== "development") {
 	viewPath = "../dist/views";
 }
 

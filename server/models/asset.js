@@ -1,6 +1,6 @@
 const db = require('../db.js');
 const multer  = require('multer');
-const upload = multer({ dest: '../public/assets/img/' });
+//const upload = multer({ dest: '../public/assets/img/' });
 const fs = require('fs');
 const sharp = require('sharp');
 const path = require('path');

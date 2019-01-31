@@ -9,6 +9,8 @@ if (app.get("env") === 'development') {
 	const webpackHotMiddleware = require('webpack-hot-middleware');
 
 	const compiler = webpack(webpackConfig);
+	app.use(webpackMiddleware(compiler, {}));
+	app.use(webpackHotMiddleware(compiler));
 }
 
 const multer  = require('multer');
@@ -33,16 +35,9 @@ const Article = require('./models/article');
 const Asset = require('./models/asset');
 
 /** MIDDLEWARE **/
-if (app.get("env") === 'development') {
-	app.use(webpackMiddleware(compiler, {}));
-	app.use(webpackHotMiddleware(compiler));
-}
-
 app.use('/assets', express.static('public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-
-
 
 app.use((req, res, next) => { //check x-access-token header
 	const token = req.headers['x-access-token'];

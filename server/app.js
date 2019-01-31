@@ -24,10 +24,10 @@ if (app.get("env") === 'development') {
 			cb(null, timestamp + '_' + file.originalname)
 		}
 	})
+	const upload = multer({ storage: storage })
 }
 
 
-const upload = multer({ storage: storage })
 const bodyParser = require('body-parser');
 const path = require('path');
 
@@ -208,11 +208,11 @@ app.post('/api/article/publish/:id', (req, res) => {
 })
 
 
-app.post('/api/newasset', upload.any('file'), (req, res, next) => {
+/*app.post('/api/newasset', upload.any('file'), (req, res, next) => {
 	Asset.uploadAssets(req.files, req.body.infos, result => {
 		res.status(200).json(result);
 	})
-})
+})*/
 
 app.post('/api/delete-assets', (req, res) => {
 	Asset.deleteAssets(req.body.ids, req.body.names, results => {

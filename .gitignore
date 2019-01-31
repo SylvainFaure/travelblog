@@ -1,7 +1,6 @@
 .env
 .gitignore
 dist/
-semantic/
 node_modules/
 __git
 /build/

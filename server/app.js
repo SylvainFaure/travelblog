@@ -27,11 +27,11 @@ if (app.get("env") === 'development') {
 	const upload = multer({ storage: storage })
 
 	/**PATH */
- 	viewPath = '../#!/public/js/views';
+ 	viewPath = '../#!/public/js';
 }
 
 if (app.get("env") !== "development") {
-	viewPath = "../dist/views";
+	viewPath = "../dist";
 }
 
 

@@ -13,11 +13,11 @@ export default class AuthService {
   }
  
   loginSignin (email, password) {
-   return this.$http.post(this.BASE_PATH + '/api/user/signin', {email: email, password: password});
+   return this.$http.post(this.BASE_PATH + 'api/user/signin', {email: email, password: password});
   }
  
   loginSendRequest (email) {
-   return this.$http.post(this.BASE_PATH + '/api/user/sendrequest', {email: email});   
+   return this.$http.post(this.BASE_PATH + 'api/user/sendrequest', {email: email});   
   }
  
   loginLogout () {
@@ -26,19 +26,19 @@ export default class AuthService {
   }
  
   loginSignup (email, password) {
-    return this.$http.post(this.BASE_PATH + '/api/user/signup', {email: email, password: password})
+    return this.$http.post(this.BASE_PATH + 'api/user/signup', {email: email, password: password})
   }
 
   insertNewUser (user) {
-    return this.$http.post(this.BASE_PATH + '/api/user/newuser', {user: user});
+    return this.$http.post(this.BASE_PATH + 'api/user/newuser', {user: user});
   }
 
   isAuthenticated () {
     const token = this.getToken();
     if (token.indexOf("token") !== -1) {
-      return this.$http.post(this.BASE_PATH + '/api/user/verifytoken', {token: token})
+      return this.$http.post(this.BASE_PATH + 'api/user/verifytoken', {token: token})
     } else {
-      return this.$http.post(this.BASE_PATH + '/api/user/verifytoken', {token: token})
+      return this.$http.post(this.BASE_PATH + 'api/user/verifytoken', {token: token})
     }
   }
 
@@ -56,10 +56,10 @@ export default class AuthService {
   }
 
   sendConfirmToUser(email, role) {
-    return this.$http.post(this.BASE_PATH + '/api/user/confirmrequest', {email: email, role: role})
+    return this.$http.post(this.BASE_PATH + 'api/user/confirmrequest', {email: email, role: role})
   }
   sendRefuseToUser(email, role) {
-    return this.$http.post(this.BASE_PATH + '/api/user/refuserequest', {email: email, role: role})
+    return this.$http.post(this.BASE_PATH + 'api/user/refuserequest', {email: email, role: role})
   }
  }
  

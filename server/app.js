@@ -1,7 +1,11 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
+
+const upload = require('./config/storage');
+
 var viewPath;
+
 if (app.get("env") === 'development') {
 	/**WEBPACK */
 	const webpack = require('webpack');
@@ -12,19 +16,6 @@ if (app.get("env") === 'development') {
 	const compiler = webpack(webpackConfig);
 	app.use(webpackMiddleware(compiler, {}));
 	app.use(webpackHotMiddleware(compiler));
-
-	/**MULTER */
-	const multer  = require('multer');
-	const storage = multer.diskStorage({
-		destination: (req, file, cb) => {
-			cb(null, 'public/assets/img')
-		},
-		filename: (req, file, cb) => {
-			var timestamp = new Date().getTime()
-			cb(null, timestamp + '_' + file.originalname)
-		}
-	})
-	const upload = multer({ storage: storage })
 
 	/**PATH */
  	viewPath = '../#!/public/js';
@@ -215,11 +206,11 @@ app.post('/api/article/publish/:id', (req, res) => {
 })
 
 
-/*app.post('/api/newasset', upload.any('file'), (req, res, next) => {
+app.post('/api/newasset', upload.any('file'), (req, res, next) => {
 	Asset.uploadAssets(req.files, req.body.infos, result => {
 		res.status(200).json(result);
 	})
-})*/
+})
 
 app.post('/api/delete-assets', (req, res) => {
 	Asset.deleteAssets(req.body.ids, req.body.names, results => {

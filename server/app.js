@@ -268,7 +268,7 @@ if (app.get("env") == "development") {
 }
 if (app.get("env") != "development") {
 	app.get('*', function(req, res) {
-    res.sendfile('index.html', {root: __dirname + "/dist" })
+    res.sendfile('index.html', {root: "../dist" })
 });
 }
 

@@ -18,11 +18,13 @@ if (app.get("env") === 'development') {
 	app.use(webpackHotMiddleware(compiler));
 
 	/**PATH */
- 	viewPath = '../#!/public/js';
+	viewPath = '../#!/public/js';
+	app.use('/assets', express.static('public'))
 }
 
 if (app.get("env") !== "development") {
 	viewPath = "../dist";
+	app.use('/assets', express.static('dist'))
 }
 
 
@@ -36,7 +38,7 @@ const Article = require('./models/article');
 const Asset = require('./models/asset');
 
 /** MIDDLEWARE **/
-app.use('/assets', express.static('public'))
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
@@ -259,11 +261,9 @@ app.delete('/api/article/unpublish/:id', (req, res) => {
 
 
 /*** ANGULAR ONE PAGE APP ***/
-if (app.get("env") == "development") {
-	app.get('*', (req, res) => {
-		res.sendFile(path.join(__dirname, viewPath, 'index.html'))
-	})
-}
+app.get('*', (req, res) => {
+	res.sendFile(path.join(__dirname, viewPath, 'index.html'))
+})
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}!`)

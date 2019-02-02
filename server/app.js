@@ -24,7 +24,7 @@ if (app.get("env") === 'development') {
 
 if (app.get("env") !== "development") {
 	viewPath = "../dist";
-	app.use('/assets', express.static('dist'))
+	app.use(express.static('dist'))
 }
 
 

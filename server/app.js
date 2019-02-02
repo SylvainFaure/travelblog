@@ -261,9 +261,16 @@ app.delete('/api/article/unpublish/:id', (req, res) => {
 
 
 /*** ANGULAR ONE PAGE APP ***/
-app.get('*', (req, res) => {
-	res.sendFile(path.join(__dirname, viewPath, 'index.html'))
-})
+if (app.get("env") == "development") {
+	app.get('*', (req, res) => {
+		res.sendFile(path.join(__dirname, viewPath, 'index.html'))
+	})
+}
+if (app.get("env") != "development") {
+	app.get('*', function(req, res) {
+    res.sendfile('index.html', {root: __dirname + "/dist" })
+});
+}
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}!`)

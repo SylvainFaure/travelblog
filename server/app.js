@@ -261,7 +261,7 @@ app.delete('/api/article/unpublish/:id', (req, res) => {
 
 
 /*** ANGULAR ONE PAGE APP ***/
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
 	res.sendFile(path.join(__dirname, viewPath, 'index.html'))
 })
 

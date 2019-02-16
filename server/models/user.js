@@ -1,7 +1,6 @@
 const db = require('../db.js');
 const mail = require ('../mail.js');
 const nodemailer = require('nodemailer');
-//const smtpTransport = require('nodemailer-smtp-transport');
 const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
 const jwt = require('jsonwebtoken');

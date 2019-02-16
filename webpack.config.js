@@ -1,20 +1,19 @@
 const path = require('path');
 const webpack = require('webpack');
-const HtmlWebPackPlugin = require("html-webpack-plugin");
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const entry = { 
-  main: './public/js/app.js'
+  'admin/bundle': './admin/js/app.admin.js',
+  'public/bundle': './public/js/app.public.js'
 }
 
 const devtool = "source-map";
 
 const output = {
-  path: path.resolve(__dirname, 'dist'),
-  filename: 'bundle.js'
+  path: path.resolve(__dirname, `dist`),
+  filename: '[name].js'
 }
 
 const modules = {
@@ -29,11 +28,33 @@ const modules = {
     {
       test: /\.css|\.scss$/,
         use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              // you can specify a publicPath here
+              // by default it use publicPath in webpackOptions.output
+              publicPath: `../${entry}/`
+            }
+            
+          },
           // fallback to style-loader in development
-          MiniCssExtractPlugin.loader,
           "css-loader",
           "sass-loader"
         ]
+       
+    },
+    {
+      test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/,
+      loader: 'url-loader'
+    },
+    {
+      test: /\.(png|jpg|gif)$/,
+      use: [
+        {
+          loader: 'file-loader',
+          options: {},
+        },
+      ],
     }
   ]
 }
@@ -56,22 +77,25 @@ const plugins = [
   new webpack.HotModuleReplacementPlugin(),
   new webpack.NoEmitOnErrorsPlugin(),
   new CleanWebpackPlugin('dist', {}),
-  new HtmlWebPackPlugin({
-    template: "./public/js/index.html",
-    filename: "index.html"
-  }),
   new MiniCssExtractPlugin({
-    filename: "style.css",
+    filename: "[name].css",
   }),
   new CopyWebpackPlugin([
-    {from: './public/js/views/*', to: 'views', flatten: true},
-    {from: './public/assets/img/*', to: 'assets/img', flatten: true},
-    {from: './public/assets/thumb/*', to: 'assets/thumb', flatten: true},      
-    {from: './public/js/components/**/*', to: 'components', flatten: true, test: /\.html$/, ignore: [ '*.js' ]},
-    {from: './public/vendors/semantic/*', to: 'vendors/semantic', flatten: true},
-    {from: './public/vendors/semantic/components/*', to: 'vendors/semantic/components', flatten: true},
-    {from: './public/vendors/semantic/themes/default/assets/fonts/*', to: 'vendors/semantic/themes/default/assets/fonts', flatten: true},
-    {from: './public/vendors/semantic/themes/default/assets/images/*', to: 'vendors/semantic/themes/default/assets/images', flatten: true},
+    {from: './admin/js/views/*', to: 'admin/views', flatten: true},
+    {from: './public/js/views/*', to: 'public/views', flatten: true},
+
+    {from: './admin/js/index.html', to: 'admin/index.html'},
+    {from: './public/index.html', to: 'public/index.html'},
+    
+
+    //{from: './admin/assets/img/*', to: 'assets/img', flatten: true},
+    //{from: './admin/assets/thumb/*', to: 'assets/thumb', flatten: true},      
+    {from: './admin/js/components/**/*', to: 'admin/components', flatten: true, test: /\.html$/, ignore: [ '*.js' ]},
+    {from: './public/js/components/**/*', to: 'public/components', flatten: true, test: /\.html$/, ignore: [ '*.js' ]},
+
+    {from: './admin/vendors/semantic/components/*', to: 'vendors/semantic/components', flatten: true},
+    {from: './admin/vendors/semantic/themes/default/assets/fonts/*', to: 'vendors/semantic/themes/default/assets/fonts', flatten: true},
+    {from: './admin/vendors/semantic/themes/default/assets/images/*', to: 'vendors/semantic/themes/default/assets/images', flatten: true},
   ])
 ]
 

@@ -1,42 +1,62 @@
-<div>
-    <div class="ui inverted segment top fixed menu" style="min-height: 50px;">
-        <div class="header-pos">
-          <h4 class="ui grey inverted left floated">Carte de voyages</h4>  
+<div class="sticky"></div>
+<header class="home__header">
+    <change-lang class="sticky_child"></change-lang>
+    <div class="main-title sticky_child">
+      <h1 class="title">Cartes de voyage</h1>
+  </div>
+	<!--
+    <video ng-if="vm.isDesktop" autoplay loop class="video-background">
+      <source src="../assets/india-street.mp4" type="video/mp4" />Your browser does not support the video tag. I suggest you upgrade your browser.
+    </video>
+  -->
+  <img class="img-full-screen" src="../assets/DSC_0844.JPG" alt="">
+  <div class="arrow-container"
+       ng-click="vm.scrollDown()">
+    <div class="arrow">
+      >
+    </div>
+    <div class="arrow">
+      >
+    </div>
+  </div>
+</header>
+<main class="home__main">
+  <section class="home__main-trips">
+    <h2 class="home__main-trips-title">{{ vm.label_trips}} </h2>
+    <div class="countries">
+      <div class="countries__card" ng-repeat="travel in vm.travels | filter : {travel_published:true}">
+        <div class="countries__card-header" style="background: url('{{vm.$rootScope.baseUrl}}/assets/thumb/mini_{{travel.travel_cover}}');background-repeat: no-repeat; background-position: center; background-size: cover;">
+          <h2 class="countries__card-header-title"> {{ travel.travel_name }} </h2>	
         </div>
-        
-        <a class="item" ui-sref=".travels">
-          <span ng-if="vm.fr">Voyages</span>
-          <span ng-if="vm.it">Viaggi</span>
-        </a>
-        <a class="item" ui-sref=".articles">
-          <span ng-if="vm.fr">Articles</span>
-          <span ng-if="vm.it">Articoli</span>
-        </a>
-
-        <a class="item" ui-sref=".assets">
-          <span ng-if="vm.fr">Images / Vidéos</span>
-          <span ng-if="vm.it">Foto / Video</span>
-        </a>
-        <div class="header-pos change-lang">
-          <h4 class="ui grey inverted right floated header" style="cursor: pointer;">
-              <span ng-click="vm.changeLang()"><i class="france flag"></i> FR</span> | <span ng-click="vm.changeLang()"><i class="italy flag"></i> IT</span>
-          </h4>
-          <div ng-click="vm.logout()">
-            <span> | </span>
-            <i class="power off icon"></i>
+        <div class="countries__card-content">
+          <div class="countries__card-content-header">{{ travel.travel_countries }}</div>
+          <div class="countries__card-content-main">
+            {{ travel.travel_desc }}
           </div>
         </div>
-    </div>
-    
-    <div class="ui grid">
-        <div class="ui row">
-            
-            <div class="ui sixteen wide column">
-                <div class="segment">
-                    <div ui-view></div>
-                </div>
-            </div>
-        
+        <div class="countries__card-footer">
+          <a ui-sref="country({ countryName: travel.travel_name, countryId: travel.travel_id})">
+            <button class="cta cta-home"> {{ vm.label_discover }} </button>
+          </a>
         </div>
+      </div>	
     </div>
-</div>
+  </section>
+  <aside class="home__main-articles">
+    <h2 class="home__main-articles-title">
+      {{vm.label_last_articles}}
+    </h2>
+    <div class="home__main-articles-list">
+      <div class="home__main-articles-list-item" ng-repeat="article in vm.articles">
+        <a ui-sref="post({country: article.article_country_id, post: article.article_id})">
+           <div><span class="italic">{{ article.article_title }}</span> {{ vm.label_in }} {{ article.article_travel }}</div>
+           <div>{{ vm.label_published }} {{ article.article_published_date }}</div>
+        </a>
+      </div>
+    </div>
+  </aside>
+</main>
+<footer>
+  
+</footer>
+

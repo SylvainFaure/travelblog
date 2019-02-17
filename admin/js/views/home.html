@@ -3,19 +3,18 @@
         <div class="header-pos">
           <h4 class="ui grey inverted left floated">Carte de voyages</h4>  
         </div>
-        
         <a class="item" ui-sref=".travels">
-          <span ng-if="vm.fr">Voyages</span>
-          <span ng-if="vm.it">Viaggi</span>
+          <span ng-if="rvm.fr">Voyages</span>
+          <span ng-if="rvm.it">Viaggi</span>
         </a>
         <a class="item" ui-sref=".articles">
-          <span ng-if="vm.fr">Articles</span>
-          <span ng-if="vm.it">Articoli</span>
+          <span ng-if="rvm.fr">Articles</span>
+          <span ng-if="rvm.it">Articoli</span>
         </a>
 
         <a class="item" ui-sref=".assets">
-          <span ng-if="vm.fr">Images / Vidéos</span>
-          <span ng-if="vm.it">Foto / Video</span>
+          <span ng-if="rvm.fr">Images / Vidéos</span>
+          <span ng-if="rvm.it">Foto / Video</span>
         </a>
         <div class="header-pos change-lang">
           <h4 class="ui grey inverted right floated header" style="cursor: pointer;">

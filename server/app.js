@@ -47,6 +47,22 @@ const Asset = require('./models/asset');
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
+if (app.get("env") === 'development') {
+  app.use((err, req, res, next) => {
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: err
+    });
+  });
+  app.use((req, res, next) => { //allow cross origin requests
+		res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
+		res.header("Access-Control-Allow-Origin", "http://admin.localhost:3000");
+		res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With, Accept, x-access-token');
+		next();
+  })
+}
+
 app.use((req, res, next) => { //check x-access-token header
 	const token = req.headers['x-access-token'];
 	if (req.url.indexOf('user') == -1 && token) {
@@ -70,20 +86,7 @@ app.use((req, res, next) => { //check x-access-token header
 	}
 })
 
-if (app.get("env") === 'development') {
-  app.use((err, req, res, next) => {
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: err
-    });
-  });
-  app.use((req, res, next) => { //allow cross origin requests
-	res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
-	res.header("Access-Control-Allow-Origin", "*");
-	next();
-  })
-}
+
 if (app.get("env") === "production") {
   app.use((err, req, res, next) => {
     res.status(err.status || 500);

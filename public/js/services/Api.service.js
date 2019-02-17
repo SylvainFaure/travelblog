@@ -7,18 +7,12 @@ export default class ApiService {
     'ngInject';
     this.$http = $http;
     this.$stateParams = $stateParams
-    this.BASE_PATH = 'http://localhost:3000'
+    this.BASE_PATH = process.env.BASE_PATH.slice(0, -1) // delete last slash
     $rootScope.baseUrl = this.BASE_PATH
   }
 
-  getAll () {
-    return this.$http.get("http://localhost:8080/vendor/api/articles.json").then(resp => {
-      return resp.data;
-    });
-  }
-
   getTravels() {
-    return this.$http.get(this.BASE_PATH + '/api/countries').then(resp => {
+    return this.$http.get(this.BASE_PATH + '/api/travels').then(resp => {
       return resp.data
     });
   }

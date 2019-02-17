@@ -1,8 +1,9 @@
 .env
-.gitignore
 dist/
 node_modules/
 __git
 /build/
-public/assets/
+admin/assets/
+admin/vendors/
+public/img/
 server/mail.js

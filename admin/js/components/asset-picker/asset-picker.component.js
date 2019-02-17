@@ -229,7 +229,7 @@ export default class assetPickerController {
  
 }
 export const assetPickerComponent = {
-	templateUrl: 'components/asset-picker.component.html',
+	templateUrl: 'admin/components/asset-picker.component.html',
 	controller: assetPickerController,
 	controllerAs: 'vm',
 	bindings: {

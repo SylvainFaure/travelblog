@@ -97,7 +97,7 @@ angular
     if (!$rootScope.rvm) {
       $rootScope.rvm = {}
     }
-    if (window.location.hostname === "localhost" && window.location.port === "3000") {
+    if (window.location.hostname.indexOf("localhost") !== -1 && window.location.port === "3000") {
       $rootScope.rvm.debug = true;
       $rootScope.rvm.fr = true;
       $rootScope.rvm.it = false;

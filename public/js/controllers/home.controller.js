@@ -36,7 +36,7 @@ class HomeController {
           art.article_title = art.article_title_fr
           let travelName = () => {
             let travel = vm.travels.filter(travel => {
-              return travel.travel_id == art.article_country_id
+              return travel.travel_id == art.article_travel_id
             })
             return travel[0].travel_title_fr
           }
@@ -64,7 +64,7 @@ class HomeController {
           art.article_title = art.article_title_it 
           let travelName = () => {
             let travel = vm.travels.filter(travel => {
-              return travel.travel_id == art.article_country_id
+              return travel.travel_id == art.article_travel_id
             })
             return travel[0].travel_title_it
           }

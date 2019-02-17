@@ -11,7 +11,7 @@ export default class tagController {
 
 }
 export const tagComponent = {
-	templateUrl: 'components/tag.component.html',
+	templateUrl: 'admin/components/tag.component.html',
 	controller: tagController,
 	controllerAs: 'vm',
 	bindings: {

@@ -43,7 +43,7 @@ export default class textEditorController {
 
 }
 export const textEditorComponent = {
-	templateUrl: 'components/text-editor.component.html',
+	templateUrl: 'admin/components/text-editor.component.html',
 	controller: textEditorController,
 	controllerAs: 'vm',
 	bindings: {

@@ -82,7 +82,7 @@ export default class previewEditorController {
 
 }
 export const previewEditorComponent = {
-	templateUrl: 'components/preview-editor.html',
+	templateUrl: 'admin/components/preview-editor.html',
 	controller: previewEditorController,
 	controllerAs: 'vm',
 	bindings: {

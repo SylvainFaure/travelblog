@@ -133,7 +133,7 @@ export default class editorCompController {
 
 }
 export const editorCompComponent = {
-	templateUrl: 'components/editor-comp.html',
+	templateUrl: 'admin/components/editor-comp.html',
 	controller: editorCompController,
 	controllerAs: 'vm',
 	bindings: {

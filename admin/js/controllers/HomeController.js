@@ -12,8 +12,7 @@ class HomeController {
     this.travels = TravelsList
     this.AuthService = AuthService;
     console.log('HomeController')
-    this.fr = $rootScope.rvm.fr
-    this.it = $rootScope.rvm.it
+    this.rvm = $rootScope.rvm;
     this.$rootScope = $rootScope
     this.$state = $state
     this.$window = $window;

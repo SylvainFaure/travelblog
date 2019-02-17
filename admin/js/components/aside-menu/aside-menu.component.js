@@ -24,7 +24,7 @@ export default class asideMenuController {
   }
 }
 export const asideMenuComponent = {
-	templateUrl: 'components/aside-menu.component.html',
+	templateUrl: 'admin/components/aside-menu.component.html',
 	controller: asideMenuController,
 	controllerAs: 'vm',
 	bindings: {

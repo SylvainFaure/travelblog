@@ -23,7 +23,7 @@ if (app.get("env") === 'development') {
 
 	/**PATH */
 	viewPath = '../admin/js';
-	app.use('/assets', express.static('admin'))
+	app.use('/', express.static('admin'))
 	app.use(subdomain('/', express.static(path.join(__dirname, 'public'))));
 	app.use(subdomain('/admin', express.static(path.join(__dirname, 'admin'))));
 }
@@ -65,7 +65,7 @@ if (app.get("env") === 'development') {
 
 app.use((req, res, next) => { //check x-access-token header
 	const token = req.headers['x-access-token'];
-	if (req.url.indexOf('user') == -1 && token) {
+	if (req.url.indexOf('users') == -1 && token) {
 		User.verifyToken(token, response => {
 			if (response.name == "JsonWebTokenError") {
 				res.status(401).json({
@@ -105,8 +105,8 @@ app.get('/api/users', (req, res) => {
 	})
 })
 
-app.get('/api/user/:user', (req, res) => {
-       User.getUser(req.params.email, user => {
+app.get('/api/users/:user', (req, res) => {
+    User.getUser(req.params.email, user => {
 		res.json(user)
 	})
 })
@@ -129,19 +129,19 @@ app.get('/api/assets', (req, res) => {
 	})
 })
 
-app.get('/api/travel/:travel', (req, res) => {
+app.get('/api/travels/:travel', (req, res) => {
 	Travel.getTravel(req.params.travel, travel => {
 		res.json(travel)
 	})
 })
 
-app.get('/api/travel/:id/articles', (req, res) => {
+app.get('/api/travels/:id/articles', (req, res) => {
 	Article.getAllByTravel(req.params.id, articles => {
 		res.json(articles)
 	})
 })
 
-app.get('/api/article/:article', (req, res) => {
+app.get('/api/articles/:article', (req, res) => {
 	Article.getArticle(req.params.article, article => {
 		res.json(article) 
 	})
@@ -152,38 +152,38 @@ app.get('/api/article/:article', (req, res) => {
 /*** POST ***/
 
 /* USER AND AUTHENTICATION */
-app.post('/api/user/sendrequest', (req, res) => {
+app.post('/api/users/sendrequest', (req, res) => {
 	User.sendRequest(req.body.email, req.body.role, result => {
 		res.json(result)
 	})
 })
 
-app.post('/api/user/confirmrequest', (req, res) => {
+app.post('/api/users/confirmrequest', (req, res) => {
 	User.confirmRequest(req.body.mail, req.body.role, result => {
 		res.json(result)
 	})
 })
 
-app.post('/api/user/refuserequest', (req, res) => {
+app.post('/api/users/refuserequest', (req, res) => {
 	User.refuseRequest(req.body.mail, req.body.role, result => {
 		res.json(result)
 	})
 })
 
-app.post('/api/user/newuser', (req, res) => {
+app.post('/api/users/newuser', (req, res) => {
 	User.createNewUser(req.body.user, (result) => {
 		res.json(result)
 	})
 })
 
-app.post('/api/user/signup', (req, res) => {
+app.post('/api/users/signup', (req, res) => {
    User.signup(req.body.email, req.body.password, (result) => {
    	res.json(result)
    })
    
 });
 
-app.post('/api/user/signin', (req, res) => {
+app.post('/api/users/signin', (req, res) => {
    User.signin(req.body.email, req.body.password, (result) => {
    	res.json(result)
    }) 
@@ -191,76 +191,77 @@ app.post('/api/user/signin', (req, res) => {
    
 });
 
-app.post('/api/user/verifytoken', (req, res) => {
+app.post('/api/users/verifytoken', (req, res) => {
 	User.verifyToken(req.body.token, result => {
 		res.json(result)
 	})
 })
 
-app.post('/api/newtravel', (req, res) => {
+app.post('/api/travels', (req, res) => {
 	Travel.addTravel(req.body, results =>{
 		res.json(results)
 	})
 })
 
-app.post('/api/newarticle', (req, res) => {
+app.post('/api/articles', (req, res) => {
 	Article.postArticle(req.body, results => {
 		res.json(results)
 	})
 })
 
-app.post('/api/article/publish/:id', (req, res) => {
+app.post('/api/articles/publish/:id', (req, res) => {
 	Article.publishArticle(req.body.article, req.params.id, results => {
 		res.json(results)
 	})
 })
 
 
-app.post('/api/newasset', upload.any('file'), (req, res, next) => {
+app.post('/api/assets', upload.any('file'), (req, res, next) => {
 	Asset.uploadAssets(req.files, req.body.infos, result => {
 		res.status(200).json(result);
 	})
 })
 
-app.post('/api/delete-assets', (req, res) => {
+// TODO : change post in delete (was there any problem??)
+app.post('/api/assets/delete', (req, res) => {
 	Asset.deleteAssets(req.body.ids, req.body.names, results => {
 		res.status(200).json(results)
 	})
 })
 /*** UPDATE ***/
-app.put('/api/update-travel/:id', (req, res) => {
+app.put('/api/travels/:id', (req, res) => {
 	Travel.updateTravel(req.body, req.params.id, travel => {
 		res.json(travel)
 	})
 })
 
-app.put('/api/update-article/:id', (req, res) => {
+app.put('/api/articles/:id', (req, res) => {
 	Article.updateArticle(req.body, req.params.id, article => {
 		res.json(article)
 	})
 })
 
-app.put('/api/update-asset/:id', (req, res) => {
+app.put('/api/assets/:id', (req, res) => {
 	Asset.updateAsset(req.body, req.params.id, asset => {
 		res.json(asset)
 	})
 })
 
 /*** DELETE ***/
-app.delete('/api/delete-travel/:id', (req, res) => {
+app.delete('/api/travels/:id', (req, res) => {
 	Travel.deleteTravel(req.params.id, result => {
 		res.send(result)
 	})
 })
 
-app.delete('/api/delete-article/:id', (req, res) => {
+app.delete('/api/articles/:id', (req, res) => {
 	Article.deleteArticle(req.params.id, result => {
 		res.send(result)
 	})
 	
 })
 
-app.delete('/api/article/unpublish/:id', (req, res) => {
+app.delete('/api/articles/unpublish/:id', (req, res) => {
 	Article.unpublishArticle(req.params.id, result => {
 		res.send(result)
 	})

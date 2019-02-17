@@ -29,38 +29,20 @@ export default class ApiService {
     });
   }
 
-  getCountryDetail(id) {
-    return this.$http.get(this.BASE_PATH + '/api/country/' + id).then(resp => {
+  getTravelDetail(id) {
+    return this.$http.get(this.BASE_PATH + '/api/travels/' + id).then(resp => {
       return resp.data
     });
    }
-  getCountryArticles(countryId) {
-    return this.$http.get(this.BASE_PATH + '/api/country/' + countryId + '/articles').then(resp => {
+  getTravelArticles(countryId) {
+    return this.$http.get(this.BASE_PATH + '/api/travels/' + countryId + '/articles').then(resp => {
       return resp.data
     })
    }
 
   getArticleDetail(id) {
-    return this.$http.get(this.BASE_PATH + '/api/article/' + id).then(resp => {
+    return this.$http.get(this.BASE_PATH + '/api/articles/' + id).then(resp => {
       return resp.data
     });
-  }
-
-
-  getCountry(country) {
-    return this.getAll().then(countries => {
-      return countries.filter(c => {
-        return country == c.country_name
-      })
-    }); 
-  }
-  getPost(country, post) {
-    return this.getAll().then(countries => {
-      return this.getCountry(country).then(country => {
-        return country[0].articles.filter(art => {
-          return art.place == post
-        })
-      }) 
-    })
   }
 }

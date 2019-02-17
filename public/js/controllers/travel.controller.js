@@ -1,6 +1,6 @@
 class TravelController {
   constructor (
-    country,
+    travel,
     articles,
     assets,
     $rootScope 
@@ -8,16 +8,16 @@ class TravelController {
     var vm = this
     vm.$rootScope = $rootScope;
 
-    vm.country = country[0];
-    console.log(vm.country)
+    vm.travel = travel[0];
+    console.log(vm.travel)
     vm.articles = articles
     vm.assets = assets
     
     vm.$rootScope.$on('changed-lang', () => {
       if (vm.$rootScope.lang == 'fr') {
-        vm.country.name = vm.country.country_name_fr
-        vm.country.description = vm.country.country_desc_fr
-        vm.country.articles = []
+        vm.travel.name = vm.travel.travel_name_fr
+        vm.travel.description = vm.travel.travel_desc_fr
+        vm.travel.articles = []
         vm.articles.forEach(art => {
           let article = {
             id: art.article_id,
@@ -33,14 +33,14 @@ class TravelController {
               return asset.asset_place_fr == art.article_place_fr
             })
           }
-          vm.country.articles.push(article)
+          vm.travel.articles.push(article)
           this.getWaypoints()
         })
       }
       if (vm.$rootScope.lang == 'it') {
-        vm.country.name = vm.country.country_name_it
-        vm.country.description = vm.country.country_desc_it
-        vm.country.articles = []
+        vm.travel.name = vm.travel.travel_name_it
+        vm.travel.description = vm.travel.travel_desc_it
+        vm.travel.articles = []
         vm.articles.forEach(art => {
           let article = {
             id: art.article_id,
@@ -55,7 +55,7 @@ class TravelController {
               return asset.asset_place_it == art.article_place_it
             })
           }
-          vm.country.articles.push(article)
+          vm.travel.articles.push(article)
           this.getWaypoints()
         })
       }
@@ -64,11 +64,11 @@ class TravelController {
   
   getWaypoints() {
     this.waypoints = []
-    this.start = this.country.articles[0].place
-    this.end = this.country.articles[this.country.articles.length - 1].place
-    for (let i = 1; i < this.country.articles.length - 1; i++){
+    this.start = this.travel.articles[0].place
+    this.end = this.travel.articles[this.travel.articles.length - 1].place
+    for (let i = 1; i < this.travel.articles.length - 1; i++){
     this.waypoints.push({
-        location: this.country.articles[i].place,
+        location: this.travel.articles[i].place,
         stopover: true
       })
     }

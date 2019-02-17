@@ -21,23 +21,23 @@ export default class ApiService {
  }
 
  travelDetail(id) {
-  return this.$http.get(this.BASE_PATH + 'api/travel/' + id);
+  return this.$http.get(this.BASE_PATH + 'api/travels/' + id);
  }
 
  travelArticles(id) {
-  return this.$http.get(this.BASE_PATH + 'api/travel/' + id + '/articles')
+  return this.$http.get(this.BASE_PATH + 'api/travels/' + id + '/articles')
  }
 
  travelCreate(travel) {
-  return this.$http.post(this.BASE_PATH + 'api/newtravel', travel)
+  return this.$http.post(this.BASE_PATH + 'api/travels', travel)
  }
 
  travelUpdate(travel, id) {
-  return this.$http.put(this.BASE_PATH + 'api/update-travel/' + id, travel)
+  return this.$http.put(this.BASE_PATH + 'api/travels/' + id, travel)
  }
 
  travelDelete(id) {
-  return this.$http.delete(this.BASE_PATH + 'api/delete-travel/' + id);
+  return this.$http.delete(this.BASE_PATH + 'api/travels/' + id);
  }
 
  articlesList() {
@@ -45,33 +45,33 @@ export default class ApiService {
  }
 
  articleCreate(article) {
-  return this.$http.post(this.BASE_PATH + 'api/newarticle', article);
+  return this.$http.post(this.BASE_PATH + 'api/articles', article);
  }
 
  articleDetail(id) {
-  return this.$http.get(this.BASE_PATH + 'api/article/' + id);
+  return this.$http.get(this.BASE_PATH + 'api/articles/' + id);
  }
 
  articleUpdate(article, id){
-  return this.$http.put(this.BASE_PATH + 'api/update-article/' + id, article);
+  return this.$http.put(this.BASE_PATH + 'api/articles/' + id, article);
  }
 
  articlePublish(id, article){
-  return this.$http.post(this.BASE_PATH + 'api/article/publish/' + id, {article});
+  return this.$http.post(this.BASE_PATH + 'api/articles/publish/' + id, {article});
  }
 
  articleUnpublish(id){
-  return this.$http.delete(this.BASE_PATH + 'api/article/unpublish/' + id);
+  return this.$http.delete(this.BASE_PATH + 'api/articles/unpublish/' + id);
  }
 
  articleDelete(id) {
-  return this.$http.delete(this.BASE_PATH + 'api/delete-article/' + id);  
+  return this.$http.delete(this.BASE_PATH + 'api/articles/' + id);  
  }
 
  assetsUpload(assets, data) {
   return this.Upload.upload({
     method: 'POST',
-    url: this.BASE_PATH + 'api/newasset', //webAPI exposed to upload the file
+    url: this.BASE_PATH + 'api/assets', //webAPI exposed to upload the file
     data:{file:assets, infos: data} //pass file as data, should be user ng-model
   })
  }
@@ -85,6 +85,6 @@ export default class ApiService {
  }
 
  assetUpdate (asset, id) {
-  return this.$http.put(this.BASE_PATH + 'api/update-asset/' + id, asset);
+  return this.$http.put(this.BASE_PATH + 'api/assets/' + id, asset);
  }
 }

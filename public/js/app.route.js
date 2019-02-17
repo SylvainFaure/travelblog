@@ -11,22 +11,22 @@ export default function Router ($stateProvider, $urlRouterProvider) {
         articles: ApiService => ApiService.getArticles(),
       }
     })
-    .state('country', {
-      url: '/{countryId}',
+    .state('travel', {
+      url: '/{travelId}',
       params: {
         countryName: null
       },
-      templateUrl: "public/views/country.html",
+      templateUrl: "public/views/travel.html",
       controller: "TravelController",
       controllerAs: "vm",
       resolve: {
-        country: (ApiService, $stateParams) => ApiService.getCountryDetail($stateParams.countryId),
-        articles: (ApiService, $stateParams) => ApiService.getCountryArticles($stateParams.countryId),
+        country: (ApiService, $stateParams) => ApiService.getTravelDetail($stateParams.countryId),
+        articles: (ApiService, $stateParams) => ApiService.getTravelArticles($stateParams.countryId),
         assets: ApiService => ApiService.getAssets()
       }
     })
     .state('post', {
-      url: '/{country}/{post}',
+      url: '/{travel}/{post}',
       templateUrl: "public/views/post.html",
       controller: "PostController",
       controllerAs: "vm",
@@ -34,8 +34,8 @@ export default function Router ($stateProvider, $urlRouterProvider) {
         post: function(ApiService, $stateParams) {
           return ApiService.getArticleDetail($stateParams.post);
         },
-        country: function($stateParams){
-          return $stateParams.country
+        travel: function($stateParams){
+          return $stateParams.travel
         }
       }
     })

@@ -35,14 +35,14 @@ export default function Router ($stateProvider, $urlRouterProvider) {
     })
     .state('logged.userrequest', {
       url: 'userrequest/:email/:role',
-      templateUrl: "../assets/js/views/login.html",
+      templateUrl: "../js/views/login.html",
       controller: "UserRequestController",
       controllerAs: "vm"
     })
     .state('logged.articles', {
       url: 'articles',
       sticky: true,
-      templateUrl: '../assets/js/views/articles.html',
+      templateUrl: '../js/views/articles.html',
       controller: 'ArticlesController',
       controllerAs: 'vm',
       resolve: {
@@ -58,7 +58,7 @@ export default function Router ($stateProvider, $urlRouterProvider) {
     .state('logged.travels', {
       url: 'travels',
       sticky: true,
-      templateUrl: "../assets/js/views/travels.html",
+      templateUrl: "../js/views/travels.html",
       controller: "TravelsController",
       controllerAs: "vm",
       resolve: {
@@ -82,7 +82,7 @@ export default function Router ($stateProvider, $urlRouterProvider) {
     .state('logged.assets', {
       url: 'assets',
       sticky: true,
-      templateUrl: "../assets/js/views/assets.html",
+      templateUrl: "../js/views/assets.html",
       controller: "AssetsController",
       controllerAs: 'vm',
       resolve: {
@@ -98,7 +98,7 @@ export default function Router ($stateProvider, $urlRouterProvider) {
     .state('logged.travel', {
       url: 'travel/{travelId}',
       sticky: true,
-      templateUrl: "../assets/js/views/travel.html",
+      templateUrl: "../js/views/travel.html",
       controller: "TravelController",
       controllerAs: "vm",
       resolve: {
@@ -131,14 +131,14 @@ export default function Router ($stateProvider, $urlRouterProvider) {
     .state('logged.newtravel', {
       url: 'newtravel',
       sticky: true,
-      templateUrl: "../assets/js/views/newtravel.html",
+      templateUrl: "../js/views/newtravel.html",
       controller: "AddCountryController",
       controllerAs: 'vm'
     })
     .state('logged.article', {
       url: 'article/{articleId}',
       sticky: true,
-      templateUrl: "../assets/js/views/article.html",
+      templateUrl: "../js/views/article.html",
       controller: "ArticleController",
       controllerAs: 'vm',
       resolve: {

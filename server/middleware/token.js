@@ -1,6 +1,4 @@
-'use strict'
-
-function token (req, res, next) {
+module.exports = function (req, res, next) {
   const token = req.headers['x-access-token'];
   if (req.url.indexOf('users') == -1 && token) {
     User.verifyToken(token, response => {
@@ -22,5 +20,3 @@ function token (req, res, next) {
     next();
   }
 }
-
-module.exports = { token }

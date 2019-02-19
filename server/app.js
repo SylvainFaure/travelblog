@@ -44,14 +44,15 @@ const Article = require('./models/article');
 const Asset = require('./models/asset');
 
 /** MIDDLEWARE **/
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(tokenMiddleware());
-app.use(errorMiddleware(err, req, res, next));
+app.use(tokenMiddleware);
+app.use(errorMiddleware);
 
 if (app.get("env") === 'development') {
-  app.use(corsMiddleware(req, res, next))
+  app.use(corsMiddleware);
 }
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 /*** GET ****/
 

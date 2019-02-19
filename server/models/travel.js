@@ -2,8 +2,9 @@ const db = require('../db.js');
 
 class Travel {
 
-	static getAll(cb) {
-		db.query('SELECT * FROM travels', function(err, rows){
+	static getAll(published, cb) {
+		let table = published ? 'published_travels' : 'travels';
+		db.query(`SELECT * FROM ${table}`, function(err, rows){
 			if (err) throw err;
 			var records = JSON.stringify(rows);
 			var travels = JSON.parse(records);
@@ -12,7 +13,8 @@ class Travel {
 	}
 
 	static getTravel(travel, cb) {
-		db.query('SELECT * FROM travels WHERE travel_id = ?', [travel], function(err, rows){
+		let table = published ? 'published_travels' : 'travels';
+		db.query(`SELECT * FROM ${table} WHERE travel_id = ?`, [travel], function(err, rows){
 			if (err) throw err;
 			var records = JSON.stringify(rows);
 			var travel = JSON.parse(records);

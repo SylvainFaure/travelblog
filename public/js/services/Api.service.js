@@ -18,7 +18,7 @@ export default class ApiService {
   }
 
   getArticles() {
-    return this.$http.get(this.BASE_PATH + '/api/articles').then(resp => {
+    return this.$http.get(this.BASE_PATH + '/api/articles/published').then(resp => {
       return resp.data
     });
   }
@@ -30,18 +30,18 @@ export default class ApiService {
   }
 
   getTravelDetail(id) {
-    return this.$http.get(this.BASE_PATH + '/api/travels/' + id).then(resp => {
+    return this.$http.get(this.BASE_PATH + '/api/travels/published/' + id).then(resp => {
       return resp.data
     });
    }
   getTravelArticles(countryId) {
-    return this.$http.get(this.BASE_PATH + '/api/travels/' + countryId + '/articles').then(resp => {
+    return this.$http.get(this.BASE_PATH + '/api/travels/published/' + countryId + '/articles').then(resp => {
       return resp.data
     })
    }
 
   getArticleDetail(id) {
-    return this.$http.get(this.BASE_PATH + '/api/articles/' + id).then(resp => {
+    return this.$http.get(this.BASE_PATH + '/api/articles/published/' + id).then(resp => {
       return resp.data
     });
   }

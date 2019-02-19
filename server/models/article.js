@@ -2,8 +2,9 @@ const db = require('../db.js');
 
 class Article {
 
-	static getAll(cb) {
-		db.query('SELECT * FROM articles', function(err, rows){
+	static getAll(published, cb) {
+		let table = published ? 'published_articles' : 'articles';
+		db.query(`SELECT * FROM ${table}`, function(err, rows){
 			if (err) throw err;
 			var records = JSON.stringify(rows);
 			var allarticles = JSON.parse(records);
@@ -19,8 +20,9 @@ class Article {
 			cb(articles)
 		})
 	}
-	static getArticle(id, cb) {
-		db.query('SELECT * FROM articles WHERE article_id = ?', [id], function(err, rows){
+	static getArticle(published, id, cb) {
+		let table = published ? 'published_articles' : 'articles';
+		db.query(`SELECT * FROM ${table} WHERE article_id = ?`, [id], function(err, rows){
 			if (err) throw err;
 			var records = JSON.stringify(rows);
 			var article = JSON.parse(records);

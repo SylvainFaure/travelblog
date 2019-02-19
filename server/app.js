@@ -69,13 +69,23 @@ app.get('/api/users/:user', (req, res) => {
 })
 
 app.get('/api/travels', (req, res) => {
-  Travel.getAll(travels => {
+  Travel.getAll(false, travels => {
+    res.json(travels)
+  })
+})
+app.get('/api/travels/published', (req, res) => {
+  Travel.getAll(true, travels => {
     res.json(travels)
   })
 })
 
 app.get('/api/articles', (req, res) => {
-  Article.getAll(allarticles => {
+  Article.getAll(false, allarticles => {
+    res.json(allarticles)
+  })
+})
+app.get('/api/articles/published', (req, res) => {
+  Article.getAll(true, allarticles => {
     res.json(allarticles)
   })
 })
@@ -87,7 +97,12 @@ app.get('/api/assets', (req, res) => {
 })
 
 app.get('/api/travels/:travel', (req, res) => {
-  Travel.getTravel(req.params.travel, travel => {
+  Travel.getTravel(false, req.params.travel, travel => {
+    res.json(travel)
+  })
+})
+app.get('/api/travels/published/:travel', (req, res) => {
+  Travel.getTravel(true, req.params.travel, travel => {
     res.json(travel)
   })
 })
@@ -99,7 +114,12 @@ app.get('/api/travels/:id/articles', (req, res) => {
 })
 
 app.get('/api/articles/:article', (req, res) => {
-  Article.getArticle(req.params.article, article => {
+  Article.getArticle(false, req.params.article, article => {
+    res.json(article)
+  })
+})
+app.get('/api/articles/published/:article', (req, res) => {
+  Article.getArticle(true, req.params.article, article => {
     res.json(article)
   })
 })

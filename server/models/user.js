@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 
 class User {
 	static getUsers(cb) {
-		db.query('SELECT * FROM users', function(err, rows){
+		db.query('SELECT * FROM users', (err, rows) => {
 			if (err) throw err;
 			var records = JSON.stringify(rows);
 			var users = JSON.parse(records);
@@ -17,13 +17,32 @@ class User {
 	}
 	
 	static getUser(email, cb) {
-		db.query('SELECT * FROM users where user_email = ?', [email], function(err, rows){
+		db.query('SELECT * FROM users where user_email = ?', [email], (err, rows) => {
 			if (err) throw err;
 			var records = JSON.stringify(rows[0]);
 			var user = JSON.parse(records);
 			cb(user)
 		})
 	}
+	
+	static updateUser(user, id, cb) { // saveUserPwd??
+		db.query('UPDATE users SET ? where user_id = ?', [user, id], (err, rows) => {
+			if (err) throw err;
+			var records = JSON.stringify(rows[0]);
+			var user = JSON.parse(records);
+			cb(user)
+		})
+	}
+	
+	static deleteUser(id, cb) {
+		db.query('DELETE FROM users where user_id = ?', [id], (err, rows) => {
+			if (err) throw err;
+			var records = JSON.stringify(rows[0]);
+			var user = JSON.parse(records);
+			cb(user)
+		})
+	}
+	
 	
 	static createNewUser(user, cb) {
 	  
@@ -122,7 +141,7 @@ class User {
 				user_password: '',
 				user_username: _user.email
 	   }
-	   db.query('INSERT INTO users SET ?', user, function(err, results){
+	   db.query('INSERT INTO users SET ?', user, (err, results) => {
 			if (err) throw err;
 			cb(results)			
 	   })	
@@ -148,7 +167,18 @@ class User {
 	    cb(users)
 		})
  }
-	
+	static userRequest(type, email, role, cb) {
+		// TO REFACTOR WHEN WRITING CONFIRM AND REFUSE
+		if (type == 'request') {
+			this.sendRequest(email, role, cb);
+		}
+		if (type == 'confirm') {
+			this.confirmRequest(email, role, cb);
+		}
+		if (type == 'refuse') {
+			this.refuseRequest(email, role, cb);
+		}
+	}
 	static sendRequest(email, role, cb) {
 		this.getSuperAdmin(admin => {
 			const oauth2Client = new OAuth2(

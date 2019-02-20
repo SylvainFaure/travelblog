@@ -16,8 +16,8 @@ export default class AuthService {
    return this.$http.post(this.BASE_PATH + 'api/users/signin', {email: email, password: password});
   }
  
-  loginSendRequest (email) {
-   return this.$http.post(this.BASE_PATH + 'api/users/sendrequest', {email: email});   
+  sendRequest (requestType, email, role) {
+   return this.$http.post(this.BASE_PATH + 'api/users/request', requestType, {email: email, role: role});   
   }
  
   loginLogout () {
@@ -54,12 +54,4 @@ export default class AuthService {
   getUser () {
     return JSON.parse(this.$window.localStorage.getItem('user'));
   }
-
-  sendConfirmToUser(email, role) {
-    return this.$http.post(this.BASE_PATH + 'api/users/confirmrequest', {email: email, role: role})
-  }
-  sendRefuseToUser(email, role) {
-    return this.$http.post(this.BASE_PATH + 'api/users/refuserequest', {email: email, role: role})
-  }
- }
  

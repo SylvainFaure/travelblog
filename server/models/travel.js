@@ -4,7 +4,7 @@ class Travel {
 
 	static getAll(published, cb) {
 		let table = published ? 'published_travels' : 'travels';
-		db.query(`SELECT * FROM ${table}`, function(err, rows){
+		db.query(`SELECT * FROM ${table}`, (err, rows) => {
 			if (err) throw err;
 			var records = JSON.stringify(rows);
 			var travels = JSON.parse(records);
@@ -14,7 +14,7 @@ class Travel {
 
 	static getTravel(travel, cb) {
 		let table = published ? 'published_travels' : 'travels';
-		db.query(`SELECT * FROM ${table} WHERE travel_id = ?`, [travel], function(err, rows){
+		db.query(`SELECT * FROM ${table} WHERE travel_id = ?`, [travel], (err, rows) => {
 			if (err) throw err;
 			var records = JSON.stringify(rows);
 			var travel = JSON.parse(records);
@@ -23,22 +23,24 @@ class Travel {
 	}
 
 	static addTravel(travel, cb) {
-		db.query('INSERT INTO travels SET ?', travel, function(err, results, fields){
+		let table = published ? 'published_travels' : 'travels';
+		db.query(`INSERT INTO ${table} SET ?`, travel, (err, results, fields) => { 
 			if (err) throw err;
 			cb(results)			
 		})
 	}
 
-	static updateTravel(travel, id, cb) {
-		console.log(travel)
-		db.query('UPDATE travels SET ? WHERE travel_id = ?', [travel, id], function(error, results){
+	static updateTravel(published, travel, id, cb) {
+		let table = published ? 'published_travels' : 'travels';
+		db.query(`UPDATE ${table} SET ? WHERE travel_id = ?`, [travel, id], (error, results) => {
 			if (error) throw error
 			cb(results)
 		})
 	}
 
-	static deleteTravel(id, cb) {
-		db.query('DELETE FROM travels WHERE travel_id = ?', id, function(error, result){
+	static deleteTravel(published, id, cb) {
+		let table = published ? 'published_travels' : 'travels';
+		db.query(`DELETE FROM ${table} WHERE travel_id = ?`, id, (error, result) => {
 			if (error) throw error
 				cb(result)
 		})

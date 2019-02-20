@@ -12,6 +12,7 @@ const corsMiddleware = require('./middleware/cors');
 const errorMiddleware = require('./middleware/error');
 
 const articlesRouter = require('./routes/articles');
+const travelsRouter = require('./routes/travels');
 
 app.use('/', express.static('admin'));
 
@@ -41,7 +42,6 @@ if (app.get("env") !== "development") {
 
 /***** MODELS ******/
 const User = require('./models/user');
-const Travel = require('./models/travel');
 const Article = require('./models/article');
 const Asset = require('./models/asset');
 
@@ -58,6 +58,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 /*** GET ****/
 app.use('/api/articles', articlesRouter);
+app.use('/api/travels', travelsRouter);
 
 app.get('/api/users', (req, res) => {
   User.getUsers(users => {
@@ -71,22 +72,6 @@ app.get('/api/users/:user', (req, res) => {
   })
 })
 
-app.get('/api/travels', (req, res) => {
-  Travel.getAll(false, travels => {
-    res.json(travels)
-  })
-})
-app.get('/api/travels/published', (req, res) => {
-  Travel.getAll(true, travels => {
-    res.json(travels)
-  })
-})
-
-/*app.get('/api/articles', (req, res) => {
-  Article.getAll(false, allarticles => {
-    res.json(allarticles)
-  })
-})*/
 app.get('/api/articles/published', (req, res) => {
   Article.getAll(true, allarticles => {
     res.json(allarticles)
@@ -96,17 +81,6 @@ app.get('/api/articles/published', (req, res) => {
 app.get('/api/assets', (req, res) => {
   Asset.getAll(allassets => {
     res.json(allassets)
-  })
-})
-
-app.get('/api/travels/:travel', (req, res) => {
-  Travel.getTravel(false, req.params.travel, travel => {
-    res.json(travel)
-  })
-})
-app.get('/api/travels/published/:travel', (req, res) => {
-  Travel.getTravel(true, req.params.travel, travel => {
-    res.json(travel)
   })
 })
 
@@ -126,8 +100,6 @@ app.get('/api/articles/published/:article', (req, res) => {
     res.json(article)
   })
 })
-
-
 
 /*** POST ***/
 
@@ -177,24 +149,11 @@ app.post('/api/users/verifytoken', (req, res) => {
   })
 })
 
-app.post('/api/travels', (req, res) => {
-  Travel.addTravel(req.body, results =>{
-    res.json(results)
-  })
-})
-
-app.post('/api/articles', (req, res) => {
-  Article.postArticle(req.body, results => {
-    res.json(results)
-  })
-})
-
 app.post('/api/articles/publish/:id', (req, res) => {
   Article.publishArticle(req.body.article, req.params.id, results => {
     res.json(results)
   })
 })
-
 
 app.post('/api/assets', upload.any('file'), (req, res, next) => {
   Asset.uploadAssets(req.files, req.body.infos, result => {
@@ -209,12 +168,6 @@ app.post('/api/assets/delete', (req, res) => {
   })
 })
 /*** UPDATE ***/
-app.put('/api/travels/:id', (req, res) => {
-  Travel.updateTravel(req.body, req.params.id, travel => {
-    res.json(travel)
-  })
-})
-
 app.put('/api/articles/:id', (req, res) => {
   Article.updateArticle(req.body, req.params.id, article => {
     res.json(article)
@@ -228,12 +181,6 @@ app.put('/api/assets/:id', (req, res) => {
 })
 
 /*** DELETE ***/
-app.delete('/api/travels/:id', (req, res) => {
-  Travel.deleteTravel(req.params.id, result => {
-    res.send(result)
-  })
-})
-
 app.delete('/api/articles/:id', (req, res) => {
   Article.deleteArticle(req.params.id, result => {
     res.send(result)

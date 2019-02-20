@@ -9,26 +9,50 @@ travels.route('/')
     })
   })
   .post((req, res) => {
-    Travel.addTravel(req.body, results =>{
+    Travel.addTravel(false, req.body, results =>{
       res.json(results)
     })
   })
   // TODO - Add a delete route
 
-travels.route('/:id)
+travels.route('/:id')
   .get((req, res) => {
     Travel.getTravel(false, req.params.travel, travel => {
       res.json(travel)
     })
   })
   .put((req, res) => {
-    Travel.updateTravel(req.body, req.params.id, travel => {
+    Travel.updateTravel(false, req.body, req.params.id, travel => {
       res.json(travel);
     })
   })
   .delete((req, res) => {
     Travel.deleteTravel(req.params.id, result => {
       res.send(result);
+    })
+  })
+
+travels.route('/published')
+  .get((req, res) => {
+    Travel.getAll(true, travels => {
+      res.json(travels)
+    })
+  })
+
+travels.route('/published/:id')
+  .get((req, res) => {
+    Travel.getTravel(true, req.params.travel, travel => {
+      res.json(travel)
+    })
+  })
+  .post((req, res) => {
+    Travel.addTravel(true, req.body, results =>{
+      res.json(results)
+    })
+  })
+  .put((req, res) => {
+    Travel.updateTravel(true, req.body, req.params.id, travel => {
+      res.json(travel);
     })
   })
 

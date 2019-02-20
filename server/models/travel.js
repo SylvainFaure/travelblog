@@ -45,6 +45,15 @@ class Travel {
 				cb(result)
 		})
 	}
+	
+	static getAllArticlesByTravel(travel, cb) {
+		db.query('SELECT * FROM articles WHERE article_travel_id = ?', [travel], function(err, rows){
+			if (err) throw err;
+			var records = JSON.stringify(rows);
+			var articles = JSON.parse(records);
+			cb(articles)
+		})
+	}
 }
 
 module.exports = Travel

@@ -78,7 +78,7 @@ class LoginController {
   sendUserRequest() {
     const email = this.sendRequestMail;
     const role = this.sendRequestRole || "visitor";
-    this.AuthService.loginSendRequest(email, role).then(res => {
+    this.AuthService.sendRequest('request', email, role).then(res => {
       if (res.status == 200) {
         this.toastr.success("Your request has been sent !", "Success !")
       }

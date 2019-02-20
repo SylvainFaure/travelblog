@@ -153,14 +153,14 @@ class User {
 			user_role: user.user_role,
       user_password: pwd
 	   }
-	   db.query('UPDATE users SET ? WHERE user_email = ?', [userToSave, user.user_email], function(err, results) {
+	   db.query('UPDATE users SET ? WHERE user_email = ?', [userToSave, user.user_email], (err, results) => {
 	  	if (err) throw err;
 			cb(results)
 	   })
 	}
 
 	static getSuperAdmin(cb) {
-		db.query('SELECT * from users WHERE user_role = "superadmin"', function(err, rows) {
+		db.query('SELECT * from users WHERE user_role = "superadmin"', (err, rows) => {
 			if (err) throw err;
 		  var records = JSON.stringify(rows[0]);
 			var users = JSON.parse(records);
@@ -222,7 +222,7 @@ class User {
 	}
 
 	static verifyToken(token, cb) {
-		jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
+		jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
 			var response = decoded;
 			if (err) {
 				response = err

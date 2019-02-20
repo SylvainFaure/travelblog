@@ -11,6 +11,8 @@ const tokenMiddleware = require('./middleware/token');
 const corsMiddleware = require('./middleware/cors');
 const errorMiddleware = require('./middleware/error');
 
+const articlesRouter = require('./routes/articles');
+
 app.use('/', express.static('admin'));
 
 if (app.get("env") === 'development') {
@@ -55,6 +57,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 /*** GET ****/
+app.use('/api/articles', articlesRouter);
 
 app.get('/api/users', (req, res) => {
   User.getUsers(users => {
@@ -79,11 +82,11 @@ app.get('/api/travels/published', (req, res) => {
   })
 })
 
-app.get('/api/articles', (req, res) => {
+/*app.get('/api/articles', (req, res) => {
   Article.getAll(false, allarticles => {
     res.json(allarticles)
   })
-})
+})*/
 app.get('/api/articles/published', (req, res) => {
   Article.getAll(true, allarticles => {
     res.json(allarticles)

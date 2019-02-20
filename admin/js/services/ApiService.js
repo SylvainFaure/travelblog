@@ -57,11 +57,11 @@ export default class ApiService {
  }
 
  articlePublish(id, article){
-  return this.$http.post(this.BASE_PATH + 'api/articles/publish/' + id, {article});
+  return this.$http.post(this.BASE_PATH + 'api/articles/published/' + id, {article});
  }
 
  articleUnpublish(id){
-  return this.$http.delete(this.BASE_PATH + 'api/articles/unpublish/' + id);
+  return this.$http.delete(this.BASE_PATH + 'api/articles/published/' + id);
  }
 
  articleDelete(id) {

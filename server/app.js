@@ -3,18 +3,20 @@ const subdomain = require('express-subdomain');
 const app = express();
 const port = process.env.PORT || 3000;
 const path = require('path');
+
+/** MIDDLEWARES **/
 const bodyParser = require('body-parser');
-
-const upload = require('./config/storage');
-
 const tokenMiddleware = require('./middleware/token');
 const corsMiddleware = require('./middleware/cors');
 const errorMiddleware = require('./middleware/error');
 
+/** ROUTES **/
 const articlesRouter = require('./routes/articles');
 const travelsRouter = require('./routes/travels');
 const usersRouter = require('./routes/users');
+const assetsRouter = require('./routes/assets');
 
+/** STATIC FILES **/
 app.use('/', express.static('admin'));
 
 if (app.get("env") === 'development') {
@@ -40,13 +42,7 @@ if (app.get("env") !== "development") {
   app.use(subdomain('/admin', express.static(path.join(__dirname, 'dist/admin'))));
 }
 
-
-/***** MODELS ******/
-const User = require('./models/user');
-const Article = require('./models/article');
-const Asset = require('./models/asset');
-
-/** MIDDLEWARE **/
+/** MIDDLEWARES **/
 app.use(tokenMiddleware);
 app.use(errorMiddleware);
 
@@ -57,86 +53,11 @@ if (app.get("env") === 'development') {
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-/*** GET ****/
+/*** ROUTES ****/
 app.use('/api/articles', articlesRouter);
 app.use('/api/travels', travelsRouter);
 app.use('/api/users', usersRouter);
-
-app.get('/api/articles/published', (req, res) => {
-  Article.getAll(true, allarticles => {
-    res.json(allarticles)
-  })
-})
-
-app.get('/api/assets', (req, res) => {
-  Asset.getAll(allassets => {
-    res.json(allassets)
-  })
-})
-
-app.get('/api/travels/:id/articles', (req, res) => {
-  Article.getAllByTravel(req.params.id, articles => {
-    res.json(articles)
-  })
-})
-
-app.get('/api/articles/:article', (req, res) => {
-  Article.getArticle(false, req.params.article, article => {
-    res.json(article)
-  })
-})
-app.get('/api/articles/published/:article', (req, res) => {
-  Article.getArticle(true, req.params.article, article => {
-    res.json(article)
-  })
-})
-
-/*** POST ***/
-app.post('/api/articles/publish/:id', (req, res) => {
-  Article.publishArticle(req.body.article, req.params.id, results => {
-    res.json(results)
-  })
-})
-
-app.post('/api/assets', upload.any('file'), (req, res, next) => {
-  Asset.uploadAssets(req.files, req.body.infos, result => {
-    res.status(200).json(result);
-  })
-})
-
-// TODO : change post in delete (was there any problem??)
-app.post('/api/assets/delete', (req, res) => {
-  Asset.deleteAssets(req.body.ids, req.body.names, results => {
-    res.status(200).json(results)
-  })
-})
-/*** UPDATE ***/
-app.put('/api/articles/:id', (req, res) => {
-  Article.updateArticle(req.body, req.params.id, article => {
-    res.json(article)
-  })
-})
-
-app.put('/api/assets/:id', (req, res) => {
-  Asset.updateAsset(req.body, req.params.id, asset => {
-    res.json(asset)
-  })
-})
-
-/*** DELETE ***/
-app.delete('/api/articles/:id', (req, res) => {
-  Article.deleteArticle(req.params.id, result => {
-    res.send(result)
-  })
-
-})
-
-app.delete('/api/articles/unpublish/:id', (req, res) => {
-  Article.unpublishArticle(req.params.id, result => {
-    res.send(result)
-  })
-
-})
+app.use('/api/assets', assetsRouter);
 
 
 /*** ANGULAR ONE PAGE APP ***/

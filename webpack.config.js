@@ -93,9 +93,9 @@ const plugins = [
     {from: './admin/js/components/**/*', to: 'admin/components', flatten: true, test: /\.html$/, ignore: [ '*.js' ]},
     {from: './public/js/components/**/*', to: 'public/components', flatten: true, test: /\.html$/, ignore: [ '*.js' ]},
 
-    {from: './admin/vendors/semantic/components/*', to: 'vendors/semantic/components', flatten: true},
-    {from: './admin/vendors/semantic/themes/default/assets/fonts/*', to: 'vendors/semantic/themes/default/assets/fonts', flatten: true},
-    {from: './admin/vendors/semantic/themes/default/assets/images/*', to: 'vendors/semantic/themes/default/assets/images', flatten: true},
+    {from: './admin/vendors/semantic/components/*', to: '/admin/vendors/semantic/components', flatten: true},
+    {from: './admin/vendors/semantic/themes/default/assets/fonts/*', to: 'admin/vendors/semantic/themes/default/assets/fonts', flatten: true},
+    {from: './admin/vendors/semantic/themes/default/assets/images/*', to: 'admin/vendors/semantic/themes/default/assets/images', flatten: true},
   ])
 ]
 

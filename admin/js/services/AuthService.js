@@ -55,3 +55,4 @@ export default class AuthService {
     return JSON.parse(this.$window.localStorage.getItem('user'));
   }
  
+}

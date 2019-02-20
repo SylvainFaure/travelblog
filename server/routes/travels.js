@@ -31,7 +31,12 @@ travels.route('/:id')
       res.send(result);
     })
   })
-
+travels.route('/:id/articles')
+  .get((req, res) => {
+    Travel.getAllArticlesByTravel(req.params.id, articles => {
+      res.json(articles)
+    })
+  })
 travels.route('/published')
   .get((req, res) => {
     Travel.getAll(true, travels => {

@@ -13,6 +13,7 @@ const errorMiddleware = require('./middleware/error');
 
 const articlesRouter = require('./routes/articles');
 const travelsRouter = require('./routes/travels');
+const usersRouter = require('./routes/users');
 
 app.use('/', express.static('admin'));
 
@@ -59,18 +60,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 /*** GET ****/
 app.use('/api/articles', articlesRouter);
 app.use('/api/travels', travelsRouter);
-
-app.get('/api/users', (req, res) => {
-  User.getUsers(users => {
-    res.json(users)
-  })
-})
-
-app.get('/api/users/:user', (req, res) => {
-  User.getUser(req.params.email, user => {
-    res.json(user)
-  })
-})
+app.use('/api/users', usersRouter);
 
 app.get('/api/articles/published', (req, res) => {
   Article.getAll(true, allarticles => {
@@ -102,53 +92,6 @@ app.get('/api/articles/published/:article', (req, res) => {
 })
 
 /*** POST ***/
-
-/* USER AND AUTHENTICATION */
-app.post('/api/users/sendrequest', (req, res) => {
-  User.sendRequest(req.body.email, req.body.role, result => {
-    res.json(result)
-  })
-})
-
-app.post('/api/users/confirmrequest', (req, res) => {
-  User.confirmRequest(req.body.mail, req.body.role, result => {
-    res.json(result)
-  })
-})
-
-app.post('/api/users/refuserequest', (req, res) => {
-  User.refuseRequest(req.body.mail, req.body.role, result => {
-    res.json(result)
-  })
-})
-
-app.post('/api/users/newuser', (req, res) => {
-  User.createNewUser(req.body.user, (result) => {
-    res.json(result)
-  })
-})
-
-app.post('/api/users/signup', (req, res) => {
-  User.signup(req.body.email, req.body.password, (result) => {
-    res.json(result)
-  })
-
-});
-
-app.post('/api/users/signin', (req, res) => {
-  User.signin(req.body.email, req.body.password, (result) => {
-    res.json(result)
-  })
-
-
-});
-
-app.post('/api/users/verifytoken', (req, res) => {
-  User.verifyToken(req.body.token, result => {
-    res.json(result)
-  })
-})
-
 app.post('/api/articles/publish/:id', (req, res) => {
   Article.publishArticle(req.body.article, req.params.id, results => {
     res.json(results)

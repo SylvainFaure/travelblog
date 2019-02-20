@@ -12,14 +12,6 @@ class Article {
 		})
 	}
 
-	static getAllByTravel(travel, cb) {
-		db.query('SELECT * FROM articles WHERE article_travel_id = ?', [travel], function(err, rows){
-			if (err) throw err;
-			var records = JSON.stringify(rows);
-			var articles = JSON.parse(records);
-			cb(articles)
-		})
-	}
 	static getArticle(published, id, cb) {
 		let table = published ? 'published_articles' : 'articles';
 		db.query(`SELECT * FROM ${table} WHERE article_id = ?`, [id], function(err, rows){

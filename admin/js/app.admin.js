@@ -40,7 +40,7 @@ import * as previewEditorComponent from "./components/preview-editor/preview-edi
 import byTag from './filters/tag.filter';
 
 // Style, semantic
-import "../vendors/semantic/components/modal";
+/*import "../vendors/semantic/components/modal";
 import "../vendors/semantic/components/dimmer";
 import "../vendors/semantic/components/transition";
 import "../vendors/semantic/components/progress";
@@ -52,7 +52,7 @@ import '../css/app.admin.scss';
 import '../vendors/semantic/semantic.min.css';
 import '../../node_modules/angular-toastr/dist/angular-toastr.css';
 
-import '../vendors/semantic/themes/default/assets/images/flags.png';
+import '../vendors/semantic/themes/default/assets/images/flags.png';*/
 
 const dependencies = [
   uirouter,

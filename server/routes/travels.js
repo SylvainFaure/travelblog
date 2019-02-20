@@ -27,7 +27,7 @@ travels.route('/:id')
     })
   })
   .delete((req, res) => {
-    Travel.deleteTravel(req.params.id, result => {
+    Travel.deleteTravel(false, req.params.id, result => {
       res.send(result);
     })
   })
@@ -38,6 +38,7 @@ travels.route('/published')
       res.json(travels)
     })
   })
+  // TODO Add delete all
 
 travels.route('/published/:id')
   .get((req, res) => {
@@ -53,6 +54,11 @@ travels.route('/published/:id')
   .put((req, res) => {
     Travel.updateTravel(true, req.body, req.params.id, travel => {
       res.json(travel);
+    })
+  })
+  .delete((req, res) => {
+    Travel.deleteTravel(true, req.params.id, result => {
+      res.send(result);
     })
   })
 

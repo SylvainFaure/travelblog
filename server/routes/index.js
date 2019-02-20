@@ -1,5 +1,3 @@
-'use strict';
-
 const
   articlesRoute = require('./articles'),
   travelsRoute = require('./travels'),
@@ -8,12 +6,12 @@ const
 
 
 function init(server) {
-  server.get('*', function (req, res, next) {
+  server.get('*', (req, res, next) => {
     console.log('Request was made to: ' + req.originalUrl);
     return next();
   });
 
-  server.get('/', function (req, res) {
+  server.get('/', (req, res) => {
     res.redirect('/home');
   });
   
@@ -23,6 +21,4 @@ function init(server) {
   server.use('/api/users', usersRoute);
 }
 
-module.exports = {
-  init
-};
+module.exports = init;

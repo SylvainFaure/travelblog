@@ -64,10 +64,10 @@ app.use('/api/assets', assetsRouter);
 app.get('*', (req, res) => {
   var firstIndex = req.get('host').indexOf('.');
   var subdomain = req.get('host').substr(0, firstIndex).toLowerCase();
-  if (subdomain === '' && req.url.indexOf('.') === -1 && req.url.indexOf('json') == -1) {
+  if (subdomain === '' || subdomain === 'infinite-plateau-63225' && req.url.indexOf('.') === -1 && req.url.indexOf('json') == -1) {
     console.log('Public: %s', req.url)
     res.sendFile(path.join(__dirname, '../public', 'index.html'));
-  } else if (subdomain === 'admin' && req.url.indexOf('.') === -1 && req.url.indexOf('json') == -1){
+  } else if (subdomain.indexOf('admin') !== -1 && req.url.indexOf('.') === -1 && req.url.indexOf('json') == -1){
     console.log('Admin: %s', req.url)
     res.sendFile(path.join(__dirname, '../admin/js', 'index.html'));
   } else {

@@ -53,7 +53,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server/app.js",
+    "start": "node dist/server/app.js",
     "dev": "cross-env NODE_ENV=development env-cmd .env nodemon --inspect server/app.js",
     "build": "cross-env NODE_ENV=production env-cmd .env webpack",
     "postinstall": "npm run build"

@@ -96,6 +96,7 @@ const plugins = [
     {from: './admin/vendors/semantic/components/*', to: 'admin/vendors/semantic/components', flatten: true},
     {from: './admin/vendors/semantic/themes/default/assets/fonts/*', to: 'admin/vendors/semantic/themes/default/assets/fonts', flatten: true},
     {from: './admin/vendors/semantic/themes/default/assets/images/*', to: 'admin/vendors/semantic/themes/default/assets/images', flatten: true},
+    {from: './server', to: 'server'}
   ])
 ]
 

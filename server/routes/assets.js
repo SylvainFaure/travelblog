@@ -1,7 +1,7 @@
 const express = require('express')
 const assets = express.Router()
 const Asset = require('../models/asset');
-const upload = require('./config/storage');
+const upload = require('../config/storage');
 
 assets.route('/')
   .get((req, res) => {

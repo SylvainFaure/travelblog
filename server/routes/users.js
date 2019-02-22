@@ -15,7 +15,7 @@ users.route('/')
   })
   // TODO - Add a delete route
 
-users.route('/:id')
+users.route('/:id([0-9]+)')
   .get((req, res) => {
     User.getUser(req.params.id, user => {
       res.json(user);

@@ -16,7 +16,7 @@ assets.route('/')
   })
   // TODO - Add a delete route
 
-assets.route('/:id')
+assets.route('/:id([0-9]+)')
   .get((req, res) => {
     // ROUTE TO WRITE (if needed)
   })

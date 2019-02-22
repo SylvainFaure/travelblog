@@ -15,7 +15,7 @@ travels.route('/')
   })
   // TODO - Add a delete route
 
-travels.route('/:id')
+travels.route('/:id([0-9]+)')
   .get((req, res) => {
     Travel.getTravel(false, req.params.travel, travel => {
       res.json(travel)
@@ -31,7 +31,7 @@ travels.route('/:id')
       res.send(result);
     })
   })
-travels.route('/:id/articles')
+travels.route('/:id([0-9]+)/articles')
   .get((req, res) => {
     Travel.getAllArticlesByTravel(req.params.id, articles => {
       res.json(articles)
@@ -45,7 +45,7 @@ travels.route('/published')
   })
   // TODO Add delete all
 
-travels.route('/published/:id')
+travels.route('/published/:id([0-9]+)')
   .get((req, res) => {
     Travel.getTravel(true, req.params.travel, travel => {
       res.json(travel)

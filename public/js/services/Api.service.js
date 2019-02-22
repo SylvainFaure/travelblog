@@ -12,7 +12,7 @@ export default class ApiService {
   }
 
   getTravels() {
-    return this.$http.get(this.BASE_PATH + '/api/travels').then(resp => {
+    return this.$http.get(this.BASE_PATH + '/api/travels/published').then(resp => {
       return resp.data
     });
   }

@@ -1,7 +1,6 @@
 import * as angular from "angular";
 import uiRouter from '@uirouter/angularjs';
 
-import _ from 'lodash';
 import ngmap from 'ngmap';
 import $ from "jquery";
 global.$ = global.jQuery = $;
@@ -29,7 +28,6 @@ const dependencies = [
 ]
 
 angular.module('CartesDeVoyage', dependencies)
-  .constant('_', window._)
   .service('ApiService', ApiService)
   .config(Router)
   .controller('HomeController', HomeController)

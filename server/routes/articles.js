@@ -15,7 +15,7 @@ articles.route('/')
   })
   // TODO - Add a delete route
 
-articles.route('/:id')
+articles.route('/:id([0-9]+)')
   .get((req, res) => {
     Article.getArticle(false, req.params.article, article => {
       res.json(article)
@@ -40,7 +40,7 @@ articles.route('/published')
   })
   // TODO Add delete all
 
-articles.route('/published/:id')
+articles.route('/published/:id([0-9]+)')
   .get((req, res) => {
     Article.getArticle(true, req.params.article, article => {
       res.json(article)

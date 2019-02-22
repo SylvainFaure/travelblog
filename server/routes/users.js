@@ -1,6 +1,7 @@
 const express = require('express')
 const users = express.Router()
 const User = require('../models/user');
+const validate = require('../validators/user.validator');
 
 users.route('/')
   .get((req, res) => {
@@ -49,9 +50,15 @@ users.route('/verifytoken')
 
 users.route('/signin')
   .post((req, res) => {
-    User.signin(req.body.email, req.body.password, (result) => {
-      res.json(result)
-    })
+    validate(req.body, 'signin')
+      .then((value) => {
+        User.signin(req.body.email, req.body.password, (result) => {
+          res.json(result);
+        })
+      })
+      .catch((err) => {
+        res.json(err);
+      })
   })
   
 users.route('/signup')

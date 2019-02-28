@@ -1,9 +1,10 @@
 const db = require('../db.js');
-const multer  = require('multer');
-//const upload = multer({ dest: '../public/assets/img/' });
 const fs = require('fs');
 const sharp = require('sharp');
+const request = require('request');
+// const upload = require('../config/storage').uploadThumb;
 const path = require('path');
+const aws = require('../config/aws');
 sharp.cache( { files: 0 } );
 
 class Asset {
@@ -39,11 +40,14 @@ class Asset {
 		for (var i = 0; i < assets.length; i++) {
 			console.log(assets)
 			console.log(data)
+			/* Multer doesn't return the same object if used with AWS S3 */
+			const name = assets[i].key ? assets[i].key.split('/')[1] : assets[i].filename; 
+			const src = assets[i].location ? assets[i].location : assets[i].filename;
 			var asset = {
 				asset_title_fr: data[i].title_fr,
 				asset_title_it: data[i].title_it,
-				asset_name: assets[i].filename,
-				asset_src: assets[i].filename,
+				asset_name: name,
+				asset_src: src,
 				asset_cover: false,
 				asset_place_it: data[i].place_it,
 				asset_place_fr: data[i].place_fr,
@@ -59,20 +63,45 @@ class Asset {
 				results.push(result)
 			});
 
-			//this.resizeAsset(asset)
+			this.resizeAsset(asset)
 		}
     cb(results)
 	}
 
 	static resizeAsset(asset) {
-		console.log(asset.asset_name)
-		sharp('public/assets/img/' + asset.asset_name)
+		
+		const fileUrl = `${process.env.AWS_BUCKET_PATH}img/${asset.asset_name}`;
+		request(fileUrl, (error, response, body) => {
+			
+			const s3 = new aws.S3();
+			const resizedImage = sharp(body).resize(500)
+			console.log(typeof resizedImage)
+			resizedImage
+				.toBuffer()
+				.then((output) => {
+					console.log(output)
+					const params = {
+						Bucket: process.env.S3_BUCKET_NAME,
+						Key: `thumb/mini_${asset.asset_name}`,
+						Body: output
+					}
+					s3.upload(params, (err, data) => {
+						if (err) console.log(err)
+						console.log(data)
+					})	
+				})
+				.catch(err => console.log(err))
+		
+		})
+		
+		/*console.log(asset.asset_name)
+		sharp('admin/assets/img/' + asset.asset_name)
 			.resize(500)
-			.toFile('public/assets/thumb/mini_' + asset.asset_name, function(err, info){
+			.toFile('admin/assets/thumb/mini_' + asset.asset_name, function(err, info){
 				if (err) { throw err }
 				console.log(info)
 			})
-			
+			*/
 	}
 
 	static updateAsset(asset, id, cb) {
@@ -92,10 +121,10 @@ class Asset {
 				if (error) throw error
 				results.push(result)
 			})
-			fs.unlinkSync('public/assets/img/' + name, function(err){
+			fs.unlinkSync('admin/assets/img/' + name, function(err){
 				if (err) throw err
 			})
-			fs.unlinkSync('public/assets/thumb/mini_' + name, function(err){
+			fs.unlinkSync('admin/assets/thumb/mini_' + name, function(err){
 				if (err) throw err
 			})
 		}

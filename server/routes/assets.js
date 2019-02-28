@@ -25,15 +25,14 @@ assets.route('/:id([0-9]+)')
       res.json(asset)
     })
   })
-  .delete((req, res) => {
+  /*.delete((req, res) => {
     Travel.deleteTravel(false, req.params.id, result => {
       res.send(result);
     })
-  })
+  })*/
 
-// TODO : change post in delete (was there any problem??)
 assets.route('/delete')
-  .delete((req, res) => {
+  .post((req, res) => {
     Asset.deleteAssets(req.body.ids, req.body.names, results => {
       res.json(results)
     })

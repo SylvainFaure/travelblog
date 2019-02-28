@@ -1,16 +1,16 @@
-import Joi from 'joi';
-import userSchema from './schemas/user.schema';
+const joi = require('joi');
+const userSchema = require('./schemas/user.schema') ;
 
 validate = (value, method) => {  
  const schema = {
   body: userSchema[method]
  }
  return new Promise((res, rej) => {
-   Joi.validate(value, schema, (err, value) => {
+   joi.validate(value, schema.body, (err, value) => {
      if (!err) {
-      resolve(value);
+      res(value);
      } else {
-      reject(err);
+      rej(err);
      }
    })  
  })

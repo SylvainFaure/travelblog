@@ -81,7 +81,7 @@ export default class ApiService {
  }
 
  assetsDelete(ids, names) {
-  return this.$http.post(this.BASE_PATH + 'api/delete-assets', {ids: ids, names: names}); 
+  return this.$http.post(this.BASE_PATH + 'api/assets/delete', {ids: ids, names: names}); 
  }
 
  assetUpdate (asset, id) {

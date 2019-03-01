@@ -34,7 +34,8 @@ class Mail {
   static sendMail(superAdmin, emailTo, params) { 
   /* params = {
       type = 'sendRequest' | 'confirmRequest' | 'refuseRequest' | 'add/publish/Article/Travel',
-      requestedRole = 'visitor', etc
+      requestedRole = 'visitor', etc,
+      email = string
      }
   */ 
     const getSmtpTransport = new Promise((resolve, reject) => {
@@ -43,7 +44,7 @@ class Mail {
     getSmtpTransport()
       .then(smtpTransport => {
         const emailTemplate = mailConstructor.getMailTemplate(params)
-        const mailOptions = mailConstructor.mailOptions(email, role, admin.user_email, emailTemplate);
+        const mailOptions = mailConstructor.mailOptions(email, admin.user_email, emailTemplate);
 				smtpTransport.sendMail(mailOptions, (error, info) => {
 					if (error) throw error
 					smtpTransport.close();

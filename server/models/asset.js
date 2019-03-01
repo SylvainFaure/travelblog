@@ -5,6 +5,7 @@ const request = require('request');
 // const upload = require('../config/storage').uploadThumb;
 const path = require('path');
 const aws = require('../config/aws');
+const stream = require('stream');
 sharp.cache( { files: 0 } );
 
 class Asset {
@@ -75,12 +76,13 @@ class Asset {
 			
 			const s3 = new aws.S3();
 			const resizedImage = sharp(body).resize(500)
-			console.log(typeof sharp(resizedImage))
-			sharp(resizedImage)
-				.toBuffer()
-				.then((output) => {
-					console.log(output)
-					const params = {
+			
+      /** TO TRY **/
+      /** https://stackoverflow.com/questions/37336050/pipe-a-stream-to-s3-upload **/ 
+			resizedImage
+        .pipe(() => {
+          var pass = new stream.PassThrough();
+          const params = {
 						Bucket: process.env.S3_BUCKET_NAME,
 						Key: `thumb/mini_${asset.asset_name}`,
 						Body: output
@@ -88,11 +90,9 @@ class Asset {
 					s3.upload(params, (err, data) => {
 						if (err) console.log(err)
 						console.log(data)
-					})	
-				})
-				.catch(err => console.log(err))
-		
-		})
+					});
+          return pass;
+        })
 		
 		/*console.log(asset.asset_name)
 		sharp('admin/assets/img/' + asset.asset_name)

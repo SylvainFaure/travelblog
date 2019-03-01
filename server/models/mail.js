@@ -4,7 +4,7 @@ const OAuth2 = google.auth.OAuth2;
 const mailConstructor = require('../mail/mail-constructor');
 
 class Mail {
-  static setupMail(admin) {
+  static setupMail(admin) { 
     const oauth2Client = new OAuth2(
 				process.env.G_CLIENT_ID,
 				process.env.G_CLIENT_SECRET, 

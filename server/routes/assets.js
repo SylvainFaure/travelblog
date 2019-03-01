@@ -18,18 +18,15 @@ assets.route('/')
 
 assets.route('/:id([0-9]+)')
   .get((req, res) => {
-    // ROUTE TO WRITE (if needed)
+    Asset.getAsset(req.params.id, asset => {
+      res.json(asset)
+    })
   })
   .put((req, res) => {
     Asset.updateAsset(req.body, req.params.id, asset => {
       res.json(asset)
     })
   })
-  /*.delete((req, res) => {
-    Travel.deleteTravel(false, req.params.id, result => {
-      res.send(result);
-    })
-  })*/
 
 assets.route('/delete')
   .post((req, res) => {

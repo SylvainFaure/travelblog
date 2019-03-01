@@ -8,15 +8,15 @@ class MailConstructor {
      text: ''
     }
     switch (type) {
-      case 'sendRequest':
+      case 'request':
         subject.subject = 'New request user for Travel blog'
         subject.text = 'You have a request for a new user'
         break;
-      case 'confirmRequest':
+      case 'confirm':
         subject.subject = 'Your request has been confirmed'
         subject.text = 'Your request has been confirmed by the team !'
         break;
-      case 'refuseRequest':
+      case 'refuse':
         subject.subject = 'Sorry but your request has been rejected'
         subject.text = 'You request for travel blog has been rejected'
         break;
@@ -36,13 +36,13 @@ class MailConstructor {
   
   static getMailTemplate(params) {
     switch (params.type) {
-      case 'sendRequest':
+      case 'request':
         return this.getSendRequestTemplate(params.email, params.requestedRole)
         break;
-      case 'confirmRequest':
+      case 'confirm':
         return this.getConfirmRequestTemplate(params.email, params.requestedRole)
         break;
-      case 'refuseRequest':
+      case 'refuse':
         return this.getRefuseRequestTemplate(params.email, params.requestedRole)
         break;
       default:

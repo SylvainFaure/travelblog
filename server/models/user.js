@@ -1,8 +1,5 @@
 const db = require('../db.js');
-const mail = require ('../mail.js');
-const nodemailer = require('nodemailer');
-const { google } = require("googleapis");
-const OAuth2 = google.auth.OAuth2;
+const Mail = require ('../mail.js');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
@@ -168,57 +165,16 @@ class User {
 		})
  }
 	static userRequest(type, email, role, cb) {
-		// TO REFACTOR WHEN WRITING CONFIRM AND REFUSE
-		if (type == 'request') {
-			this.sendRequest(email, role, cb);
+		// TO TEST
+		const params = {
+		  type: type,
+	  	requestedRole: role,
+	    email: email
 		}
-		if (type == 'confirm') {
-			this.confirmRequest(email, role, cb);
-		}
-		if (type == 'refuse') {
-			this.refuseRequest(email, role, cb);
-		}
-	}
-	static sendRequest(email, role, cb) {
-		this.getSuperAdmin(admin => {
-			const oauth2Client = new OAuth2(
-				process.env.G_CLIENT_ID,
-				process.env.G_CLIENT_SECRET, 
-				process.env.G_REDIRECT_URL
-			);
-			
-			oauth2Client.setCredentials({
-				refresh_token: process.env.G_REFRESH_TOKEN
-			});
-			oauth2Client.getAccessToken((err, accessToken) => {
-				if (err) throw err;
-				const smtpTransport = nodemailer.createTransport({
-					service: "gmail",
-					auth: {
-							 type: "OAuth2",
-							 user: admin.user_email, 
-							 clientId: process.env.G_CLIENT_ID,
-							 clientSecret: process.env.G_CLIENT_SECRET,
-							 refreshToken: process.env.G_REFRESH_TOKEN,
-							 accessToken: accessToken
-					}
-				 });
-				const mailOptions = mail.mailOptions(email, role, admin.user_email);
-				smtpTransport.sendMail(mailOptions, (error, info) => {
-					if (error) throw error
-					smtpTransport.close();
-					cb(info)
-				});
-			})
-		})	
-	}
-
-	static confirmRequest(email, role, cb) {
-		// appeler une méthode sendMail où juste les options changent
-	}
+		this.getSuperAdmin((admin) => {
+			Mail.sendMail(admin, email, params)
+		})
 	
-	static refuseRequest(email, role, cb) {
-		// appeler une méthode sendMail où juste les options changent
 	}
 
 	static verifyToken(token, cb) {

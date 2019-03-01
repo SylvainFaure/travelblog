@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
-const mailConstructor = require(../mail/mail-constructor);
+const mailConstructor = require('../mail/mail-constructor');
 
 class Mail {
   static setupMail(admin) {

@@ -4,9 +4,9 @@ module.exports = function (req, res, next) {
   let shouldVerifyToken = true;
   if (
       (req.method == 'GET' && req.url.indexOf('users') == -1) || // all GET excepts for users
-      (req.url.indexOf('users/request') !== -1 && req.body.type == 'request') || // first user request
-      (req.url.indexOf('signin') !== -1) || // user not yet authenticated
-      (req.url.indexOf('signup') !== -1) // user is not fully registered
+      (req.method == 'POST' && req.url.indexOf('users/request') !== -1 && req.body.type == 'request') || // first user request
+      (req.method == 'POST' && req.url.indexOf('signin') !== -1) || // user not yet authenticated
+      (req.method == 'POST' && req.url.indexOf('signup') !== -1) // user is not fully registered
      ) {
     shouldVerifyToken = false;
   }

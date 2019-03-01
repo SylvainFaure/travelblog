@@ -12,7 +12,7 @@ class Travel {
 		})
 	}
 
-	static getTravel(travel, cb) {
+	static getTravel(published, travel, cb) {
 		let table = published ? 'published_travels' : 'travels';
 		db.query(`SELECT * FROM ${table} WHERE travel_id = ?`, [travel], (err, rows) => {
 			if (err) throw err;
@@ -22,7 +22,7 @@ class Travel {
 		})
 	}
 
-	static addTravel(travel, cb) {
+	static addTravel(published, travel, cb) {
 		let table = published ? 'published_travels' : 'travels';
 		db.query(`INSERT INTO ${table} SET ?`, travel, (err, results, fields) => { 
 			if (err) throw err;

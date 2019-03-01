@@ -6,4 +6,3 @@ __git
 admin/assets/
 admin/vendors/
 public/img/
-server/mail.js

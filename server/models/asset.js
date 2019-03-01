@@ -75,8 +75,8 @@ class Asset {
 			
 			const s3 = new aws.S3();
 			const resizedImage = sharp(body).resize(500)
-			console.log(typeof resizedImage)
-			resizedImage
+			console.log(typeof sharp(resizedImage))
+			sharp(resizedImage)
 				.toBuffer()
 				.then((output) => {
 					console.log(output)

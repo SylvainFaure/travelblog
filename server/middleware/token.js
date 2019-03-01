@@ -1,6 +1,17 @@
 module.exports = function (req, res, next) {
   const token = req.headers['x-access-token'];
-  if (req.url.indexOf('users') == -1 && token) {
+  
+  let shouldVerifyToken = true;
+  if (
+      (req.method == 'GET' && req.url.indexOf('users') == -1) || // all GET excepts for users
+      (req.url.indexOf('users/request') !== -1 && req.body.type == 'request') || // first user request
+      (req.url.indexOf('signin') !== -1) || // user not yet authenticated
+      (req.url.indexOf('signup') !== -1) // user is not fully registered
+     ) {
+    shouldVerifyToken = false;
+  }
+  
+  if (shouldVerifyToken && token) {
     User.verifyToken(token, response => {
       if (response.name == "JsonWebTokenError") {
         res.status(401).json({

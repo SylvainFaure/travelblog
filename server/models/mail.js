@@ -31,15 +31,18 @@ class Mail {
     });
   }
   
-  static sendMail(superAdmin, emailTo, type) { 
-  // type = 'sendRequest' | 'confirmRequest' | 'refuseRequest' | 'add/publish/Article/Travel'
-    
+  static sendMail(superAdmin, emailTo, params) { 
+  /* params = {
+      type = 'sendRequest' | 'confirmRequest' | 'refuseRequest' | 'add/publish/Article/Travel',
+      requestedRole = 'visitor', etc
+     }
+  */ 
     const getSmtpTransport = new Promise((resolve, reject) => {
       resolve(this.setupMail(superAdmin))
     })
     getSmtpTransport()
       .then(smtpTransport => {
-        const emailTemplate = mailConstructor.getMailTemplate()
+        const emailTemplate = mailConstructor.getMailTemplate(params)
         const mailOptions = mailConstructor.mailOptions(email, role, admin.user_email, emailTemplate);
 				smtpTransport.sendMail(mailOptions, (error, info) => {
 					if (error) throw error

@@ -40,16 +40,16 @@ import * as previewEditorComponent from "./components/preview-editor/preview-edi
 import byTag from './filters/tag.filter';
 
 // Style, semantic
-import "../vendors/semantic/components/modal";
+/*import "../vendors/semantic/components/modal";
 import "../vendors/semantic/components/dimmer";
 import "../vendors/semantic/components/transition";
 import "../vendors/semantic/components/progress";
 import "../vendors/semantic/components/accordion";
 import "../vendors/semantic/components/popup";
-import "../vendors/semantic/components/calendar";
+import "../vendors/semantic/components/calendar";*/
 
 import '../css/app.admin.scss';
-import '../vendors/semantic/semantic.min.css';
+//import '../vendors/semantic/semantic.min.css';
 import '../../node_modules/angular-toastr/dist/angular-toastr.css';
 
 import '../vendors/semantic/themes/default/assets/images/flags.png';

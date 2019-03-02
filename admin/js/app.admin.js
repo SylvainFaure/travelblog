@@ -52,7 +52,7 @@ import '../css/app.admin.scss';
 //import '../vendors/semantic/semantic.min.css';
 import '../../node_modules/angular-toastr/dist/angular-toastr.css';
 
-import '../vendors/semantic/themes/default/assets/images/flags.png';
+//import '../vendors/semantic/themes/default/assets/images/flags.png';
 
 const dependencies = [
   uirouter,

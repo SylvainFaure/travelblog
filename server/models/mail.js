@@ -51,8 +51,6 @@ class Mail {
 					cb(info)
 				});
 			})
-     })
-		  
   }
 }
 

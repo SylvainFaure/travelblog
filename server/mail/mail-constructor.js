@@ -248,4 +248,4 @@ class MailConstructor {
 
 }
 
-module.exports = mail;
+module.exports = MailConstructor;

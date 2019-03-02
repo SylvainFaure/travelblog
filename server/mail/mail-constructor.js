@@ -1,5 +1,5 @@
 const BASE_PATH = process.env.BASE_PATH;
-const elements = require('elements');
+const elements = require('./elements');
 
 class MailConstructor {
   static getMailOptions(fromEmail, toEmail, type, template) {

@@ -102,6 +102,7 @@ class Asset {
 				console.log(info)
 			})
 			*/
+		})
 	}
 
 	static updateAsset(asset, id, cb) {

@@ -14,7 +14,7 @@ class User {
 	}
 	
 	static getUser(email, cb) {
-		db.query('SELECT * FROM users where user_email = ?', [email], (err, rows) => {
+		db.query('SELECT * FROM `users` WHERE `user_email` = ?', [email], (err, rows) => {
 			if (err) throw err;
 			var records = JSON.stringify(rows[0]);
 			var user = JSON.parse(records);
@@ -23,7 +23,7 @@ class User {
 	}
 	
 	static updateUser(user, id, cb) { // saveUserPwd??
-		db.query('UPDATE users SET ? where user_id = ?', [user, id], (err, rows) => {
+		db.query('UPDATE `users` SET ? WHERE `user_id` = ?', [user, id], (err, rows) => {
 			if (err) throw err;
 			var records = JSON.stringify(rows[0]);
 			var user = JSON.parse(records);
@@ -32,7 +32,7 @@ class User {
 	}
 	
 	static deleteUser(id, cb) {
-		db.query('DELETE FROM users where user_id = ?', [id], (err, rows) => {
+		db.query('DELETE FROM `users` WHERE `user_id` = ?', [id], (err, rows) => {
 			if (err) throw err;
 			var records = JSON.stringify(rows[0]);
 			var user = JSON.parse(records);
@@ -138,7 +138,7 @@ class User {
 				user_password: '',
 				user_username: _user.email
 	   }
-	   db.query('INSERT INTO users SET ?', user, (err, results) => {
+	   db.query('INSERT INTO `users` SET ?', user, (err, results) => {
 			if (err) throw err;
 			cb(results)			
 	   })	
@@ -150,14 +150,14 @@ class User {
 			user_role: user.user_role,
       user_password: pwd
 	   }
-	   db.query('UPDATE users SET ? WHERE user_email = ?', [userToSave, user.user_email], (err, results) => {
+	   db.query('UPDATE `users` SET ? WHERE `user_email` = ?', [userToSave, user.user_email], (err, results) => {
 	  	if (err) throw err;
 			cb(results)
 	   })
 	}
 
 	static getSuperAdmin(cb) {
-		db.query('SELECT * from users WHERE user_role = "superadmin"', (err, rows) => {
+		db.query('SELECT * from `users` WHERE `user_role` = "superadmin"', (err, rows) => {
 			if (err) throw err;
 		  var records = JSON.stringify(rows[0]);
 			var users = JSON.parse(records);

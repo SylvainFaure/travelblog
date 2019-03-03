@@ -10,22 +10,29 @@ users.route('/')
     })
   })
   .post((req, res) => {
-    User.createNewUser(req.body.user, (result) => {
-      res.json(result);
-    })
+    validate(req.body.user, 'create')
+      .then((value) => {
+        User.createNewUser(req.body.user, (result) => {
+          res.json(result);
+        })
+      })
+      .catch(err => {
+        res.json(err)
+      })
   })
   // TODO - Add a delete route
 
 users.route('/:id([0-9]+)')
   .get((req, res) => {
-    User.getUser(req.params.id, user => {
+    User.getUserById(req.params.id, user => {
       res.json(user);
     })
   })
   .put((req, res) => {
-    User.updateUser(req.params.id, user => {
+    // see utility before validating
+    /*User.updateUser(req.params.id, user => {
       res.json(user);
-    })
+    })*/
   })
   .delete((req, res) => {
    User.deleteUser(req.params.id, user => {
@@ -36,16 +43,28 @@ users.route('/:id([0-9]+)')
 users.route('/request')
   .post((req, res) => {
     // 'request' | 'confirm' | 'refuse'
-    User.userRequest(req.body.type, req.body.mail, req.body.role, result => {
-      res.json(result);
-    })
+    validate(req.body, 'request')
+      .then((value) => {
+        User.userRequest(req.body.type, req.body.email, req.body.role, result => {
+          res.json(result);
+        })
+      })
+      .catch(err => {
+        res.json(err)
+      })
   })
 
 users.route('/verifytoken')
   .post((req, res) => {
-    User.verifyToken(req.body.token, result => {
-      res.json(result)
-    })
+    validate(req.body, 'token')
+      .then((value) => {
+        User.verifyToken(req.body.token, result => {
+          res.json(result)
+        })
+      })
+      .catch((err) => {
+        res.json(err)
+      })
   })
 
 users.route('/signin')
@@ -63,9 +82,17 @@ users.route('/signin')
   
 users.route('/signup')
   .post((req, res) => {
-    User.signup(req.body.email, req.body.password, (result) => {
-      res.json(result)
-    })
+    validate(req.body, 'signup')
+      .then((value) => {
+        User.signup(req.body.email, req.body.password, (result) => {
+          res.json(result);
+        })
+      })
+      .catch((err) => {
+        res.json(err);
+      })
   })
+
+  /**TODO: differenciate the signup and the change password route, its not secure */
 
 module.exports = users

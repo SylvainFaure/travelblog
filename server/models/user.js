@@ -13,11 +13,11 @@ class User {
 		})
 	}
 	
-	static getUser(email, cb) {
-		db.query('SELECT * FROM `users` WHERE `user_email` = ?', [email], (err, rows) => {
+	static getUserById(id, cb) {
+		db.query('SELECT * FROM `users` WHERE `user_id` = ?', [id], (err, rows) => {
 			if (err) throw err;
 			var records = JSON.stringify(rows[0]);
-			var user = JSON.parse(records);
+			var user = records == undefined ? {status: 500, error: 'No such user in database'} : JSON.parse(records);
 			cb(user)
 		})
 	}
@@ -33,6 +33,7 @@ class User {
 	
 	static deleteUser(id, cb) {
 		db.query('DELETE FROM `users` WHERE `user_id` = ?', [id], (err, rows) => {
+			// ADD VERIFICATION
 			if (err) throw err;
 			var records = JSON.stringify(rows[0]);
 			var user = JSON.parse(records);
@@ -45,11 +46,11 @@ class User {
 	  
 	  this.getUsers(users => {
 		const userAlreadyRegistered = users.filter(u => {
-			return u.email == user.email
+			return u.user_email == user.email
 		}) 
 		if (userAlreadyRegistered.length) {
-			res.json({
-				error: 'Already registered'
+			cb({
+				error: 'This user is already registered'
 			})
 		} else {
 			User.postUser(user, result => {
@@ -64,11 +65,11 @@ class User {
 		 	let user = users.filter(u => {
 				return u.user_email == email
 			})
-			if (user) {
+			if (user && user.length) {
 				user = user[0];
 				bcrypt.hash(password, 12, (err, hash) => {
 				 if (err) {
-					 return JSON.stringify({
+					 cb({
 							status: 500,
 					 		error: 'There was an error during the creation of the password'
 					 });
@@ -81,10 +82,10 @@ class User {
 				})
 			/* If not redirect to send request to admin */
 			} else {
-				 return JSON.stringify({
-					 status: 500,
-					 error: 'No such user in database'
-				 });
+				 cb({
+					status: 500,
+					error: 'No such user in database'
+				})
 			}
 	 })
 	}
@@ -171,8 +172,11 @@ class User {
 	  	requestedRole: role,
 	    email: email
 		}
+		// Handle confirm (and refuse) for db
 		this.getSuperAdmin((admin) => {
-			Mail.sendMail(admin, email, params)
+			Mail.sendMail(admin.user_email, params, (res) => {
+				cb(res)
+			})
 		})
 	
 	}

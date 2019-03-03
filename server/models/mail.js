@@ -4,7 +4,7 @@ const OAuth2 = google.auth.OAuth2;
 const mailConstructor = require('../mail/mail-constructor');
 
 class Mail {
-  static setupMail(admin) { 
+  static setupMail(adminMail, cb) { 
     const oauth2Client = new OAuth2(
 				process.env.G_CLIENT_ID,
 				process.env.G_CLIENT_SECRET, 
@@ -20,37 +20,52 @@ class Mail {
 				service: "gmail",
 				auth: {
 					type: "OAuth2",
-					user: admin.user_email, 
+					user: adminMail, 
 					clientId: process.env.G_CLIENT_ID,
 					clientSecret: process.env.G_CLIENT_SECRET,
 					refreshToken: process.env.G_REFRESH_TOKEN,
 					accessToken: accessToken
 				}
 		  });
-      return smtpTransport
+      cb(smtpTransport) 
     });
   }
   
-  static sendMail(superAdmin, emailTo, params) { 
+  static sendMail(adminMail, params, cb) { 
   /* params = {
-      type = 'sendRequest' | 'confirmRequest' | 'refuseRequest' | 'add/publish/Article/Travel',
+      type = 'request' | 'confirm' | 'refuse' | 'add/publish/Article/Travel',
       requestedRole = 'visitor', etc,
       email = string
      }
   */ 
-    const getSmtpTransport = new Promise((resolve, reject) => {
-      resolve(this.setupMail(superAdmin))
-    })
-    getSmtpTransport()
-      .then(smtpTransport => {
-        const emailTemplate = mailConstructor.getMailTemplate(params)
-        const mailOptions = mailConstructor.mailOptions(email, admin.user_email, emailTemplate);
-				smtpTransport.sendMail(mailOptions, (error, info) => {
-					if (error) throw error
-					smtpTransport.close();
-					cb(info)
-				});
-			})
+	let emailFrom = params.email;
+	let emailTo = adminMail;
+	if (params.type !== 'request') {
+		emailTo = params.email;
+		emailFrom = adminMail;
+	}
+	const getSmtpTransport = new Promise((resolve, reject) => {
+		this.setupMail(adminMail, (resp) => {
+			if (resp) {
+				resolve(resp)
+			} else {
+				reject('There was a problem during the creation of the mail')
+			}
+		});
+	})
+	getSmtpTransport
+		.then(smtpTransport => {
+			const emailTemplate = mailConstructor.getMailTemplate(params)
+			const mailOptions = mailConstructor.getMailOptions(emailFrom, emailTo, params.type, emailTemplate);
+			smtpTransport.sendMail(mailOptions, (error, info) => {
+				if (error) throw error
+				smtpTransport.close();
+				cb(info)
+			});
+		})
+		.catch(err => {
+			cb(err)
+		})
   }
 }
 

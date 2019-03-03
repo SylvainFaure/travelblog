@@ -17,7 +17,7 @@ export default class AuthService {
   }
  
   sendRequest (requestType, email, role) {
-   return this.$http.post(this.BASE_PATH + 'api/users/request', requestType, {email: email, role: role});   
+   return this.$http.post(this.BASE_PATH + 'api/users/request', {type: requestType, email: email, role: role});   
   }
  
   loginLogout () {

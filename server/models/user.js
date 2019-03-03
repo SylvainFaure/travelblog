@@ -173,6 +173,7 @@ class User {
 	    email: email
 		}
 		// Handle confirm (and refuse) for db
+		// verify if this user is superadmin
 		this.getSuperAdmin((admin) => {
 			Mail.sendMail(admin.user_email, params, (res) => {
 				cb(res)

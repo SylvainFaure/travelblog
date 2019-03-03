@@ -43,15 +43,14 @@ if (app.get("env") !== "development") {
 }
 
 /** MIDDLEWARES **/
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(tokenMiddleware);
 app.use(errorMiddleware);
 
 if (app.get("env") === 'development') {
   app.use(corsMiddleware);
 }
-
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
 
 /*** ROUTES ****/
 app.use('/api/articles', articlesRouter);

@@ -26,7 +26,10 @@ class MailConstructor {
         
     }
     return {
-      from: fromEmail,
+      from: {
+        name: process.env.SITENAME,
+        address: fromEmail
+      },
       to: toEmail,
       subject: subject.subject,
       text: subject.text,

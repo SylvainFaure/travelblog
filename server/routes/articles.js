@@ -1,6 +1,7 @@
 const express = require('express')
 const articles = express.Router()
 const Article = require('../models/article');
+const validate = require('../validators/validator');
 
 articles.route('/')
   .get((req, res) => {
@@ -9,9 +10,15 @@ articles.route('/')
     })
   })
   .post((req, res) => {
-    Article.postArticle(false, req.body, results =>{
-      res.json(results)
-    })
+    validate(req.body, 'article', 'create')
+      .then((value) => {
+        Article.postArticle(req.body, results =>{
+          res.json(results)
+        })
+      })
+      .catch(err => {
+        res.json(err)
+      })
   })
   // TODO - Add a delete route
 

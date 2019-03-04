@@ -95,7 +95,7 @@ class User {
 		 	let user = users.filter((user) => {
 				return user.user_email == email
 			})
-			if (user && user != undefined) {
+			if (user.length && user != undefined) {
 				user = user[0];
 				var response;
 				bcrypt.compare(password, user.user_password, (err, result) => {

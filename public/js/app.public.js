@@ -15,6 +15,7 @@ import Router from "./app.route";
 import HomeController from './controllers/home.controller';
 import TravelController from "./controllers/travel.controller";
 import PostController from "./controllers/post.controller";
+import GalleryController from "./controllers/gallery.controller";
 
 // Components
 import * as changeLangComp from "./components/changeLang/changeLang.component"
@@ -33,4 +34,5 @@ angular.module('CartesDeVoyage', dependencies)
   .controller('HomeController', HomeController)
   .controller('TravelController', TravelController)
   .controller('PostController', PostController)
+  .controller('GalleryController', GalleryController)
   .component('changeLang', changeLangComp.changeLangComponent)

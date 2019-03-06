@@ -31,12 +31,29 @@ export default function Router ($stateProvider, $urlRouterProvider) {
       controller: "PostController",
       controllerAs: "vm",
       resolve: {
-        post: function(ApiService, $stateParams) {
+        post: (ApiService, $stateParams) => {
           return ApiService.getArticleDetail($stateParams.post);
         },
-        travel: function($stateParams){
+        travel: ($stateParams) => {
           return $stateParams.travel
-        }
+        },
+        assets: ApiService => ApiService.getAssets()
+      }
+    })
+    .state('gallery', {
+      url: '/{travel}/{post}/gallery',
+      templateUrl: "public/views/gallery.html",
+      controller: "GalleryController",
+      controllerAs: "vm",
+      resolve: {
+        // only need assets filtered by article
+        post: (ApiService, $stateParams) => {
+          return ApiService.getArticleDetail($stateParams.post);
+        },
+        travel: ($stateParams) => {
+          return $stateParams.travel
+        },
+        assets: ApiService => ApiService.getAssets()
       }
     })
   $urlRouterProvider.otherwise("/");

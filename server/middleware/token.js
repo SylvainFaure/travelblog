@@ -5,18 +5,19 @@ module.exports = function (req, res, next) {
   
   let shouldVerifyToken = true;
   if (
-      (req.method == 'GET' || req.method == 'OPTIONS' && req.url.indexOf('users') == -1) || // all GET excepts for users
+      (req.method == 'OPTIONS') ||
+      (req.method == 'GET' && req.url.indexOf('users') == -1) || // all GET excepts for users
       (req.method == 'POST' && req.originalUrl.indexOf('users/request') !== -1 && req.body.type == 'request') || // first user request
-      (req.method == 'POST' && req.originalUrl.indexOf('users/signin') !== -1) || // user not yet authenticated
+      (req.method == 'POST' || req.method == 'OPTIONS' && req.originalUrl.indexOf('users/signin') !== -1) || // user not yet authenticated
       (req.method == 'POST' && req.originalUrl.indexOf('users/signup') !== -1) // user is not fully registered
      ) {
     shouldVerifyToken = false;
   }
   
   if (shouldVerifyToken && !token) {
-    return res.json({
+    return res.status(403).json({
       error: 'Not authorized',
-      message: 'You should be logged and a superadmin to make this request'
+      message: 'You should be logged to make this request'
     })
   } 
   if (shouldVerifyToken && token) {
@@ -25,7 +26,7 @@ module.exports = function (req, res, next) {
       const decodeToken = Buffer.from(token.split('.')[1], 'base64').toString('binary');
       const role = JSON.parse(decodeToken).role
       if (role !== 'superadmin') {
-        return res.json({
+        return res.status(403).json({
           error: 'Not authorized',
           message: 'You should be logged and a superadmin to make this request'
         })
@@ -34,17 +35,15 @@ module.exports = function (req, res, next) {
     }
     User.verifyToken(token, response => {
       if (response.name == "JsonWebTokenError") {
-        return res.json({
+        return res.status(403).json({
           error: response.message,
           message: "You don't provide right user infos"
         })
-        //next()
       } else if (response.name == "TokenExpiredError") {
-        return res.json({
+        return res.status(403).json({
           error: response.message,
           message: "You have to login again"
         })
-        //next()
       } else {
         next()
       }

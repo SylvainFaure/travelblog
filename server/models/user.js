@@ -122,7 +122,7 @@ class User {
 					}
 					if (!result) {
 						response = {
-							status: 403,
+							status: 401,
 							error: 'Your password is wrong, try again'
 						};
 					}

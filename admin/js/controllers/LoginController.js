@@ -33,10 +33,12 @@ class LoginController {
 
   signin() {
     this.AuthService.loginSignin(this.signinMail, this.signinPassword).then(res => {
-      if (res.status == 200) {
+      if (res.status == 200 && res.data.status == 200) {
         this.saveToken(res.data.token);
         this.toastr.success("You are correctly identified", "Success !");
         this.$state.reload();
+      } else {
+        this.toastr.warning('Your email or password are wrong, try again', "Ops !")
       }
     }, rej => {
       if (rej.status == 401) {
@@ -105,18 +107,17 @@ class LoginController {
   verifyToken() {
     this.AuthService.isAuthenticated().then(res => {
       if (res.status == 200) {
-        if (res.data.error) {
-          this.$rootScope.rvm.userInfo = {};
-          this.$rootScope.rvm.isLogged = false;
-          console.debug("You are not log in: %o", res.data)
-          return
-        }
         this.$rootScope.rvm.userInfo = {
           email: res.data.email,
           role: res.data.role,
           token: res.config.data.token
         };
         this.$rootScope.rvm.isLogged = true;
+        if (res.data.name == "JsonWebTokenError" || res.data.name == "TokenExpiredError") {
+          this.$rootScope.rvm.userInfo = {};
+          this.$rootScope.rvm.isLogged = false;
+          console.debug("You are not log in: %s", res.data.name)
+        }
       } 
     }, rej => {
       console.debug(rej);

@@ -120,6 +120,12 @@ class User {
 							token: JWTToken
 						};
 					}
+					if (!result) {
+						response = {
+							status: 403,
+							error: 'Your password is wrong, try again'
+						};
+					}
 					cb(response);
 			 	});
 			} else {

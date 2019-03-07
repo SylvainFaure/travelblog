@@ -105,17 +105,18 @@ class LoginController {
   verifyToken() {
     this.AuthService.isAuthenticated().then(res => {
       if (res.status == 200) {
+        if (res.data.error) {
+          this.$rootScope.rvm.userInfo = {};
+          this.$rootScope.rvm.isLogged = false;
+          console.debug("You are not log in: %o", res.data)
+          return
+        }
         this.$rootScope.rvm.userInfo = {
           email: res.data.email,
           role: res.data.role,
           token: res.config.data.token
         };
         this.$rootScope.rvm.isLogged = true;
-        if (res.data.name == "JsonWebTokenError" || res.data.name == "TokenExpiredError") {
-          this.$rootScope.rvm.userInfo = {};
-          this.$rootScope.rvm.isLogged = false;
-          console.debug("You are not log in: %s", res.data.name)
-        }
       } 
     }, rej => {
       console.debug(rej);

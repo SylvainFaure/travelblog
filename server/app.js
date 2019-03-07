@@ -5,9 +5,9 @@ const port = process.env.PORT || 3000;
 const path = require('path');
 
 /** MIDDLEWARES **/
+const corsMiddleware = require('./middleware/cors');
 const bodyParser = require('body-parser');
 const tokenMiddleware = require('./middleware/token');
-const corsMiddleware = require('./middleware/cors');
 const errorMiddleware = require('./middleware/error');
 
 /** ROUTES **/
@@ -43,14 +43,13 @@ if (app.get("env") !== "development") {
 }
 
 /** MIDDLEWARES **/
+if (app.get("env") === 'development') {
+  app.use(corsMiddleware);
+}
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(tokenMiddleware);
 app.use(errorMiddleware);
-
-if (app.get("env") === 'development') {
-  app.use(corsMiddleware);
-}
 
 /*** ROUTES ****/
 app.use('/api/articles', articlesRouter);

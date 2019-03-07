@@ -14,7 +14,7 @@ class Article {
 
 	static getArticle(published, id, cb) {
 		let table = published ? 'published_articles' : 'articles';
-		db.query(`SELECT * FROM ${table} WHERE 'article_id' = ?`, [id], (err, rows) => {
+		db.query(`SELECT * FROM ${table} WHERE article_id = ?`, [id], (err, rows) => {
 			if (err) throw err;
 			var records = JSON.stringify(rows);
 			var article = JSON.parse(records);

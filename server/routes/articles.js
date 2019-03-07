@@ -24,7 +24,7 @@ articles.route('/')
 
 articles.route('/:id([0-9]+)')
   .get((req, res) => {
-    Article.getArticle(false, req.params.article, article => {
+    Article.getArticle(false, req.params.id, article => {
       res.json(article)
     })
   })

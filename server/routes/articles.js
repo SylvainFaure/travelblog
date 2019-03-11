@@ -2,7 +2,7 @@ const express = require('express')
 const articles = express.Router()
 const Article = require('../models/article');
 const validate = require('../validators/validator');
-const validateRole = require('../validators/role.validator);
+const validateRole = require('../validators/role.validator');
 
 articles.route('/')
   .get((req, res) => {

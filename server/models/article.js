@@ -29,8 +29,9 @@ class Article {
 		});
 	}
 
-	static updateArticle(article, id, cb) {
-		db.query('UPDATE `articles` SET ? WHERE `article_id` = ?', [article, id], (error, results) => {
+	static updateArticle(published, article, id, cb) {
+    let table = published ? 'published_articles' : 'articles';
+		db.query(`UPDATE ${table} SET ? WHERE article_id = ?`, [article, id], (error, results) => {
 			if (error) throw error
 			cb(results)
 		})
@@ -78,6 +79,22 @@ class Article {
 		const result = Object.assign({}, resultOne, resultTwo)
 		cb(result)
 	}
+  
+  static deleteAll(cb) {
+    // ADD A SECOND VALIDATION HERE ?
+    let resultOne = {};
+    let resultTwo = {};
+    db.query('DELETE * FROM `articles`', (err, result) => {
+      if (err) throw err
+      resultOne = result;
+    })
+    db.query('DELETE * FROM `published_articles`', (err, result) => {
+      if (err) throw err
+      resultTwo = result;
+    })
+    const result = Object.assign({}, resultOne, resultTwo);
+    cb(result)
+  }
 }
 
 module.exports = Article

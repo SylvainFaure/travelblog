@@ -2,6 +2,7 @@ const express = require('express')
 const users = express.Router()
 const User = require('../models/user');
 const validate = require('../validators/validator');
+const validateRole = require('../validators/role.validator');
 
 users.route('/')
   .get((req, res) => {
@@ -20,7 +21,7 @@ users.route('/')
         res.json(err)
       })
   })
-  // TODO - Add a delete route
+  // TODO - Add a delete route ?
 
 users.route('/:id([0-9]+)')
   .get((req, res) => {
@@ -35,9 +36,15 @@ users.route('/:id([0-9]+)')
     })*/
   })
   .delete((req, res) => {
-   User.deleteUser(req.params.id, user => {
-      res.json(user);
-    })
+    validateRole(req.headers['x-access-token'], ['admin', 'superadmin'])
+      .then(() => {
+        User.deleteUser(req.params.id, user => {
+          res.json(user);
+        })
+      })
+      .catch(err => {
+        res.json(err)
+      })
   })
 
 users.route('/request')
@@ -45,9 +52,17 @@ users.route('/request')
     // 'request' | 'confirm' | 'refuse'
     validate(req.body, 'user', 'request')
       .then((value) => {
-        User.userRequest(req.body.type, req.body.email, req.body.role, result => {
-          res.json(result);
-        })
+        if (req.body.type !== 'request') {
+          validateRole(req.headers['x-access-token'], 'superadmin')
+            .then(() => {
+              User.userRequest(req.body.type, req.body.email, req.body.role, result => {
+                res.json(result);
+              })
+            })
+            .catch(err => {
+              res.json(err) 
+            })
+        }
       })
       .catch(err => {
         res.json(err)

@@ -2,6 +2,7 @@ const express = require('express')
 const articles = express.Router()
 const Article = require('../models/article');
 const validate = require('../validators/validator');
+const validateRole = require('../validators/role.validator);
 
 articles.route('/')
   .get((req, res) => {
@@ -21,7 +22,7 @@ articles.route('/')
       })
   })
   .delete((req, res) => {
-    validate(req.body, 'article', 'deleteAll')
+    validateRole(req.headers['x-access-token'], 'superadmin')
       .then((value) => {
         Article.deleteAll(result => {
           res.json(result)

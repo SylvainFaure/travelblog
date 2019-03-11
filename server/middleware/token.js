@@ -21,18 +21,6 @@ module.exports = function (req, res, next) {
     })
   } 
   if (shouldVerifyToken && token) {
-    // Restrict confirm and refuse request to superadmin
-    if (req.method == 'POST' && req.originalUrl.indexOf('users/request') !== -1 && req.body.type == 'confirm' || req.body.type == 'refuse') {
-      const decodeToken = Buffer.from(token.split('.')[1], 'base64').toString('binary');
-      const role = JSON.parse(decodeToken).role
-      if (role !== 'superadmin') {
-        return res.status(403).json({
-          error: 'Not authorized',
-          message: 'You should be logged and a superadmin to make this request'
-        })
-      }
-      next()
-    }
     User.verifyToken(token, response => {
       if (response.name == "JsonWebTokenError") {
         return res.status(403).json({

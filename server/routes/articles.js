@@ -20,7 +20,17 @@ articles.route('/')
         res.json(err)
       })
   })
-  // TODO - Add a delete route
+  .delete((req, res) => {
+    validate(req.body, 'article', 'deleteAll')
+      .then((value) => {
+        Article.deleteAll(result => {
+          res.json(result)
+        })
+      })
+      .catch(err => {
+        res.json(err)
+      })
+  })
 
 articles.route('/:id([0-9]+)')
   .get((req, res) => {
@@ -45,7 +55,7 @@ articles.route('/published')
       res.json(allarticles)
     })
   })
-  // TODO Add delete all
+  
 
 articles.route('/published/:id([0-9]+)')
   .get((req, res) => {
@@ -54,12 +64,20 @@ articles.route('/published/:id([0-9]+)')
     })
   })
   .post((req, res) => {
-    Article.publishArticle(req.body.article, req.params.id, results => {
-      res.json(results)
+    validate(req.body, 'article', 'publish')
+    .then((value) => {
+      Article.publishArticle(req.body.article, req.params.id, results => {
+        res.json(results)
+      })
+    })
+    .catch(err => {
+      res.json(err)
     })
   })
   .put((req, res) => {
-   // TO WRITE
+    Article.updateArticle(true, req.body.article, req.params.id, results => {
+      res.json(results)  
+    })
   })
   .delete((req, res) => {
     Article.unpublishArticle(req.params.id, result => {

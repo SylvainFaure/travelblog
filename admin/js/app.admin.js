@@ -40,30 +40,30 @@ import byTag from './filters/tag.filter';
 
 // Style, semantic
 // there is probably a better way to do this
-if (process.env.NODE_ENV == 'development') {
-  import "../vendors/semantic/components/modal";
-  import "../vendors/semantic/components/dimmer";
-  import "../vendors/semantic/components/transition";
-  import "../vendors/semantic/components/progress";
-  import "../vendors/semantic/components/accordion";
-  import "../vendors/semantic/components/popup";
-  import "../vendors/semantic/components/calendar";
-  
-  import '../vendors/semantic/semantic.min.css';
-  import '../vendors/semantic/themes/default/assets/images/flags.png';
-}
-if (process.env.NODE_ENV !== 'development') {
-  import "./vendors/semantic/components/modal";
-  import "./vendors/semantic/components/dimmer";
-  import "./vendors/semantic/components/transition";
-  import "./vendors/semantic/components/progress";
-  import "./vendors/semantic/components/accordion";
-  import "./vendors/semantic/components/popup";
-  import "./vendors/semantic/components/calendar";
-  
-  import './vendors/semantic/semantic.min.css';
-  import './vendors/semantic/themes/default/assets/images/flags.png';
-}
+//if (process.env.NODE_ENV == 'development') {
+import "../vendors/semantic/components/modal";
+import "../vendors/semantic/components/dimmer";
+import "../vendors/semantic/components/transition";
+import "../vendors/semantic/components/progress";
+import "../vendors/semantic/components/accordion";
+import "../vendors/semantic/components/popup";
+import "../vendors/semantic/components/calendar";
+
+import '../vendors/semantic/semantic.min.css';
+import '../vendors/semantic/themes/default/assets/images/flags.png';
+//}
+/*if (process.env.NODE_ENV !== 'development') {
+import "./vendors/semantic/components/modal";
+import "./vendors/semantic/components/dimmer";
+import "./vendors/semantic/components/transition";
+import "./vendors/semantic/components/progress";
+import "./vendors/semantic/components/accordion";
+import "./vendors/semantic/components/popup";
+import "./vendors/semantic/components/calendar";
+
+import './vendors/semantic/semantic.min.css';
+import './vendors/semantic/themes/default/assets/images/flags.png';
+}*/
 
 import '../css/app.admin.scss';
 import '../../node_modules/angular-toastr/dist/angular-toastr.css';

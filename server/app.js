@@ -3,6 +3,9 @@ const subdomain = require('express-subdomain');
 const app = express();
 const port = process.env.PORT || 3000;
 const path = require('path');
+const { Nuxt, Builder } = require('nuxt')
+const config = require('../nuxt.config.js')
+const nuxt = new Nuxt(config)
 
 /** MIDDLEWARES **/
 const corsMiddleware = require('./middleware/cors');
@@ -57,14 +60,14 @@ app.use('/api/travels', travelsRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/assets', assetsRouter);
 
-
 /*** ANGULAR ONE PAGE APP ***/
-app.get('*', (req, res) => {
+app.get('*', (req, res, next) => {
   var firstIndex = req.get('host').indexOf('.');
   var subdomain = req.get('host').substr(0, firstIndex).toLowerCase();
   if (subdomain === '' || subdomain === 'infinite-plateau-63225' && req.url.indexOf('.') === -1 && req.url.indexOf('json') == -1) {
     console.log('Public: %s', req.url)
-    res.sendFile(path.join(__dirname, '../public', 'index.html'));
+    // res.sendFile(path.join(__dirname, '../public', 'index.html'));
+    next()
   } else if (subdomain.indexOf('admin') !== -1 && req.url.indexOf('.') === -1 && req.url.indexOf('json') == -1){
     console.log('Admin: %s', req.url)
     res.sendFile(path.join(__dirname, '../admin/js', 'index.html'));
@@ -74,6 +77,12 @@ app.get('*', (req, res) => {
   }
 });
 
+// Build only in dev mode
+if (config.dev) {
+ const builder = new Builder(nuxt)
+ builder.build()
+} 
+app.use(nuxt.render);
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}!`)

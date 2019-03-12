@@ -6,7 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const entry = { 
   'admin/bundle': './admin/js/app.admin.js',
-  'public/bundle': './public/js/app.public.js'
+  //'public/bundle': './public/js/app.public.js'
 }
 
 const devtool = "source-map";
@@ -82,16 +82,16 @@ const plugins = [
   }),
   new CopyWebpackPlugin([
     {from: './admin/js/views/*', to: 'admin/views', flatten: true},
-    {from: './public/js/views/*', to: 'public/views', flatten: true},
+    //{from: './public/js/views/*', to: 'public/views', flatten: true},
 
     {from: './admin/js/index.html', to: 'admin/index.html'},
-    {from: './public/index.html', to: 'public/index.html'},
+    //{from: './public/index.html', to: 'public/index.html'},
     
 
     //{from: './admin/assets/img/*', to: 'assets/img', flatten: true},
     //{from: './admin/assets/thumb/*', to: 'assets/thumb', flatten: true},      
     {from: './admin/js/components/**/*', to: 'admin/components', flatten: true, test: /\.html$/, ignore: [ '*.js' ]},
-    {from: './public/js/components/**/*', to: 'public/components', flatten: true, test: /\.html$/, ignore: [ '*.js' ]},
+    //{from: './public/js/components/**/*', to: 'public/components', flatten: true, test: /\.html$/, ignore: [ '*.js' ]},
 
     {from: './admin/vendors/semantic/components/*', to: 'admin/vendors/semantic/components', flatten: true},
     {from: './admin/vendors/semantic/themes/default/assets/fonts/*', to: 'admin/vendors/semantic/themes/default/assets/fonts', flatten: true},

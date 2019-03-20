@@ -15,8 +15,8 @@
       -->
       <img class="img-full-screen" src="" alt="">
       <div 
-        @click="scrollDown()"
         class="arrow-container"
+        @click="scrollDown()"
       >
         <div class="arrow">
           >
@@ -39,8 +39,8 @@
         </h2>
         <div class="home__main-articles-list">
           <div 
-            :key="article.article_id"
             v-for="article in articles"
+            :key="article.article_id"
             class="home__main-articles-list-item" 
           >
             <a ui-sref="post({country: article.article_country_id, post: article.article_id})">
@@ -76,6 +76,9 @@ export default {
   },
   methods: {
     scrollDown() {
+      const homeHeight = document.getElementsByClassName('home__header')[0]
+        .offsetHeight
+      window.scroll({ top: homeHeight, left: 0, behavior: 'smooth' })
       // $('html, body').animate( { scrollTop: $('.home__main').offset().top }, 750 )
     }
   }

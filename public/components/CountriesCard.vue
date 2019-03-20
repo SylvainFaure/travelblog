@@ -7,7 +7,7 @@
     >
       <div 
         class="countries__card-header" 
-        style="background: url('locqahost/assets/thumb/mini_nomdelimage');background-repeat: no-repeat; background-position: center; background-size: cover;"
+        :style="travelCover(travel)"
       >
         <h2 class="countries__card-header-title"> 
           {{ travel.travel_name }} 
@@ -22,9 +22,11 @@
         </div>
       </div>
       <div class="countries__card-footer">
-        <a ui-sref="country({ countryName: travel.travel_name, countryId: travel.travel_id})">
-          <button class="cta cta-home"> {{ label_discover }} </button>
-        </a>
+        <nuxt-link :to="{path: '/travel', params: { travel: travel.travel_name }}">
+          <a @click="goToTravel(travel)">
+            <button class="cta cta-home"> {{ label_discover }} </button>
+          </a>
+        </nuxt-link>
       </div>
     </div>	
   </div>
@@ -32,14 +34,26 @@
 <script>
 export default {
   data() {
+    /* const imgPath =
+      process.env.NODE_ENV !== 'development'
+        ? process.env.AWS_BUCKET_PATH
+        : '/assets/thumb/mini_' */
     return {
       baseUrl: process.env.BASE_URL,
+      imgUrl: process.env.AWS_BUCKET_PATH, // imgPath,
       label_discover: 'Découvrez'
     }
   },
   computed: {
     travels() {
       return this.$store.getters.travels
+    }
+  },
+  methods: {
+    travelCover(travel) {
+      return `background: url('${this.imgUrl}thumb/${
+        travel.travel_cover
+      }');background-repeat: no-repeat; background-position: center; background-size: cover;`
     }
   }
 }

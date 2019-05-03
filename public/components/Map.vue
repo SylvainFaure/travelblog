@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ 'map-country': this.$props.steps.length, 'map-post': !this.$props.steps.length }" id="map"></div>	
+  <div :class="{ 'map-country': this.steps.length, 'map-post': !this.steps.length }" id="map"></div>	
 </template>
 <script>
 export default {
@@ -10,7 +10,7 @@ export default {
   computed: {
   },
   created: function() {
-    this.getCenter(this.$props.address)
+    this.getCenter(this.address)
   },
   props: {
     address: {
@@ -28,7 +28,7 @@ export default {
           if (status == google.maps.GeocoderStatus.OK) {
             initMap(results[0].geometry.location)
           }
-      }
+      })
     },
     initMap(center) {
       const directionsService = new google.maps.DirectionsService;

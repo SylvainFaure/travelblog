@@ -2,16 +2,16 @@
   <div>
     <div class="header">
       <div class="travel__header">
-        <h1 class="title travel__header-title">{{this.travel.name}}</h1>
-        <h2 class="title"> {{this.travel.description}} </h2>
+        <h1 class="title travel__header-title">{{travel.name}}</h1>
+        <h2 class="title"> {{travel.description}} </h2>
         <a href="/index.html#/"><i style="font-size:24px" class="fa">&#xf060;</i></a>	
       </div>
       <Map address="travel.name" steps="travel.articles" />
-      ola {{ this.$route.params }}
+      ola {{ $route.params }}
     </div>
     <div class="travel__articles-container">
       <div 
-        v-for="article in this.travel.articles"
+        v-for="article in travel.articles"
         :key="article.article_id"
       >
         <div 
@@ -45,6 +45,7 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 import Map from '@/public/components/Map'
 
 export default {
@@ -60,14 +61,15 @@ export default {
     }
   },
   computed: {
+    ...mapState(['travels', 'articles', 'assets']),
     travel() {
-      const travel = this.$store.getters.travels.filter(travel => {
+      const travel = this.travels.filter(travel => {
         return this.$route.params.travelId == travel.travel_id
       })
       return formattedTravel(travel)
     },
     articles() {
-      return this.$store.getters.articles.filter(art => {
+      return this.articles.filter(art => {
         return art.article_travel_id == travel.travel_id
       })
     },
@@ -79,8 +81,8 @@ export default {
       // FORMAT TRAVEL WITH LANG
       const lang = 'fr'
       if (lang == 'fr') {
-        travel.name = this.travel.travel_name_fr
-        travel.description = this.travel.travel_desc_fr
+        travel.name = travel.travel_name_fr
+        travel.description = travel.travel_desc_fr
         travel.articles = []
         this.articles.forEach(art => {
           let article = {
@@ -93,7 +95,7 @@ export default {
             catch_phrase: art.article_catch_phrase_fr,
             long_desc: art.article_long_desc_fr,
             short_desc: art.article_short_desc_fr,
-            assets: vm.assets.filter(asset => {
+            assets: this.assets.filter(asset => {
               return asset.asset_place_fr == art.article_place_fr
             })
           }
@@ -101,9 +103,9 @@ export default {
         })
       }
       if (lang == 'it') {
-        this.travel.name = this.travel.travel_name_it
-        this.travel.description = this.travel.travel_desc_it
-        this.travel.articles = []
+        travel.name = travel.travel_name_it
+        travel.description = travel.travel_desc_it
+        travel.articles = []
         this.articles.forEach(art => {
           let article = {
             id: art.article_id,
@@ -118,7 +120,7 @@ export default {
               return asset.asset_place_it == art.article_place_it
             })
           }
-          this.travel.articles.push(article)
+          travel.articles.push(article)
         })
       }
       return travel

@@ -32,6 +32,8 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data() {
     /* const imgPath =
@@ -45,9 +47,7 @@ export default {
     }
   },
   computed: {
-    travels() {
-      return this.$store.getters.travels
-    }
+    ...mapState(['travels'])
   },
   methods: {
     travelCover(travel) {
@@ -66,53 +66,55 @@ export default {
   align-items: center;
   text-align: center;
   width: 100%;
-}
-.countries__card {
-  display: flex;
-  flex-direction: column;
-  height: 450px;
-  width: 28%;
-  min-width: 300px;
 
-  background-color: rgba(255, 255, 255, 0.2);
-  margin: 2em;
-  border: 1px solid;
-  border-color: rgba(0, 0, 0, 0.2);
-  border-bottom-right-radius: 0.5em;
-  border-bottom-left-radius: 0.5em;
+  &__card {
+    display: flex;
+    flex-direction: column;
+    height: 450px;
+    width: 28%;
+    min-width: 300px;
 
-  &-header {
-    height: 45%;
-    background: black;
-    font-size: 30px;
-    vertical-align: middle;
-    font-family: 'IM Fell DW Pica', serif;
-    &-title {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      margin: 0;
-      color: white;
-      vertical-align: middle;
-    }
-  }
+    background-color: rgba(255, 255, 255, 0.2);
+    margin: 2em;
+    border: 1px solid;
+    border-color: rgba(0, 0, 0, 0.2);
+    border-bottom-right-radius: 0.5em;
+    border-bottom-left-radius: 0.5em;
 
-  &-content {
-    padding: 1em;
-    height: 50%;
     &-header {
-      padding: 0.5em 0;
-      font-weight: 700;
-    }
-    &-main {
-      line-height: 1.2;
-      font-size: 1.1em;
-    }
-  }
+      height: 45%;
+      background: black;
+      font-size: 30px;
+      vertical-align: middle;
+      font-family: 'IM Fell DW Pica', serif;
 
-  &-footer {
-    padding: 1em;
+      &-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        margin: 0;
+        color: white;
+        vertical-align: middle;
+      }
+    }
+
+    &-content {
+      padding: 1em;
+      height: 50%;
+      &-header {
+        padding: 0.5em 0;
+        font-weight: 700;
+      }
+      &-main {
+        line-height: 1.2;
+        font-size: 1.1em;
+      }
+    }
+
+    &-footer {
+      padding: 1em;
+    }
   }
 }
 </style>

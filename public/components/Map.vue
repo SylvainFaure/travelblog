@@ -1,42 +1,44 @@
 <template>
-  <div :class="{ 'map-country': this.steps.length, 'map-post': !this.steps.length }" id="map"></div>	
+  <div id="map" :class="{ 'map-country': steps.length, 'map-post': !steps.length }" />	
 </template>
 <script>
 export default {
-  data() {
-    return {  
-    }
-  },
-  computed: {
-  },
-  created: function() {
-    this.getCenter(this.address)
-  },
   props: {
     address: {
       type: String,
       required: true
     },
-    steps: Array
+    steps: {
+      type: Array,
+      default: () => []
+    }
+  },
+  created: function() {
+    this.getCenter(this.address)
   },
   methods: {
     getCenter(address) {
-      const geocoder = new google.maps.Geocoder();
-      geocoder.geocode({
-          'address': address
-      }, function (results, status) {
-          if (status == google.maps.GeocoderStatus.OK) {
-            initMap(results[0].geometry.location)
+      if (!process.server) {
+        const geocoder = new window.google.maps.Geocoder()
+        geocoder.geocode(
+          {
+            address: address
+          },
+          function(results, status) {
+            if (status === window.google.maps.GeocoderStatus.OK) {
+              this.initMap(results[0].geometry.location)
+            }
           }
-      })
+        )
+      }
     },
     initMap(center) {
-      const directionsService = new google.maps.DirectionsService;
-      const directionsDisplay = new google.maps.DirectionsRenderer;
-      const map = new google.maps.Map(document.getElementById('map'), {
+      const directionsService = new window.google.maps.DirectionsService()
+      const directionsDisplay = new window.google.maps.DirectionsRenderer()
+      const map = new window.google.maps.Map(document.getElementById('map'), {
         zoom: 6,
-        center: center,
-        styles: [
+        center: center
+        /* styles: [
           {
             "elementType": "geometry",
             "stylers": [
@@ -250,35 +252,37 @@ export default {
               }
             ]
           }
-        ]
-
-      });
-      directionsDisplay.setMap(map);
-      if (this.$props.steps.length) {
-        initDirections(directionsService, directionsDisplay, this.$props.steps);    
+        ] */
+      })
+      directionsDisplay.setMap(map)
+      if (this.steps.length) {
+        this.initDirections(directionsService, directionsDisplay, this.steps)
       }
     },
     initDirections(directionsService, directionsDisplay, steps) {
       const waypoints = []
-      for (let i = 1; i < steps.length - 1; i++){
+      for (let i = 1; i < steps.length - 1; i++) {
         waypoints.push({
           location: steps[i],
           stopover: true
         })
-      }    
-      directionsService.route({
-        origin: steps[0],
-        destination: steps[steps.length - 1],
-        waypoints: waypoints,
-        optimizeWaypoints: true,
-        travelMode: 'DRIVING'
-      }, function (response, status) {
-        if (status === 'OK') {
-          directionsDisplay.setDirections(response);         
-        } else {
-          console.debug('Directions request failed due to ' + status);
+      }
+      directionsService.route(
+        {
+          origin: steps[0],
+          destination: steps[steps.length - 1],
+          waypoints: waypoints,
+          optimizeWaypoints: true,
+          travelMode: 'DRIVING'
+        },
+        function(response, status) {
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response)
+          } else {
+            console.debug('Directions request failed due to ' + status)
+          }
         }
-      });
+      )
     }
   }
 }
@@ -286,14 +290,14 @@ export default {
 
 <style lang="scss">
 .map-country {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 550px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 550px;
 }
 .map-post {
-	width: 100%;
-	height: 450px;
+  width: 100%;
+  height: 450px;
 }
 </style>

@@ -29,15 +29,14 @@ module.exports = {
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: [],
+  plugins: ['~/mixins/formatTravel.js'],
 
   /*
   ** Nuxt.js modules
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-  ],
-  /*
+  ],  /*
   ** Axios module configuration
   */
   axios: {

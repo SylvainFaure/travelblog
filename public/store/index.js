@@ -14,22 +14,31 @@ const createStore = () => {
       },
       setArticles(state, articles) {
         state.articles = articles
+      },
+      setAssets(state, assets) {
+        state.assets = assets
       }
     },
     actions: {
       nuxtServerInit(vuexContext, context) {
         const getTravels = axios.get(`http://localhost:3000/api/travels`)
         const getArticles = axios.get(`http://localhost:3000/api/articles`)
-        return Promise.all([getTravels, getArticles])
+        const getAssets = axios.get('http//localhost:3000/api/assets')
+        return Promise.all([getTravels, getArticles, getAssets])
           .then(data => {
             data.forEach((arr, i) => {
+              console.log(arr.data)
               if (arr.data[0].travel_id) {
-                console.log('calling setTravels')
+                // console.log('calling setTravels', arr.data)
                 vuexContext.commit('setTravels', arr.data)
               }
               if (arr.data[0].article_id) {
-                console.log('calling setArticles')
+                // console.log('calling setArticles', arr.data)
                 vuexContext.commit('setArticles', arr.data)
+              }
+              if (arr.data[0].asset_id) {
+                console.log('calling setAssets', arr.data)
+                vuexContext.commit('setAssets', arr.data)
               }
             })
           })
@@ -43,8 +52,11 @@ const createStore = () => {
       travels(state) {
         return state.travels
       },
-      article(state) {
+      articles(state) {
         return state.articles
+      },
+      assets(state) {
+        return state.assets
       }
     }
   })

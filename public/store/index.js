@@ -37,7 +37,6 @@ const createStore = () => {
           return Promise.all([getTravels, getArticles, getAssets])
             .then(data => {
               data.forEach((arr, i) => {
-                console.log(arr.data)
                 if (arr.data[0].travel_id) {
                   // console.log('calling setTravels', arr.data)
                   vuexContext.commit('setTravels', arr.data)

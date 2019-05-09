@@ -3,23 +3,22 @@
     <div class="header">
       <div class="travel__header">
         <h1 class="title travel__header-title">
-          {{ formattedTravel.name }}
+          {{ travel.name }}
         </h1>
         <h2 class="title">
-          {{ formattedTravel.description }} 
+          {{ travel.description }}
         </h2>
-        <a href="/index.html#/"><i style="font-size:24px" class="fa">&#xf060;</i></a>	
+        <a href="/index.html#/"><i style="font-size:24px" class="fa">&#xf060;</i></a>
       </div>
-      <Map address="travel.name" steps="travel.articles" />
-      ola {{ $route.params }}
+      <Map :address="travel.name" :steps="travel.articles" />
     </div>
     <div class="travel__articles-container">
-      <div 
-        v-for="article in formattedTravel.articles"
+      <div
+        v-for="article in travel.articles"
         :key="article.article_id"
       >
-        <div 
-          class="travel__article" 
+        <div
+          class="travel__article"
           :style="articleImg(article.cover)"
         >
           <div class="travel__article-photo">
@@ -43,9 +42,9 @@
                   class="cta"
                 >
                   Scopri la tappa
-                </button>	
+                </button>
               </a>
-            </nuxt-link> 
+            </nuxt-link>
           </div>
         </div>
       </div>
@@ -73,23 +72,32 @@ export default {
   computed: {
     ...mapState(['travels', 'articles', 'assets']),
     travel() {
-      const filteredTravel = this.travels.filter(travel => {
-        return this.$route.params.travelId === travel.travel_id
+      const filteredTravel = this.travels.filter((travel) => {
+        return Number(this.$route.params.travel) === travel.travel_id
       })
-      return filteredTravel
+      const toRet = this.formatTravel(filteredTravel[0], this.filteredArticles)
+      return toRet
     },
     formattedTravel() {
       return this.formatTravel(this.travel, this.filteredArticles)
     },
     filteredArticles() {
-      return this.articles.filter(art => {
-        return art.article_travel_id === this.travel.travel_id
+      return this.articles.filter((art) => {
+        return art.article_travel_id === Number(this.$route.params.travel)
       })
     },
+    fr() {
+      return true
+    },
+    it() {
+      return false
+    }
+  },
+  methods: {
     articleImg(cover) {
       const url = process.env.AWS_BUCKET_PATH
       return `background: url('${url}/thumb/
-        ${this.article.cover}
+        ${this.travel.cover}
       '); background-repeat: no-repeat; background-position: center; background-size: cover;`
     }
   }

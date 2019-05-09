@@ -7,7 +7,7 @@ export default {
     formatTravel(travel, filteredArticles) {
       const lang = 'fr'
       if (lang === 'fr') {
-        travel.name = travel.travel_name_fr
+        travel.name = travel.travel_title_fr
         travel.description = travel.travel_desc_fr
         travel.articles = []
         filteredArticles.forEach(art => {
@@ -29,7 +29,7 @@ export default {
         })
       }
       if (lang === 'it') {
-        travel.name = travel.travel_name_it
+        travel.name = travel.travel_title_it
         travel.description = travel.travel_desc_it
         travel.articles = []
         filteredArticles.forEach(art => {

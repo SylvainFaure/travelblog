@@ -29,7 +29,9 @@ module.exports = {
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: ['~/mixins/formatTravel.js'],
+  plugins: [
+    '~/mixins/formatTravel.js'
+  ],
 
   /*
   ** Nuxt.js modules
@@ -60,11 +62,11 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
-    }
+    },
   },
   srcDir: 'public/',
   dev: process.env.NODE_ENV == 'development',
   env: {
-    AWS_BUCKET_PATH: process.env.AWS_BUCKET_PATH
+    AWS_BUCKET_PATH: process.env.AWS_BUCKET_PATH,
   }
 }

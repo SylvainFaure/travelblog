@@ -1,17 +1,17 @@
 <template>
   <div class="countries">
-    <div 
+    <div
       v-for="travel in travels"
-      :key="travel.travel_id" 
-      class="countries__card" 
+      :key="travel.travel_id"
+      class="countries__card"
     >
-      <div 
-        class="countries__card-header" 
+      <div
+        class="countries__card-header"
         :style="travelCover(travel)"
       >
-        <h2 class="countries__card-header-title"> 
-          {{ travel.travel_name }} 
-        </h2>	
+        <h2 class="countries__card-header-title">
+          {{ travel.travel_name }}
+        </h2>
       </div>
       <div class="countries__card-content">
         <div class="countries__card-content-header">
@@ -28,7 +28,7 @@
           </a>
         </nuxt-link>
       </div>
-    </div>	
+    </div>
   </div>
 </template>
 <script>
@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     travelCover(travel) {
-      return `background: url('${this.imgUrl}thumb/${
+      return `background: url('${this.imgUrl}img/${
         travel.travel_cover
       }');background-repeat: no-repeat; background-position: center; background-size: cover;`
     }

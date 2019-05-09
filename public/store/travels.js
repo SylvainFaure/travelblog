@@ -7,7 +7,7 @@ const travels = [
     travel_countries_it: '',
     travel_desc_fr: "C'est l'Inde",
     travel_desc_it: "Ecco l'India",
-    travel_cover: '1529086669236_DSC_0431.JPG',
+    travel_cover: '1551004267461_reichdrumming2.jpg',
     travel_start_date: '04/03/2017',
     travel_end_date: '26/03/2017',
     travel_published_date_fr: '2018-11-10 00:00:00',

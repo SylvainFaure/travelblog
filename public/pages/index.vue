@@ -14,7 +14,7 @@
         </video>
       -->
       <img class="img-full-screen" src="" alt="">
-      <div 
+      <div
         class="arrow-container"
         @click="scrollDown()"
       >
@@ -29,7 +29,7 @@
     <main class="home__main">
       <section class="home__main-trips">
         <h2 class="home__main-trips-title">
-          {{ label_trips }} 
+          {{ label_trips }}
         </h2>
         <CountriesCard />
       </section>
@@ -38,10 +38,10 @@
           {{ label_last_articles }}
         </h2>
         <div class="home__main-articles-list">
-          <div 
+          <div
             v-for="article in articles"
             :key="article.article_id"
-            class="home__main-articles-list-item" 
+            class="home__main-articles-list-item"
           >
             <a ui-sref="post({country: article.article_country_id, post: article.article_id})">
               <div><span class="italic">{{ article.article_title }}</span> {{ label_in }} {{ article.article_travel }}</div>

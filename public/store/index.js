@@ -1,6 +1,10 @@
 import Vuex from 'vuex'
 import axios from 'axios'
 
+import articles from './articles'
+import assets from './assets'
+import travels from './travels'
+
 const createStore = () => {
   return new Vuex.Store({
     state: {
@@ -21,28 +25,35 @@ const createStore = () => {
     },
     actions: {
       nuxtServerInit(vuexContext, context) {
-        const getTravels = axios.get(`http://localhost:3000/api/travels`)
-        const getArticles = axios.get(`http://localhost:3000/api/articles`)
-        const getAssets = axios.get('http//localhost:3000/api/assets')
-        return Promise.all([getTravels, getArticles, getAssets])
-          .then(data => {
-            data.forEach((arr, i) => {
-              console.log(arr.data)
-              if (arr.data[0].travel_id) {
-                // console.log('calling setTravels', arr.data)
-                vuexContext.commit('setTravels', arr.data)
-              }
-              if (arr.data[0].article_id) {
-                // console.log('calling setArticles', arr.data)
-                vuexContext.commit('setArticles', arr.data)
-              }
-              if (arr.data[0].asset_id) {
-                console.log('calling setAssets', arr.data)
-                vuexContext.commit('setAssets', arr.data)
-              }
+        if (process.env.STANDALONE) {
+          vuexContext.commit('setTravels', travels)
+          vuexContext.commit('setArticles', articles)
+          vuexContext.commit('setAssets', assets)
+        }
+        if (!process.env.STANDALONE) {
+          const getTravels = axios.get(`http://localhost:3000/api/travels`)
+          const getArticles = axios.get(`http://localhost:3000/api/articles`)
+          const getAssets = axios.get('http//localhost:3000/api/assets')
+          return Promise.all([getTravels, getArticles, getAssets])
+            .then(data => {
+              data.forEach((arr, i) => {
+                console.log(arr.data)
+                if (arr.data[0].travel_id) {
+                  // console.log('calling setTravels', arr.data)
+                  vuexContext.commit('setTravels', arr.data)
+                }
+                if (arr.data[0].article_id) {
+                  // console.log('calling setArticles', arr.data)
+                  vuexContext.commit('setArticles', arr.data)
+                }
+                if (arr.data[0].asset_id) {
+                  console.log('calling setAssets', arr.data)
+                  vuexContext.commit('setAssets', arr.data)
+                }
+              })
             })
-          })
-          .catch(err => context.error(err))
+            .catch(err => context.error(err))
+        }
       }
       /* setTravels(vuexContext, travels) {
         vuexContext.commit('setTravels', travels)

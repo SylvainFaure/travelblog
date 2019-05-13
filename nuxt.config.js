@@ -30,7 +30,14 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '~/mixins/formatTravel.js'
+    {
+      src: '~/mixins/formatTravel.js',
+      ssr: false
+    },
+    {
+      src: '~/plugins/lazyload.js',
+      ssr: false
+    }
   ],
 
   /*

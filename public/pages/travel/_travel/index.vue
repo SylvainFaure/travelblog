@@ -49,16 +49,19 @@
         </div>
       </div>
     </div>
+    <FloatActionBtn label="Gallery" :route="`${params.travel}/gallery`" />
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
 import formatTravel from '@/mixins/formatTravel'
 import Map from '@/components/Map'
+import FloatActionBtn from '@/components/FloatActionBtn'
 
 export default {
   components: {
-    Map
+    Map,
+    FloatActionBtn
   },
   validate({ params }) {
     return true
@@ -66,7 +69,7 @@ export default {
   mixins: [formatTravel],
   data() {
     return {
-      params: this.$router.params
+      params: this.$route.params
     }
   },
   computed: {

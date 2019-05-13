@@ -54,6 +54,7 @@ export default {
       const map = new window.google.maps.Map(document.getElementById('map'), {
         zoom: 6,
         center: center,
+        disableDefaultUI: true,
         styles: [
           {
             'elementType': 'geometry',

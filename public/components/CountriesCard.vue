@@ -22,8 +22,8 @@
         </div>
       </div>
       <div class="countries__card-footer">
-        <nuxt-link :to="{path: '/travel', params: { travel: travel.travel_name }}">
-          <a @click="goToTravel(travel)">
+        <nuxt-link :to="{name: `travel-travel`, params: { travel: travel.travel_slug, travelId: travel.travel_id }}">
+          <a>
             <button class="cta cta-home"> {{ label_discover }} </button>
           </a>
         </nuxt-link>

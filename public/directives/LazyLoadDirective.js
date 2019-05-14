@@ -9,7 +9,10 @@ export default {
         imageElement.addEventListener('load', () => {
           setTimeout(() => el.classList.add('loaded'), 100)
         })
-        imageElement.addEventListener('error', (e) => console.log('error', e))
+        imageElement.addEventListener('error', (e) => {
+          console.warn('Error on loading image', e)
+          el.outerHTML = ''
+        })
         imageElement.src = imageElement.dataset.url
       }
     }

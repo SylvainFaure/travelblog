@@ -24,7 +24,12 @@ module.exports = {
   /*
   ** Global CSS
   */
-  css: [],
+  css: [
+    {
+      src: '~/styles/transition.scss',
+      lang: 'scss'
+    }
+  ],
 
   /*
   ** Plugins to load before mounting the App
@@ -32,6 +37,10 @@ module.exports = {
   plugins: [
     {
       src: '~/mixins/formatTravel.js',
+      ssr: false
+    },
+    {
+      src: '~/mixins/formatAsset.js',
       ssr: false
     },
     {
@@ -44,6 +53,7 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
+    'nuxt-fontawesome'
     // Doc: https://axios.nuxtjs.org/usage
   ],  /*
   ** Axios module configuration

@@ -31,6 +31,7 @@
     "nodemailer-smtp-transport": "^2.7.4",
     "nodemon": "^1.18.3",
     "nuxt": "^2.4.5",
+    "nuxt-fontawesome": "^0.4.0",
     "package": "^1.0.1",
     "request": "^2.88.0",
     "sharp": "^0.21.3",

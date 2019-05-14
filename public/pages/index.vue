@@ -4,6 +4,7 @@
     <header class="home__header">
       <!--<change-lang class="sticky_child"></change-lang>-->
       <div class="main-title sticky_child">
+        <ImageItem class="img-full-screen" :external="true" :gallery="false" :asset="asset" />
         <h1 class="title">
           Cartes de voyage
         </h1>
@@ -13,7 +14,7 @@
           <source src="../assets/india-street.mp4" type="video/mp4" />Your browser does not support the video tag. I suggest you upgrade your browser.
         </video>
       -->
-      <img class="img-full-screen" src="" alt="">
+
       <div
         class="arrow-container"
         @click="scrollDown()"
@@ -56,9 +57,12 @@
 
 <script>
 import CountriesCard from '@/components/CountriesCard'
+import ImageItem from '@/components/ImageItem'
+
 export default {
   components: {
-    CountriesCard
+    CountriesCard,
+    ImageItem
   },
   data() {
     return {
@@ -66,7 +70,14 @@ export default {
       label_trips: 'Voyages',
       label_in: 'Dans',
       label_last_articles: 'Derniers articles',
-      label_discover: 'Découvrez'
+      label_discover: 'Découvrez',
+      asset: {
+        asset_src: 'https://images.unsplash.com/photo-1555414244-80c33ca2e497?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2850&q=80',
+        asset_title_fr: 'Accueil',
+        asset_title_it: 'Homepage',
+        asset_place_fr: 'Inde',
+        asset_place_it: 'India'
+      }
     }
   },
   computed: {
@@ -108,11 +119,9 @@ export default {
   }
 }
 .img-full-screen {
-  vertical-align: middle;
-  height: auto !important;
-  width: auto !important;
   min-height: 100% !important;
-  min-width: 100% !important;
+  height: auto;
+  min-width: 1200px;
   position: absolute !important;
   left: 50% !important;
   top: 50% !important;
@@ -121,15 +130,17 @@ export default {
   transition: opacity 0.5s ease 0s !important;
 }
 .arrow {
-  font-family: 'IM Fell DW Pica', serif;
-  font-size: 4em;
-  line-height: 0.2;
-  transform: rotate(90deg);
-  z-index: 100;
-  &:first-child {
-    margin-top: 0.5em;
-  }
+    font-family: 'IM Fell DW Pica', serif;
+    font-size: 3em;
+    line-height: 0.3;
+    transform: rotate(90deg) translateY(-3px);
+    z-index: 100;
+
   &-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     position: absolute;
     cursor: pointer;
     bottom: 30px;

@@ -1,9 +1,11 @@
 <template>
   <nuxt-link :to="route">
-    <div class="fab">
-      <span><i class="fab__icon" /> </span>
-      <span v-if="label" class="fab__label">{{ label }}</span>
-    </div>
+    <transition name="fade">
+      <div class="fab">
+        <span><i class="fab__icon" /> </span>
+        <span v-if="label" class="fab__label">{{ label }}</span>
+      </div>
+    </transition>
   </nuxt-link>
 </template>
 <script>
@@ -19,7 +21,8 @@ export default {
       required: false,
       default: '/'
     }
-  }
+  },
+  transition: 'fade'
 }
 </script>
 <style lang="scss">

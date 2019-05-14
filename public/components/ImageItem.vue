@@ -5,24 +5,29 @@
     itemtype="http://schema.org/ImageObject"
     class="gallery__img-wrapper"
   >
-    <img
-      class="img"
-      :data-url="asset.asset_src"
-      :alt="asset.title"
-      :srcset="`${!gallery ? `${s3BaseUrl}/img/${asset.asset_src} 500w, ${s3BaseUrl}/thumb/${asset.asset_src}1000w` : ''}`"
-      :sizes="`${!gallery ? `(max-width: 800px) 400px, (max-width: 1000px) 600px` : ''}`"
-    >
+    <transition name="fade">
+      <img
+        class="img"
+        :data-url="_asset.src"
+        :alt="_asset.title"
+        :srcset="`${!gallery ? !external ? `${s3BaseUrl}/img/${_asset.src} 500w, ${s3BaseUrl}/thumb/${_asset.src}1000w` : `${_asset.src}` : ''}`"
+        :sizes="`${!gallery && !external ? `(max-width: 800px) 400px, (max-width: 1000px) 600px` : ''}`"
+      >
+    </transition>
     <figcaption
       v-if="showInfos"
       class="img-infos"
     >
-      <p>{{ asset.title }}</p>
-      <p>{{ asset.place }}</p>
+      <p>{{ _asset.title }}</p>
+      <p>{{ _asset.place }}</p>
     </figcaption>
   </figure>
 </template>
 <script>
+import formatAsset from '@/mixins/formatAsset'
+
 export default {
+  mixins: [formatAsset],
   props: {
     asset: {
       type: Object,
@@ -35,11 +40,21 @@ export default {
     gallery: {
       type: Boolean,
       required: false
+    },
+    external: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data() {
     return {
       s3BaseUrl: process.env.AWS_BUCKET_PATH
+    }
+  },
+  computed: {
+    _asset() {
+      return this.formatAsset(this.asset)
     }
   }
 }
@@ -74,5 +89,11 @@ export default {
     font-weight: 500;
     transition: all 0.3s ease;
   }
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 1.8s ease-in;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 </style>

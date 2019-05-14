@@ -8,47 +8,49 @@
         <h2 class="title">
           {{ travel.description }}
         </h2>
-        <a href="/index.html#/"><i style="font-size:24px" class="fa">&#xf060;</i></a>
+        <a href="/"><i style="font-size:24px" class="fa">&#8604;</i></a>
       </div>
       <Map :address="travel.name" :steps="travel.articles" />
     </div>
-    <div class="travel__articles-container">
-      <div
-        v-for="article in travel.articles"
-        :key="article.article_id"
-      >
+    <transition name="fade">
+      <div v-if="travel.articles" class="travel__articles-container">
         <div
-          class="travel__article"
-          :style="articleImg(article.cover)"
+          v-for="article in travel.articles"
+          :key="article.article_id"
         >
-          <div class="travel__article-photo">
-            <h1 class="title travel__article-title">
-              {{ article.title }}
-            </h1>
-            <h2>
-              {{ article.place }}
-            </h2>
-            <p>{{ article.short_desc }}</p>
-            <nuxt-link to="/article" params="{travel: travel.travel_id, article: article.id}">
-              <a>
-                <button
-                  v-if="fr"
-                  class="cta"
-                >
-                  Découvrez l'étape
-                </button>
-                <button
-                  v-if="it"
-                  class="cta"
-                >
-                  Scopri la tappa
-                </button>
-              </a>
-            </nuxt-link>
+          <div
+            class="travel__article"
+            :style="articleImg(article.cover)"
+          >
+            <div class="travel__article-photo">
+              <h1 class="title travel__article-title">
+                {{ article.title }}
+              </h1>
+              <h2>
+                {{ article.place }}
+              </h2>
+              <p>{{ article.short_desc }}</p>
+              <nuxt-link to="/article" params="{travel: travel.travel_id, article: article.id}">
+                <a>
+                  <button
+                    v-if="fr"
+                    class="cta"
+                  >
+                    Découvrez l'étape
+                  </button>
+                  <button
+                    v-if="it"
+                    class="cta"
+                  >
+                    Scopri la tappa
+                  </button>
+                </a>
+              </nuxt-link>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </transition>
     <FloatActionBtn label="Gallery" :route="`${params.travel}/gallery`" />
   </div>
 </template>
@@ -76,7 +78,7 @@ export default {
     ...mapState(['travels', 'articles', 'assets']),
     travel() {
       const filteredTravel = this.travels.filter((travel) => {
-        return Number(this.$route.params.travel) === travel.travel_id
+        return Number(this.$route.params.travelId) === travel.travel_id
       })
       const toRet = this.formatTravel(filteredTravel[0], this.filteredArticles)
       return toRet
@@ -109,11 +111,12 @@ export default {
 <style lang="scss">
 .travel {
   &__header {
-    font-size: 20px;
+    font-size: 1.5em;
     width: 30%;
     text-align: left;
     position: absolute;
-    top: 100px;
+    top: 4em;
+    left: 2em;
     z-index: 1000;
   }
   &__article {
@@ -121,8 +124,8 @@ export default {
       margin-top: 580px;
     }
     /*background-color: #E1F5FE;*/
-    padding: 0px 10px 0px 0px;
-    margin: 15px auto;
+    padding: 0px 2em 0px 0px;
+    margin: 2em auto;
     max-width: 85%;
   }
   &-photo {

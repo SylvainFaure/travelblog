@@ -1,6 +1,7 @@
 const travels = [
   {
     travel_id: 2,
+    travel_slug: 'india',
     travel_title_fr: 'Inde',
     travel_title_it: 'India',
     travel_countries_fr: 'Inde, Népal',
@@ -17,6 +18,7 @@ const travels = [
   },
   {
     travel_id: 10,
+    travel_slug: 'portugal',
     travel_title_fr: 'Où es-tu Christophe Collomb ?',
     travel_title_it: 'Il Portopapagallo',
     travel_countries_fr: 'Portugal',
@@ -34,6 +36,7 @@ const travels = [
   },
   {
     travel_id: 13,
+    travel_slug: 'italy',
     travel_title_fr: 'Naples',
     travel_title_it: 'Napoli',
     travel_countries_fr: '',
@@ -50,6 +53,7 @@ const travels = [
   },
   {
     travel_id: 8,
+    travel_slug: 'balkans',
     travel_title_fr: 'Les Balkans',
     travel_title_it: 'I Balcani',
     travel_countries_fr: 'Croatie, Bosnie, Montenegro, Albanie',

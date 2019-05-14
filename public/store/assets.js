@@ -10,6 +10,7 @@ const assets = [
     asset_cover: 0,
     asset_country_fr: '',
     asset_country_it: '',
+    asset_travel_id: 3,
     asset_place_fr: '',
     asset_place_it: '',
     asset_desc_fr: '',
@@ -26,6 +27,7 @@ const assets = [
     asset_cover: 0,
     asset_country_fr: '',
     asset_country_it: '',
+    asset_travel_id: 3,
     asset_place_fr: '',
     asset_place_it: '',
     asset_desc_fr: '',
@@ -44,6 +46,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 3,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -53,14 +56,15 @@ const assets = [
     asset_title_fr: '',
     asset_title_it: '',
     asset_name:
-      '1551271370762_altAkl-xhWja5LJOmz8ZU8Cie_iceliLPr3VdJCCl7d0nxJ.jpg',
+      '155127370762_altAkl-xhWja5LJOmz8ZU8Cie_iceliLPr3VdJCCl7d0nxJ.jpg',
     asset_src:
-      'https://carte-de-voyages-948176.s3.eu-west-3.amazonaws.com/img/1551271370762_altAkl-xhWja5LJOmz8ZU8Cie_iceliLPr3VdJCCl7d0nxJ.jpg',
+      'https://carte-de-voyages-948176.s3.eu-west-3.amazonaws.com/img/155127370762_altAkl-xhWja5LJOmz8ZU8Cie_iceliLPr3VdJCCl7d0nxJ.jpg',
     asset_cover: 0,
     asset_country_fr: '',
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 3,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -78,6 +82,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 3,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -95,6 +100,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 3,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -112,6 +118,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 3,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -128,6 +135,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 3,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -136,14 +144,15 @@ const assets = [
     asset_id: 249,
     asset_title_fr: '',
     asset_title_it: '',
-    asset_name: '1551021349931_IMG-20151014-WA0001.jpg',
+    asset_name: '155102349931_IMG-20151014-WA0001.jpg',
     asset_src:
-      'https://carte-de-voyages-948176.s3.eu-west-3.amazonaws.com/img/1551021349931_IMG-20151014-WA0001.jpg',
+      'https://carte-de-voyages-948176.s3.eu-west-3.amazonaws.com/img/155102349931_IMG-20151014-WA0001.jpg',
     asset_cover: 0,
     asset_country_fr: '',
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 3,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -152,14 +161,15 @@ const assets = [
     asset_id: 250,
     asset_title_fr: '',
     asset_title_it: '',
-    asset_name: '1551021483523_WP_20140827_13_53_25_Pro.jpg',
+    asset_name: '1551021483523_WP_20140827_3_53_25_Pro.jpg',
     asset_src:
-      'https://carte-de-voyages-948176.s3.eu-west-3.amazonaws.com/img/1551021483523_WP_20140827_13_53_25_Pro.jpg',
+      'https://carte-de-voyages-948176.s3.eu-west-3.amazonaws.com/img/1551021483523_WP_20140827_3_53_25_Pro.jpg',
     asset_cover: 0,
     asset_country_fr: '',
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 3,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -176,6 +186,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 3,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -191,6 +202,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -206,6 +218,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -221,6 +234,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: 'cane',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: 'cane',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -236,6 +250,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -251,6 +266,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: 'ola',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: 'ola',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -266,6 +282,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: 'test',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: 'test',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -281,6 +298,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: 'ola',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: 'olz',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -296,6 +314,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: 'England',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: 'wow',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -311,6 +330,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: 'nope',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: 'nope',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -327,6 +347,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -343,6 +364,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -359,6 +381,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -376,6 +399,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'video/mp4'
@@ -393,6 +417,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -409,6 +434,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -425,6 +451,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -441,6 +468,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -458,6 +486,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -474,6 +503,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -491,6 +521,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -507,6 +538,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -523,6 +555,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -540,6 +573,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -556,6 +590,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -572,6 +607,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -589,6 +625,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -605,6 +642,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 13,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -613,14 +651,15 @@ const assets = [
     asset_id: 277,
     asset_title_fr: '',
     asset_title_it: '',
-    asset_name: '1551358112084_IMG-20150406-WA0003.jpg',
+    asset_name: '155358112084_IMG-20150406-WA0003.jpg',
     asset_src:
-      'https://carte-de-voyages-948176.s3.eu-west-3.amazonaws.com/img/1551358112084_IMG-20150406-WA0003.jpg',
+      'https://carte-de-voyages-948176.s3.eu-west-3.amazonaws.com/img/155358112084_IMG-20150406-WA0003.jpg',
     asset_cover: 0,
     asset_country_fr: '',
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 3,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -629,14 +668,15 @@ const assets = [
     asset_id: 278,
     asset_title_fr: '',
     asset_title_it: '',
-    asset_name: '1551358357870_IMG-20150730-WA0005.jpg',
+    asset_name: '155358357870_IMG-20150730-WA0005.jpg',
     asset_src:
-      'https://carte-de-voyages-948176.s3.eu-west-3.amazonaws.com/img/1551358357870_IMG-20150730-WA0005.jpg',
+      'https://carte-de-voyages-948176.s3.eu-west-3.amazonaws.com/img/155358357870_IMG-20150730-WA0005.jpg',
     asset_cover: 0,
     asset_country_fr: '',
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
+    asset_travel_id: 3,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'

@@ -1,20 +1,13 @@
 <template>
   <div>
-    <div class="sticky" />
-    <header class="home__header">
-      <!--<change-lang class="sticky_child"></change-lang>-->
-      <div class="main-title sticky_child">
+    <Header />
+    <section class="home__header">
+      <div class="main-title">
         <ImageItem class="img-full-screen" :external="true" :gallery="false" :asset="asset" />
         <h1 class="title">
           Cartes de voyage
         </h1>
       </div>
-      <!--
-        <video ng-if="vm.isDesktop" autoplay loop class="video-background">
-          <source src="../assets/india-street.mp4" type="video/mp4" />Your browser does not support the video tag. I suggest you upgrade your browser.
-        </video>
-      -->
-
       <div
         class="arrow-container"
         @click="scrollDown()"
@@ -26,27 +19,27 @@
           >
         </div>
       </div>
-    </header>
+    </section>
     <main class="home__main">
       <section class="home__main-trips">
         <h2 class="home__main-trips-title">
-          {{ label_trips }}
+          {{ $t('label_trips') }}
         </h2>
         <CountriesCard />
       </section>
       <aside class="home__main-articles">
         <h2 class="home__main-articles-title">
-          {{ label_last_articles }}
+          {{ $t('label_last_articles') }}
         </h2>
         <div class="home__main-articles-list">
           <div
-            v-for="article in articles"
+            v-for="article in _articles"
             :key="article.article_id"
             class="home__main-articles-list-item"
           >
-            <a ui-sref="post({country: article.article_country_id, post: article.article_id})">
-              <div><span class="italic">{{ article.article_title }}</span> {{ label_in }} {{ article.article_travel }}</div>
-              <div>{{ label_published }} {{ article.article_published_date }}</div>
+            <a data-url="post({country: article.article_country_id, post: article.article_id})">
+              <div><span class="italic">{{ article.title }}</span> {{ $t('label_in') }} {{ article.travel }}</div>
+              <div>{{ $t('label_published') }} {{ article.published_date }}</div>
             </a>
           </div>
         </div>
@@ -56,14 +49,19 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import Header from '@/components/Header'
 import CountriesCard from '@/components/CountriesCard'
 import ImageItem from '@/components/ImageItem'
+import formatArticle from '@/mixins/formatArticle'
 
 export default {
   components: {
     CountriesCard,
-    ImageItem
+    ImageItem,
+    Header
   },
+  mixins: [formatArticle],
   data() {
     return {
       label_published: 'Publié',
@@ -81,8 +79,9 @@ export default {
     }
   },
   computed: {
-    articles() {
-      return this.$store.getters.articles
+    ...mapState(['articles']),
+    _articles() {
+      return this.articles.map(article => this.formatArticle(article))
     }
   },
   methods: {
@@ -110,13 +109,6 @@ export default {
   align-items: center;
   font-size: 2em;
   height: 80vh;
-  &.sticked {
-    height: auto;
-    > .title {
-      margin: 0 0.5em;
-      font-size: 1.5em;
-    }
-  }
 }
 .img-full-screen {
   min-height: 100% !important;
@@ -157,15 +149,7 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  height: 4em;
-  width: 100%;
-  background-color: rgba(255, 255, 255, 0.6);
-  &_child {
-    &.sticked {
-      position: fixed;
-      top: 0;
-    }
-  }
+  color: whitesmoke;
 }
 .home {
   &__header {

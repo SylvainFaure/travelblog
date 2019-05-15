@@ -76,7 +76,7 @@ const articles = [
     article_cover: '',
     article_date_from: null,
     article_date_to: null,
-    article_published_date_fr: '',
+    article_published_date_fr: '2019-05-10 21:18:25',
     article_published_date_it: '',
     article_published_fr: 0,
     article_published_it: 0

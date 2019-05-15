@@ -1,4 +1,5 @@
 const pkg = require('package')
+const localeMessages = require('./public/utils/messages')
 
 module.exports = {
   mode: 'universal',
@@ -44,6 +45,18 @@ module.exports = {
       ssr: false
     },
     {
+      src: '~/mixins/formatArticle.js',
+      ssr: false
+    },
+    {
+      src: '~/mixins/formatDate.js',
+      ssr: false
+    },
+    {
+      src: '~/plugins/i18n.js',
+      ssr: false
+    },
+    {
       src: '~/plugins/lazyload.js',
       ssr: false
     }
@@ -53,7 +66,24 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
-    'nuxt-fontawesome'
+    ['nuxt-i18n', {
+      locales: [
+        {
+          code: 'fr', 
+          iso: 'fr-FR',
+          name: 'FR'
+        },
+        {
+          code: 'it',
+          iso: 'it-IT',
+          name: 'IT'
+        }
+      ],
+      defaultLocale: 'fr',
+      vueI18n: {
+        messages: localeMessages
+      }
+    }]
     // Doc: https://axios.nuxtjs.org/usage
   ],  /*
   ** Axios module configuration

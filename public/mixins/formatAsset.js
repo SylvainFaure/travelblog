@@ -1,7 +1,7 @@
 export default {
   methods: {
     formatAsset(asset) {
-      const lang = 'fr'
+      const lang = this.$store.getters.lang
       if (lang === 'fr') {
         asset.src = asset.asset_src
         asset.title = asset.asset_title_fr

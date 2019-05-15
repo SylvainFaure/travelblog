@@ -1,7 +1,7 @@
 <template>
   <div class="countries">
     <div
-      v-for="travel in travels"
+      v-for="travel in _travels"
       :key="travel.travel_id"
       class="countries__card"
     >
@@ -10,15 +10,15 @@
         :style="travelCover(travel)"
       >
         <h2 class="countries__card-header-title">
-          {{ travel.travel_name }}
+          {{ travel.name }}
         </h2>
       </div>
       <div class="countries__card-content">
         <div class="countries__card-content-header">
-          {{ travel.travel_countries }}
+          {{ travel.countries }}
         </div>
         <div class="countries__card-content-main">
-          {{ travel.travel_desc }}
+          {{ travel.description }}
         </div>
       </div>
       <div class="countries__card-footer">
@@ -32,9 +32,11 @@
   </div>
 </template>
 <script>
+import formatTravel from '@/mixins/formatTravel'
 import { mapState } from 'vuex'
 
 export default {
+  mixins: [formatTravel],
   data() {
     /* const imgPath =
       process.env.NODE_ENV !== 'development'
@@ -47,7 +49,10 @@ export default {
     }
   },
   computed: {
-    ...mapState(['travels'])
+    ...mapState(['travels']),
+    _travels() {
+      return this.travels.map(travel => this.formatTravel(travel))
+    }
   },
   methods: {
     travelCover(travel) {

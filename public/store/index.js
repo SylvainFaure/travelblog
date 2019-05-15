@@ -10,7 +10,8 @@ const createStore = () => {
     state: {
       travels: [],
       articles: [],
-      assets: []
+      assets: [],
+      lang: ''
     },
     mutations: {
       setTravels(state, travels) {
@@ -21,6 +22,9 @@ const createStore = () => {
       },
       setAssets(state, assets) {
         state.assets = assets
+      },
+      setLang(state, lang) {
+        state.lang = lang
       }
     },
     actions: {
@@ -29,6 +33,7 @@ const createStore = () => {
           vuexContext.commit('setTravels', travels)
           vuexContext.commit('setArticles', articles)
           vuexContext.commit('setAssets', assets)
+          vuexContext.commit('setLang', 'fr')
         }
         if (!process.env.STANDALONE) {
           const getTravels = axios.get(`http://localhost:3000/api/travels`)
@@ -53,6 +58,9 @@ const createStore = () => {
             })
             .catch(err => context.error(err))
         }
+      },
+      setLang(vuexContext, lang) {
+        vuexContext.commit('setLang', lang)
       }
       /* setTravels(vuexContext, travels) {
         vuexContext.commit('setTravels', travels)
@@ -67,6 +75,9 @@ const createStore = () => {
       },
       assets(state) {
         return state.assets
+      },
+      lang(state) {
+        return state.lang
       }
     }
   })

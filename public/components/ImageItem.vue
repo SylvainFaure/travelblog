@@ -90,10 +90,4 @@ export default {
     transition: all 0.3s ease;
   }
 }
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 1.8s ease-in;
-}
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
 </style>

@@ -30,10 +30,5 @@ export default {
 }
 </script>
 <style lang="scss">
-.fade-enter-active, .fade-leave-active {
-  transition: all 1.8s ease-in;
-}
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
+
 </style>

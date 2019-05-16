@@ -27,7 +27,15 @@
         </h2>
         <CountriesCard />
       </section>
-      <aside class="home__main-articles">
+    </main>
+    <sidebar
+      class="home__sidebar"
+      :class="{'opened' : isOpen}"
+      :opened="isOpen"
+      @open="isOpen = true"
+      @close="isOpen = false"
+    >
+      <div class="home__main-articles">
         <h2 class="home__main-articles-title">
           {{ $t('label_last_articles') }}
         </h2>
@@ -43,14 +51,15 @@
             </a>
           </div>
         </div>
-      </aside>
-    </main>
+      </div>
+    </sidebar>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import Header from '@/components/Header'
+import Sidebar from '@/components/Sidebar'
 import CountriesCard from '@/components/CountriesCard'
 import ImageItem from '@/components/ImageItem'
 import formatArticle from '@/mixins/formatArticle'
@@ -59,7 +68,8 @@ export default {
   components: {
     CountriesCard,
     ImageItem,
-    Header
+    Header,
+    Sidebar
   },
   mixins: [formatArticle],
   data() {
@@ -75,7 +85,8 @@ export default {
         asset_title_it: 'Homepage',
         asset_place_fr: 'Inde',
         asset_place_it: 'India'
-      }
+      },
+      isOpen: false
     }
   },
   computed: {
@@ -97,42 +108,32 @@ export default {
 
 <style lang="scss">
 .title {
-  font-family: 'IM Fell DW Pica', serif;
-  font-style: italic;
-  font-size: 2em;
   z-index: 100;
 }
 .main-title {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  font-size: 2em;
+  @include flex(row, center, center);
   height: 80vh;
+  color: $color-light;
 }
 .img-full-screen {
+  position: absolute !important;
   min-height: 100% !important;
   height: auto;
   min-width: 1200px;
-  position: absolute !important;
   left: 50% !important;
   top: 50% !important;
   transform: translate(-50%, -50%) !important;
-  opacity: 1 !important;
+  opacity: 0.8 !important;
   transition: opacity 0.5s ease 0s !important;
 }
 .arrow {
-    font-family: 'IM Fell DW Pica', serif;
     font-size: 3em;
     line-height: 0.3;
     transform: rotate(90deg) translateY(-3px);
     z-index: 100;
 
   &-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    @include flex(column, center, center);
     position: absolute;
     cursor: pointer;
     bottom: 30px;
@@ -161,40 +162,33 @@ export default {
     padding: 1em;
   }
   &__main {
-    background-color: #fde3a7;
-    display: flex;
-    flex-direction: row;
+    @include flex(row, space-between, flex-start);
     flex-wrap: wrap;
-    justify-content: space-between;
     &-trips {
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
+      @include flex(row, flex-start, flex-start);
       flex-wrap: wrap;
-      width: 75%;
+      //width: 100%;
       padding: 2em 1em;
-      transition: padding 0.3s ease;
+      transition: padding $transition-timing ease;
       &-title {
-        margin: 1em;
-        font-size: 30px;
-        font-family: 'IM Fell DW Pica', serif;
-        width: 100%;
+        margin: 0 0 -1em 0.5em;
+        z-index: 10;
+        font-size: 6em;
+        font-weight: 400;
+        background: -webkit-linear-gradient(top, rgba(0,0,0, 1) 50%, rgba(255, 255, 255, 1) 50%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
     }
 
     &-articles {
       display: flex;
       flex-direction: column;
-      width: 25%;
-      border-left: 1px solid;
-      border-color: rgba(0, 0, 0, 0.2);
       padding: 2em 1em;
-      transition: padding 0.3s ease;
-      background-color: rgba(255, 255, 255, 0.2);
+      transition: padding $transition-timing ease;
       &-title {
         margin: 1em 0;
         font-size: 30px;
-        font-family: 'IM Fell DW Pica', serif;
         width: 100%;
       }
       &-list {
@@ -204,6 +198,13 @@ export default {
         }
       }
     }
+  }
+  &__sidebar {
+    position: absolute;
+    top: 100vh;
+    right: 0;
+    height: 100%;
+    width: 25%;
   }
 }
 </style>

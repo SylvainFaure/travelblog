@@ -77,6 +77,7 @@ export default {
   computed: {
     ...mapState(['travels', 'articles', 'assets']),
     travel() {
+      console.log(this.$route.params)
       const filteredTravel = this.travels.filter((travel) => {
         return Number(this.$route.params.travelId) === travel.travel_id
       })

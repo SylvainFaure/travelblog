@@ -21,8 +21,7 @@ export default {
       required: false,
       default: '/'
     }
-  },
-  transition: 'fade'
+  }
 }
 </script>
 <style lang="scss">

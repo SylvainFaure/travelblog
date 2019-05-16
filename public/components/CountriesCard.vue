@@ -1,9 +1,10 @@
 <template>
   <div class="countries">
     <div
-      v-for="travel in _travels"
+      v-for="(travel, i) in _travels"
       :key="travel.travel_id"
       class="countries__card"
+      :class="isSimpleClass(i)"
     >
       <div
         class="countries__card-header"
@@ -22,11 +23,9 @@
         </div>
       </div>
       <div class="countries__card-footer">
-        <nuxt-link :to="{name: `travel-travel`, params: { travel: travel.travel_slug, travelId: travel.travel_id }}">
-          <a>
-            <button class="cta cta-home"> {{ label_discover }} </button>
-          </a>
-        </nuxt-link>
+        <btn :link="{name: `travel-travel`, params: { travel: travel.travel_slug, travelId: travel.travel_id }}">
+          {{ $t('label_discover') }}
+        </btn>
       </div>
     </div>
   </div>
@@ -34,8 +33,12 @@
 <script>
 import formatTravel from '@/mixins/formatTravel'
 import { mapState } from 'vuex'
+import Btn from '@/components/Btn'
 
 export default {
+  components: {
+    Btn
+  },
   mixins: [formatTravel],
   data() {
     /* const imgPath =
@@ -59,6 +62,10 @@ export default {
       return `background: url('${this.imgUrl}img/${
         travel.travel_cover
       }');background-repeat: no-repeat; background-position: center; background-size: cover;`
+    },
+    isSimpleClass(i) {
+      const simple = [1, 2, 5, 6, 9, 10]
+      return simple.includes(i) ? 'simple' : ''
     }
   }
 }
@@ -66,32 +73,32 @@ export default {
 
 <style lang="scss">
 .countries {
-  display: flex;
+  @include flex(row, flex-start, center);
   flex-wrap: wrap;
-  align-items: center;
   text-align: center;
   width: 100%;
 
   &__card {
     display: flex;
     flex-direction: column;
-    height: 450px;
-    width: 28%;
-    min-width: 300px;
+    width: 50%;
+
+    &.simple {
+      width: 30%;
+      margin-top: 2em;
+      margin-bottom: -2em;
+    }
 
     background-color: rgba(255, 255, 255, 0.2);
     margin: 2em;
     border: 1px solid;
     border-color: rgba(0, 0, 0, 0.2);
-    border-bottom-right-radius: 0.5em;
-    border-bottom-left-radius: 0.5em;
-
     &-header {
+      @include flex(row, center, center);
       height: 45%;
+      min-height: 6em;
       background: black;
-      font-size: 30px;
-      vertical-align: middle;
-      font-family: 'IM Fell DW Pica', serif;
+      font-size: 2em;
 
       &-title {
         display: flex;
@@ -99,8 +106,9 @@ export default {
         justify-content: center;
         height: 100%;
         margin: 0;
-        color: white;
-        vertical-align: middle;
+        background: -webkit-linear-gradient(top, rgba(255,255,255, 0.8), rgba(240,240,240, 0.4));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
     }
 

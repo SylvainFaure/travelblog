@@ -8,13 +8,16 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: pkg.name,
+    title: 'Carte de voyages',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description }
+      { hid: 'description', name: 'description', content: pkg.description },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', type: '', href: 'https://fonts.googleapis.com/css?family=Amatic+SC:400,700|Inconsolata|Josefin+Slab:400,400i,600,600i|Space+Mono:400,700,700i'}
+    ]
   },
 
   /*
@@ -27,7 +30,7 @@ module.exports = {
   */
   css: [
     {
-      src: '~/styles/transition.scss',
+      src: 'public/assets/styles/main.scss',
       lang: 'scss'
     }
   ],
@@ -66,6 +69,7 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
+    '@nuxtjs/style-resources',
     ['nuxt-i18n', {
       locales: [
         {
@@ -88,6 +92,12 @@ module.exports = {
   ],  /*
   ** Axios module configuration
   */
+  styleResources: {
+    scss: [
+      './public/assets/styles/base/_variables.scss',
+      './public/assets/styles/mixins/_mixins.scss'
+    ]
+  },
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
   },

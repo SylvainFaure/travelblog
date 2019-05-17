@@ -15,9 +15,6 @@
         <div class="arrow">
           >
         </div>
-        <div class="arrow">
-          >
-        </div>
       </div>
     </section>
     <main class="home__main">
@@ -119,7 +116,7 @@ export default {
   position: absolute !important;
   min-height: 100% !important;
   height: auto;
-  min-width: 1200px;
+  min-width: 1500px;
   left: 50% !important;
   top: 50% !important;
   transform: translate(-50%, -50%) !important;
@@ -128,8 +125,7 @@ export default {
 }
 .arrow {
     font-size: 3em;
-    line-height: 0.3;
-    transform: rotate(90deg) translateY(-3px);
+    transform: rotate(90deg);
     z-index: 100;
 
   &-container {
@@ -137,13 +133,13 @@ export default {
     position: absolute;
     cursor: pointer;
     bottom: 30px;
-    left: 50%;
+    left: 48%;
     z-index: 100;
-    border: 2px solid;
+    border: 2px solid $color-light;
+    color: $color-light;
     border-radius: 50%;
     width: 60px;
     height: 60px;
-    background-color: rgba(255, 255, 255, 0.2);
   }
 }
 .sticky {

@@ -56,6 +56,10 @@ module.exports = {
       ssr: false
     },
     {
+      src: '~/mixins/formatRoute.js',
+      ssr: false
+    },
+    {
       src: '~/plugins/i18n.js',
       ssr: false
     },
@@ -86,6 +90,26 @@ module.exports = {
       defaultLocale: 'fr',
       vueI18n: {
         messages: localeMessages
+      },
+      parsePages: false,
+      startegy: "prefix_except_default",
+      pages: {
+        'index': {
+          it: '/',
+          fr: '/'
+        },
+        'travel/index': {
+          it: '/viaggi',
+          fr: '/voyages',
+        },
+        'travel/_travel/index': {
+          it: '/viaggi/:travel',
+          fr: '/voyages/:travel',
+        },
+        'travel/_travel/gallery': {
+          it: '/viaggi/:travel/gallery',
+          fr: '/voyages/:travel/gallerie',
+        },
       }
     }]
     // Doc: https://axios.nuxtjs.org/usage

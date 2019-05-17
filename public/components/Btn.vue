@@ -64,6 +64,12 @@ export default {
   &.primary {
     padding: 0.5em 1em;
     border: 2px solid $color-dark;
+    transition: color background-color $transition-timing ease-in-out;
+    &:hover {
+      color: $color-light;
+      background-color: $color-dark;
+    }
   }
 }
+
 </style>

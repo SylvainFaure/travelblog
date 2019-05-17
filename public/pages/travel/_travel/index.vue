@@ -10,44 +10,15 @@
         </h2>
         <a href="/"><i style="font-size:24px" class="fa">&#8604;</i></a>
       </div>
-      <Map :address="travel.name" :steps="travel.articles" />
+      <Map :address="travel.countries.split(',')[0]" :steps="travel.articles" />
     </div>
     <transition name="fade">
-      <div v-if="travel.articles" class="travel__articles-container">
+      <div v-if="travelArticles" class="travel__articles-container">
         <div
-          v-for="article in travel.articles"
+          v-for="article in travelArticles"
           :key="article.article_id"
         >
-          <div
-            class="travel__article"
-            :style="articleImg(article.cover)"
-          >
-            <div class="travel__article-photo">
-              <h1 class="title travel__article-title">
-                {{ article.title }}
-              </h1>
-              <h2>
-                {{ article.place }}
-              </h2>
-              <p>{{ article.short_desc }}</p>
-              <nuxt-link to="/article" params="{travel: travel.travel_id, article: article.id}">
-                <a>
-                  <button
-                    v-if="fr"
-                    class="cta"
-                  >
-                    Découvrez l'étape
-                  </button>
-                  <button
-                    v-if="it"
-                    class="cta"
-                  >
-                    Scopri la tappa
-                  </button>
-                </a>
-              </nuxt-link>
-            </div>
-          </div>
+          <article-card :article="article" />
         </div>
       </div>
     </transition>
@@ -57,18 +28,21 @@
 <script>
 import { mapState } from 'vuex'
 import formatTravel from '@/mixins/formatTravel'
+import getTravelIdFromSlug from '@/mixins/formatRoute'
+import ArticleCard from '@/components/ArticleCard'
 import Map from '@/components/Map'
 import FloatActionBtn from '@/components/FloatActionBtn'
 
 export default {
   components: {
     Map,
+    ArticleCard,
     FloatActionBtn
   },
   validate({ params }) {
     return true
   },
-  mixins: [formatTravel],
+  mixins: [formatTravel, getTravelIdFromSlug],
   data() {
     return {
       params: this.$route.params
@@ -77,9 +51,9 @@ export default {
   computed: {
     ...mapState(['travels', 'articles', 'assets']),
     travel() {
-      console.log(this.$route.params)
+      const paramId = this.$route.params.travelId ? this.$route.params.travelId : this.getTravelIdFromSlug(this.$route.params.travel)
       const filteredTravel = this.travels.filter((travel) => {
-        return Number(this.$route.params.travelId) === travel.travel_id
+        return Number(paramId) === travel.travel_id
       })
       const toRet = this.formatTravel(filteredTravel[0], this.filteredArticles)
       return toRet
@@ -87,9 +61,9 @@ export default {
     formattedTravel() {
       return this.formatTravel(this.travel, this.filteredArticles)
     },
-    filteredArticles() {
+    travelArticles() {
       return this.articles.filter((art) => {
-        return art.article_travel_id === Number(this.$route.params.travel)
+        return art.article_travel_id === Number(this.$route.params.travelId)
       })
     },
     fr() {
@@ -100,12 +74,7 @@ export default {
     }
   },
   methods: {
-    articleImg(cover) {
-      const url = process.env.AWS_BUCKET_PATH
-      return `background: url('${url}/thumb/
-        ${this.travel.cover}
-      '); background-repeat: no-repeat; background-position: center; background-size: cover;`
-    }
+
   }
 }
 </script>
@@ -119,15 +88,6 @@ export default {
     top: 4em;
     left: 2em;
     z-index: 1000;
-  }
-  &__article {
-    &s-container {
-      margin-top: 580px;
-    }
-    /*background-color: #E1F5FE;*/
-    padding: 0px 2em 0px 0px;
-    margin: 2em auto;
-    max-width: 85%;
   }
   &-photo {
     display: flex;

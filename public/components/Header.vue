@@ -1,5 +1,5 @@
 <template>
-  <header class="header sticky">
+  <header class="header spaced sticky">
     <div>title</div>
     <div>
       <ChangeLang />
@@ -22,6 +22,8 @@ export default {
   display: flex;
   justify-content: space-between;
 
-  padding: 1em;
+  &.spaced {
+    padding: 1em;
+  }
 }
 </style>

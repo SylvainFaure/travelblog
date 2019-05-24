@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="countries__card-footer">
-        <btn :link="{name: `travel-travel`, params: { travel: travel.travel_slug, travelId: travel.travel_id }}">
+        <btn :link="{name: `travel-travel___${$i18n.locale}`, params: { travel: travel.travel_slug, travelId: travel.travel_id }}">
           {{ $t('label_discover') }}
         </btn>
       </div>
@@ -73,7 +73,7 @@ export default {
 
 <style lang="scss">
 .countries {
-  @include flex(row, flex-start, center);
+  @include flex(row, flex-start, flex-start);
   flex-wrap: wrap;
   text-align: center;
   width: 100%;
@@ -85,8 +85,6 @@ export default {
 
     &.simple {
       width: 30%;
-      margin-top: 2em;
-      margin-bottom: -2em;
     }
 
     background-color: rgba(255, 255, 255, 0.2);

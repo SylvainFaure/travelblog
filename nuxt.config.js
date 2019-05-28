@@ -110,6 +110,10 @@ module.exports = {
           it: '/viaggi/:travel/gallery',
           fr: '/voyages/:travel/gallerie',
         },
+        'discogs/index': {
+          it: '/discogs',
+          fr: '/discogs'
+        }
       }
     }]
     // Doc: https://axios.nuxtjs.org/usage

@@ -68,8 +68,17 @@
               <h4 ng-show="vm.fr">Pays traversés</h4>
               <h4 ng-show="vm.it">Paesi attraversati</h4>
               <!--TODO : système de tag pour supprimer un pays -->
-              <p ng-show="vm.fr">{{vm.travel.travel_countries_fr}}</p>
-              <p ng-show="vm.it">{{vm.travel.travel_countries_it}}</p> 
+              <p ng-show="vm.fr">
+                <tag 
+                  ng-repeat="travel in vm.travel.travel_countries_fr" 
+                  label="travel"
+                  deletable="true"
+                  id="{{vm.travel.travel_id}}"
+                  cb="vm.deleteCountry(travel)"></tag>
+              </p>
+              <p ng-show="vm.it">
+                  <tag ng-repeat="travel in vm.travel.travel_countries_it" label="travel"></tag>
+                </p>
               <div class="ui large fluid input map-search">
                 <input ng-keyup="vm.handleTravelCountries($event)" id="map-search" ng-if="vm.fr" type="text" class="" placeholder="Nom" ng-model="vm.travel.travel_editing_country">
                 <input ng-keyup="vm.handleTravelCountries($event)" id="map-search" ng-if="vm.it" type="text" class="" placeholder="Nome" ng-model="vm.travel.travel_editing_country">

@@ -8,6 +8,9 @@ export default class tagController {
     let colors = ['red', 'orange', 'yellow', 'teal', 'blue', 'olive', 'green', 'violet', 'purple', 'pink', 'brown', 'grey', 'black']
     return colors[Math.floor(Math.random() * 13)]
   }
+  cbFn(value) {
+    this.cb({value: value})
+  }
 
 }
 export const tagComponent = {
@@ -15,6 +18,8 @@ export const tagComponent = {
 	controller: tagController,
 	controllerAs: 'vm',
 	bindings: {
-    label: "<"
+    label: "<",
+    deletable: '<',
+    cb: '&'
 	}
 }

@@ -15,6 +15,12 @@ class TravelsController {
 	this.$window = $window;
 
 	this.travels = Travels; 
+	this.travels.map(travel => {
+		travel.travel_countries_fr = JSON.parse(travel.travel_countries_fr)
+		travel.travel_countries_it = JSON.parse(travel.travel_countries_it)
+		return travel
+	})
+	console.log(this.travels)
 	this.assets = Assets
 	this.ApiService = ApiService;
 	this.fr = $rootScope.rvm.fr;
@@ -106,6 +112,8 @@ class TravelsController {
 	formatTravel(travel) {
 		let formattedTravel = travel;
 		delete formattedTravel.travel_editing_country;
+		formattedTravel.travel_countries_fr = JSON.stringify(formattedTravel.travel_countries_fr)
+		formattedTravel.travel_countries_it = JSON.stringify(formattedTravel.travel_countries_it)
 		//formattedTravel.travel_start_date = Date(formattedTravel.travel_start_date);
 		//formattedTravel.travel_end_date = Date(formattedTravel.travel_end_date);
 		return formattedTravel;
@@ -165,23 +173,26 @@ class TravelsController {
 	handleTravelCountries(ev) {
 		if (ev.key === "Enter") {
 			if (this.fr) {
-				if (this.travel.travel_countries_fr == "") {
-					this.travel.travel_countries_fr += this.travel.travel_editing_country;
-				} else {
-					this.travel.travel_countries_fr += ', ' + this.travel.travel_editing_country;
-				}
+				this.travel.travel_countries_fr.push(this.travel.travel_editing_country);
 			}
 			if (this.it) {
-				if (this.travel.travel_countries_it == "") {
-					this.travel.travel_countries_it += this.travel.travel_editing_country;
-				} else {
-					this.travel.travel_countries_it += ', ' + this.travel.travel_editing_country;
-				}
+				this.travel.travel_countries_it.push(this.travel.travel_editing_country);
 			}
 			this.travel.travel_editing_country = ""; 
 		}
 		if (ev.key === "Escape") {
 			this.travel.travel_editing_country = ""; 
+		}
+	}
+	deleteCountry(travel) {
+		// const a = $(ev.target).parent().parent()[0]
+		// const id = $(a).attr('id')
+		console.log('delete country', travel)
+		if (this.fr) {
+			this.travel.travel_countries_fr.splice(this.travel.travel_countries_fr.indexOf(travel), 1)
+		}
+		if (this.it) {
+			this.travel.travel_countries_it.splice(this.travel.travel_countries_it.indexOf(travel), 1)
 		}
 	}
 }

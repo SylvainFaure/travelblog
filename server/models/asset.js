@@ -47,6 +47,7 @@ class Asset {
 			var asset = {
 				asset_title_fr: data[i].title_fr,
 				asset_title_it: data[i].title_it,
+				asset_travel_id: data[i].travel_id,
 				asset_name: name,
 				asset_src: src,
 				asset_cover: false,
@@ -69,39 +70,27 @@ class Asset {
     cb(results)
 	}
 
-	static resizeAsset(asset) {
-		
-		const fileUrl = `${process.env.AWS_BUCKET_PATH}img/${asset.asset_name}`;
-		request(fileUrl, (error, response, body) => {
-			
-			const s3 = new aws.S3();
-			const resizedImage = sharp(body).resize(500)
-			
-      /** TO TRY **/
-      /** https://stackoverflow.com/questions/37336050/pipe-a-stream-to-s3-upload **/ 
-			resizedImage
-        .pipe(() => {
-          var pass = new stream.PassThrough();
-          const params = {
+	static resizeAsset(asset) {		
+		const s3 = new aws.S3();
+		s3.getObject({
+			Bucket: process.env.S3_BUCKET_NAME,
+			Key: 'img/' + asset.asset_name 
+		}, (err, data) => {
+			if (err) {
+				console.log(err)
+			} else {
+				sharp(data.Body).resize(500).toBuffer((err, resizedImage) => {
+					const params = {
 						Bucket: process.env.S3_BUCKET_NAME,
 						Key: `thumb/mini_${asset.asset_name}`,
-						Body: output
+						Body: resizedImage
 					}
-					s3.upload(params, (err, data) => {
+					s3.putObject(params, (err, data) => {
 						if (err) console.log(err)
 						console.log(data)
 					});
-          return pass;
-        })
-		
-		/*console.log(asset.asset_name)
-		sharp('admin/assets/img/' + asset.asset_name)
-			.resize(500)
-			.toFile('admin/assets/thumb/mini_' + asset.asset_name, function(err, info){
-				if (err) { throw err }
-				console.log(info)
-			})
-			*/
+				})	
+			}
 		})
 	}
 

@@ -45,6 +45,16 @@
             <input ng-show="vm.it" ng-model="vm.newAssetsData[$index].place_it" type="text" placeholder="Luogo...">                
           </div>
           <div class="ui mini input">
+            <select 
+              class="ui fluid dropdown"  
+              ng-model="vm.newAssetsData[$index].travel_id" 
+            >
+              <option value="">Voyage / Viaggio</option>
+              <option value="{{travel.travel_id}}" ng-repeat="travel in vm.travels">{{travel.travel_title_fr}} / {{travel.travel_title_it}}</option>
+            </select>
+            <select class="ui fluid dropdown" ng-show="vm.it" ng-model="vm.newAssetsData[$index].travel_id" type="text" placeholder="Viaggio...">                
+          </div>
+          <div class="ui mini input">
               <input ng-show="vm.fr" ng-model="vm.newAssetsData[$index].country_fr" type="text" placeholder="Pays...">
               <input ng-show="vm.it" ng-model="vm.newAssetsData[$index].country_it" type="text" placeholder="Paese...">                
             </div>

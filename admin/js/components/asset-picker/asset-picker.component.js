@@ -26,7 +26,9 @@ export default class assetPickerController {
     this.removeOriginal = false;
     this.travelCategories = []
     this.placeCategories = []
+    this.travels = []
     this.dimmer();
+    this.getTravels();
 
     this.fr = $rootScope.rvm.fr;
     this.it = $rootScope.rvm.it;
@@ -88,6 +90,13 @@ export default class assetPickerController {
       }
     })
   } 
+
+  getTravels() {
+    this.ApiService.travelsList().then(travels => {
+      this.travels = travels.data
+      console.log(this.travels)
+    })
+  }
 
   closeModal() {
     $('.ui.modal.asset').modal('hide')

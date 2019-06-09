@@ -185,9 +185,6 @@ class TravelsController {
 		}
 	}
 	deleteCountry(travel) {
-		// const a = $(ev.target).parent().parent()[0]
-		// const id = $(a).attr('id')
-		console.log('delete country', travel)
 		if (this.fr) {
 			this.travel.travel_countries_fr.splice(this.travel.travel_countries_fr.indexOf(travel), 1)
 		}

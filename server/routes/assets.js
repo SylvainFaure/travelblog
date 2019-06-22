@@ -2,36 +2,37 @@ const express = require('express')
 const assets = express.Router()
 const Asset = require('../models/asset');
 const upload = require('../config/storage');
+const handleResponse = require('../responseHandler')
 
 assets.route('/')
-  .get((req, res) => {
+  .get((req, res, next) => {
     Asset.getAll(allassets => {
-      res.json(allassets)
+      handleResponse(res, next, allassets)
     })
   })
-  .post(upload.any('file'), (req, res) => {
+  .post(upload.any('file'), (req, res, next) => {
     Asset.uploadAssets(req.files, req.body.infos, result => {
-      res.json(result);
+      handleResponse(res, next, result);
     })
   })
   // TODO - Add a delete route
 
 assets.route('/:id([0-9]+)')
-  .get((req, res) => {
+  .get((req, res, next) => {
     Asset.getAsset(req.params.id, asset => {
-      res.json(asset)
+      handleResponse(res, next, asset)
     })
   })
-  .put((req, res) => {
+  .put((req, res, next) => {
     Asset.updateAsset(req.body, req.params.id, asset => {
-      res.json(asset)
+      handleResponse(res, next, asset)
     })
   })
 
 assets.route('/delete')
-  .post((req, res) => {
+  .post((req, res, next) => {
     Asset.deleteAssets(req.body.ids, req.body.names, results => {
-      res.json(results)
+      handleResponse(res, next, results)
     })
   })
 

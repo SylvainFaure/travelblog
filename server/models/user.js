@@ -6,38 +6,50 @@ const bcrypt = require('bcrypt');
 class User {
 	static getUsers(cb) {
 		db.query('SELECT * FROM users', (err, rows) => {
-			if (err) throw err;
-			var records = JSON.stringify(rows);
-			var users = JSON.parse(records);
-			cb(users)
+			if (err) {
+				cb({type: 'DatabaseError', error: err, message: 'Cannot get data from database'})
+			} else {
+				var records = JSON.stringify(rows);
+				var users = JSON.parse(records);
+				cb(users)
+			}			
 		})
 	}
 	
 	static getUserById(id, cb) {
 		db.query('SELECT * FROM `users` WHERE `user_id` = ?', [id], (err, rows) => {
-			if (err) throw err;
-			var records = JSON.stringify(rows[0]);
-			var user = records == undefined ? {status: 500, error: 'No such user in database'} : JSON.parse(records);
-			cb(user)
+			if (err) {
+				cb({type: 'DatabaseError', error: err})
+			} else {
+				var records = JSON.stringify(rows[0]);
+				var user = records == undefined ? {type: 'DatabaseError', error: err, message: 'This user is not registered in database'} : JSON.parse(records);
+				cb(user)
+			}
 		})
 	}
 	
 	static updateUser(user, id, cb) { // saveUserPwd??
 		db.query('UPDATE `users` SET ? WHERE `user_id` = ?', [user, id], (err, rows) => {
-			if (err) throw err;
-			var records = JSON.stringify(rows[0]);
-			var user = JSON.parse(records);
-			cb(user)
+			if (err) {
+				cb({type: 'DatabaseError', error: err})
+			} else {
+				var records = JSON.stringify(rows[0]);
+				var user = JSON.parse(records);
+				cb(user)
+			}
 		})
 	}
 	
 	static deleteUser(id, cb) {
 		db.query('DELETE FROM `users` WHERE `user_id` = ?', [id], (err, rows) => {
 			// ADD VERIFICATION
-			if (err) throw err;
-			var records = JSON.stringify(rows[0]);
-			var user = JSON.parse(records);
-			cb(user)
+			if (err) {
+				cb({type: 'DatabaseError', error: err})
+			} else {
+				var records = JSON.stringify(rows[0]);
+				var user = JSON.parse(records);
+				cb(user)
+			}
 		})
 	}
 	
@@ -146,8 +158,11 @@ class User {
 				user_username: _user.email
 	   }
 	   db.query('INSERT INTO `users` SET ?', user, (err, results) => {
-			if (err) throw err;
-			cb(results)			
+			if (err) {
+				cb({type: 'DatabaseError', error: err})
+			} else {
+				cb(results)			
+			}
 	   })	
 	}
 	
@@ -158,17 +173,23 @@ class User {
       user_password: pwd
 	   }
 	   db.query('UPDATE `users` SET ? WHERE `user_email` = ?', [userToSave, user.user_email], (err, results) => {
-	  	if (err) throw err;
-			cb(results)
+	  	if (err) {
+				cb({type: 'DatabaseError', error: err})
+			} else {
+				cb(results)
+			}
 	   })
 	}
 
 	static getSuperAdmin(cb) {
 		db.query('SELECT * from `users` WHERE `user_role` = "superadmin"', (err, rows) => {
-			if (err) throw err;
-		  var records = JSON.stringify(rows[0]);
-			var users = JSON.parse(records);
-	    cb(users)
+			if (err) {
+				cb({type: 'DatabaseError', error: err})
+			} else {
+				var records = JSON.stringify(rows[0]);
+				var users = JSON.parse(records);
+				cb(users)
+			}
 		})
  }
 	static userRequest(type, email, role, cb) {

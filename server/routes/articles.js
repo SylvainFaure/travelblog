@@ -3,29 +3,30 @@ const articles = express.Router()
 const Article = require('../models/article');
 const validate = require('../validators/validator');
 const validateRole = require('../validators/role.validator');
+const handleResponse = require('../responseHandler')
 
 articles.route('/')
-  .get((req, res) => {
+  .get((req, res, next) => {
     Article.getAll(false, allarticles => {
-      res.json(allarticles)
+      handleResponse(res, next, allarticles)
     })
   })
-  .post((req, res) => {
+  .post((req, res, next) => {
     validate(req.body, 'article', 'create')
       .then((value) => {
         Article.postArticle(req.body, results =>{
-          res.json(results)
+          handleResponse(res, next, result)
         })
       })
       .catch(err => {
         res.json(err)
       })
   })
-  .delete((req, res) => {
+  .delete((req, res, next) => {
     validateRole(req.headers['x-access-token'], 'superadmin')
       .then((value) => {
         Article.deleteAll(result => {
-          res.json(result)
+          handleResponse(res, next, result)
         })
       })
       .catch(err => {
@@ -34,26 +35,26 @@ articles.route('/')
   })
 
 articles.route('/:id([0-9]+)')
-  .get((req, res) => {
+  .get((req, res, next) => {
     Article.getArticle(false, req.params.id, article => {
-      res.json(article)
+      handleResponse(res, next, article)
     })
   })
-  .put((req, res) => {
+  .put((req, res, next) => {
      Article.updateArticle(req.body, req.params.id, article => {
-      res.json(article)
+      handleResponse(res, next, article)
     })
   })
-  .delete((req, res) => {
+  .delete((req, res, next) => {
     Article.deleteArticle(req.params.id, result => {
-      res.send(result)
+      handleResponse(res, next, result)
     })
   })
 
 articles.route('/published')
-  .get((req, res) => {
+  .get((req, res, next) => {
     Article.getAll(true, allarticles => {
-      res.json(allarticles)
+      handleResponse(res, next, allarticles)
     })
   })
   

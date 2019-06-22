@@ -25,24 +25,33 @@ class Travel {
 	static addTravel(published, travel, cb) {
 		let table = published ? 'published_travels' : 'travels';
 		db.query(`INSERT INTO ${table} SET ?`, travel, (err, results, fields) => { 
-			if (err) throw err;
-			cb(results)			
+			if (err) {
+				cb({type: 'DatabaseError', error: err});
+			} else {
+				cb(results)			
+			}
 		})
 	}
 
 	static updateTravel(published, travel, id, cb) {
 		let table = published ? 'published_travels' : 'travels';
 		db.query(`UPDATE ${table} SET ? WHERE travel_id = ?`, [travel, id], (error, results) => {
-			if (error) throw error
-			cb(results)
+			if (err) {
+				cb({type: 'DatabaseError', error: err});
+			} else {
+				cb(results)			
+			}
 		})
 	}
 
 	static deleteTravel(published, id, cb) {
 		let table = published ? 'published_travels' : 'travels';
 		db.query(`DELETE FROM ${table} WHERE travel_id = ?`, id, (error, result) => {
-			if (error) throw error
-				cb(result)
+			if (err) {
+				cb({type: 'DatabaseError', error: err});
+			} else {
+				cb(results)			
+			}
 		})
 	}
 	

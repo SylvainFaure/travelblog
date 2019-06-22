@@ -52,7 +52,6 @@ if (app.get("env") === 'development') {
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(tokenMiddleware);
-app.use(errorMiddleware);
 
 /*** ROUTES ****/
 app.use('/api/articles', articlesRouter);
@@ -60,6 +59,7 @@ app.use('/api/travels', travelsRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/assets', assetsRouter);
 
+app.use(errorMiddleware);
 /*** ANGULAR ONE PAGE APP ***/
 app.get('*', (req, res, next) => {
   var firstIndex = req.get('host').indexOf('.');

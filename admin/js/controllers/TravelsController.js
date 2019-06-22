@@ -173,9 +173,11 @@ class TravelsController {
 	handleTravelCountries(ev) {
 		if (ev.key === "Enter") {
 			if (this.fr) {
+				if (!this.travel.travel_countries_fr) this.travel.travel_countries_fr = []
 				this.travel.travel_countries_fr.push(this.travel.travel_editing_country);
 			}
 			if (this.it) {
+				if (!this.travel.travel_countries_it) this.travel.travel_countries_it = []				
 				this.travel.travel_countries_it.push(this.travel.travel_editing_country);
 			}
 			this.travel.travel_editing_country = ""; 

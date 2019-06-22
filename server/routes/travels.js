@@ -1,6 +1,7 @@
 const express = require('express')
 const travels = express.Router()
 const Travel = require('../models/travel');
+const handleResponse = require('../responseHandler')
 
 travels.route('/')
   .get((req, res) => {
@@ -8,27 +9,27 @@ travels.route('/')
       res.json(travels)
     })
   })
-  .post((req, res) => {
+  .post((req, res, next) => {
     Travel.addTravel(false, req.body, results =>{
-      res.json(results)
+      handleResponse(res, next, results)
     })
   })
   // TODO - Add a delete route
 
 travels.route('/:id([0-9]+)')
-  .get((req, res) => {
+  .get((req, res, next) => {
     Travel.getTravel(false, req.params.travel, travel => {
       res.json(travel)
     })
   })
-  .put((req, res) => {
+  .put((req, res, next) => {
     Travel.updateTravel(false, req.body, req.params.id, travel => {
-      res.json(travel);
+      handleResponse(res, next, travel)
     })
   })
-  .delete((req, res) => {
+  .delete((req, res, next) => {
     Travel.deleteTravel(false, req.params.id, result => {
-      res.send(result);
+      handleResponse(res, next, result)
     })
   })
 travels.route('/:id([0-9]+)/articles')
@@ -51,19 +52,19 @@ travels.route('/published/:id([0-9]+)')
       res.json(travel)
     })
   })
-  .post((req, res) => {
+  .post((req, res, next) => {
     Travel.addTravel(true, req.body, results =>{
-      res.json(results)
+      handleResponse(res, next, results)
     })
   })
-  .put((req, res) => {
+  .put((req, res, next) => {
     Travel.updateTravel(true, req.body, req.params.id, travel => {
-      res.json(travel);
+      handleResponse(res, nex, travel);
     })
   })
-  .delete((req, res) => {
+  .delete((req, res, next) => {
     Travel.deleteTravel(true, req.params.id, result => {
-      res.send(result);
+      handleResponse(res, nex, result);
     })
   })
 

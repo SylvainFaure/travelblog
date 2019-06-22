@@ -5,59 +5,83 @@ class Article {
 	static getAll(published, cb) {
 		let table = published ? 'published_articles' : 'articles';
 		db.query(`SELECT * FROM ${table}`, (err, rows) => {
-			if (err) throw err;
-			var records = JSON.stringify(rows);
-			var allarticles = JSON.parse(records);
-			cb(allarticles)
+			if (err) {
+				cb({type: 'DatabaseError', error: err})
+			} else {
+				var records = JSON.stringify(rows);
+				var allarticles = JSON.parse(records);
+				cb(allarticles)
+			}
 		})
 	}
 
 	static getArticle(published, id, cb) {
 		let table = published ? 'published_articles' : 'articles';
 		db.query(`SELECT * FROM ${table} WHERE article_id = ?`, [id], (err, rows) => {
-			if (err) throw err;
-			var records = JSON.stringify(rows);
-			var article = JSON.parse(records);
-			cb(article)
+			if (err) {
+				cb({type: 'DatabaseError', error: err})				
+			} else {
+				var records = JSON.stringify(rows);
+				var article = JSON.parse(records);
+				cb(article)
+			}
 		})
 	}
 
 	static postArticle(article, cb) {
 		db.query('INSERT INTO `articles` SET ?', article, (error, results) => {
-		 	if (error) throw error;
-			cb(results)
+		 	if (error) { 
+				cb({type: 'DatabaseError', error: error})
+			} else {
+				cb(results)
+			}
 		});
 	}
 
 	static updateArticle(published, article, id, cb) {
     let table = published ? 'published_articles' : 'articles';
 		db.query(`UPDATE ${table} SET ? WHERE article_id = ?`, [article, id], (error, results) => {
-			if (error) throw error
-			cb(results)
+			if (error) { 
+				cb({type: 'DatabaseError', error: error})
+			} else {
+				cb(results)
+			}
 		})
 	}
 	
 	static publishArticle(article, id, cb) {
 		db.query('SELECT * FROM `published_articles` WHERE `article_id` = ?', id, (err, rows) => {
-			if (err) throw err
-			if (rows.length) {
-				db.query('UPDATE `published_articles` SET ? WHERE `article_id` = ?', [article, id], (error, results) => {
-					if (error) throw error
-					cb(results)
-				})
+			if (err) {
+				cb({type: 'DatabaseError', error: err})
 			} else {
-				db.query('INSERT INTO `published_articles` SET ?', article, (error, results) => {
-					if (error) throw error
-					cb(results)
-				})
+				if (rows.length) {
+					db.query('UPDATE `published_articles` SET ? WHERE `article_id` = ?', [article, id], (error, results) => {
+						if (error) { 
+							cb({type: 'DatabaseError', error: error})
+						} else {
+							cb(results)
+						}
+					})
+				} else {
+					db.query('INSERT INTO `published_articles` SET ?', article, (error, results) => {
+						if (error) { 
+							cb({type: 'DatabaseError', error: error})
+						} else {
+							cb(results)
+						}
+					})
+				}
 			}
 		})
 	}
 	
 	static unpublishArticle(id, cb) {
 		db.query('DELETE FROM `published_articles` WHERE `article_id` = ?', id, (error, result) => {
-			if (error) throw error
-			cb(result)
+			if (error) { 
+				cb({type: 'DatabaseError', error: error})
+			} else {
+				cb(result)
+			}
 		})
 	}
 
@@ -65,15 +89,20 @@ class Article {
 		var resultOne = {};
 		var resultTwo = {};
 		db.query('DELETE FROM `articles` WHERE `article_id` = ?', id, (error, result) => {
-			if (error) throw error
+			if (error) { 
+				cb({type: 'DatabaseError', error: error})
+			}
 			resultOne = result;
 		})
-		db.query('SELECT * FROM `published_articles` WHERE `article_id` = ?', id, (err, rows) => {
-			if (err) throw err
-			if (rows) {
-				this.unpublishArticle(id, (result) => {
-					resultTwo = result;
-				})
+		db.query('SELECT * FROM `published_articles` WHERE `article_id` = ?', id, (error, rows) => {
+			if (error) { 
+				cb({type: 'DatabaseError', error: error})
+			} else {
+				if (rows) {
+					this.unpublishArticle(id, (result) => {
+						resultTwo = result;
+					})
+				}
 			}
 		})
 		const result = Object.assign({}, resultOne, resultTwo)
@@ -85,12 +114,18 @@ class Article {
     let resultOne = {};
     let resultTwo = {};
     db.query('DELETE * FROM `articles`', (err, result) => {
-      if (err) throw err
-      resultOne = result;
+      if (err) {
+				cb({type: 'DatabaseError', error: err})
+			} else {
+				resultOne = result;
+			}
     })
     db.query('DELETE * FROM `published_articles`', (err, result) => {
-      if (err) throw err
-      resultTwo = result;
+      if (err) {
+				cb({type: 'DatabaseError', error: err})
+			} else {
+				resultTwo = result;
+			}
     })
     const result = Object.assign({}, resultOne, resultTwo);
     cb(result)

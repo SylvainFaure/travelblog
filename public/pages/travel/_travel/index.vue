@@ -1,27 +1,34 @@
 <template>
   <div>
     <div class="header">
-      <div class="travel__header">
-        <h1 class="title travel__header-title">
-          {{ travel.name }}
-        </h1>
-        <h2 class="title">
-          {{ travel.description }}
-        </h2>
-        <a href="/"><i style="font-size:24px" class="fa">&#8604;</i></a>
-      </div>
       <Map :address="travel.countries.split(',')[0]" :steps="travel.articles" />
     </div>
-    <transition name="fade">
-      <div v-if="travelArticles" class="travel__articles-container">
-        <div
-          v-for="article in travelArticles"
-          :key="article.article_id"
-        >
-          <article-card :article="article" />
+    <section class="travel__body">
+      <div>
+        <div class="travel__header">
+          <h1 class="title travel__header-title">
+            {{ travel.name }}
+          </h1>
+          <h2 class="title">
+            {{ travel.description }}
+          </h2>
+          <a href="/"><i style="font-size:24px" class="fa">&#8604;</i></a>
+        </div>
+        <div class="travel__body-description">
+          Travel description
         </div>
       </div>
-    </transition>
+      <transition name="fade">
+        <div v-if="travelArticles" class="travel__articles-container">
+          <div
+            v-for="article in travelArticles"
+            :key="article.article_id"
+          >
+            <article-card :article="article" />
+          </div>
+        </div>
+      </transition>
+    </section>
     <FloatActionBtn label="Gallery" :route="`${params.travel}/gallery`" />
   </div>
 </template>
@@ -51,6 +58,7 @@ export default {
   computed: {
     ...mapState(['travels', 'articles', 'assets']),
     travel() {
+      console.log(this.$route.params.travelId)
       const paramId = this.$route.params.travelId ? this.$route.params.travelId : this.getTravelIdFromSlug(this.$route.params.travel)
       const filteredTravel = this.travels.filter((travel) => {
         return Number(paramId) === travel.travel_id
@@ -82,12 +90,30 @@ export default {
 .travel {
   &__header {
     font-size: 1.5em;
-    width: 30%;
     text-align: left;
-    position: absolute;
+    min-height: 15em;
     top: 4em;
     left: 2em;
-    z-index: 1000;
+    padding: 1em;
+    z-index: 100;
+    background-color: rgba(255,255,255,0.2);
+    border: 2px solid black;
+  }
+  &__body {
+    position: absolute;
+    width: 85%;
+    top: 4em;
+    left: 4em;
+    display: grid;
+    grid-template-columns: 45% auto;
+    &-description {
+      margin-top: 2em;
+    }
+  }
+  &__articles {
+    &-container {
+      margin-top: 50vh;
+    }
   }
   &-photo {
     display: flex;

@@ -24,32 +24,32 @@
         </h2>
         <CountriesCard />
       </section>
-    </main>
-    <sidebar
-      class="home__sidebar"
-      :class="{'opened' : isOpen}"
-      :opened="isOpen"
-      @open="isOpen = true"
-      @close="isOpen = false"
-    >
-      <div class="home__main-articles">
-        <h2 class="home__main-articles-title">
-          {{ $t('label_last_articles') }}
-        </h2>
-        <div class="home__main-articles-list">
-          <div
-            v-for="article in _articles"
-            :key="article.article_id"
-            class="home__main-articles-list-item"
-          >
-            <a data-url="post({country: article.article_country_id, post: article.article_id})">
-              <div><span class="italic">{{ article.title }}</span> {{ $t('label_in') }} {{ article.travel }}</div>
-              <div>{{ $t('label_published') }} {{ article.published_date }}</div>
-            </a>
+      <sidebar
+        class="home__sidebar"
+        :class="{'opened' : isOpen}"
+        :opened="isOpen"
+        @open="isOpen = true"
+        @close="isOpen = false"
+      >
+        <div class="home__main-articles">
+          <h2 class="home__main-articles-title">
+            {{ $t('label_last_articles') }}
+          </h2>
+          <div class="home__main-articles-list">
+            <div
+              v-for="article in _articles"
+              :key="article.article_id"
+              class="home__main-articles-list-item"
+            >
+              <a data-url="post({country: article.article_country_id, post: article.article_id})">
+                <div><span class="italic">{{ article.title }}</span> {{ $t('label_in') }} {{ article.travel }}</div>
+                <div>{{ $t('label_published') }} {{ article.published_date }}</div>
+              </a>
+            </div>
           </div>
         </div>
-      </div>
-    </sidebar>
+      </sidebar>
+    </main>
   </div>
 </template>
 
@@ -71,11 +71,6 @@ export default {
   mixins: [formatArticle],
   data() {
     return {
-      label_published: 'Publié',
-      label_trips: 'Voyages',
-      label_in: 'Dans',
-      label_last_articles: 'Derniers articles',
-      label_discover: 'Découvrez',
       asset: {
         asset_src: 'https://images.unsplash.com/photo-1555414244-80c33ca2e497?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2850&q=80',
         asset_title_fr: 'Accueil',
@@ -159,7 +154,7 @@ export default {
   }
   &__main {
     @include flex(row, space-between, flex-start);
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     &-trips {
       @include flex(row, flex-start, flex-start);
       flex-wrap: wrap;
@@ -196,11 +191,16 @@ export default {
     }
   }
   &__sidebar {
-    position: absolute;
-    top: 100vh;
-    right: 0;
-    height: 100%;
-    width: 25%;
+    position: relative;
+    top: 45vh;
+    right: 25px;
+    &.opened {
+      position: sticky;
+      top: 0;
+      right: 0;
+      min-width: 300px;
+      height: 100vh;
+    }
   }
 }
 </style>

@@ -92,7 +92,7 @@ module.exports = {
         messages: localeMessages
       },
       parsePages: false,
-      startegy: "prefix_except_default",
+      strategy: "prefix_except_default",
       pages: {
         'index': {
           it: '/',

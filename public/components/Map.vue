@@ -277,6 +277,7 @@ export default {
       }
     },
     initDirections(directionsService, directionsDisplay, steps) {
+      console.log(steps)
       const waypoints = []
       for (let i = 1; i < steps.length - 1; i++) {
         waypoints.push({
@@ -284,6 +285,7 @@ export default {
           stopover: true
         })
       }
+      console.log(waypoints)
       directionsService.route(
         {
           origin: steps[0],
@@ -293,6 +295,7 @@ export default {
           travelMode: 'DRIVING'
         },
         function (response, status) {
+          console.log(response, status)
           if (status === 'OK') {
             directionsDisplay.setDirections(response)
           } else {

@@ -12,7 +12,7 @@
         {{ _article.place }}
       </h2>
       <p>{{ _article.short_desc }}</p>
-      <btn :link="{name: 'travel-travel-article', params: {travel: travel, article: article.article_slug}}">
+      <btn :link="{name:'travel-travelSlug-article', params: {travelSlug: travelSlug, article: article.article_slug.toLowerCase(), articleId: article.article_id}}">
         {{ $t('label_discover_step') }}
       </btn>
     </div>
@@ -21,16 +21,21 @@
 <script>
 import Btn from '@/components/Btn'
 import formatArticle from '@/mixins/formatArticle'
+import formatRoute from '@/mixins/formatRoute'
 import { mapState } from 'vuex'
 
 export default {
   components: {
     Btn
   },
-  mixins: [ formatArticle ],
+  mixins: [ formatArticle, formatRoute ],
   props: {
     article: {
       type: Object,
+      required: true
+    },
+    travelSlug: {
+      type: String,
       required: true
     }
   },

@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="countries__card-footer">
-        <btn :link="{name: `travel-travel___${$i18n.locale}`, params: { travel: travel.travel_slug, travelId: travel.travel_id }}">
+        <btn :link="{name: `travel-travelSlug`, params: { travelSlug: travel.travel_slug, travelId: travel.travel_id }}">
           {{ $t('label_discover') }}
         </btn>
       </div>
@@ -32,6 +32,7 @@
 </template>
 <script>
 import formatTravel from '@/mixins/formatTravel'
+import formatRoute from '@/mixins/formatRoute'
 import { mapState } from 'vuex'
 import Btn from '@/components/Btn'
 
@@ -39,7 +40,7 @@ export default {
   components: {
     Btn
   },
-  mixins: [formatTravel],
+  mixins: [formatTravel, formatRoute],
   data() {
     /* const imgPath =
       process.env.NODE_ENV !== 'development'

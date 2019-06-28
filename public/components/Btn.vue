@@ -1,8 +1,7 @@
 <template>
   <component
     :is="tagName"
-    :to="isRoute ? link : null"
-    :href="location"
+    :to="isRoute ? localePath(link) : null"
     :type="type || null"
     class="btn"
     :class="getClassName()"

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header">
-      <Map :address="travel.countries.split(',')[0]" :steps="travel.articles" />
+      <Map :address="travel.countries.split(',')[0]" :steps="travelSteps" />
     </div>
     <section class="travel__body">
       <div>
@@ -24,7 +24,7 @@
             v-for="article in travelArticles"
             :key="article.article_id"
           >
-            <article-card :article="article" />
+            <article-card :article="article" :travel-slug="$route.params.travelSlug" />
           </div>
         </div>
       </transition>
@@ -52,16 +52,15 @@ export default {
   mixins: [formatTravel, getTravelIdFromSlug],
   data() {
     return {
-      params: this.$route.params
+      params: this.$route.params,
+      travelId: undefined
     }
   },
   computed: {
     ...mapState(['travels', 'articles', 'assets']),
     travel() {
-      console.log(this.$route.params.travelId)
-      const paramId = this.$route.params.travelId ? this.$route.params.travelId : this.getTravelIdFromSlug(this.$route.params.travel)
       const filteredTravel = this.travels.filter((travel) => {
-        return Number(paramId) === travel.travel_id
+        return this.travelId === travel.travel_id
       })
       const toRet = this.formatTravel(filteredTravel[0], this.filteredArticles)
       return toRet
@@ -71,8 +70,11 @@ export default {
     },
     travelArticles() {
       return this.articles.filter((art) => {
-        return art.article_travel_id === Number(this.$route.params.travelId)
+        return art.article_travel_id === this.travelId
       })
+    },
+    travelSteps() {
+      return this.travelArticles.map(art => art.article_slug)
     },
     fr() {
       return true
@@ -81,8 +83,8 @@ export default {
       return false
     }
   },
-  methods: {
-
+  created() {
+    this.travelId = this.$route.params.travelId ? this.$route.params.travelId : this.getTravelIdFromSlug(this.$route.params.travelSlug)
   }
 }
 </script>

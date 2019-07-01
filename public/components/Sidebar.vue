@@ -5,7 +5,7 @@
         <div class="sidebar__close clickable" @click="close">
           <span>&#9587;</span>
         </div>
-        <slot />
+        <slot class="sidebar__slot" />
       </aside>
       <div v-if="!opened" class="sidebar__openbtn clickable" @click="open">
         <div>
@@ -38,6 +38,11 @@ export default {
   position: relative;
   height: 100%;
   background-color: rgba(232,232,232,1);
+
+  &__slot {
+    width: 0;
+  }
+
   &__close {
     position: absolute;
     right: 10px;
@@ -56,7 +61,10 @@ export default {
   transform: translateX(25%);
   opacity: 0;
 }
-.slide-left-enter-active, .slide-left-leave-active {
+.slide-left-enter-active {
   transition: all 0.3s ease-in-out;
+}
+.slide-left-leave-active {
+  transition: all 0 ease-in-out
 }
 </style>

@@ -39,6 +39,7 @@ if (process.env.NODE_ENV !== "development") {*/
     s3: s3,
     bucket: process.env.S3_BUCKET_NAME,
     acl: 'public-read',
+    contentType: multerS3.AUTO_CONTENT_TYPE,
     key: (req, file, cb) => {
       var timestamp = new Date().getTime();
       cb(null, `img/${timestamp}_${file.originalname}`);

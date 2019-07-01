@@ -83,7 +83,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/server/app.js",
-    "dev": "cross-env NODE_ENV=development env-cmd .env node server/app.js",
+    "dev": "cross-env NODE_ENV=development env-cmd .env node --inspect server/app.js",
     "dev:standalone": "cross-env NODE_ENV=development STANDALONE=true env-cmd .env node server/app.standalone.js",
     "build": "cross-env NODE_ENV=production env-cmd .env webpack",
     "postinstall": "npm run build"

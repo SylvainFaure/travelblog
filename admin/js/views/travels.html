@@ -34,7 +34,7 @@
     </div>
     
     <!--MODAL-->
-    <div class="ui modal travel">
+    <div class="ui modal travel" id="{{vm.travel.travel_id}}">
       <i class="close icon"></i>
       <div class="header">
         <div ng-if="!vm.edit">
@@ -69,7 +69,7 @@
               <h4 ng-show="vm.it">Paesi attraversati</h4>
               <p ng-show="vm.fr">
                 <tag 
-                  ng-repeat="travel in vm.travel.travel_countries_fr" 
+                  ng-repeat="travel in vm.travel.travel_countries_fr track by $index"
                   label="travel"
                   deletable="true"
                   id="{{vm.travel.travel_id}}"
@@ -114,12 +114,32 @@
          
           <div class="field">
             <div class="ui basic segment">
-              <h4 ng-show="vm.fr" class="ui horizontal divider">Description</h4>
-              <h4 ng-show="vm.it" class="ui horizontal divider">Descrizione</h4>
+              <h4 ng-show="vm.fr" class="ui horizontal divider">Description courte</h4>
+              <h4 ng-show="vm.it" class="ui horizontal divider">Descrizione breve</h4>
               <div class="ui large fluid input">
                 <input ng-show="vm.fr" type="text" class="" placeholder="Description" ng-model="vm.travel.travel_desc_fr">
                 <input ng-show="vm.it" type="text" class="" placeholder="Descrizione" ng-model="vm.travel.travel_desc_it">
               </div>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui basic segment">
+              <h4 ng-show="vm.fr" class="ui horizontal divider">Description longue</h4>
+              <h4 ng-show="vm.it" class="ui horizontal divider">Descrizione lunga</h4>
+              <div class="ui large fluid input">
+                <input ng-show="vm.fr" type="text" class="" placeholder="Description" ng-model="vm.travel.travel_long_desc_fr">
+                <input ng-show="vm.it" type="text" class="" placeholder="Descrizione" ng-model="vm.travel.travel_long_desc_it">
+              </div>
+            </div>
+          </div>
+          <div class="inline field">
+            <div ng-show="vm.fr" class="ui toggle checkbox">
+              <input type="checkbox" tabindex="0" class="hidden" ng-model="vm.travel.travel_published_fr">
+              <label>Publié ?</label>
+            </div>
+            <div ng-show="vm.it" class="ui toggle checkbox">
+              <input type="checkbox" tabindex="0" class="hidden" ng-model="vm.travel.travel_published_it">
+              <label>Pubblicato ?</label>
             </div>
           </div>
           <div class="field">

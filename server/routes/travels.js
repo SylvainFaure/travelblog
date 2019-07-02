@@ -59,7 +59,7 @@ travels.route('/published/:id([0-9]+)')
   })
   .put((req, res, next) => {
     Travel.updateTravel(true, req.body, req.params.id, travel => {
-      handleResponse(res, nex, travel);
+      handleResponse(res, next, travel);
     })
   })
   .delete((req, res, next) => {

@@ -42,6 +42,7 @@ import byTag from './filters/tag.filter';
 // there is probably a better way to do this
 //if (process.env.NODE_ENV == 'development') {
 import "../vendors/semantic/components/modal";
+import "../vendors/semantic/components/checkbox";
 import "../vendors/semantic/components/dimmer";
 import "../vendors/semantic/components/transition";
 import "../vendors/semantic/components/progress";

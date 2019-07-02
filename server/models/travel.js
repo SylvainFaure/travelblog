@@ -37,14 +37,47 @@ class Travel {
 	}
 
 	static updateTravel(published, travel, id, cb) {
-		let table = published ? 'published_travels' : 'travels';
-		db.query(`UPDATE ${table} SET ? WHERE travel_id = ?`, [travel, id], (error, results) => {
-			if (error) {
-				cb({type: 'DatabaseError', error: error});
-			} else {
-				cb(results)			
-			}
-		})
+		if (published) {
+			db.query('UPDATE travels SET ? WHERE travel_id = ?', [travel, id], (error, results) => {
+				if (error) {
+					cb({type: 'DatabaseError', error: error});
+				} else {
+					db.query('SELECT * FROM published_travels WHERE travel_id = ?', id, (err, rows) => {
+						if (err) {
+							cb({type: 'DatabaseError', error: err})
+						} else {
+							if (rows.length) {
+								// update
+								db.query('UPDATE published_travels SET ? WHERE travel_id = ?', [travel, id], (error, results) => {
+									if (error) {
+										cb({type: 'DatabaseError', error: error})
+									} else {
+										cb(results)
+									}
+								})
+							} else {
+								// save
+								db.query('INSERT INTO published_travels SET ?', travel, (err, results, fields) => { 
+									if (err) {
+										cb({type: 'DatabaseError', error: err});
+									} else {
+										cb(results)			
+									}
+								})
+							}
+						}
+					})
+				}
+			})
+		} else {
+			db.query('UPDATE travels SET ? WHERE travel_id = ?', [travel, id], (error, results) => {
+				if (error) {
+					cb({type: 'DatabaseError', error: error});
+				} else {
+					cb(results)
+				}
+			})
+		}
 	}
 
 	static deleteTravel(published, id, cb) {

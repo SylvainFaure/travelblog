@@ -18,9 +18,10 @@ class TravelsController {
 	this.travels.map(travel => {
 		travel.travel_countries_fr = JSON.parse(travel.travel_countries_fr)
 		travel.travel_countries_it = JSON.parse(travel.travel_countries_it)
+		travel.travel_published_fr = this.handleBoolean(travel.travel_published_fr)
+		travel.travel_published_it = this.handleBoolean(travel.travel_published_it)
 		return travel
 	})
-	console.log(this.travels)
 	this.assets = Assets
 	this.ApiService = ApiService;
 	this.fr = $rootScope.rvm.fr;
@@ -37,6 +38,7 @@ class TravelsController {
 		}
 	});
 
+	$('.ui.checkbox').checkbox()
 	
 	this.getTravelSteps = this.getTravelSteps();
 	this.appendCalendar = this.appendCalendar();
@@ -81,7 +83,6 @@ class TravelsController {
 
 	parseDate(date, range) {
 		let dateObj = new Date(date).toLocaleDateString('fr-FR');
-		console.log(dateObj)
 		if (range == "start") {
 			this.travel.travel_start_date = dateObj;
 		}
@@ -113,7 +114,6 @@ class TravelsController {
 
 	saveTravel(travel) {
 		let formattedTravel = this.formatTravel(travel)
-
 		this.ApiService.travelCreate(formattedTravel)
 			.then(resp => {
 				console.log(resp)
@@ -124,6 +124,18 @@ class TravelsController {
 			}).catch(err => {
 				console.log(err)
 			})
+	}
+
+	saveAndPublishTravel(travel, travelId) {
+		/**SAVE AND PUBLISH NEW TRAVEL ? */
+		if (travelId) {
+			this.updateTravel(travel, travelId)
+			this.ApiService.travelPublish(travel, travelId)
+				.then(resp => {
+					console.log(resp)
+				})
+				.catch(err => console.log(err))
+		}
 	}
 
 	handleBoolean(value) {
@@ -199,11 +211,14 @@ class TravelsController {
 	editTravel(travel) {
 		this.openModal('travel', travel.travel_id)
 		this.travel = travel
+		this.travel.travel_published_fr = this.handleBoolean(this.travel.travel_published_fr)
+		this.travel.travel_published_it = this.handleBoolean(this.travel.travel_published_it)
 		this.edit = true		
 	}
 
 	updateTravel(travel, id) {
 		let formattedTravel = this.formatTravel(travel)
+		console.log(formattedTravel)
 		this.ApiService.travelUpdate(formattedTravel, id)
 			.then(resp => {
 				console.log(resp)

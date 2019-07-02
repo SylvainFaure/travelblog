@@ -36,6 +36,10 @@ export default class ApiService {
   return this.$http.put(this.BASE_PATH + 'api/travels/' + id, travel)
  }
 
+ travelPublish(travel, id) {
+   return this.$http.put(this.BASE_PATH + 'api/travels/published/' + id, travel)
+ }
+
  travelDelete(id) {
   return this.$http.delete(this.BASE_PATH + 'api/travels/' + id);
  }

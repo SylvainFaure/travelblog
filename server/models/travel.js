@@ -15,10 +15,13 @@ class Travel {
 	static getTravel(published, travel, cb) {
 		let table = published ? 'published_travels' : 'travels';
 		db.query(`SELECT * FROM ${table} WHERE travel_id = ?`, [travel], (err, rows) => {
-			if (err) throw err;
-			var records = JSON.stringify(rows);
-			var travel = JSON.parse(records);
-			cb(travel)
+			if (err) {
+				cb({type: 'DatabaseError', error: err})
+			} else {
+				var records = JSON.stringify(rows);
+				var travel = JSON.parse(records);
+				cb(travel)
+			}
 		})
 	}
 
@@ -36,8 +39,8 @@ class Travel {
 	static updateTravel(published, travel, id, cb) {
 		let table = published ? 'published_travels' : 'travels';
 		db.query(`UPDATE ${table} SET ? WHERE travel_id = ?`, [travel, id], (error, results) => {
-			if (err) {
-				cb({type: 'DatabaseError', error: err});
+			if (error) {
+				cb({type: 'DatabaseError', error: error});
 			} else {
 				cb(results)			
 			}
@@ -47,20 +50,23 @@ class Travel {
 	static deleteTravel(published, id, cb) {
 		let table = published ? 'published_travels' : 'travels';
 		db.query(`DELETE FROM ${table} WHERE travel_id = ?`, id, (error, result) => {
-			if (err) {
-				cb({type: 'DatabaseError', error: err});
+			if (error) {
+				cb({type: 'DatabaseError', error: error});
 			} else {
-				cb(results)			
+				cb(result)			
 			}
 		})
 	}
 	
 	static getAllArticlesByTravel(travel, cb) {
-		db.query('SELECT * FROM articles WHERE article_travel_id = ?', [travel], function(err, rows){
-			if (err) throw err;
-			var records = JSON.stringify(rows);
-			var articles = JSON.parse(records);
-			cb(articles)
+		db.query('SELECT * FROM articles WHERE article_travel_id = ?', [travel], (err, rows) => {
+			if (err) {
+				cb({type: 'DatabaseError', error: err})
+			} else {
+				var records = JSON.stringify(rows);
+				var articles = JSON.parse(records);
+				cb(articles)
+			}
 		})
 	}
 }

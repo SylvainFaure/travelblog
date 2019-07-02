@@ -50,7 +50,7 @@ export default class assetPickerController {
 
     setTimeout(() => {
       this.assets.forEach(asset => {
-        asset.assetDate = this.DateService.fromTimestampToDate(Number(asset.asset_name.split("_")[0]), true);
+        asset.assetDate = asset.name ? this.DateService.fromTimestampToDate(Number(asset.asset_name.split("_")[0]), true) : this.DateService.fromTimestampToDate(Date.parse(new Date))
       })
     })
 

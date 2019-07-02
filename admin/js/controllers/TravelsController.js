@@ -32,7 +32,7 @@ class TravelsController {
 	})
 		
 	$rootScope.$on('changeAsset', (e, from, asset) => {
-		if (from == "travel") {
+		if (from == "travels") {
 			this.travel.travel_cover = asset.asset_name
 		}
 	});
@@ -42,12 +42,19 @@ class TravelsController {
 	this.appendCalendar = this.appendCalendar();
 }
 
-	openModal(travel) {
+	openModal(travel, travelId) {
+		const id = travelId ? `#${travelId}` : ''
 		if (travel == 'travel') {
-			$('.ui.modal.travel').modal('show');
+			setTimeout(() => {
+				$(`.ui.modal.travel${id}`).modal('show');
+				this.initCalendar();
+			})
 		}
-		this.initCalendar();
 	}
+	closeModal() {
+    $('.ui.modal.travel').modal('hide')
+  }
+
 
 	appendCalendar() {
 		$('head').append(`<link href="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.css" rel="stylesheet" type="text/css" />
@@ -81,11 +88,14 @@ class TravelsController {
 		if (range == "end") {
 			this.travel.travel_end_date = dateObj;
 		}
+		if (!range) {
+			return dateObj
+		}
 	}
 
 	getTravelSteps() {
 		let self = this;
-		this.travels.forEach(function(travel){
+		this.travels.forEach((travel) =>{
 			self.ApiService.travelArticles(travel.travel_id)
 			.then(function(r){
 				var steps = ''
@@ -103,17 +113,53 @@ class TravelsController {
 
 	saveTravel(travel) {
 		let formattedTravel = this.formatTravel(travel)
+
 		this.ApiService.travelCreate(formattedTravel)
-		this.$state.reload('logged')
-		this.$window.location.reload()
-		this.travels = Travels
+			.then(resp => {
+				console.log(resp)
+				/**IF PUBLISHED -> HANDLE PUBLISHED */
+				this.closeModal()
+				this.$state.reload('logged')
+				this.travels = Travels
+			}).catch(err => {
+				console.log(err)
+			})
+	}
+
+	handleBoolean(value) {
+		let val
+		if (typeof value == 'string') {
+			val = value == 'true' ? true : false
+		} else {
+			val = value
+		}
+		return val
 	}
 
 	formatTravel(travel) {
 		let formattedTravel = travel;
 		delete formattedTravel.travel_editing_country;
-		formattedTravel.travel_countries_fr = JSON.stringify(formattedTravel.travel_countries_fr)
-		formattedTravel.travel_countries_it = JSON.stringify(formattedTravel.travel_countries_it)
+		formattedTravel.travel_countries_fr = formattedTravel.travel_countries_fr ? JSON.stringify(formattedTravel.travel_countries_fr) : JSON.stringify([])
+		formattedTravel.travel_countries_it = formattedTravel.travel_countries_it ? JSON.stringify(formattedTravel.travel_countries_it) : JSON.stringify([])
+		formattedTravel.travel_long_desc_fr = formattedTravel.travel_long_desc_fr ? formattedTravel.travel_long_desc_fr : ''
+		formattedTravel.travel_long_desc_it = formattedTravel.travel_long_desc_it ? formattedTravel.travel_long_desc_it : ''
+		const publishedFr = this.handleBoolean(formattedTravel.travel_published_fr)
+		const publishedIt = this.handleBoolean(formattedTravel.travel_published_it)
+
+		if (publishedFr) {
+			formattedTravel.travel_published_date_fr = formattedTravel.travel_published_date_fr ? formattedTravel.travel_published_date_fr : this.parseDate(new Date)
+		}	else {
+			formattedTravel.travel_published_date_fr = ''
+		}
+		if (publishedIt) {
+			formattedTravel.travel_published_date_it = this.parseDate(new Date)
+		} else {
+			formattedTravel.travel_published_date_it = ''
+		}
+
+		formattedTravel.travel_published_fr = publishedFr ? 'true' : 'false'
+		formattedTravel.travel_published_it = publishedIt ? 'true' : 'false'
+
 		//formattedTravel.travel_start_date = Date(formattedTravel.travel_start_date);
 		//formattedTravel.travel_end_date = Date(formattedTravel.travel_end_date);
 		return formattedTravel;
@@ -137,7 +183,7 @@ class TravelsController {
 			types: '(country)'
 		});
 
-		places = new google.maps.places.PlacesService(map);
+		const places = new google.maps.places.PlacesService(map);
 		searchBox.addListener('place_changed', onPlaceChanged);
 
 		function onPlaceChanged() {
@@ -150,24 +196,35 @@ class TravelsController {
 	}
 
 
-	editTravel(index) {
-		this.openModal('travel')
-		this.travel = index
+	editTravel(travel) {
+		this.openModal('travel', travel.travel_id)
+		this.travel = travel
 		this.edit = true		
 	}
 
 	updateTravel(travel, id) {
 		let formattedTravel = this.formatTravel(travel)
 		this.ApiService.travelUpdate(formattedTravel, id)
-		this.$state.reload('logged')
-		this.$window.location.reload()
+			.then(resp => {
+				console.log(resp)
+				this.closeModal()
+				this.$state.reload('logged')
+			})
+			.catch(err => {
+				console.log(err)
+			})
 	}
 
 	removeTravel(id) {
 		this.ApiService.travelDelete(id)
-		this.$state.reload('logged')
-		this.$window.location.reload()
-		this.travels = Travels
+			.then(resp => {
+				console.log(resp)
+				this.$state.reload('logged')
+				this.travels = Travels
+			})
+			.catch(err => {
+				console.log(err)
+			})
 	}
 
 	handleTravelCountries(ev) {

@@ -1,6 +1,10 @@
 <template>
   <header class="header spaced sticky">
-    <div>title</div>
+    <div>
+      <nuxt-link to="/">
+        {{ $t('main_title') }}
+      </nuxt-link>
+    </div>
     <div>
       <ChangeLang />
     </div>
@@ -17,7 +21,7 @@ export default {
 <style lang="scss">
 .header {
   width: 100%;
-  z-index: 100;
+  z-index: 10000;
 
   display: flex;
   justify-content: space-between;
@@ -25,5 +29,11 @@ export default {
   &.spaced {
     padding: 1em;
   }
+  &.sticky {
+  position: fixed;
+  top: 0;
+  left: 0;
+  color: whitesmoke;
+}
 }
 </style>

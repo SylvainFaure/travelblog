@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Header />
     <div class="header">
       <Map :address="travel.countries.split(',')[0]" :steps="travelSteps" />
     </div>
@@ -36,6 +37,7 @@
 import { mapState } from 'vuex'
 import formatTravel from '@/mixins/formatTravel'
 import getTravelIdFromSlug from '@/mixins/formatRoute'
+import Header from '@/components/Header'
 import ArticleCard from '@/components/ArticleCard'
 import Map from '@/components/Map'
 import FloatActionBtn from '@/components/FloatActionBtn'
@@ -44,7 +46,8 @@ export default {
   components: {
     Map,
     ArticleCard,
-    FloatActionBtn
+    FloatActionBtn,
+    Header
   },
   validate({ params }) {
     return true

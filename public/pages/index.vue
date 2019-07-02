@@ -137,12 +137,7 @@ export default {
     height: 60px;
   }
 }
-.sticky {
-  position: fixed;
-  top: 0;
-  left: 0;
-  color: whitesmoke;
-}
+
 .home {
   &__header {
     position: relative;

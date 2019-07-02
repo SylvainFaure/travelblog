@@ -61,7 +61,7 @@ const articles = [
     article_country_it: '',
     article_place_fr: 'Plitvice',
     article_place_it: '',
-    article_slug: 'Sarajevo',
+    article_slug: 'plitvice',
     article_catch_phrase_fr: '',
     article_catch_phrase_it: '',
     article_short_desc_fr: 'Un parc naturel surnaturel, un endroit réellement surréel',

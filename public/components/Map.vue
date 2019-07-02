@@ -12,6 +12,10 @@ export default {
     steps: {
       type: Array,
       default: () => []
+    },
+    zoom: {
+      type: Number,
+      default: 6
     }
   },
   async mounted() {
@@ -52,7 +56,7 @@ export default {
       const directionsService = new window.google.maps.DirectionsService()
       const directionsDisplay = new window.google.maps.DirectionsRenderer()
       const map = new window.google.maps.Map(document.getElementById('map'), {
-        zoom: 6,
+        zoom: this.zoom,
         center: center,
         disableDefaultUI: true,
         styles: [
@@ -277,7 +281,6 @@ export default {
       }
     },
     initDirections(directionsService, directionsDisplay, steps) {
-      console.log(steps)
       const waypoints = []
       for (let i = 1; i < steps.length - 1; i++) {
         waypoints.push({
@@ -285,7 +288,6 @@ export default {
           stopover: true
         })
       }
-      console.log(waypoints)
       directionsService.route(
         {
           origin: steps[0],
@@ -295,7 +297,6 @@ export default {
           travelMode: 'DRIVING'
         },
         function (response, status) {
-          console.log(response, status)
           if (status === 'OK') {
             directionsDisplay.setDirections(response)
           } else {

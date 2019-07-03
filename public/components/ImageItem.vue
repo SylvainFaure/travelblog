@@ -35,11 +35,13 @@ export default {
     },
     showInfos: {
       type: Boolean,
-      required: false
+      required: false,
+      default: false
     },
     gallery: {
       type: Boolean,
-      required: false
+      required: false,
+      default: false
     },
     external: {
       type: Boolean,

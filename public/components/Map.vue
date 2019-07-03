@@ -276,7 +276,7 @@ export default {
         ]
       })
       directionsDisplay.setMap(map)
-      if (this.steps.length) {
+      if (this.steps.length > 1) {
         this.initDirections(directionsService, directionsDisplay, this.steps)
       }
     },

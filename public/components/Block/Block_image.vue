@@ -22,3 +22,8 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.block {
+  margin: 2em 0;
+}
+</style>

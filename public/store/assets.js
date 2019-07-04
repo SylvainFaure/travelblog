@@ -347,7 +347,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
-    asset_travel_id: 13,
+    asset_travel_id: 8,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -364,7 +364,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
-    asset_travel_id: 13,
+    asset_travel_id: 8,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -417,7 +417,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
-    asset_travel_id: 13,
+    asset_travel_id: 8,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -434,7 +434,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
-    asset_travel_id: 13,
+    asset_travel_id: 8,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'
@@ -451,7 +451,7 @@ const assets = [
     asset_country_it: '',
     asset_place_fr: '',
     asset_place_it: '',
-    asset_travel_id: 13,
+    asset_travel_id: 8,
     asset_desc_fr: '',
     asset_desc_it: '',
     asset_type: 'image/jpeg'

@@ -10,7 +10,7 @@
         class="img"
         :data-url="_asset.src"
         :alt="_asset.title"
-        :srcset="`${!gallery ? !external ? `${s3BaseUrl}/img/${_asset.src} 500w, ${s3BaseUrl}/thumb/${_asset.src}1000w` : `${_asset.src}` : ''}`"
+        :srcset="`${!gallery ? !external ? `${s3BaseUrl}thumb/${_asset.src} 500w, ${s3BaseUrl}img/${_asset.src} 1000w` : `${_asset.src}` : ''}`"
         :sizes="`${!gallery && !external ? `(max-width: 800px) 400px, (max-width: 1000px) 600px` : ''}`"
       >
     </transition>

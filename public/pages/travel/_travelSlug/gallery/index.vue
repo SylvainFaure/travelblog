@@ -8,20 +8,21 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import formatRoute from '@/mixins/formatRoute'
 import Gallery from '@/components/Gallery'
 export default {
   components: {
     Gallery
   },
+  mixins: [ formatRoute ],
   data() {
     return {
-      travelId: this.$route.params.travel
+      travelId: this.getTravelIdFromSlug(this.$route.params.travelSlug)
     }
   },
   computed: {
     ...mapState(['assets']),
     travelAssets() {
-      // il faut ajouter un champ asset.asset_travel_id
       return this.assets.filter(asset => {
         return Number(asset.asset_travel_id) === Number(this.travelId)
       })

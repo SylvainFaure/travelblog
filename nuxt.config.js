@@ -106,13 +106,17 @@ module.exports = {
           it: '/viaggi/:travelSlug',
           fr: '/voyages/:travelSlug',
         },
-        'travel/_travelSlug/_article': {
+        'travel/_travelSlug/_article/index': {
           it: '/viaggi/:travelSlug/:article',
           fr: '/voyages/:travelSlug/:article',
         },
-        'travel/_travelSlug/gallery': {
+        'travel/_travelSlug/gallery/index': {
           it: '/viaggi/:travelSlug/gallery',
           fr: '/voyages/:travelSlug/gallerie',
+        },
+        'travel/_travelSlug/_article/gallery/index': {
+          it: '/viaggi/:travelSlug/:article/gallery',
+          fr: '/voyages/:travelSlug/:article/gallerie',
         },
         'discogs/index': {
           it: '/discogs',

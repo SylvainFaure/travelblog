@@ -30,7 +30,7 @@
         </div>
       </transition>
     </section>
-    <FloatActionBtn label="Gallery" :route="`${params.travel}/gallery`" />
+    <FloatActionBtn label="Gallery" :route="`${params.travelSlug}/${$t('routes.gallery')}`" />
   </div>
 </template>
 <script>

@@ -1,6 +1,6 @@
 <template>
-  <section class="travel__gallery">
-    <h1>Gallery</h1>
+  <section class="gallery article__gallery">
+    <h1> {{ $t('gallery_title') }} </h1>
     <transition name="fade">
       <Gallery v-if="articleAssets.length" :assets="articleAssets" />
     </transition>
@@ -22,18 +22,21 @@ export default {
     }
   },
   computed: {
-    ...mapState(['articles', 'lang']),
-    article() {
-      return this.articles.filter(article => {
-        return article.article_id === Number(this.articleId)
-      })[0]
-    },
+    ...mapState(['assets', 'lang']),
     articleAssets() {
-      return this.lang === 'fr' ? JSON.parse(this.article.article_gallery_fr) : JSON.parse(this.article.article_gallery_it)
+      return this.assets.filter(asset => {
+        if (asset.asset_article_ids) {
+          return JSON.parse(asset.asset_article_ids).includes(this.articleId)
+        }
+      })
     }
   }
 }
 </script>
 <style lang="scss">
-
+.gallery {
+  padding: 2rem;
+  background-color: $color-secondary;
+  min-height: 105vh;
+}
 </style>

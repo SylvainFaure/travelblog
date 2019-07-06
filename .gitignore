@@ -5,5 +5,3 @@ node_modules/
 __git
 /build/
 admin/assets/
-admin/vendors/
-public/img/

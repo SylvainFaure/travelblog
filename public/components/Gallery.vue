@@ -1,12 +1,16 @@
 <template>
   <div class="gallery__container">
-    <ImageItem
+    <div
       v-for="asset in assets"
       :key="asset.id"
-      :asset="asset"
-      show-infos
-      gallery
-    />
+      class="gallery__img-wrapper"
+    >
+      <ImageItem
+        :asset="asset"
+        show-infos
+        gallery
+      />
+    </div>
   </div>
 </template>
 
@@ -25,11 +29,17 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
 .gallery__container {
   column-count: auto;
   column-width: 10em;
   column-gap: 5px;
+}
+.gallery__img-wrapper {
+  border: 2px solid transparent;
+  &:hover {
+    //border: 2px solid black;
+  }
 }
 
 </style>

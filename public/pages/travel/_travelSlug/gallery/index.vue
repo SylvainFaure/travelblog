@@ -1,5 +1,5 @@
 <template>
-  <section class="travel__gallery">
+  <section class="gallery travel__gallery">
     <h1>Gallery</h1>
     <transition name="fade">
       <Gallery v-if="assets.length" :assets="travelAssets" />
@@ -31,5 +31,7 @@ export default {
 }
 </script>
 <style lang="scss">
-
+.gallery {
+  margin: 2rem;
+}
 </style>

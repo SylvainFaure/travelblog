@@ -3,15 +3,15 @@
     v-lazyload
     itemprop="image"
     itemtype="http://schema.org/ImageObject"
-    class="gallery__img-wrapper"
+    class="img-wrapper"
   >
     <transition name="fade">
       <img
         class="img"
         :data-url="_asset.src"
         :alt="_asset.title"
-        :srcset="`${!gallery ? !external ? `${s3BaseUrl}thumb/${_asset.src} 500w, ${s3BaseUrl}img/${_asset.src} 1000w` : `${_asset.src}` : ''}`"
-        :sizes="`${!gallery && !external ? `(max-width: 800px) 400px, (max-width: 1000px) 600px` : ''}`"
+        :srcset="`${!external ? `${s3BaseUrl}thumb/${_asset.src} 500w, ${s3BaseUrl}img/${_asset.src} 1000w` : `${_asset.src}`}`"
+        :sizes="`${!external ? `(max-width: 800px) 400px, (max-width: 1000px) 600px` : ''}`"
       >
     </transition>
     <figcaption
@@ -66,7 +66,6 @@ export default {
   width: 100%;
   height: auto;
   min-height: 8em;
-  transition: all 0.6s;
   &-wrapper {
     position: relative;
     transition: all 0.3s ease;
@@ -74,22 +73,23 @@ export default {
       transform: scale(0.98);
       opacity: 0.7;
       cursor: pointer;
-      &.img-infos {
-        color: white;
+      & > .img-infos {
+        visibility: visible;
       }
     }
   }
   &-infos {
+    visibility: hidden;
     position: absolute;
     width: 100%;
     top: 2em;
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: lightgrey;
+    color: black;
     font-size: 1.2em;
     font-weight: 500;
-    transition: all 0.3s ease;
+    //transition: all 0.3s ease;
   }
 }
 </style>

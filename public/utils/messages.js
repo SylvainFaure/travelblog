@@ -9,7 +9,8 @@ module.exports = {
     label_discover_step: 'Scopri la tappa',
     routes: {
       gallery: 'galleria'
-    }
+    },
+    gallery_title: 'Foto'
   },
   fr: {
     main_title: 'Cartes de Voyages',
@@ -21,6 +22,7 @@ module.exports = {
     label_discover_step: 'Découvrez l\'étape',
     routes: {
       gallery: 'gallerie'
-    }
+    },
+    gallery_title: 'Gallerie photo'
   }
 }

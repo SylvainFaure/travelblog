@@ -11,7 +11,9 @@
       <h2>
         {{ _article.place }}
       </h2>
-      <p>{{ _article.short_desc }}</p>
+      <p class="travel__article-desc">
+        {{ _article.short_desc }}
+      </p>
       <btn :link="{name:'travel-travelSlug-article', params: {travelSlug: travelSlug, article: article.article_slug.toLowerCase(), articleId: article.article_id}}">
         {{ $t('label_discover_step') }}
       </btn>
@@ -63,5 +65,8 @@ export default {
   padding: 2em;
   margin: 2em auto;
   max-width: 85%;
+  &-desc {
+    margin: 1em 0;
+  }
 }
 </style>

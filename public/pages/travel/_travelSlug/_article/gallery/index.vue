@@ -1,6 +1,11 @@
 <template>
   <section class="gallery article__gallery">
-    <h1> {{ $t('gallery_title') }} </h1>
+    <div class="gallery__header">
+      <h1 class="gallery__header-title">
+        {{ $t('gallery_title') }}
+      </h1>
+      <span class="gallery__header-close" @click="closeGallery">&times;</span>
+    </div>
     <transition name="fade">
       <Gallery v-if="articleAssets.length" :assets="articleAssets" />
     </transition>
@@ -30,6 +35,11 @@ export default {
         }
       })
     }
+  },
+  methods: {
+    closeGallery() {
+      this.$router.push({ name: this.handleLocalize('travel-travelSlug-article'), params: { travelSlug: this.$route.params.travelSlug, article: this.$route.params.article } })
+    }
   }
 }
 </script>
@@ -38,5 +48,20 @@ export default {
   padding: 2rem;
   background-color: $color-secondary;
   min-height: 105vh;
+  &__header {
+    display: flex;
+    justify-content: center;
+
+    &-title {
+
+    }
+    &-close {
+      position: absolute;
+      top: 1em;
+      right: 1em;
+      font-size: 2em;
+      cursor: pointer;
+    }
+  }
 }
 </style>

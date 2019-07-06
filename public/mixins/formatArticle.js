@@ -7,6 +7,7 @@ export default {
       if (lang === 'fr') {
         article.title = article.article_title_fr
         article.travel = article.article_country_fr
+        article.travel_id = article.article_travel_id
         article.place = article.article_place_fr
         article.cover = article.article_cover
         article.step = article.article_step
@@ -19,6 +20,7 @@ export default {
       if (lang === 'it') {
         article.title = article.article_title_it
         article.travel = article.article_country_it
+        article.travel_id = article.article_travel_id
         article.place = article.article_place_it
         article.cover = article.article_cover
         article.step = article.article_step

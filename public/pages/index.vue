@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Header />
     <section class="home__header">
       <div class="main-title">
         <ImageItem class="img-full-screen" :external="true" :gallery="false" :asset="asset" />
@@ -55,7 +54,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import Header from '@/components/Header'
 import Sidebar from '@/components/Sidebar'
 import CountriesCard from '@/components/CountriesCard'
 import ImageItem from '@/components/ImageItem'
@@ -65,7 +63,6 @@ export default {
   components: {
     CountriesCard,
     ImageItem,
-    Header,
     Sidebar
   },
   mixins: [formatArticle],

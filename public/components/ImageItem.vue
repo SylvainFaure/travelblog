@@ -5,6 +5,7 @@
     itemtype="http://schema.org/ImageObject"
     class="img-wrapper"
   >
+    <div class="img__placeholder" />
     <transition name="fade">
       <img
         class="img"
@@ -63,9 +64,12 @@ export default {
 </script>
 <style lang="scss">
 .img {
+  opacity: 0;
+  visibility: hidden;
   width: 100%;
   height: auto;
   min-height: 8em;
+  transition: all 0.3s ease-out;
   &-wrapper {
     position: relative;
     transition: all 0.3s ease;
@@ -77,6 +81,27 @@ export default {
         visibility: visible;
       }
     }
+
+    &.loaded {
+      > img {
+        opacity: 1;
+        visibility: visible;
+      }
+      > .img__placeholder {
+        display: none;
+      }
+    }
+  }
+  &__placeholder {
+    width: 100%;
+    min-height: 7em;
+    background: url(/polaroid.png);
+    background-size: 40%;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    top: 30%;
+    transform: rotate(25deg);
   }
   &-infos {
     visibility: hidden;

@@ -1,6 +1,11 @@
 <template>
   <section class="gallery travel__gallery">
-    <h1>Gallery</h1>
+    <div class="gallery__header">
+      <h1 class="gallery__header-title">
+        {{ $t('gallery_title') }}
+      </h1>
+      <span class="gallery__header-close" @click="closeGallery">&times;</span>
+    </div>
     <transition name="fade">
       <Gallery v-if="assets.length" :assets="travelAssets" />
     </transition>
@@ -27,11 +32,14 @@ export default {
         return Number(asset.asset_travel_id) === Number(this.travelId)
       })
     }
+  },
+  methods: {
+    closeGallery() {
+      this.$router.push({ name: this.handleLocalize('travel-travelSlug'), params: { travelSlug: this.$route.params.travelSlug } })
+    }
   }
 }
 </script>
 <style lang="scss">
-.gallery {
-  margin: 2rem;
-}
+
 </style>

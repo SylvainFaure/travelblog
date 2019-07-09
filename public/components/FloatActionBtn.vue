@@ -32,7 +32,7 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  bottom: 3em;
+  bottom: 1em;
   right: 1em;
 
   width: 5em;

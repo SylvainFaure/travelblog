@@ -16,7 +16,7 @@
           <a href="/"><i style="font-size:24px" class="fa">&#8604;</i></a>
         </div>
         <div class="travel__body-description">
-          Travel description
+          {{ travel.long_description }}
         </div>
       </div>
       <transition name="fade">

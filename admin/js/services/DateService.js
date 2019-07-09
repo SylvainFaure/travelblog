@@ -44,7 +44,8 @@ export default class DateService {
       const arrDate = date.split("/");
       return Math.round(new Date(`${arrDate[2]}/${arrDate[1].replace("0", "")}/${arrDate[0].replace("0", "")} 00:00:00`).getTime()/1000)
     }
-    return Math.round(new Date(`${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} 00:00:00`).getTime()/1000)
+    const _date = new Date(date)
+    return Math.round(new Date(`${_date.getFullYear()}/${_date.getMonth() + 1}/${_date.getDate()} 00:00:00`).getTime()/1000)
   }
  }
  

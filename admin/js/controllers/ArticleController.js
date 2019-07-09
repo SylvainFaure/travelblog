@@ -162,12 +162,12 @@ class ArticleController {
   formatTravelCountries() {
     if (this.fr) {
       this.travels.forEach((travel) => {
-        travel.travel_countries_fr = travel.travel_countries_fr.split(',')
+        travel.travel_countries_fr = JSON.parse(travel.travel_countries_fr)
       })
     }
     if (this.it) {
       this.travels.forEach((travel) => {
-        travel.travel_countries_it = travel.travel_countries_it.split(',')
+        travel.travel_countries_it = JSON.parse(travel.travel_countries_it)
       })
     }
   }
@@ -177,8 +177,8 @@ class ArticleController {
     if (travelId) {
       let travel = this.travels.filter((travel) => {
         return travel.travel_id == travelId
-      })
-      this.selectedTravelCountries = this.fr ? travel[0].travel_countries_fr : travel[0].travel_countries_it 
+      })[0]
+      this.selectedTravelCountries = this.fr ? travel.travel_countries_fr : travel.travel_countries_it 
     }
   }
 
@@ -237,6 +237,12 @@ class ArticleController {
     }
     if (article.article_date_to) {
       article.article_date_to = this.DateService.fromDateToTimestamp(article.article_date_to)
+    }
+    if (article.article_published_date_fr) {
+      article.article_published_date_fr = this.DateService.fromDateToTimestamp(article.article_published_date_fr)
+    }
+    if (article.article_published_date_it) {
+      article.article_published_date_it = this.DateService.fromDateToTimestamp(article.article_published_date_it)
     }
     if (article.article_travel_fr) {
       delete article.article_travel_fr;
@@ -299,11 +305,11 @@ class ArticleController {
 
   publishArticle() {
     if (this.$rootScope.rvm.fr) {
-      this.json_in.article_published_fr = "true";
+      this.json_in.article_published_fr = 1;
       this.json_in.article_published_date_fr = Date.now();
     }
     if (this.$rootScope.rvm.it) {
-      this.json_in.article_published_it = "true";
+      this.json_in.article_published_it = 1;
       this.json_in.article_published_date_it = Date.now();
     }
     this.saveArticle(this.json_in);

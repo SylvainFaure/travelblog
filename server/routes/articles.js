@@ -41,7 +41,7 @@ articles.route('/:id([0-9]+)')
     })
   })
   .put((req, res, next) => {
-     Article.updateArticle(req.body, req.params.id, article => {
+     Article.updateArticle(false, req.body, req.params.id, article => {
       handleResponse(res, next, article)
     })
   })
@@ -65,15 +65,15 @@ articles.route('/published/:id([0-9]+)')
       res.json(article)
     })
   })
-  .post((req, res) => {
-    validate(req.body, 'article', 'publish')
+  .post((req, res, next) => {
+    validate(req.body.article, 'article', 'publish')
     .then((value) => {
       Article.publishArticle(req.body.article, req.params.id, results => {
         res.json(results)
       })
     })
     .catch(err => {
-      res.json(err)
+      handleResponse(res, next, {type: 'ValidationError', error: err})
     })
   })
   .put((req, res) => {

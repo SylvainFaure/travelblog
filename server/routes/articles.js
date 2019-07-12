@@ -15,7 +15,7 @@ articles.route('/')
     validate(req.body, 'article', 'create')
       .then((value) => {
         Article.postArticle(req.body, results =>{
-          handleResponse(res, next, result)
+          handleResponse(res, next, results)
         })
       })
       .catch(err => {

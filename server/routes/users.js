@@ -6,7 +6,7 @@ const validateRole = require('../validators/role.validator');
 const handleResponse = require('../responseHandler')
 
 users.route('/')
-  .get((req, res) => {
+  .get((req, res, next) => {
     User.getUsers(users => {
       handleResponse(res, next, users);
     })
@@ -54,6 +54,7 @@ users.route('/request')
     validate(req.body, 'user', 'request')
       .then((value) => {
         if (req.body.type !== 'request') {
+          console.log(req.body.type)
           validateRole(req.headers['x-access-token'], 'superadmin')
             .then(() => {
               User.userRequest(req.body.type, req.body.email, req.body.role, result => {
@@ -63,6 +64,10 @@ users.route('/request')
             .catch(err => {
               res.json(err) 
             })
+        } else {
+          User.userRequest(req.body.type, req.body.email, req.body.role, result => {
+            handleResponse(res, next, result);
+          })
         }
       })
       .catch(err => {

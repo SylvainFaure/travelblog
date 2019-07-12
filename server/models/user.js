@@ -55,21 +55,18 @@ class User {
 	
 	
 	static createNewUser(user, cb) {
-	  
 	  this.getUsers(users => {
-		const userAlreadyRegistered = users.filter(u => {
-			return u.user_email == user.email
-		}) 
-		if (userAlreadyRegistered.length) {
-			cb({
-				error: 'This user is already registered'
-			})
-		} else {
-			User.postUser(user, result => {
-				res.status(200).json(result);
-			})
-		}
-	})
+			const userAlreadyRegistered = users.filter(u => {
+				return u.user_email == user.email
+			}) 
+			if (userAlreadyRegistered.length) {
+				cb({type: "DatabaseError", error: 'This user is already registered'})
+			} else {
+				User.postUser(user, result => {
+					cb(result);
+				})
+			}
+		})
 	}
 	
 	static signup(email, password, cb) {
@@ -200,6 +197,10 @@ class User {
 	    email: email
 		}
 		// Handle confirm (and refuse) for db
+		if (type == "confirm") {
+			console.log(email, role)
+			this.createNewUser({email, role})
+		}
 		// verify if this user is superadmin
 		this.getSuperAdmin((admin) => {
 			Mail.sendMail(admin.user_email, params, (res) => {

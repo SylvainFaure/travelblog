@@ -21,7 +21,7 @@ export default {
   async mounted() {
     if (!window.google) {
       try {
-        await loadScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyAOfPfOY1Xiv5nP5dke616CAtQbjLFsgR4&libraries=places')
+        await loadScript('https://maps.googleapis.com/maps/api/js?key=&libraries=places')
         this.getCenter()
       } catch (e) {
         console.error('Error in loading google maps', e)

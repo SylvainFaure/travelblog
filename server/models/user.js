@@ -46,7 +46,7 @@ class User {
 			if (err) {
 				cb({type: 'DatabaseError', error: err})
 			} else {
-				var records = JSON.stringify(rows[0]);
+				var records = JSON.stringify(rows);
 				var user = JSON.parse(records);
 				cb(user)
 			}
@@ -79,8 +79,10 @@ class User {
 				bcrypt.hash(password, 12, (err, hash) => {
 				 if (err) {
 					 cb({
+						 	type: 'DatabaseError',
 							status: 500,
-					 		error: 'There was an error during the creation of the password'
+							error: 'pwd_hash_pbm',
+					 		message: 'There was an error during the creation of the password'
 					 });
 				 } else {
 					 /* Save the encrypted pwd in db */
@@ -92,8 +94,10 @@ class User {
 			/* If not redirect to send request to admin */
 			} else {
 				 cb({
-					status: 500,
-					error: 'No such user in database'
+					type: "AuthorizationError",
+					status: 403,
+					error: 'no_such_user',
+					message: 'No such user in database, you should make a request to the admin first'
 				})
 			}
 	 })
@@ -198,8 +202,9 @@ class User {
 		}
 		// Handle confirm (and refuse) for db
 		if (type == "confirm") {
-			console.log(email, role)
-			this.createNewUser({email, role})
+			this.createNewUser({email, role}, result => {
+				cb(result)
+			})
 		}
 		// verify if this user is superadmin
 		this.getSuperAdmin((admin) => {

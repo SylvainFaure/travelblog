@@ -63,8 +63,8 @@ travels.route('/published/:id([0-9]+)')
     })
   })
   .delete((req, res, next) => {
-    Travel.deleteTravel(true, req.params.id, result => {
-      handleResponse(res, nex, result);
+    Travel.unpublishTravel(req.params.id, result => {
+      handleResponse(res, next, result);
     })
   })
 

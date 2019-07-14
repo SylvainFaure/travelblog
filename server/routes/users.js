@@ -54,7 +54,6 @@ users.route('/request')
     validate(req.body, 'user', 'request')
       .then((value) => {
         if (req.body.type !== 'request') {
-          console.log(req.body.type)
           validateRole(req.headers['x-access-token'], 'superadmin')
             .then(() => {
               User.userRequest(req.body.type, req.body.email, req.body.role, result => {

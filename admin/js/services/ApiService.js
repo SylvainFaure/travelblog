@@ -61,7 +61,7 @@ export default class ApiService {
  }
 
  articlePublish(id, article){
-  return this.$http.post(this.BASE_PATH + 'api/articles/published/' + id, {article});
+  return this.$http.post(this.BASE_PATH + 'api/articles/published/' + id, article);
  }
 
  articleUnpublish(id){

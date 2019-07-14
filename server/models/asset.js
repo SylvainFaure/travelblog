@@ -55,7 +55,7 @@ class Asset {
 					asset_travel_id: data[i].travel_id,
 					asset_name: name,
 					asset_src: src,
-					asset_cover: false,
+					asset_cover: 0,
 					asset_place_it: data[i].place_it,
 					asset_place_fr: data[i].place_fr,
 					asset_country_it: data[i].country_it,
@@ -66,7 +66,7 @@ class Asset {
 				}
 				db.query('INSERT INTO assets SET ?', asset, (error, result) => {
 					if (error) {
-						cb({type: 'DatabaseError', error: error})
+						cb({type: 'DatabaseError', error: error, message: "The asset is available in full size on AWS but not registered in database"})
 					} else {
 						console.log(results)
 						results.push(result)

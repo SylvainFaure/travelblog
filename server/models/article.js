@@ -39,14 +39,48 @@ class Article {
 	}
 
 	static updateArticle(published, article, id, cb) {
-    let table = published ? 'published_articles' : 'articles';
-		db.query(`UPDATE ${table} SET ? WHERE article_id = ?`, [article, id], (error, results) => {
-			if (error) { 
-				cb({type: 'DatabaseError', error: error})
-			} else {
-				cb(results)
-			}
-		})
+		if (article.article_id) {
+			delete article.article_id
+		}
+    if (published) {
+			db.query(`UPDATE articles SET ? WHERE article_id = ?`, [article, id], (error, result) => {
+				if (error) {
+					cb({type: "DatabaseError", error: error, message: "Could not update the travel"})
+				} else {
+					db.query(`SELECT * FROM published_articles WHERE article_id = ?`, id, (error, rows) => {
+						if (error) {
+							cb({type: "DatabaseError", error: error})
+						} else {
+							if (rows.length) {
+								db.query(`UPDATE published_articles SET ? WHERE article_id = ?`, [article, id], (error, result) => {
+									if (error) {
+										cb({type: "DatabaseError", error: error, message: "Could not update in published_article"})
+									} else {
+										cb(result)
+									}
+								})
+							} else {
+								db.query(`INSERT INTO published_articles SET ?`, article, (error, result) => {
+									if (error) {
+										cb({type: "DatabaseError", error: error})
+									} else {
+										cb(result)
+									}
+								})
+							}
+						}
+					})
+				}
+			})
+		} else {
+			db.query(`UPDATE ${table} SET ? WHERE article_id = ?`, [article, id], (error, results) => {
+				if (error) { 
+					cb({type: 'DatabaseError', error: error})
+				} else {
+					cb(results)
+				}
+			})
+		}
 	}
 	
 	static publishArticle(article, id, cb) {
@@ -80,7 +114,11 @@ class Article {
 			if (error) { 
 				cb({type: 'DatabaseError', error: error})
 			} else {
-				cb(result)
+				if (result.affectedRows !== 1) {
+					cb({type: "ServerError", message: "There is no article with such id in DB"})
+				} else {
+					cb(result)
+				}
 			}
 		})
 	}
@@ -98,7 +136,7 @@ class Article {
 			if (error) { 
 				cb({type: 'DatabaseError', error: error})
 			} else {
-				if (rows) {
+				if (rows.length) {
 					this.unpublishArticle(id, (result) => {
 						resultTwo = result;
 					})

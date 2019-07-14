@@ -68,7 +68,7 @@ articles.route('/published/:id([0-9]+)')
   .post((req, res, next) => {
     validate(req.body.article, 'article', 'publish')
     .then((value) => {
-      Article.publishArticle(req.body.article, req.params.id, results => {
+      Article.publishArticle(req.body, req.params.id, results => {
         res.json(results)
       })
     })
@@ -77,7 +77,7 @@ articles.route('/published/:id([0-9]+)')
     })
   })
   .put((req, res) => {
-    Article.updateArticle(true, req.body.article, req.params.id, results => {
+    Article.updateArticle(true, req.body, req.params.id, results => {
       res.json(results)  
     })
   })

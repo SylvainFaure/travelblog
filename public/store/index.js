@@ -36,9 +36,9 @@ const createStore = () => {
           vuexContext.commit('setLang', 'fr')
         }
         if (!process.env.STANDALONE) {
-          const getTravels = axios.get(`http://localhost:3000/api/travels`)
-          const getArticles = axios.get(`http://localhost:3000/api/articles`)
-          const getAssets = axios.get('http//localhost:3000/api/assets')
+          const getTravels = axios.get(`${process.env.BASE_PATH}api/travels`)
+          const getArticles = axios.get(`${process.env.BASE_PATH}api/articles`)
+          const getAssets = axios.get(`${process.env.BASE_PATH}api/assets`)
           return Promise.all([getTravels, getArticles, getAssets])
             .then(data => {
               data.forEach((arr, i) => {
@@ -51,7 +51,7 @@ const createStore = () => {
                   vuexContext.commit('setArticles', arr.data)
                 }
                 if (arr.data[0].asset_id) {
-                  console.log('calling setAssets', arr.data)
+                  // console.log('calling setAssets', arr.data)
                   vuexContext.commit('setAssets', arr.data)
                 }
               })

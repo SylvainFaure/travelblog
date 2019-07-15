@@ -23,6 +23,7 @@ const assetsRouter = require('./routes/assets');
 app.use('/', express.static('admin'));
 
 if (app.get("env") === 'development') {
+  console.log('yo?')
   /**WEBPACK */
   const webpack = require('webpack');
   const webpackDevMiddleware = require('webpack-dev-middleware');

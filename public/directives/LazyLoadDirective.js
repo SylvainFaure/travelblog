@@ -8,7 +8,6 @@ export default {
       if (imageElement) {
         imageElement.addEventListener('load', () => {
           setTimeout(() => {
-            console.log('add loaded')
             el.classList.add('loaded')
           }, 100)
         })

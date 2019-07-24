@@ -69,7 +69,7 @@ export default {
   data() {
     return {
       asset: {
-        asset_src: 'https://images.unsplash.com/photo-1555414244-80c33ca2e497?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2850&q=80',
+        asset_src: 'https://images.unsplash.com/photo-1555414244-80c33ca2e497?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1850&q=80',
         asset_title_fr: 'Accueil',
         asset_title_it: 'Homepage',
         asset_place_fr: 'Inde',

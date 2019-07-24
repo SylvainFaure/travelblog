@@ -48,8 +48,7 @@ export default {
         : '/assets/thumb/mini_' */
     return {
       baseUrl: process.env.BASE_URL,
-      imgUrl: process.env.AWS_BUCKET_PATH, // imgPath,
-      label_discover: 'Découvrez'
+      imgUrl: process.env.AWS_BUCKET_PATH // imgPath,
     }
   },
   computed: {

@@ -1,3 +1,4 @@
+import { format } from 'date-fns'
 class TravelsController {
 	constructor(
 		$scope, 
@@ -9,17 +10,22 @@ class TravelsController {
 		Assets, 
 		ApiService
 	) {
+	console.log('TravelsController')
+	this.format = format
 	this.$state = $state;
 	this.$scope = $scope;
 	this.$compile = $compile;
 	this.$window = $window;
-
 	this.travels = Travels; 
 	this.travels.map(travel => {
 		travel.travel_countries_fr = JSON.parse(travel.travel_countries_fr)
 		travel.travel_countries_it = JSON.parse(travel.travel_countries_it)
 		travel.travel_published_fr = this.handleBoolean(travel.travel_published_fr)
 		travel.travel_published_it = this.handleBoolean(travel.travel_published_it)
+		travel.travel_start_date = travel.travel_start_date ? this.format(new Date(travel.travel_start_date), 'dd/M/yyyy') : ''
+		travel.travel_end_date = travel.travel_end_date ? this.format(new Date(travel.travel_end_date), 'dd/M/yyyy') : ''
+		travel.travel_published_date_fr = travel.travel_published_date_fr ? this.format(new Date(travel.travel_published_date_fr), 'dd/M/yyyy') : ''
+		travel.travel_published_date_it = travel.travel_published_date_it ? this.format(new Date(travel.travel_published_date_it), 'dd/M/yyyy') : ''
 		return travel
 	})
 	this.assets = Assets
@@ -172,8 +178,9 @@ class TravelsController {
 		formattedTravel.travel_published_fr = publishedFr ? 'true' : 'false'
 		formattedTravel.travel_published_it = publishedIt ? 'true' : 'false'
 
-		//formattedTravel.travel_start_date = Date(formattedTravel.travel_start_date);
-		//formattedTravel.travel_end_date = Date(formattedTravel.travel_end_date);
+		formattedTravel.travel_start_date = this.format(formattedTravel.travel_start_date, 'DD/MM/YYYY');
+		formattedTravel.travel_end_date = this.format(formattedTravel.travel_end_date), 'DD/MM/YYYY';
+		console.log(formattedTravel)
 		return formattedTravel;
 	}
 

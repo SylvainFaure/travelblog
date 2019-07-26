@@ -94,10 +94,11 @@ angular
     });
   })
   .run($rootScope => {
+    const devPorts = ['3000', '3001']
     if (!$rootScope.rvm) {
       $rootScope.rvm = {}
     }
-    if (window.location.hostname.indexOf("localhost") !== -1 && window.location.port === "3000") {
+    if (window.location.hostname.indexOf("localhost") !== -1 && devPorts.includes(window.location.port)) {
       $rootScope.rvm.debug = true;
       $rootScope.rvm.fr = true;
       $rootScope.rvm.it = false;

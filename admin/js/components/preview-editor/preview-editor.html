@@ -62,7 +62,7 @@
       </div>
       <div ng-if="comp.type == 'image'">
         <img 
-          ng-src="assets/thumb/mini_{{comp.content.name}}" 
+          ng-src="{{vm.AWS_BUCKET_PATH}}thumb/mini_{{comp.content.name}}" 
           alt=""
           class="preview-editor_img-{{comp.content.position}} preview-editor_img-{{comp.content.fullWidth}}"
         >

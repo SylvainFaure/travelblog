@@ -17,7 +17,10 @@ class TravelsController {
 	this.$compile = $compile;
 	this.$window = $window;
 	this.toastr = toastr
-	this.travels = Travels; 
+	this.travels = Travels
+	this.AWS_BUCKET_PATH = process.env.AWS_BUCKET_PATH 
+
+
 	this.travels.map(travel => {
 		travel.travel_countries_fr = JSON.parse(travel.travel_countries_fr)
 		travel.travel_countries_it = JSON.parse(travel.travel_countries_it)

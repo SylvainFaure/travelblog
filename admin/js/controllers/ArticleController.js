@@ -24,6 +24,8 @@ class ArticleController {
     this.TextEditor = TextEditor;
     this.DateService = DateService;
     this.toastr = toastr;
+    console.log(process.env)
+    this.AWS_BUCKET_PATH = process.env.AWS_BUCKET_PATH
     
     this.stepOne = true;
     this.hasGallery = this.hasGallery();
@@ -81,6 +83,7 @@ class ArticleController {
 
         this.isPublished = this.json_in.article_published_it;
       }
+      console.log(this.json_in, this.AWS_BUCKET_PATH)
     }
     $rootScope.$on("articleComponentsChange", (e, comps) => {
       this.articleComponents = comps;

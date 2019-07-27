@@ -73,7 +73,7 @@ class Article {
 				}
 			})
 		} else {
-			db.query(`UPDATE ${table} SET ? WHERE article_id = ?`, [article, id], (error, results) => {
+			db.query(`UPDATE articles SET ? WHERE article_id = ?`, [article, id], (error, results) => {
 				if (error) { 
 					cb({type: 'DatabaseError', error: error})
 				} else {

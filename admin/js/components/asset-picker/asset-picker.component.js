@@ -129,12 +129,12 @@ export default class assetPickerController {
   }
 	
   updateAssets() {
-      this.ApiService.assetsList()
-          .then((r) => {
-            this.assets = r.data;
-          })
-          this.$state.reload();
-          this.$window.location.reload();
+    this.ApiService.assetsList()
+      .then((r) => {
+        this.assets = r.data;
+      })
+      this.$state.reload();
+      //this.$window.location.reload();
   }
 
   submit (){
@@ -158,8 +158,8 @@ export default class assetPickerController {
           })
           this.updateAssets();
       }, (err) => { 
-	this.isSubmitted = false;
-	this.toastr.error(`There was an error ${err.status}`, "Error");
+	      this.isSubmitted = false;
+	      this.toastr.error(`There was an error ${err.status}`, "Error");
       }, (evt) => {
         this.progress = parseInt(100.0 * evt.loaded / evt.total);            
       });
@@ -183,9 +183,9 @@ export default class assetPickerController {
 
   deleteAsset (index, name) {
     this.ApiService.assetsDelete([index], [name]).then((resp) => {
-	this.toastr.success(`The file was correctly deleted`, "Success !");
+	    this.toastr.success(`The file was correctly deleted`, "Success !");
     	this.$state.reload()
-    	this.$window.location.reload()
+    	//this.$window.location.reload()
     }, (err) => {
     	this.toastr.error(`There was an error ${err.status}`, "Error");
     })

@@ -25,7 +25,7 @@
       <img 
         ng-if="vm.comp.content"
         class="article-gallery-img"
-        ng-src="assets/thumb/mini_{{vm.comp.content.name}}" 
+        ng-src="{{vm.AWS_BUCKET_PATH}}thumb/mini_{{vm.comp.content.name}}" 
       >
     </div>
     <div class="editor-comp_image-infos">
@@ -34,19 +34,8 @@
         <h4 ng-show="vm.rvm.it" class="ui horizontal divider no-margin">Posizione</h4> 
         <select class="ui fluid dropdown" 
           ng-model="vm.comp.content.position"
+          ng-options="pos.label for pos in vm.imgPositionOptions"
         >
-          <option value="left">
-            <span ng-if="vm.rvm.fr">Gauche</span>
-            <span ng-if="vm.rvm.it">Sinistra</span>
-          </option>
-          <option value="center">
-            <span ng-if="vm.rvm.fr">Centre</span>
-            <span ng-if="vm.rvm.it">Centro</span>
-          </option>
-          <option value="left">
-            <span ng-if="vm.rvm.fr">Droite</span>
-            <span ng-if="vm.rvm.it">Destra</span>
-          </option>
         </select>
       </div>
     
@@ -70,8 +59,8 @@
           ng-click="vm.chooseImage(vm.comp.content)"
           class="ui positive right labeled icon button"
         >
-          <span ng-show="vm.rvm.fr">Changer</span>
-          <span ng-show="vm.rvm.it">Cambiare</span>
+          <span ng-show="vm.rvm.fr">Choisir une image</span>
+          <span ng-show="vm.rvm.it">Cambiare immagine</span>
           <i class="checkmark icon"></i>
         </div>
       </div>
@@ -109,12 +98,13 @@
       <img 
         ng-if="vm.asset"
         class="article-gallery-img"
-        ng-src="assets/thumb/mini_{{vm.asset.asset_name}}" 
+        ng-src="{{vm.AWS_BUCKET_PATH}}thumb/mini_{{vm.asset.asset_name}}" 
       >
     </div>
     <div class="description">
       <div class="field assets_modal">
         <asset-picker
+          ng-if="vm.showAssetPicker"
           assets="vm.assets"
           actions="false"
           allow-upload="false"  

@@ -5,6 +5,7 @@ export default class previewEditorController {
   ) {
 		'ngInject'
 		this.TextEditor = TextEditor;
+		this.AWS_BUCKET_PATH = process.env.AWS_BUCKET_PATH
 		$rootScope.$on('changeAsset', (e, from, asset) => {
 			if (from == "previewEditor") {
 				this.editingImage = asset;

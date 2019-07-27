@@ -5,6 +5,7 @@ export default class editorCompController {
   ) {
 		'ngInject'
 		this.TextEditor = TextEditor;
+		this.AWS_BUCKET_PATH = process.env.AWS_BUCKET_PATH
 		this.init()
 		$rootScope.$on('changeAsset', (e, from, asset) => {
 			if (from == "editorComp") {
@@ -19,8 +20,26 @@ export default class editorCompController {
       this.it = $rootScope.rvm.it;
 		})
 		this.rvm = $rootScope.rvm;
+		this.imgPositionOptions = this.getImgPosOptions()
+		this.showAssetPicker = false
+			
 	}
-
+	getImgPosOptions() {
+		if (this.fr) {
+			return [
+				{ key: 'left', label: 'Gauche' },
+				{ key: 'center', label: 'Centré' },
+				{ key: 'right', label: 'Droite' }
+			]
+		}
+		if (this.it) {
+			return [
+				{ key: 'left', label: 'Sinistra' },
+				{ key: 'center', label: 'Centro' },
+				{ key: 'right', label: 'Destra' }
+			]
+		}
+	}
 	mouseUpEvent(e) {
 		this.unsetActionsElement();
 		if (window.getSelection().toString().length) {
@@ -44,7 +63,6 @@ export default class editorCompController {
 	init() {
 		setTimeout(()=> {
 			$(`.editor-comp_content`).focus()
-			console.log(this.assets)
 			if (this.type == "image" && !this.comp) {
 				this.comp = {
 					content: {}
@@ -110,6 +128,7 @@ export default class editorCompController {
 
 	chooseImage(content) {
 		this.openModal();
+		this.showAssetPicker = true
 		this.asset = content.originalAsset;
 	}
 
@@ -122,6 +141,7 @@ export default class editorCompController {
 			originalAsset: this.asset
 		};
 		this.asset = null;
+		this.showAssetPicker = false
 	}
 
 	openModal() {

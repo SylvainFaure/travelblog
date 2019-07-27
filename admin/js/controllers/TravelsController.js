@@ -5,23 +5,30 @@ class TravelsController {
 		$rootScope, 
 		$window, 
 		$compile, 
-		$state, 
+		$state,
+		toastr,
 		Travels, 
 		Assets, 
 		ApiService
 	) {
-	console.log('TravelsController')
 	this.format = format
 	this.$state = $state;
 	this.$scope = $scope;
 	this.$compile = $compile;
 	this.$window = $window;
+	this.toastr = toastr
 	this.travels = Travels; 
 	this.travels.map(travel => {
 		travel.travel_countries_fr = JSON.parse(travel.travel_countries_fr)
 		travel.travel_countries_it = JSON.parse(travel.travel_countries_it)
 		travel.travel_published_fr = this.handleBoolean(travel.travel_published_fr)
 		travel.travel_published_it = this.handleBoolean(travel.travel_published_it)
+		travel.dates_raw = {
+			start_date: travel.travel_start_date,
+			end_date: travel.travel_end_date,
+			published_fr: travel.travel_published_date_fr,
+			published_id: travel.travel_published_date_it
+		}
 		travel.travel_start_date = travel.travel_start_date ? this.format(new Date(travel.travel_start_date), 'dd/M/yyyy') : ''
 		travel.travel_end_date = travel.travel_end_date ? this.format(new Date(travel.travel_end_date), 'dd/M/yyyy') : ''
 		travel.travel_published_date_fr = travel.travel_published_date_fr ? this.format(new Date(travel.travel_published_date_fr), 'dd/M/yyyy') : ''
@@ -74,7 +81,6 @@ class TravelsController {
 			type: 'date',
 			endCalendar: $('#rangeend'),
 			onChange: (date) => {
-
 				this.parseDate(date, "start") 
 			}
 		});
@@ -88,12 +94,14 @@ class TravelsController {
 	}
 
 	parseDate(date, range) {
-		let dateObj = new Date(date).toLocaleDateString('fr-FR');
+		let dateObj = this.format(date, 'dd/MM/yyyy');
 		if (range == "start") {
 			this.travel.travel_start_date = dateObj;
+			this.travel.dates_raw.start_date = Date.parse(new Date(date))
 		}
 		if (range == "end") {
 			this.travel.travel_end_date = dateObj;
+			this.travel.dates_raw.end_date = Date.parse(new Date(date))
 		}
 		if (!range) {
 			return dateObj
@@ -123,24 +131,39 @@ class TravelsController {
 		this.ApiService.travelCreate(formattedTravel)
 			.then(resp => {
 				console.log(resp)
+				this.toastr.success("Your travel has been successfully registered")
 				/**IF PUBLISHED -> HANDLE PUBLISHED */
 				this.closeModal()
 				this.$state.reload('logged')
 				this.travels = Travels
 			}).catch(err => {
+				this.toastr.error("There was an unexpected error" + err)
 				console.log(err)
 			})
 	}
 
 	saveAndPublishTravel(travel, travelId) {
 		/**SAVE AND PUBLISH NEW TRAVEL ? */
+		if (this.fr) {
+			this.travel.travel_published_fr = true
+			this.travel.travel_published_date_fr = Date.parse(new Date())
+		}
+		if (this.it) {
+			this.travel.travel_published_it = true
+			this.travel.travel_published_date_it = Date.parse(new Date())
+		}
 		if (travelId) {
 			this.updateTravel(travel, travelId)
 			this.ApiService.travelPublish(travel, travelId)
 				.then(resp => {
+					this.toastr.success("The travel has been successfully published")
 					console.log(resp)
 				})
-				.catch(err => console.log(err))
+				.catch(err => {
+					console.log(err)
+					this.toastr.error("There was an unexpected error" + err)
+
+				})
 		}
 	}
 
@@ -175,12 +198,11 @@ class TravelsController {
 			formattedTravel.travel_published_date_it = ''
 		}
 
-		formattedTravel.travel_published_fr = publishedFr ? 'true' : 'false'
-		formattedTravel.travel_published_it = publishedIt ? 'true' : 'false'
-
-		formattedTravel.travel_start_date = this.format(formattedTravel.travel_start_date, 'DD/MM/YYYY');
-		formattedTravel.travel_end_date = this.format(formattedTravel.travel_end_date), 'DD/MM/YYYY';
-		console.log(formattedTravel)
+		formattedTravel.travel_published_fr = publishedFr
+		formattedTravel.travel_published_it = publishedIt
+		formattedTravel.travel_start_date = formattedTravel.dates_raw.start_date
+		formattedTravel.travel_end_date = formattedTravel.dates_raw.end_date
+		delete formattedTravel.dates_raw
 		return formattedTravel;
 	}
 
@@ -192,26 +214,26 @@ class TravelsController {
 	}
 
 	initMap() {
-		var map = new google.maps.Map(document.getElementById('map-travel-search'), {
-			center: {lat: 45.0151165, lng: 7.6500735},
-			zoom: 5,
-			mapTypeId: 'roadmap'
-			});
-		var input = document.getElementById('map-search');
-		var searchBox = new google.maps.places.Autocomplete(input, {
-			types: '(country)'
-		});
+		// var map = new google.maps.Map(document.getElementById('map-travel-search'), {
+		// 	center: {lat: 45.0151165, lng: 7.6500735},
+		// 	zoom: 5,
+		// 	mapTypeId: 'roadmap'
+		// 	});
+		// var input = document.getElementById('map-search');
+		// var searchBox = new google.maps.places.Autocomplete(input, {
+		// 	types: '(country)'
+		// });
 
-		const places = new google.maps.places.PlacesService(map);
-		searchBox.addListener('place_changed', onPlaceChanged);
+		// const places = new google.maps.places.PlacesService(map);
+		// searchBox.addListener('place_changed', onPlaceChanged);
 
-		function onPlaceChanged() {
-			var place = searchBox.getPlace();
-			if (place.geometry) {
-				map.panTo(place.geometry.location);
-				map.setZoom(5);
-			} 
-		}
+		// function onPlaceChanged() {
+		// 	var place = searchBox.getPlace();
+		// 	if (place.geometry) {
+		// 		map.panTo(place.geometry.location);
+		// 		map.setZoom(5);
+		// 	} 
+		// }
 	}
 
 
@@ -251,19 +273,22 @@ class TravelsController {
 
 	handleTravelCountries(ev) {
 		if (ev.key === "Enter") {
-			if (this.fr) {
-				if (!this.travel.travel_countries_fr) this.travel.travel_countries_fr = []
-				this.travel.travel_countries_fr.push(this.travel.travel_editing_country);
-			}
-			if (this.it) {
-				if (!this.travel.travel_countries_it) this.travel.travel_countries_it = []				
-				this.travel.travel_countries_it.push(this.travel.travel_editing_country);
-			}
-			this.travel.travel_editing_country = ""; 
+			this.addTravelCountry()
 		}
 		if (ev.key === "Escape") {
 			this.travel.travel_editing_country = ""; 
 		}
+	}
+	addTravelCountry() {
+		if (this.fr) {
+			if (!this.travel.travel_countries_fr) this.travel.travel_countries_fr = []
+			this.travel.travel_countries_fr.push(this.travel.travel_editing_country);
+		}
+		if (this.it) {
+			if (!this.travel.travel_countries_it) this.travel.travel_countries_it = []				
+			this.travel.travel_countries_it.push(this.travel.travel_editing_country);
+		}
+		this.travel.travel_editing_country = ""; 
 	}
 	deleteCountry(travel) {
 		if (this.fr) {

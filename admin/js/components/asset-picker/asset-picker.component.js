@@ -94,7 +94,6 @@ export default class assetPickerController {
   getTravels() {
     this.ApiService.travelsList().then(travels => {
       this.travels = travels.data
-      console.log(this.travels)
     })
   }
 

@@ -80,9 +80,10 @@
               <p ng-show="vm.it">
                   <tag ng-repeat="travel in vm.travel.travel_countries_it" label="travel"></tag>
                 </p>
-              <div class="ui large fluid input map-search">
+              <div class="ui large fluid action input map-search">
                 <input ng-keyup="vm.handleTravelCountries($event)" id="map-search" ng-if="vm.fr" type="text" class="" placeholder="Nom" ng-model="vm.travel.travel_editing_country">
                 <input ng-keyup="vm.handleTravelCountries($event)" id="map-search" ng-if="vm.it" type="text" class="" placeholder="Nome" ng-model="vm.travel.travel_editing_country">
+                <button ng-click="vm.addTravelCountry()" class="ui button">+</button>
               </div>
               <div ng-show="!vm.edit" id="map-travel-search"></div>
             </div>

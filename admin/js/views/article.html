@@ -33,7 +33,7 @@
     </div>
     <div class="ui vertical animated button blue right floated" 
           ng-if="!vm.isEditing"
-          ng-click="vm.isEditing = !vm.isEditing">
+          ng-click="vm.edit()">
       <div ng-if="vm.fr" class="hidden content">Editer</div>
       <div ng-if="vm.it" class="hidden content">Modificare</div>
       <div class="visible content">
@@ -65,8 +65,18 @@
             <input ng-show="vm.it" type="text" class="" placeholder="Titolo" ng-model="vm.json_in.article_title_it">
           </div>
           <div class="ui basic segment" ng-if="!vm.isEditing">
-            <h3 ng-show="vm.fr">{{vm.json_in.article_title_fr}}</h3>
-            <h3 ng-show="vm.it">{{vm.json_in.article_title_it}}</h3>
+            <h3 ng-show="vm.fr">
+              {{vm.json_in.article_title_fr}}
+              <span class="italic" ng-show="!article.article_title_fr.length">
+                it : {{article.article_title_it}}
+              </span>
+            </h3>
+            <h3 ng-show="vm.it">
+              {{vm.json_in.article_title_it}}
+              <span class="italic" ng-show="!article.article_title_it.length">
+                fr : {{article.article_title_fr}}
+              </span>
+            </h3>
           </div>
         </div>
 
@@ -76,9 +86,14 @@
           <h4 ng-show="vm.it" class="ui horizontal divider">Foto principale</h4>          
           <div class="ui basic segment no-padding-right" ng-if="vm.isEditing">
             <img 
-              ng-if="vm.json_in.article_cover" 
+              ng-if="vm.fr && vm.json_in.article_cover_fr" 
               class="article-gallery-img"
-              ng-src="{{vm.AWS_BUCKET_PATH}}thumb/mini_{{vm.json_in.article_cover}}" 
+              ng-src="{{vm.AWS_BUCKET_PATH}}thumb/mini_{{vm.json_in.article_cover_fr}}" 
+            >
+            <img 
+              ng-if="vm.it && vm.json_in.article_cover_it" 
+              class="article-gallery-img"
+              ng-src="{{vm.AWS_BUCKET_PATH}}thumb/mini_{{vm.json_in.article_cover_it}}" 
             >
             <div class="ui vertical animated button blue right floated large-button" 
                   ng-click="vm.editCover()">
@@ -91,41 +106,51 @@
           </div>
           <div class="ui basic segment" ng-if="!vm.isEditing">
             <img 
-              ng-if="vm.json_in.article_cover" 
-              class="article-gallery-img"
-              ng-src="{{vm.AWS_BUCKET_PATH}}thumb/mini_{{vm.json_in.article_cover}}" 
+            ng-if="vm.fr && vm.json_in.article_cover_fr" 
+            class="article-gallery-img"
+            ng-src="{{vm.AWS_BUCKET_PATH}}thumb/mini_{{vm.json_in.article_cover_fr}}" 
             >
-            <div ng-if="!vm.json_in.article_cover">
-              <h4 ng-show="vm.fr">Insérez une photo principale pour l'article</h4>
-              <h4 ng-show="vm.it">Inserire una foto principale per l'articolo</h4>
+            <img 
+              ng-if="vm.it && vm.json_in.article_cover_it" 
+              class="article-gallery-img"
+              ng-src="{{vm.AWS_BUCKET_PATH}}thumb/mini_{{vm.json_in.article_cover_it}}" 
+            >
+            <div ng-if="vm.fr && !vm.json_in.article_cover_fr">
+              <h4>Insérez une photo principale pour l'article</h4>
+            </div>
+            <div ng-if="vm.it && !vm.json_in.article_cover_it">
+              <h4>Inserire una foto principale per l'articolo</h4>
             </div>
           </div>
         </div>
         
         <!--TRAVEL-->
         <div class="ui grid">
-          <div class="ui four wide column">
+          <div class="ui six wide column">
             <div class="field ui basic segment" ng-show="vm.fr">
               <h4 ng-show="vm.fr" class="ui horizontal divider">Voyage</h4> 
               <select class="ui dropdown" 
                       ng-if="vm.isEditing" 
-                      ng-model="vm.json_in.article_travel_id"
                       ng-change="vm.getSelectedTravelCountries()">
-                <option ng-show="vm.json_in.article_travel_fr" value="">{{vm.json_in.article_travel_fr}}</option>
-                <option value="{{travel.travel_id}}" ng-repeat="travel in vm.travels">{{travel.travel_title_fr}}</option>
+                <option 
+                  value="{{travel.travel_id}}"
+                  ng-selected="travel.travel_id == selectedTravel.travel_id"
+                  ng-repeat="travel in vm.travels">{{travel.travel_title_fr}}</option>
               </select>
-              <div ng-if="!vm.isEditing">{{vm.json_in.article_travel_fr}}</div>
+              <div ng-if="!vm.isEditing">{{vm.selectedTravel.travel_title_fr}}</div>
             </div>
             <div class="field ui basic segment" ng-show="vm.it">
               <h4 ng-show="vm.it" class="ui horizontal divider">Viaggio</h4> 
               <select class="ui dropdown" 
                   ng-if="vm.isEditing"
-                  ng-model="vm.json_in.article_travel_id"
+                  ng-model="selectedTravel"
                   ng-change="vm.getSelectedTravelCountries()">
-                <option ng-show="vm.json_in.article_travel_it" value="">{{vm.json_in.article_travel_it}}</option>
-                <option value="{{travel.travel_id}}" ng-repeat="tracel in vm.travels">{{travel.travel_title_it}}</option>
+                <option 
+                  value="{{travel.travel_id}}" 
+                  ng-selected="travel.travel_id == selectedTravel.travel_id" 
+                  ng-repeat="travel in vm.travels">{{travel.travel_title_it}}</option>
               </select>
-              <div ng-if="!vm.isEditing">{{vm.json_in.article_travel_it}}</div>
+              <div ng-if="!vm.isEditing">{{vm.selectedTravel.travel_title_it}}</div>
             </div>
             <!--
               <div class="ui vertical animated button right floated" 
@@ -175,7 +200,7 @@
           </div>
           
           <!--PLACE-->
-          <div class="field ui basic segment four wide column">
+          <div class="field ui basic segment six wide column">
             <h4 ng-show="vm.fr" class="ui horizontal divider">Lieu</h4>
             <h4 ng-show="vm.it" class="ui horizontal divider">Luogo</h4>
             <div class="ui" ng-if="vm.isEditing">
@@ -188,56 +213,88 @@
             </div>
           </div>
 
-          <!--DATES-->
-          <div class="field ui basic segment four wide column">
-            <h4 ng-show="vm.fr" class="ui horizontal divider">Dates</h4>
-            <h4 ng-show="vm.it" class="ui horizontal divider">Data</h4>
-            <div class="ui" ng-if="vm.isEditing">
-              <div ng-if="vm.json_in.article_date_to">
-                <p>
-                  <span ng-show="vm.fr">du </span>
-                  <span ng-show="vm.it">del </span>
-                  {{vm.json_in.article_date_from}}
-                  <span ng-show="vm.fr">au </span>
-                  <span ng-show="vm.it">al </span>
-                  {{vm.json_in.article_date_to}}
-                </p>
-              </div>
-              <div class="ui vertical animated button blue right floated large-button" 
-                ng-click="vm.editDates()">
-                <div ng-if="vm.fr" class="hidden content">Editer</div>
-                <div ng-if="vm.it" class="hidden content">Editare</div>        
-                <div class="visible content">
-                  <i class="plus icon"></i>
-                </div>
-              </div> 
-            </div>
-            <div class="ui" ng-if="!vm.isEditing">
-              <div ng-if="vm.json_in.article_date_to">
-                <p>
-                  <span ng-show="vm.fr">du </span>
-                  <span ng-show="vm.it">del </span>
-                  {{vm.json_in.article_date_from}}
-                  <span ng-show="vm.fr">au </span>
-                  <span ng-show="vm.it">al </span>
-                  {{vm.json_in.article_date_to}}
-                </p>
-              </div>
-              <div ng-if="!vm.json_in.article_date_to">
-                <p>{{vm.json_in.article_date_from}}</p>
-              </div>
+          
+        </div> <!--row grid-->
+        
+        <!--DATES-->
+        <div class="field ui basic segment">
+          <h4 ng-show="vm.fr" class="ui horizontal divider">Dates</h4>
+          <h4 ng-show="vm.it" class="ui horizontal divider">Data</h4>
+          <div class="ui" ng-if="!vm.isEditing">
+            <div ng-if="vm.articleDates.from">
+              <p>
+                <span ng-show="vm.fr">du </span>
+                <span ng-show="vm.it">del </span>
+                {{vm.articleDates.from}}
+                <span ng-show="vm.fr">au </span>
+                <span ng-show="vm.it">al </span>
+                {{vm.articleDates.to}}
+              </p>
             </div>
           </div>
-        </div> <!--row grid-->
+          <div class="ui" ng-if="vm.isEditing">
+          <div class="two fields">
+              <div class="field">
+                <label>
+                  <span ng-show="vm.fr">Début de l'étape</span>
+                  <span ng-show="vm.it">Inizio della tappa</span> 
+                </label>
+                <div class="ui calendar" id="rangestart">
+                  <div class="ui input left icon">
+                    <i class="calendar icon"></i>
+                    <input 
+                      type="text" 
+                      placeholder="Start" 
+                      value="{{vm.articleDates.from}}" 
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="field">
+                <label>
+                  <span ng-show="vm.fr">Fin de l'étape</span>
+                  <span ng-show="vm.it">Fine della tappa</span> 
+                </label>
+                <div class="ui calendar" id="rangeend">
+                  <div class="ui input left icon">
+                    <i class="calendar icon"></i>
+                    <input 
+                      type="text" 
+                      placeholder="End" 
+                      value="{{vm.articleDates.to}}" 
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div ng-if="vm.json_in.article_date_to">
+              <p>
+                <span ng-show="vm.fr">du </span>
+                <span ng-show="vm.it">del </span>
+                {{vm.json_in.article_date_from}}
+                <span ng-show="vm.fr">au </span>
+                <span ng-show="vm.it">al </span>
+                {{vm.json_in.article_date_to}}
+              </p>
+            </div>
+            <div ng-if="!vm.json_in.article_date_to">
+              <p>{{vm.json_in.article_date_from}}</p>
+            </div>
+          </div>
+        </div>
         
         <!--SLUG-->
         <div class="field">
           <h4 ng-show="vm.fr" class="ui horizontal divider">Slug</h4>
           <h4 ng-show="vm.it" class="ui horizontal divider">Slug</h4>
-          <div class="ui basic segment">
-              <input ng-if="vm.isEditing" type="text" class="" placeholder="Url" ng-model="vm.json_in.article_slug">
-              <p ng-if="!vm.isEditing">{{vm.json_in.article_slug}}</p>
-          </div>  
+          <div ng-if="vm.fr" class="ui basic segment">
+              <input ng-if="vm.isEditing" type="text" class="" placeholder="Url" ng-model="vm.json_in.article_slug_fr">
+              <p ng-if="!vm.isEditing">{{vm.json_in.article_slug_fr}}</p>
+          </div> 
+          <div ng-if="vm.it" class="ui basic segment">
+            <input ng-if="vm.isEditing" type="text" class="" placeholder="Url" ng-model="vm.json_in.article_slug_it">
+            <p ng-if="!vm.isEditing">{{vm.json_in.article_slug_it}}</p>
+        </div>  
         </div>
 
         <!--SHORT DESCRIPTION-->

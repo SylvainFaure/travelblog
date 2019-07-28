@@ -48,9 +48,7 @@ class Travel {
 						} else {
 							if (rows.length) {
 								// update
-								const _travel = JSON.parse(JSON.stringify(rows))
-								console.log(_travel)
-								db.query('UPDATE published_travels SET ? WHERE travel_id = ?', [_travel, id], (error, results) => {
+								db.query('UPDATE published_travels SET ? WHERE travel_id = ?', [travel, id], (error, results) => {
 									if (error) {
 										cb({type: 'DatabaseError', error: error})
 									} else {

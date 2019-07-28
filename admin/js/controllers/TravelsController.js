@@ -21,23 +21,6 @@ class TravelsController {
 	this.AWS_BUCKET_PATH = process.env.AWS_BUCKET_PATH 
 
 
-	this.travels.map(travel => {
-		travel.travel_countries_fr = JSON.parse(travel.travel_countries_fr)
-		travel.travel_countries_it = JSON.parse(travel.travel_countries_it)
-		travel.travel_published_fr = this.handleBoolean(travel.travel_published_fr)
-		travel.travel_published_it = this.handleBoolean(travel.travel_published_it)
-		travel.dates_raw = {
-			start_date: travel.travel_start_date,
-			end_date: travel.travel_end_date,
-			published_fr: travel.travel_published_date_fr,
-			published_id: travel.travel_published_date_it
-		}
-		travel.travel_start_date = travel.travel_start_date ? this.format(new Date(travel.travel_start_date), 'dd/M/yyyy') : ''
-		travel.travel_end_date = travel.travel_end_date ? this.format(new Date(travel.travel_end_date), 'dd/M/yyyy') : ''
-		travel.travel_published_date_fr = travel.travel_published_date_fr ? this.format(new Date(travel.travel_published_date_fr), 'dd/M/yyyy') : ''
-		travel.travel_published_date_it = travel.travel_published_date_it ? this.format(new Date(travel.travel_published_date_it), 'dd/M/yyyy') : ''
-		return travel
-	})
 	this.assets = Assets
 	this.ApiService = ApiService;
 	this.fr = $rootScope.rvm.fr;
@@ -49,8 +32,13 @@ class TravelsController {
 	})
 		
 	$rootScope.$on('changeAsset', (e, from, asset) => {
-		if (from == "travels") {
-			this.travel.travel_cover = asset.asset_name
+		if (from == "travels" && this.travel) {
+			if (this.fr) {
+				this.travel.travel_cover_fr = asset.asset_name
+			}
+			if (this.it) {
+				this.travel.travel_cover_it = asset.asset_name
+			}
 		}
 	});
 
@@ -58,7 +46,28 @@ class TravelsController {
 	
 	this.getTravelSteps = this.getTravelSteps();
 	this.appendCalendar = this.appendCalendar();
+	this.mapTravels()
 }
+
+	mapTravels() {
+		this.travels.map(travel => {
+			travel.travel_countries_fr = JSON.parse(travel.travel_countries_fr)
+			travel.travel_countries_it = JSON.parse(travel.travel_countries_it)
+			travel.travel_published_fr = this.handleBoolean(travel.travel_published_fr)
+			travel.travel_published_it = this.handleBoolean(travel.travel_published_it)
+			travel.dates_raw = {
+				start_date: travel.travel_start_date,
+				end_date: travel.travel_end_date,
+				published_fr: travel.travel_published_date_fr,
+				published_it: travel.travel_published_date_it
+			}
+			travel.travel_start_date = travel.travel_start_date ? this.format(new Date(travel.travel_start_date), 'dd/M/yyyy') : ''
+			travel.travel_end_date = travel.travel_end_date ? this.format(new Date(travel.travel_end_date), 'dd/M/yyyy') : ''
+			travel.travel_published_date_fr = travel.travel_published_date_fr ? this.format(new Date(travel.travel_published_date_fr), 'dd/M/yyyy') : ''
+			travel.travel_published_date_it = travel.travel_published_date_it ? this.format(new Date(travel.travel_published_date_it), 'dd/M/yyyy') : ''
+			return travel
+		})
+	}
 
 	openModal(travel, travelId) {
 		const id = travelId ? `#${travelId}` : ''
@@ -128,48 +137,6 @@ class TravelsController {
 		})	
 	}
 	
-
-	saveTravel(travel) {
-		let formattedTravel = this.formatTravel(travel)
-		this.ApiService.travelCreate(formattedTravel)
-			.then(resp => {
-				console.log(resp)
-				this.toastr.success("Your travel has been successfully registered")
-				/**IF PUBLISHED -> HANDLE PUBLISHED */
-				this.closeModal()
-				this.$state.reload('logged')
-				this.travels = Travels
-			}).catch(err => {
-				this.toastr.error("There was an unexpected error" + err)
-				console.log(err)
-			})
-	}
-
-	saveAndPublishTravel(travel, travelId) {
-		/**SAVE AND PUBLISH NEW TRAVEL ? */
-		if (this.fr) {
-			this.travel.travel_published_fr = true
-			this.travel.travel_published_date_fr = Date.parse(new Date())
-		}
-		if (this.it) {
-			this.travel.travel_published_it = true
-			this.travel.travel_published_date_it = Date.parse(new Date())
-		}
-		if (travelId) {
-			this.updateTravel(travel, travelId)
-			this.ApiService.travelPublish(travel, travelId)
-				.then(resp => {
-					this.toastr.success("The travel has been successfully published")
-					console.log(resp)
-				})
-				.catch(err => {
-					console.log(err)
-					this.toastr.error("There was an unexpected error" + err)
-
-				})
-		}
-	}
-
 	handleBoolean(value) {
 		let val
 		if (typeof value == 'string') {
@@ -190,17 +157,6 @@ class TravelsController {
 		const publishedFr = this.handleBoolean(formattedTravel.travel_published_fr)
 		const publishedIt = this.handleBoolean(formattedTravel.travel_published_it)
 
-		if (publishedFr) {
-			formattedTravel.travel_published_date_fr = formattedTravel.travel_published_date_fr ? formattedTravel.travel_published_date_fr : this.parseDate(new Date)
-		}	else {
-			formattedTravel.travel_published_date_fr = ''
-		}
-		if (publishedIt) {
-			formattedTravel.travel_published_date_it = this.parseDate(new Date)
-		} else {
-			formattedTravel.travel_published_date_it = ''
-		}
-
 		formattedTravel.travel_published_fr = publishedFr
 		formattedTravel.travel_published_it = publishedIt
 		formattedTravel.travel_start_date = formattedTravel.dates_raw.start_date
@@ -211,67 +167,10 @@ class TravelsController {
 
 	addTravel() {
 		this.edit = false
-		this.travel = {};
+		this.travel = {
+			dates_raw: {}
+		};
 		this.openModal('travel')
-		this.initMap()
-	}
-
-	initMap() {
-		// var map = new google.maps.Map(document.getElementById('map-travel-search'), {
-		// 	center: {lat: 45.0151165, lng: 7.6500735},
-		// 	zoom: 5,
-		// 	mapTypeId: 'roadmap'
-		// 	});
-		// var input = document.getElementById('map-search');
-		// var searchBox = new google.maps.places.Autocomplete(input, {
-		// 	types: '(country)'
-		// });
-
-		// const places = new google.maps.places.PlacesService(map);
-		// searchBox.addListener('place_changed', onPlaceChanged);
-
-		// function onPlaceChanged() {
-		// 	var place = searchBox.getPlace();
-		// 	if (place.geometry) {
-		// 		map.panTo(place.geometry.location);
-		// 		map.setZoom(5);
-		// 	} 
-		// }
-	}
-
-
-	editTravel(travel) {
-		this.openModal('travel', travel.travel_id)
-		this.travel = travel
-		this.travel.travel_published_fr = this.handleBoolean(this.travel.travel_published_fr)
-		this.travel.travel_published_it = this.handleBoolean(this.travel.travel_published_it)
-		this.edit = true		
-	}
-
-	updateTravel(travel, id) {
-		let formattedTravel = this.formatTravel(travel)
-		console.log(formattedTravel)
-		this.ApiService.travelUpdate(formattedTravel, id)
-			.then(resp => {
-				console.log(resp)
-				this.closeModal()
-				this.$state.reload('logged')
-			})
-			.catch(err => {
-				console.log(err)
-			})
-	}
-
-	removeTravel(id) {
-		this.ApiService.travelDelete(id)
-			.then(resp => {
-				console.log(resp)
-				this.$state.reload('logged')
-				this.travels = Travels
-			})
-			.catch(err => {
-				console.log(err)
-			})
 	}
 
 	handleTravelCountries(ev) {
@@ -293,7 +192,7 @@ class TravelsController {
 		}
 		this.travel.travel_editing_country = ""; 
 	}
-	deleteCountry(travel) {
+	deleteTravelCountry(travel) {
 		if (this.fr) {
 			this.travel.travel_countries_fr.splice(this.travel.travel_countries_fr.indexOf(travel), 1)
 		}
@@ -301,6 +200,86 @@ class TravelsController {
 			this.travel.travel_countries_it.splice(this.travel.travel_countries_it.indexOf(travel), 1)
 		}
 	}
+
+
+	editTravel(travel) {
+		this.openModal('travel', travel.travel_id)
+		this.travel = travel
+		this.edit = true		
+	}
+
+	saveTravel(travel) {
+		let formattedTravel = this.formatTravel(travel)
+		this.ApiService.travelCreate(formattedTravel)
+			.then(resp => {
+				console.log(resp)
+				this.toastr.success("Your travel has been successfully registered")
+				/**IF PUBLISHED -> HANDLE PUBLISHED */
+				this.closeModal()
+				this.$state.reload('logged')
+			}).catch(err => {
+				this.toastr.error("There was an unexpected error" + err)
+				console.log(err)
+			})
+	}
+
+	saveAndPublishTravel(travel, travelId) {
+		/**SAVE AND PUBLISH NEW TRAVEL ? */
+		if (this.fr) {
+			this.travel.travel_published_fr = true
+			this.travel.travel_published_date_fr = Date.parse(new Date())
+			if (this.travel.travel_published_date_it) {
+				this.travel.travel_published_date_it = this.travel.dates_raw.published_it
+			}
+		}
+		if (this.it) {
+			this.travel.travel_published_it = true
+			this.travel.travel_published_date_it = Date.parse(new Date())
+			if (this.travel.travel_published_date_fr) {
+				this.travel.travel_published_date_fr = this.travel.dates_raw.published_fr
+			}
+		}
+		if (travelId) {
+			this.updateTravel(travel, travelId)
+			this.ApiService.travelPublish(travel, travelId)
+				.then(resp => {
+					this.toastr.success("The travel has been successfully published")
+					console.log(resp)
+				})
+				.catch(err => {
+					console.log(err)
+					this.toastr.error("There was an unexpected error" + err)
+
+				})
+		}
+	}
+
+	updateTravel(travel, id) {
+		let formattedTravel = this.formatTravel(travel)
+		console.log(formattedTravel)
+		this.ApiService.travelUpdate(formattedTravel, id)
+			.then(resp => {
+				console.log(resp)
+				this.closeModal()
+				this.$state.reload('logged')
+			})
+			.catch(err => {
+				console.log(err)
+			})
+	}
+
+	removeTravel(id) {
+		this.ApiService.travelDelete(id)
+			.then(resp => {
+				console.log(resp)
+				this.$state.reload('logged')
+			})
+			.catch(err => {
+				console.log(err)
+			})
+	}
+
+
 }
 
 export default TravelsController;

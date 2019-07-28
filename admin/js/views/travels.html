@@ -29,7 +29,10 @@
     <div
       class="ui vertical animated button blue right floated" 
       ng-click="vm.addTravel()">
-      <div class="hidden content">Add</div>
+      <div class="hidden content">
+        <span ng-if="vm.fr">Ajouter</span>
+        <span ng-if="vm.it">Nuovo</span>
+      </div>
       <div class="visible content">
         <i class="plus icon"></i>
       </div>
@@ -58,8 +61,11 @@
                 <input ng-if="vm.fr" type="text" class="" placeholder="Nom" ng-model="vm.travel.travel_title_fr">
                 <input ng-if="vm.it" type="text" class="" placeholder="Nome" ng-model="vm.travel.travel_title_it">
               </div>
-              <div ng-show="vm.edit && vm.travel.travel_cover">
-                <img class="travel-img" ng-src="{{vm.AWS_BUCKET_PATH}}thumb/mini_{{vm.travel.travel_cover}}" alt="">
+              <div ng-show="vm.edit && vm.fr && vm.travel.travel_cover_fr">
+                <img class="travel-img" ng-src="{{vm.AWS_BUCKET_PATH}}thumb/mini_{{vm.travel.travel_cover_fr}}" alt="">
+              </div>
+              <div ng-show="vm.edit && vm.it && vm.travel.travel_cover_it">
+                <img class="travel-img" ng-src="{{vm.AWS_BUCKET_PATH}}thumb/mini_{{vm.travel.travel_cover_it}}" alt="">
               </div>
             </div>
           </div>
@@ -75,17 +81,16 @@
                   label="travel"
                   deletable="true"
                   id="{{vm.travel.travel_id}}"
-                  cb="vm.deleteCountry(travel)"></tag>
+                  cb="vm.deleteTravelCountry(travel)"></tag>
               </p>
               <p ng-show="vm.it">
                   <tag ng-repeat="travel in vm.travel.travel_countries_it track by $index" label="travel"></tag>
                 </p>
-              <div class="ui large fluid action input map-search">
-                <input ng-keyup="vm.handleTravelCountries($event)" id="map-search" ng-if="vm.fr" type="text" class="" placeholder="Nom" ng-model="vm.travel.travel_editing_country">
-                <input ng-keyup="vm.handleTravelCountries($event)" id="map-search" ng-if="vm.it" type="text" class="" placeholder="Nome" ng-model="vm.travel.travel_editing_country">
+              <div class="ui large fluid action input">
+                <input ng-keyup="vm.handleTravelCountries($event)" ng-if="vm.fr" type="text" class="" placeholder="Nom" ng-model="vm.travel.travel_editing_country">
+                <input ng-keyup="vm.handleTravelCountries($event)" ng-if="vm.it" type="text" class="" placeholder="Nome" ng-model="vm.travel.travel_editing_country">
                 <button ng-click="vm.addTravelCountry()" class="ui button">+</button>
               </div>
-              <div ng-show="!vm.edit" id="map-travel-search"></div>
             </div>
           </div>
   
@@ -132,6 +137,16 @@
               <div class="ui large fluid input">
                 <input ng-show="vm.fr" type="text" class="" placeholder="Description" ng-model="vm.travel.travel_long_desc_fr">
                 <input ng-show="vm.it" type="text" class="" placeholder="Descrizione" ng-model="vm.travel.travel_long_desc_it">
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui basic segment">
+              <h4 ng-show="vm.fr" class="ui horizontal divider">Slug</h4>
+              <h4 ng-show="vm.it" class="ui horizontal divider">Slug</h4>
+              <div class="ui large fluid input">
+                <input ng-show="vm.fr" type="text" class="" placeholder="Slug" ng-model="vm.travel.travel_slug_fr">
+                <input ng-show="vm.it" type="text" class="" placeholder="Slug" ng-model="vm.travel.travel_slug_it">
               </div>
             </div>
           </div>

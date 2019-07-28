@@ -1,3 +1,4 @@
+import { format } from 'date-fns'
 class ArticleController {
   constructor(
     $rootScope, 
@@ -9,7 +10,6 @@ class ArticleController {
     Travels, 
     ApiService,
     TextEditor,
-    DateService,
     toastr
   ) {
     this.$rootScope = $rootScope; 
@@ -22,15 +22,13 @@ class ArticleController {
     this.travels = Travels;
     this.ApiService = ApiService;
     this.TextEditor = TextEditor;
-    this.DateService = DateService;
     this.toastr = toastr;
-    console.log(process.env)
+    this.format = format
     this.AWS_BUCKET_PATH = process.env.AWS_BUCKET_PATH
     
     this.stepOne = true;
     this.hasGallery = this.hasGallery();
     this.editGallery = false;
-
 
     /* Mapping db data */
     if (this.json_in.newarticle) {
@@ -41,15 +39,11 @@ class ArticleController {
         from: "",
         to: ""
       }
-      if (this.json_in.article_date_from) { 
-        const timestampFrom = this.json_in.article_date_from;
-        this.json_in.article_date_from = this.DateService.fromTimestampToDate(timestampFrom)
-        this.articleDates.from = this.DateService.fromTimestampToDatePickerDate(timestampFrom)
+      if (this.json_in.article_start_date) {
+        this.articleDates.from = this.format(new Date(this.json_in.article_start_date), 'dd/MM/yyyy')
       }
-      if (this.json_in.article_date_to) {
-        const timestampTo = this.json_in.article_date_to;
-        this.json_in.article_date_to = this.DateService.fromTimestampToDate(timestampTo)
-        this.articleDates.to = this.DateService.fromTimestampToDatePickerDate(timestampTo)
+      if (this.json_in.article_end_date) {
+        this.articleDates.to = this.format(new Date(this.json_in.article_end_date), 'dd/MM/yyyy')        
       }
       
       /* Travel */
@@ -57,6 +51,7 @@ class ArticleController {
         const travel = this.travels.filter(travel => {
           return travel.travel_id == this.json_in.article_travel_id;
         })
+        this.selectedTravel = travel[0]
         this.json_in.article_travel_fr = travel[0].travel_title_fr;
         this.json_in.article_travel_it = travel[0].travel_title_it;
       }
@@ -83,7 +78,6 @@ class ArticleController {
 
         this.isPublished = this.json_in.article_published_it;
       }
-      console.log(this.json_in, this.AWS_BUCKET_PATH)
     }
     $rootScope.$on("articleComponentsChange", (e, comps) => {
       this.articleComponents = comps;
@@ -105,8 +99,13 @@ class ArticleController {
     });
     
     $rootScope.$on('changeAsset', (e, from, asset) => {
-      if (from == "article") {
-        this.json_in.article_cover = asset.asset_name;
+      if (from == "article" && this) {
+        if (this.fr) {
+          this.json_in.article_cover_fr = asset.asset_name;
+        }
+        if (this.it) {
+          this.json_in.article_cover_it = asset.asset_name;
+        }
       }
     });
     
@@ -125,26 +124,63 @@ class ArticleController {
       this.isEditing = true;
     }
 
-    /* TextEditor actions */
-    this.actions = [
-      {
-        label: "Paragraph",
-        icon:  "font"
-      },
-      {
-        label: "Subtitle",
-        icon:  "heading"
-      },
-      {
-        label: "Image",
-        icon:  "image outline"
-      },
-      {
-        label: "Catch phrase",
-        icon: "font"
-      }
-    ]
+    if (this.fr) {
+      this.months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
+      this.monthsShort = ['jan', 'fév', 'mar', 'avr', 'mai', 'juin', 'juil', 'août', 'sept', 'oct', 'nov', 'déc']
+      this.days = ['D', 'L', 'Ma', 'Me', 'J', 'V', 'S']
+      this.actions = [
+        {
+          label: "Paragraphe",
+          icon:  "font"
+        },
+        {
+          label: "Sous-titre",
+          icon:  "heading"
+        },
+        {
+          label: "Image",
+          icon:  "image outline"
+        },
+        {
+          label: "Phrase d'accroche",
+          icon: "font"
+        }
+      ]
+    }
+    if (this.it) {
+      this.months = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre']
+      this.monthsShort = ['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'sett', 'ott', 'nov', 'dic']
+      this.days = ['D', 'L', 'Ma', 'Me', 'G', 'V', 'S']
+      this.actions = [
+        {
+          label: "Paragrafo",
+          icon:  "font"
+        },
+        {
+          label: "Sottotitolo",
+          icon:  "heading"
+        },
+        {
+          label: "Immagine",
+          icon:  "image outline"
+        },
+        {
+          label: "Frase catchy",
+          icon: "font"
+        }
+      ]
+    }
+    console.log(this.json_in)
     this.formatTravelCountries();
+  }
+
+  edit() {
+    this.isEditing = !this.isEditing
+    if (this.isEditing) {
+      setTimeout(() => {
+        this.initDatepicker()
+      })
+    }
   }
 
   hasGallery() {
@@ -176,12 +212,10 @@ class ArticleController {
   }
 
   getSelectedTravelCountries() {
-    let travelId = Number(this.json_in.article_travel_id);
+    let travelId = Number(this.selectedTravel.travel_id);
+    this.article.article_travel_id = travelId
     if (travelId) {
-      let travel = this.travels.filter((travel) => {
-        return travel.travel_id == travelId
-      })[0]
-      this.selectedTravelCountries = this.fr ? travel.travel_countries_fr : travel.travel_countries_it 
+      this.selectedTravelCountries = this.fr ? this.selectedTravel.travel_countries_fr : this.selectedTravel.travel_countries_it 
     }
   }
 
@@ -198,22 +232,32 @@ class ArticleController {
   }
 
   initDatepicker() {
+    console.log(this.articleDates)
+
     $('#rangestart').calendar({
       type: 'date',
-      endCalendar: $('#rangeend'),
-      onChange: (date) => {
-        const timestamp = this.DateService.fromDateToTimestamp(date)
-        this.json_in.article_date_from = this.DateService.fromTimestampToDate(timestamp)
-        this.articleDates.from = this.DateService.fromTimestampToDatePickerDate(timestamp)
+      monthFirst: false,
+      text: {
+        days: this.days,
+        months: this.months,
+        monthsShort: this.monthsShort
+      },
+      onChange: (date, text, mode) => {
+        this.json_in.article_start_date = Date.parse(new Date(date))
+        this.articleDates.from = this.format(new Date(date), 'dd/MM/yyyy')
 	    }    
     });
     $('#rangeend').calendar({
       type: 'date',
-      startCalendar: $('#rangestart'),
-      onChange: (date) => {
-        const timestamp = this.DateService.fromDateToTimestamp(date)
-        this.json_in.article_date_to = this.DateService.fromTimestampToDate(timestamp)
-        this.articleDates.to = this.DateService.fromTimestampToDatePickerDate(timestamp)
+      monthFirst: false,
+      text: {
+        days: this.days,
+        months: this.months,
+        monthsShort: this.monthsShort
+      },
+      onChange: (date, text, mode) => {
+        this.json_in.article_end_date = Date.parse(new Date(date))
+        this.articleDates.to = this.format(new Date(date), 'dd/MM/yyyy')
 	    }
     });
   }
@@ -222,39 +266,16 @@ class ArticleController {
    this.openModal('cover');
   }
 
-  editDates() {
-    this.openModal('dates');
-    setTimeout(() => {
-      this.initDatepicker();
-    })
-  }
-
   toggleStep() {
     this.stepTwo = !this.stepTwo
     this.isEditing = false
   }
 
   formatArticle(article) {
-    if (article.article_date_from) {
-      article.article_date_from = this.DateService.fromDateToTimestamp(article.article_date_from)
-    }
-    if (article.article_date_to) {
-      article.article_date_to = this.DateService.fromDateToTimestamp(article.article_date_to)
-    }
-    if (article.article_published_date_fr) {
-      article.article_published_date_fr = this.DateService.fromDateToTimestamp(article.article_published_date_fr)
-    }
-    if (article.article_published_date_it) {
-      article.article_published_date_it = this.DateService.fromDateToTimestamp(article.article_published_date_it)
-    }
-    if (article.article_travel_fr) {
-      delete article.article_travel_fr;
-    }
-    if (article.article_travel_it) {
-      delete article.article_travel_it;
-    }
-
     if (this.fr) {
+      if (article.article_travel_fr) {
+        delete article.article_travel_fr
+      }
       if (!article.article_gallery_fr) {
         article.article_gallery_fr = '[]';
       }
@@ -267,6 +288,9 @@ class ArticleController {
       }
     }
     if (this.it) {
+      if (article.article_travel_it) {
+        delete article.article_travel_it
+      }
       if (!article.article_gallery_it) {
         article.article_gallery_it = '[]';
       }
@@ -328,10 +352,10 @@ class ArticleController {
 
   unpublishArticle() {
     if (this.$rootScope.rvm.fr) {
-      this.json_in.article_published_fr = false;
+      this.json_in.article_published_fr = 0;
     }
     if (this.$rootScope.rvm.it) {
-      this.json_in.article_published_it = false;
+      this.json_in.article_published_it = 0;
     }
     this.saveArticle(this.json_in);
     this.ApiService.articleUnpublish(this.json_in.article_id)

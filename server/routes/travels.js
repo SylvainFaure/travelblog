@@ -28,7 +28,7 @@ travels.route('/:id([0-9]+)')
     })
   })
   .delete((req, res, next) => {
-    Travel.deleteTravel(false, req.params.id, result => {
+    Travel.deleteTravel(req.params.id, result => {
       handleResponse(res, next, result)
     })
   })

@@ -3,7 +3,12 @@ const mysql      = require('mysql');
 var connection;
 if (process.env.PORT) {
   connection = mysql.createConnection(process.env.JAWSDB_URL);
-  connection.connect();
+  connection.connect(err => {
+    if (err) {
+      console.log(err)
+      return
+    }
+  });
 } else {
   connection = mysql.createConnection({
     host     : process.env.DB_HOST,

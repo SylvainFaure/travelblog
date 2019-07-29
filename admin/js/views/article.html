@@ -67,14 +67,14 @@
           <div class="ui basic segment" ng-if="!vm.isEditing">
             <h3 ng-show="vm.fr">
               {{vm.json_in.article_title_fr}}
-              <span class="italic" ng-show="!article.article_title_fr.length">
-                it : {{article.article_title_it}}
+              <span class="italic" ng-show="!vm.json_in.article_title_fr.length">
+                it : {{vm.json_in.article_title_it}}
               </span>
             </h3>
             <h3 ng-show="vm.it">
               {{vm.json_in.article_title_it}}
-              <span class="italic" ng-show="!article.article_title_it.length">
-                fr : {{article.article_title_fr}}
+              <span class="italic" ng-show="!vm.json_in.article_title_it.length">
+                fr : {{vm.json_in.article_title_fr}}
               </span>
             </h3>
           </div>
@@ -128,27 +128,24 @@
         <div class="ui grid">
           <div class="ui six wide column">
             <div class="field ui basic segment" ng-show="vm.fr">
-              <h4 ng-show="vm.fr" class="ui horizontal divider">Voyage</h4> 
+              <h4 class="ui horizontal divider">Voyage</h4> 
               <select class="ui dropdown" 
-                      ng-if="vm.isEditing" 
-                      ng-change="vm.getSelectedTravelCountries()">
-                <option 
-                  value="{{travel.travel_id}}"
-                  ng-selected="travel.travel_id == selectedTravel.travel_id"
-                  ng-repeat="travel in vm.travels">{{travel.travel_title_fr}}</option>
+                ng-model="vm.selectedTravel"
+                ng-show="vm.isEditing" 
+                ng-change="vm.getSelectedTravelCountries()"
+                ng-options="travel.travel_title_fr for travel in vm.travels"
+              >
               </select>
               <div ng-if="!vm.isEditing">{{vm.selectedTravel.travel_title_fr}}</div>
             </div>
             <div class="field ui basic segment" ng-show="vm.it">
-              <h4 ng-show="vm.it" class="ui horizontal divider">Viaggio</h4> 
+              <h4 class="ui horizontal divider">Viaggio</h4> 
               <select class="ui dropdown" 
-                  ng-if="vm.isEditing"
-                  ng-model="selectedTravel"
-                  ng-change="vm.getSelectedTravelCountries()">
-                <option 
-                  value="{{travel.travel_id}}" 
-                  ng-selected="travel.travel_id == selectedTravel.travel_id" 
-                  ng-repeat="travel in vm.travels">{{travel.travel_title_it}}</option>
+                ng-model="vm.selectedTravel"
+                ng-show="vm.isEditing" 
+                ng-change="vm.getSelectedTravelCountries()"
+                ng-options="travel.travel_title_it for travel in vm.travels"
+              >
               </select>
               <div ng-if="!vm.isEditing">{{vm.selectedTravel.travel_title_it}}</div>
             </div>
@@ -167,22 +164,23 @@
           <!--COUNTRY-->
           <div class="ui four wide column">
             <div class="field ui basic segment" ng-show="vm.fr">
-              <h4 ng-show="vm.fr" class="ui horizontal divider">Pays</h4> 
+              <h4 class="ui horizontal divider">Pays</h4> 
               <select ng-class="{'ui dropdown': vm.json_in.article_travel_id != '', 'ui dropdown disabled': !vm.json_in.article_travel_id}"
-                      ng-if="vm.isEditing" 
-                      ng-model="vm.json_in.article_country_fr">
-                <option ng-show="vm.json_in.article_country_fr" value="">{{vm.json_in.article_country_fr}}</option>
-                <option value="{{country}}" ng-repeat="country in vm.selectedTravelCountries">{{country}}</option>
+                      ng-show="vm.isEditing" 
+                      ng-model="vm.selectedCountry"
+                      ng-change="vm.setSelectedCountry()"
+                      ng-options="country for country in vm.selectedTravelCountries"
+                >
               </select>
               <div ng-if="!vm.isEditing">{{vm.json_in.article_country_fr}}</div>
             </div>
             <div class="field ui basic segment" ng-show="vm.it">
-              <h4 ng-show="vm.it" class="ui horizontal divider">Paese</h4> 
+              <h4 class="ui horizontal divider">Paese</h4> 
               <select class="ui dropdown" 
-                  ng-if="vm.isEditing"
-                  ng-model="vm.json_in.article_country_it">
-                <option ng-show="vm.json_in.article_country_it" value="">{{vm.json_in.article_country_it}}</option>
-                <option value="{{country}}" ng-repeat="country in vm.selectedTravelCountries">{{country}}</option>
+                ng-show="vm.isEditing" 
+                ng-model="vm.selectedCountry"
+                ng-change="vm.setSelectedCountry()"
+                ng-options="country for country in vm.selectedTravelCountries">
               </select>
               <div ng-if="!vm.isEditing">{{vm.json_in.article_country_it}}</div>
             </div>

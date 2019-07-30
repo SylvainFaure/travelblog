@@ -3,6 +3,10 @@ const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+
+const mode = process.env.NODE_ENV
 
 const entry = { 
   'admin/bundle': './admin/js/app.admin.js',
@@ -92,11 +96,22 @@ const plugins = [
     {from: './admin/js/vendors/semantic/components/*', to: 'admin/vendors/semantic/components', flatten: true},
     {from: './admin/js/vendors/semantic/themes/default/assets/fonts/*', to: 'admin/vendors/semantic/themes/default/assets/fonts', flatten: true},
     {from: './admin/js/vendors/semantic/themes/default/assets/images/*', to: 'admin/vendors/semantic/themes/default/assets/images', flatten: true},
+    {from: './admin/js/vendors/semantic/semantic.min.css', to: 'admin/vendors/semantic'},
+
     {from: './server', to: 'server'}
   ])
 ]
 
+if (process.env.REPORT) {
+  plugins.push(new BundleAnalyzerPlugin({
+    analyzerMode: 'server',
+    generateStatsFile: true,
+    statsOptions: { source: false }
+  }))
+}
+
 module.exports = {
+  mode,
   entry,
   devtool,
   output,

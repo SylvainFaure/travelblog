@@ -3,7 +3,6 @@ import uirouter from '@uirouter/angularjs';
 import ngFileUpload from 'ng-file-upload';
 import ngSanitize from 'angular-sanitize';
 import toastr from "angular-toastr";
-
 import $ from "jquery";
 global.$ = global.jQuery = $;
 
@@ -40,6 +39,7 @@ import byTag from './filters/tag.filter';
 
 // Style, semantic
 import "./vendors/semantic/components/modal";
+import "./vendors/semantic/components/dropdown";
 import "./vendors/semantic/components/checkbox";
 import "./vendors/semantic/components/dimmer";
 import "./vendors/semantic/components/transition";
@@ -48,7 +48,7 @@ import "./vendors/semantic/components/accordion";
 import "./vendors/semantic/components/popup";
 import "./vendors/semantic/components/calendar";
 
-import './vendors/semantic/semantic.min.css';
+//import './vendors/semantic/semantic.min.css';
 import './vendors/semantic/themes/default/assets/images/flags.png';
 
 import '../css/app.admin.scss';

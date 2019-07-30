@@ -183,6 +183,7 @@ class ArticleController {
     this.isEditing = !this.isEditing
     if (this.isEditing) {
       setTimeout(() => {
+        $('.ui.dropdown').dropdown()        
         this.initDatepicker()
       })
     }

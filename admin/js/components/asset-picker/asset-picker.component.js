@@ -1,3 +1,4 @@
+import { format } from 'date-fns'
 export default class assetPickerController {
   constructor(
     $rootScope, 
@@ -5,7 +6,6 @@ export default class assetPickerController {
     $state, 
     $window, 
     ApiService,
-    DateService,
     toastr
   ) {
 		'ngInject'
@@ -14,21 +14,20 @@ export default class assetPickerController {
     this.$window = $window;
     this.$state = $state;
     this.ApiService = ApiService;
-    this.DateService = DateService;
     this.toastr = toastr;
-    
+    this.format = format;
+
     this.isSubmitted = false;
     this.assetToModify = '';
     this.modifiedAsset = '';
-    this.areaType = 'rectangle';
     this.newAssets = [];
     this.newAssetsData = { "0": {} }
-    this.removeOriginal = false;
     this.travelCategories = []
     this.placeCategories = []
     this.travels = []
     this.dimmer();
     this.getTravels();
+		this.AWS_BUCKET_PATH = process.env.AWS_BUCKET_PATH
 
     this.fr = $rootScope.rvm.fr;
     this.it = $rootScope.rvm.it;
@@ -50,7 +49,8 @@ export default class assetPickerController {
 
     setTimeout(() => {
       this.assets.forEach(asset => {
-        asset.assetDate = asset.name ? this.DateService.fromTimestampToDate(Number(asset.asset_name.split("_")[0]), true) : this.DateService.fromTimestampToDate(Date.parse(new Date))
+        asset.asset_article_ids = asset.asset_article_ids == "null" ? "[]" : asset.asset_article_ids
+        asset.assetDate = asset.name ? this.format(new Date(Number(asset.asset_name.split("_")[0])), 'dd/MM/yyyy') : this.format(Date.parse(new Date), 'dd/MM/yyyy')
       })
     })
 
@@ -167,18 +167,58 @@ export default class assetPickerController {
   
 
   editAsset(asset) {
+    asset.asset_article_ids = JSON.parse(asset.asset_article_ids)
     this.asset = asset
-    $('.ui.modal').modal('show')
+    this.ApiService.articlesList()
+      .then(resp => {
+        this.articles = resp.data.map(art => {
+          art.checked = asset.asset_article_ids.includes(art.article_id)
+          return art
+        })
+        this.selectedArticle = {}
+        this.selectedArticles = this.articles.filter(art => art.checked)
+
+        $('.ui.modal').modal('show')
+        $('.ui.dropdown').dropdown()
+      })
+      .catch(err => {
+        console.warn(err)
+      })
 
   }
+  deleteSelectedArticle() {
 
-  updateAsset(modifiedAsset, asset) {     
-    let assetModified = this.dataURItoBlob(modifiedAsset)
-    assetModified.name = asset.asset_name
-    this.uploadAsset(assetModified, [asset])
-    if (this.removeOriginal) {
-      this.deleteAsset(asset.asset_id, asset.asset_name)
+  }
+  setSelectedArticles() {
+    if (this.selectedArticle) {
+      console.log(this.selectedArticle)
+      this.asset.asset_article_ids.push(this.selectedArticle.article_id)
+      this.articles = this.articles.map(art => {
+        art.checked = this.asset.asset_article_ids.includes(art.article_id)
+        return art
+      })
+      this.selectedArticles.push(this.selectedArticle)
     }
+  }
+
+  updateAsset(asset) {     
+    //let assetModified = this.dataURItoBlob(modifiedAsset)
+    //assetModified.name = asset.asset_name
+    if (asset.assetDate) delete asset.assetDate
+    asset.asset_article_ids = JSON.stringify(asset.asset_article_ids)
+    this.ApiService.assetUpdate(asset, asset.asset_id)
+      .then(resp => {
+        console.log(resp)
+        this.toastr.success("Asset updated successfully")
+      })
+      .catch(err => {
+        this.toastr.error("There was an error! Try again")
+
+        console.log(err)
+      })
+    // if (this.removeOriginal) {
+    //   this.deleteAsset(asset.asset_id, asset.asset_name)
+    // }
   }
 
   deleteAsset (index, name) {

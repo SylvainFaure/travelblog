@@ -23,12 +23,18 @@ export default function Router ($stateProvider, $urlRouterProvider) {
             .then((r) => {
               return r.data;
             })
+            .catch(err => {
+              console.log(err)
+            })
         },
         TravelsList: (ApiService) => {
           return ApiService
             .travelsList()
             .then((r) => {
               return r.data;
+            })
+            .catch(err => {
+              console.log(err)
             })
         }
       }
@@ -52,6 +58,16 @@ export default function Router ($stateProvider, $urlRouterProvider) {
             .then((r) => {
               return r.data;
             })
+        },
+        TravelsList: (ApiService) => {
+          return ApiService
+            .travelsList()
+            .then(r => {
+              return r.data
+            })
+            .catch(err => {
+              console.log(err)
+            })
         }
       }
     })
@@ -68,12 +84,18 @@ export default function Router ($stateProvider, $urlRouterProvider) {
             .then((r) => {
               return r.data;
             })
+            .catch(err => {
+              console.log(err)
+            })
         },
         Assets: (ApiService) => {
           return ApiService
             .assetsList()
             .then((r) => {
               return r.data;
+            })
+            .catch(err => {
+              console.log(err)
             })
         }
       }
@@ -91,6 +113,9 @@ export default function Router ($stateProvider, $urlRouterProvider) {
             .assetsList()
             .then((r) => {
               return r.data;
+            })
+            .catch(err => {
+              console.log(err)
             })
         }
       }
@@ -111,6 +136,9 @@ export default function Router ($stateProvider, $urlRouterProvider) {
               }
               return r.data[0]
             })
+            .catch(err => {
+              console.log(err)
+            })
         },
         TravelArticles: ($stateParams, ApiService) => {
           return ApiService 
@@ -124,6 +152,9 @@ export default function Router ($stateProvider, $urlRouterProvider) {
             .assetsList()
             .then((r) => {
               return r.data;
+            })
+            .catch(err => {
+              console.log(err)
             })
         }
       }
@@ -156,6 +187,9 @@ export default function Router ($stateProvider, $urlRouterProvider) {
                 }
                 return r.data[0];
               })
+              .catch(err => {
+                console.log(err)
+              })
           },
           Travels: (ApiService) => {
             return ApiService
@@ -163,12 +197,18 @@ export default function Router ($stateProvider, $urlRouterProvider) {
               .then((r) => {
                 return r.data
               })
+              .catch(err => {
+                console.log(err)
+              })
           },
           Assets: (ApiService) => {
             return ApiService
               .assetsList()
               .then((r) => {
                 return r.data;
+              })
+              .catch(err => {
+                console.log(err)
               })
           }
         }

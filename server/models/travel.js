@@ -5,10 +5,13 @@ class Travel {
 	static getAll(published, cb) {
 		let table = published ? 'published_travels' : 'travels';
 		db.query(`SELECT * FROM ${table}`, (err, rows) => {
-			if (err) throw err;
-			var records = JSON.stringify(rows);
-			var travels = JSON.parse(records);
-			cb(travels)
+			if (err) {
+				cb({type: 'DatabaseError', error: err});
+			} else {
+				var records = JSON.stringify(rows);
+				var travels = JSON.parse(records);
+				cb(travels)
+			}
 		})
 	}
 

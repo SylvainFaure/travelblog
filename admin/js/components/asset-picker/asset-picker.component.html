@@ -200,14 +200,8 @@
           <h4 ng-show="vm.it" class="ui horizontal divider">Asset</h4>
           <div class="ui large fluid input">
             <div class="cropArea">
-              <img-crop 
-                image="vm.assetToModify" 
-                result-image="vm.modifiedAsset"
-                area-type="{{vm.areaType}}"
-                area-coords="{}"
-                result-image-format="image/jpeg"></img-crop>
+              <img ng-src="{{vm.AWS_BUCKET_PATH}}img/{{vm.asset.asset_name}}" />
             </div>
-            <!-- <img ng-src="assets/assets/img/{{vm.asset.asset_name}}" /> -->
           </div>
         </div>
       </div>
@@ -232,7 +226,43 @@
             </div>
           </div>
         </div>
-        <div class="field">
+        <div class="field" >
+          <div class="ui basic segment" ng-show="vm.fr">
+            <h4 class="ui horizontal divider">Articles associés</h4> 
+            <p>
+              <tag 
+                ng-repeat="article in vm.selectedArticles"
+                label="article.article_slug_fr"
+                deletable="true"
+                id="{{article.article_id}"
+                cb="vm.deleteSelectedArticle(article)"></tag>
+            </p>
+            <select 
+              class="ui search dropdown" 
+              ng-model="vm.selectedArticle"
+              ng-change="vm.setSelectedArticles()"
+              ng-options="article.article_slug_fr disable when article.checked == true for article in vm.articles">
+            </select>
+          </div>
+          <div class="ui basic segment" ng-show="vm.it">
+            <h4 class="ui horizontal divider">Articoli associati</h4> 
+            <p>
+              <tag 
+                ng-repeat="article in vm.selectedArticles"
+                label="article.article_slug_it"
+                deletable="true"
+                id="{{article.article_id}}"
+                cb="vm.deleteSelectedArticle(article)"></tag>
+            </p>
+            <select class="ui dropdown" 
+              ng-model="vm.selectedArticle"
+              ng-change="vm.setSelectedArticles()"
+              ng-options="article.article_slug_it disable when article.checked == true for article in vm.articles">
+            </select>
+          </div>
+          
+        </div>
+        <!-- <div class="field">
           <div class="ui basic segment">
             <h4 ng-show="vm.fr" class="ui horizontal divider">Forme de l'image</h4>
             <h4 ng-show="vm.it" class="ui horizontal divider">Forma dell'immaggine</h4>
@@ -245,8 +275,8 @@
               <input type="radio" class="" name="areaType" id="square" value="square" ng-model="vm.areaType">
             </div>
           </div>
-         </div>
-         <div class="field">
+         </div> -->
+         <!-- <div class="field">
           <div class="ui basic segment">
             <h4 ng-show="vm.fr" class="ui horizontal divider">Eliminer l'original</h4>
             <h4 ng-show="vm.it" class="ui horizontal divider">Cancellare l'originale</h4>
@@ -263,14 +293,14 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
       
     </div>
     </div>
     <div class="actions">
       <div class="ui black deny button">Cancel</div>
-      <div class="ui positive right labeled icon button" ng-click="vm.updateAsset(vm.modifiedAsset, vm.asset)">Save<i class="checkmark icon"></i> </div>           
+      <div class="ui positive right labeled icon button" ng-click="vm.updateAsset(vm.asset)">Save<i class="checkmark icon"></i> </div>           
     </div>
   </div>
     

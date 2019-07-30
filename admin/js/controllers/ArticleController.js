@@ -52,8 +52,13 @@ class ArticleController {
           return travel.travel_id == this.json_in.article_travel_id;
         })
         this.selectedTravel = travel[0]
-        this.json_in.article_travel_fr = travel[0].travel_title_fr;
-        this.json_in.article_travel_it = travel[0].travel_title_it;
+        this.selectedTravelCountries = this.$rootScope.rvm.fr 
+                                        ? JSON.parse(travel[0].travel_countries_fr) 
+                                        : JSON.parse(travel[0].travel_countries_it)
+        this.selectedCountry = this.$rootScope.rvm.fr 
+                                ? this.selectedTravelCountries.filter(country => country == this.json_in.article_country_fr)[0]
+                                : this.selectedTravelCountries.filter(country => country == this.json_in.article_country_it)[0]
+        console.log(this.selectedCountry)
       }
 
       if (this.$rootScope.rvm.fr) {
@@ -178,6 +183,7 @@ class ArticleController {
     this.isEditing = !this.isEditing
     if (this.isEditing) {
       setTimeout(() => {
+        $('.ui.dropdown').dropdown()        
         this.initDatepicker()
       })
     }
@@ -213,9 +219,17 @@ class ArticleController {
 
   getSelectedTravelCountries() {
     let travelId = Number(this.selectedTravel.travel_id);
-    this.article.article_travel_id = travelId
+    this.json_in.article_travel_id = travelId
     if (travelId) {
       this.selectedTravelCountries = this.fr ? this.selectedTravel.travel_countries_fr : this.selectedTravel.travel_countries_it 
+    }
+  }
+  setSelectedCountry() {
+    if (this.$rootScope.rvm.fr) {
+      this.json_in.article_country_fr = this.selectedCountry
+    }
+    if (this.$rootScope.rvm.it) {
+      this.json_in.article_country_it = this.selectedCountry
     }
   }
 

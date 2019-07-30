@@ -227,12 +227,13 @@
           </div>
         </div>
         <div class="field" >
-          <div class="ui basic segment" ng-show="vm.fr">
-            <h4 class="ui horizontal divider">Articles associés</h4> 
+          <div class="ui basic segment">
+            <h4 ng-show="vm.fr" class="ui horizontal divider">Articles associés</h4> 
+            <h4 ng-show="vm.it" class="ui horizontal divider">Articoli associati</h4>
             <p>
               <tag 
                 ng-repeat="article in vm.selectedArticles"
-                label="article.article_slug_fr"
+                label="article.article_slug"
                 deletable="true"
                 id="{{article.article_id}"
                 cb="vm.deleteSelectedArticle(article)"></tag>
@@ -241,27 +242,22 @@
               class="ui search dropdown" 
               ng-model="vm.selectedArticle"
               ng-change="vm.setSelectedArticles()"
-              ng-options="article.article_slug_fr disable when article.checked == true for article in vm.articles">
+              ng-options="article.article_slug disable when article.checked == true for article in vm.articles">
             </select>
           </div>
-          <div class="ui basic segment" ng-show="vm.it">
-            <h4 class="ui horizontal divider">Articoli associati</h4> 
-            <p>
-              <tag 
-                ng-repeat="article in vm.selectedArticles"
-                label="article.article_slug_it"
-                deletable="true"
-                id="{{article.article_id}}"
-                cb="vm.deleteSelectedArticle(article)"></tag>
-            </p>
-            <select class="ui dropdown" 
-              ng-model="vm.selectedArticle"
-              ng-change="vm.setSelectedArticles()"
-              ng-options="article.article_slug_it disable when article.checked == true for article in vm.articles">
-            </select>
-          </div>
-          
         </div>
+        <div class="field" >
+            <div class="ui basic segment">
+              <h4 ng-show="vm.fr" class="ui horizontal divider">Voyage associé</h4> 
+              <h4 ng-show="vm.it" class="ui horizontal divider">Viaggi associati</h4>
+              <select 
+                class="ui search dropdown" 
+                ng-model="vm.selectedTravel"
+                ng-change="vm.setSelectedTravel()"
+                ng-options="travel.travel_slug for travel in vm.travels">
+              </select>
+            </div>
+          </div>
         <!-- <div class="field">
           <div class="ui basic segment">
             <h4 ng-show="vm.fr" class="ui horizontal divider">Forme de l'image</h4>

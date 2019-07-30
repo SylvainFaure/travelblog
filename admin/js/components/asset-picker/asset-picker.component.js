@@ -172,6 +172,7 @@ export default class assetPickerController {
     this.ApiService.articlesList()
       .then(resp => {
         this.articles = resp.data.map(art => {
+          art.article_slug = `${art.article_slug_fr} / ${art.article_slug_it}`
           art.checked = asset.asset_article_ids.includes(art.article_id)
           return art
         })
@@ -184,14 +185,26 @@ export default class assetPickerController {
       .catch(err => {
         console.warn(err)
       })
+    this.ApiService.travelsList()
+      .then(resp => {
+        this.travels = resp.data.map(travel => {
+          travel.travel_slug = `${travel.travel_slug_fr} / ${travel.travel_slug_it}`
+          return travel
+        })
+        this.selectedTravel = this.travels.filter(travel => travel.travel_id == asset.asset_travel_id)[0]
+      })
 
   }
-  deleteSelectedArticle() {
-
+  deleteSelectedArticle(article) {
+    this.asset.asset_article_ids.splice(this.asset.asset_article_ids.indexOf(article.article_id), 1)
+    this.articles.map(art => {
+      art.checked = this.asset.asset_article_ids.includes(art.article_id)
+      return art
+    })
+    this.selectedArticles = this.articles.filter(art => art.checked)
   }
   setSelectedArticles() {
     if (this.selectedArticle) {
-      console.log(this.selectedArticle)
       this.asset.asset_article_ids.push(this.selectedArticle.article_id)
       this.articles = this.articles.map(art => {
         art.checked = this.asset.asset_article_ids.includes(art.article_id)
@@ -199,6 +212,9 @@ export default class assetPickerController {
       })
       this.selectedArticles.push(this.selectedArticle)
     }
+  }
+  setSelectedTravel() {
+    this.asset.asset_travel_id = this.selectedTravel.travel_id
   }
 
   updateAsset(asset) {     

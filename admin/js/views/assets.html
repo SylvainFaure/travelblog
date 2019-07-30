@@ -1,7 +1,17 @@
 <h1>Assets</h1>
-
-<asset-picker 
-    assets="vm.assets" 
-    actions="true" 
-    allow-upload="true">
-</asset-picker>
+<div>
+  <div class="ui secondary menu">
+      <a class="item active" data-tab="first">First</a>
+      <a class="item" data-tab="second">Second</a>
+  </div>
+  <div class="ui tab segment active" data-tab="first">
+    <asset-picker 
+        assets="vm.assets" 
+        actions="true" 
+        allow-upload="true">
+    </asset-picker>
+  </div>
+  <div class="ui tab segment" data-tab="second">
+    En cours : associer images à voyages / articles
+  </div>
+</div>

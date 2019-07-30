@@ -47,6 +47,7 @@ import "./vendors/semantic/components/progress";
 import "./vendors/semantic/components/accordion";
 import "./vendors/semantic/components/popup";
 import "./vendors/semantic/components/calendar";
+import "./vendors/semantic/components/tab";
 
 //import './vendors/semantic/semantic.min.css';
 import './vendors/semantic/themes/default/assets/images/flags.png';

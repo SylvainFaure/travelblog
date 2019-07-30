@@ -15,6 +15,17 @@ class AssetsController {
         this.it = $rootScope.rvm.it;
         this.$state.reload();
     })
+    $('.ui.secondary.menu')
+      .on('click', (ev) => {
+        $(ev.target).addClass('active')
+        if (ev.target.dataset.tab == 'first') {
+          $('[data-tab=second]').removeClass('active')
+        } else {
+          $('[data-tab=first]').removeClass('active')
+        }
+
+        $.tab('change tab', ev.target.dataset.tab);
+      })
     
     $('.ui.accordion').accordion();
   }

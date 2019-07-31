@@ -1,8 +1,11 @@
 <div>
     <div class="ui inverted segment top fixed menu" style="min-height: 50px;">
-        <div class="header-pos">
-          <h4 class="ui grey inverted left floated">Carte de voyages</h4>  
-        </div>
+        <a class="item" href="/">
+          <h4 class="ui grey inverted left floated">
+            <span ng-if="rvm.fr">{{ vm.settings.site_name_fr }}</span>
+            <span ng-if="rvm.it">{{ vm.settings.site_name_it }}</span>
+          </h4>  
+        </a>
         <a class="item" ui-sref=".travels">
           <span ng-if="rvm.fr">Voyages</span>
           <span ng-if="rvm.it">Viaggi</span>
@@ -29,13 +32,66 @@
     
     <div class="ui grid">
         <div class="ui row">
-            
+            <div class="settings">
+              <div ng-if="rvm.fr">
+                <h4>{{ vm.settings.site_name_fr }}</h4>
+              </div>
+              <div ng-if="rvm.it">
+                <h4>{{ vm.settings.site_name_it }}</h4>
+              </div>
+              <div class="blurring dimmable image" ng-init="vm.dimmer()">
+                <div class="ui inverted dimmer">
+                  <div class="content">
+                    <div class="center">
+                      <div class="ui primary button" ng-click='vm.changeCover(vm.cover)'>
+                        <span><i class="pencil alternate icon"></i></span>                  
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <img  
+                  class="asset-picker-img"
+                  ng-src="{{vm.AWS_BUCKET_PATH}}img/{{vm.cover.asset_name}}"
+                >
+              </div>
+            </div>
             <div class="ui sixteen wide column">
                 <div class="segment">
                     <div ui-view></div>
                 </div>
             </div>
-        
+
+            <!--MODAL COVER-->
+            <div class="ui modal maincover">
+              <i class="close icon"></i>
+              <div class="header">
+                <div ng-if="">
+                  <span ng-show="rvm.fr">Choisis une image principale pour le site</span>
+                  <span ng-show="rvm.it">Scegli un'immagine principale per il sito</span>      
+                </div>
+                <img 
+                  ng-if="vm.cover" 
+                  class="article-gallery-img"
+                  ng-src="{{vm.AWS_BUCKET_PATH}}thumb/mini_{{vm.cover.asset_name}}" 
+                >
+              </div>
+              <div class="description">
+                <div class="field assets_modal">
+                  <asset-picker 
+                    assets="vm.assets" 
+                    disable-place="true" 
+                    context="home"
+                  ></asset-picker> 
+                </div>
+              </div>
+              <div class="actions">
+                <div ng-click="vm.closeModal() "class="ui positive right labeled icon button">
+                  <span ng-show="rvm.fr">Confirmer</span>
+                  <span ng-show="rvm.it">Confermare</span>
+                  <i class="checkmark icon"></i>
+                </div>
+              </div>
+            </div>
         </div>
     </div>
 </div>

@@ -88,7 +88,15 @@ export default class ApiService {
   return this.$http.post(this.BASE_PATH + 'api/assets/delete', {ids: ids, names: names}); 
  }
 
- assetUpdate (asset, id) {
+ assetUpdate(asset, id) {
   return this.$http.put(this.BASE_PATH + 'api/assets/' + id, asset);
+ }
+
+ settings() {
+   return this.$http.get(this.BASE_PATH + 'api/settings')
+ }
+
+ updateSettings(settings) {
+   return this.$http.put(this.BASE_PATH + 'api/settings', settings);
  }
 }

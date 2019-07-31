@@ -36,6 +36,26 @@ export default function Router ($stateProvider, $urlRouterProvider) {
             .catch(err => {
               console.log(err)
             })
+        },
+        AssetsList: (ApiService) => {
+          return ApiService
+            .assetsList()
+            .then((r) => {
+              return r.data;
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        },
+        Settings: (ApiService) => {
+          return ApiService
+            .settings()
+            .then(r => {
+              return r.data
+            })
+            .catch(err => {
+              console.warn(err)
+            })
         }
       }
     })

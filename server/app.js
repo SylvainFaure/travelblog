@@ -18,6 +18,7 @@ const articlesRouter = require('./routes/articles');
 const travelsRouter = require('./routes/travels');
 const usersRouter = require('./routes/users');
 const assetsRouter = require('./routes/assets');
+const settingsRouter = require('./routes/settings');
 
 /** STATIC FILES **/
 app.use('/', express.static('admin'));
@@ -58,6 +59,7 @@ app.use('/api/articles', articlesRouter);
 app.use('/api/travels', travelsRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/assets', assetsRouter);
+app.use('/api/settings', settingsRouter);
 
 app.use(errorMiddleware);
 /*** ANGULAR ONE PAGE APP ***/

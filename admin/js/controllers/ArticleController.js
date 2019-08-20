@@ -130,48 +130,38 @@ class ArticleController {
     }
 
     if (this.fr) {
-      this.months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
-      this.monthsShort = ['jan', 'fév', 'mar', 'avr', 'mai', 'juin', 'juil', 'août', 'sept', 'oct', 'nov', 'déc']
-      this.days = ['D', 'L', 'Ma', 'Me', 'J', 'V', 'S']
+      this.months = this.fr 
+                  ? ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
+                  : ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre']
+      this.monthsShort = this.fr 
+                  ? ['jan', 'fév', 'mar', 'avr', 'mai', 'juin', 'juil', 'août', 'sept', 'oct', 'nov', 'déc']
+                  : ['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'sett', 'ott', 'nov', 'dic']
+      this.days = this.fr ? ['D', 'L', 'Ma', 'Me', 'J', 'V', 'S'] : ['D', 'L', 'Ma', 'Me', 'G', 'V', 'S']
       this.actions = [
         {
-          label: "Paragraphe",
+          label: this.fr ? "Paragraphe" : "Paragrafo",
+          key: 'paragraph',
           icon:  "font"
         },
         {
-          label: "Sous-titre",
+          label: this.fr ? "Sous-titre" : "Sottotitolo",
+          key: "subtitle",
           icon:  "heading"
         },
         {
-          label: "Image",
+          label: this.fr ? "Image" : "Immagine",
+          key: "image",
           icon:  "image outline"
         },
         {
-          label: "Phrase d'accroche",
+          label: this.fr ? "Phrase d'accroche" : "Frase catchy",
+          key: "catch",
           icon: "font"
-        }
-      ]
-    }
-    if (this.it) {
-      this.months = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre']
-      this.monthsShort = ['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'sett', 'ott', 'nov', 'dic']
-      this.days = ['D', 'L', 'Ma', 'Me', 'G', 'V', 'S']
-      this.actions = [
-        {
-          label: "Paragrafo",
-          icon:  "font"
         },
         {
-          label: "Sottotitolo",
-          icon:  "heading"
-        },
-        {
-          label: "Immagine",
-          icon:  "image outline"
-        },
-        {
-          label: "Frase catchy",
-          icon: "font"
+          label: this.fr ? "Musique" : "Musica",
+          key: "music",
+          icon: "music"
         }
       ]
     }
@@ -285,6 +275,26 @@ class ArticleController {
     this.isEditing = false
   }
 
+  cleanComponents(components) {
+    return components.map(comp => {
+      console.log(comp)
+      if (comp.$$hashKey) {
+        delete comp.$$hashKey
+      }
+      if (typeof comp.content == 'string') {
+        comp.content.replace(/<!--[^>]*-->?/gm, '');
+      }
+      if (typeof comp.content == 'object') {
+        Object.keys(comp.content).forEach(key => {
+          if (comp.content[key]['$$hashKey']) {
+            delete comp.content[key]['$$hashKey']
+          }
+        })
+      }
+      return comp
+    })
+  }
+
   formatArticle(article) {
     if (this.fr) {
       if (article.article_travel_fr) {
@@ -294,7 +304,8 @@ class ArticleController {
         article.article_gallery_fr = '[]';
       }
       if (this.articleComponents) {
-        article.article_long_desc_fr = JSON.stringify(this.articleComponents);
+        const components = this.cleanComponents(this.articleComponents)
+        article.article_long_desc_fr = JSON.stringify(components);
         this.resetTextEditor();
       }
       if (!article.article_long_desc_fr) {
@@ -309,7 +320,8 @@ class ArticleController {
         article.article_gallery_it = '[]';
       }
       if (this.articleComponents) {
-        article.article_long_desc_it = JSON.stringify(this.articleComponents);
+        const components = this.cleanComponents(this.articleComponents)
+        article.article_long_desc_it = JSON.stringify(components);
         this.resetTextEditor();
       }
       if (!article.article_long_desc_it) {

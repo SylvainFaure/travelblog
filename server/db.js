@@ -5,6 +5,7 @@ if (process.env.PORT) {
   connection = mysql.createConnection(process.env.JAWSDB_URL);
   connection.connect(err => {
     if (err) {
+      console.log('connection error')
       console.log(err)
       return
     }

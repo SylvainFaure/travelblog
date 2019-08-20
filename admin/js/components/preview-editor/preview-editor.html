@@ -1,7 +1,7 @@
 <div class="preview-editor_container">
   <div
     class="preview-editor_component"
-    ng-repeat="comp in vm.components | orderBy:'position'"
+    ng-repeat="comp in vm.components | orderBy:'position' track by $index"
   >
     <!--EDIT MODE-->
     <div ng-if="vm.editable" class="preview-editor_isediting">
@@ -42,6 +42,7 @@
         ng-if="comp.type !== 'image'"
         type="{{comp.type}}"
         comp="comp"
+        actions="vm.TextEditor.elementActions"
       >
       </editor-comp>
       <editor-comp 
@@ -69,6 +70,11 @@
       </div>
       <div ng-if="comp.type == 'catch'">
         <p class="preview-editor_catch">"<span ng-bind-html="comp.content"></span>"</p>
+      </div>
+      <div ng-if="comp.type == 'music'">
+        <div class="preview-editor_music">
+          <iframe src="{{vm.getTrustedSce(comp.content.type, comp.content.link)}}" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+        </div>
       </div>
     </div>
   </div>

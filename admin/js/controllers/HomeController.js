@@ -1,6 +1,7 @@
 class HomeController {
   constructor(
     $rootScope, 
+    $scope,
     $state,
     ArticlesList,
     TravelsList,
@@ -23,10 +24,11 @@ class HomeController {
     this.$state = $state
     this.toastr = toastr
 
+    this.isEditing = false
+
     this.AWS_BUCKET_PATH = process.env.AWS_BUCKET_PATH
 
     this.cover = this.getCover()
-
     this.isLogged = $rootScope.rvm.isLogged;
     $('.settings .image').dimmer({on: 'hover'})
     $rootScope.$on('changeAsset', (e, from, asset) => {
@@ -48,6 +50,9 @@ class HomeController {
           })
       }
     });
+    $scope.$on('$stateChangeStart', () => {
+      console.log('state change home')
+    })
   }
   changeLang() {
     this.$rootScope.rvm.fr = !this.$rootScope.rvm.fr; 
@@ -83,6 +88,27 @@ class HomeController {
       .catch(err => {
         console.log(err)
       })
+  }
+
+  saveMainTitle() {
+    if (this.rvm.fr && !this.settings.site_name_fr) {
+      this.toastr.warning("Il faut un titre !")
+      return
+    }
+    if (this.rvm.it && !this.settings.site_name_it) {
+      this.toastr.warning("Questo sito ha bisogno di un titolo!")
+      return
+    }
+    this.isEditing = false
+    this.ApiService.updateSettings(this.settings)
+    .then(resp => {
+      console.log(resp)
+      this.toastr.success("The main title has been correctly updated")
+    })
+    .catch(err => {
+      console.log(err)
+      this.toastr.error("There was an unexpected error, please try again")
+    })
   }
 }
 export default HomeController;

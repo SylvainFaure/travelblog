@@ -1,7 +1,9 @@
 export default class previewEditorController {
   constructor(
 		TextEditor,
-		$rootScope
+		$rootScope,
+		$sce,
+		$scope
   ) {
 		'ngInject'
 		this.TextEditor = TextEditor;
@@ -12,6 +14,7 @@ export default class previewEditorController {
 			}
 		});
 		this.rvm = $rootScope.rvm;
+		this.$sce = $sce
 	}	
 
 	$onInit() {
@@ -21,6 +24,10 @@ export default class previewEditorController {
 			})
 		}
 	}	
+
+	getTrustedSce(type, url) {
+		return this.$sce.trustAsResourceUrl(`https://open.spotify.com/embed/${type}/${url}`)
+	}
 
 	goToEditMode(comp) {
 		comp.isEditing = true;

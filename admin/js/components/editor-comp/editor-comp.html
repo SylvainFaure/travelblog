@@ -6,11 +6,20 @@
       ng-click="vm.execAction(action.action, $event)">
       <i class="{{action.icon}} icon"></i>
     </div>
-  
+    
     <div class="editor-comp_actions-arrow"></div>
+    <div class="editor-comp_actions-link-input">
+      <div class="form field">
+        <div class="ui action input">
+          <input type="text" placeholder="Link" ng-model="vm.activeLink" />
+          <i class="check icon"></i>
+        </div>
+      </div>
+    </div>
   </div>
+
   <div 
-    ng-if="vm.type !== 'image'"
+    ng-if="vm.type !== 'image' && vm.type !== 'music'"
     ng-keyup="vm.getContent($event)"
     ng-paste="vm.getContent($event)"
     ng-mouseup="vm.mouseUpEvent($event)"
@@ -54,6 +63,7 @@
           </span>
         </div>
       </div>
+      
       <div class="editor-comp_image-infos-btn">
         <div 
           ng-click="vm.chooseImage(vm.comp.content)"
@@ -64,9 +74,24 @@
           <i class="checkmark icon"></i>
         </div>
       </div>
+
     </div>
   </div>
 
+  <!-- SPOTIFY LINK -->
+  <div ng-if="vm.type == 'music'" class="editor-comp_music">
+    <div class="ui form">
+      <div class="field">
+        <div class="ui icon input">
+          <input ng-if="vm.rvm.fr" type="text" placeholder="Lien" ng-model="vm.comp.content.link" />
+          <input ng-if="vm.rvm.it" type="text" placeholder="Link" ng-model="vm.comp.content.link" />
+          <i class="link icon"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="editor-comp_buttons">
     <button 
       ng-click="vm.comp.type ? vm.updateContent() : vm.addContent()"
       class="ui positive right labeled icon button"
@@ -83,7 +108,9 @@
     </button>
     <button 
       ng-click="vm.destroyComponent()"
-      class="ui black deny button">Cancel</button>
+      class="ui black deny button">
+      Cancel
+    </button>
   </div>
 </div>
 

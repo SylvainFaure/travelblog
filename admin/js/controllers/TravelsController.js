@@ -53,6 +53,7 @@ class TravelsController {
 		this.travels.map(travel => {
 			travel.travel_countries_fr = JSON.parse(travel.travel_countries_fr)
 			travel.travel_countries_it = JSON.parse(travel.travel_countries_it)
+			travel.travel_hashtags = [] //JSON.parse(travel.travel_hashtags) add entry in db
 			travel.travel_published_fr = this.handleBoolean(travel.travel_published_fr)
 			travel.travel_published_it = this.handleBoolean(travel.travel_published_it)
 			travel.dates_raw = {
@@ -152,6 +153,7 @@ class TravelsController {
 		delete formattedTravel.travel_editing_country;
 		formattedTravel.travel_countries_fr = formattedTravel.travel_countries_fr ? JSON.stringify(formattedTravel.travel_countries_fr) : JSON.stringify([])
 		formattedTravel.travel_countries_it = formattedTravel.travel_countries_it ? JSON.stringify(formattedTravel.travel_countries_it) : JSON.stringify([])
+		formattedTravel.travel_hashtags = formattedTravel.travel_hashtags ? JSON.stringify(formattedTravel.travel_hashtags) : JSON.stringify([])
 		formattedTravel.travel_long_desc_fr = formattedTravel.travel_long_desc_fr ? formattedTravel.travel_long_desc_fr : ''
 		formattedTravel.travel_long_desc_it = formattedTravel.travel_long_desc_it ? formattedTravel.travel_long_desc_it : ''
 		const publishedFr = this.handleBoolean(formattedTravel.travel_published_fr)
@@ -199,6 +201,23 @@ class TravelsController {
 		if (this.it) {
 			this.travel.travel_countries_it.splice(this.travel.travel_countries_it.indexOf(travel), 1)
 		}
+	}
+
+	handleTravelHashtags(ev) {
+		if (ev.key === "Enter") {
+			this.addTravelHashtag()
+		}
+		if (ev.key === "Escape") {
+			this.travel.travel_editing_hashtag = ""; 
+		}
+	}
+	addTravelHashtag() {
+		if (!this.travel.travel_hashtags) this.travel.travel_hashtags = []
+		this.travel.travel_hashtags.push(this.travel.travel_editing_hashtag);
+		this.travel.travel_editing_hashtag = ""; 
+	}
+	deleteTravelHashtag(hash) {
+		this.travel.travel_hashtags.splice(this.travel.travel_hashtags.indexOf(hash), 1)
 	}
 
 

@@ -21,8 +21,7 @@ export default class editorCompController {
 		})
 		this.rvm = $rootScope.rvm;
 		this.imgPositionOptions = this.getImgPosOptions()
-		this.showAssetPicker = false
-			
+		this.showAssetPicker = false			
 	}
 	getImgPosOptions() {
 		if (this.fr) {
@@ -45,7 +44,7 @@ export default class editorCompController {
 		if (window.getSelection().toString().length) {
 			let span = document.createElement('span')
 			$(span).attr('id','highlighted-text')
-			console.log(window.getSelection().getRangeAt(0))
+			console.log(window.getSelection().getRangeAt(0).toString())
 			let selection = window.getSelection().getRangeAt(0);
 			let reg = /[\<\>\/]/gm;
 			if (selection.toString().match(reg)) {
@@ -63,7 +62,7 @@ export default class editorCompController {
 	init() {
 		setTimeout(()=> {
 			$(`.editor-comp_content`).focus()
-			if (this.type == "image" && !this.comp) {
+			if ((this.type == "image") && !this.comp) {
 				this.comp = {
 					content: {}
 				}
@@ -81,6 +80,12 @@ export default class editorCompController {
 		let content;
 		if (this.type == "image") {
 			content = this.comp.content;
+		} else if (this.type == "music") {
+			const splittedLink = this.comp.content.link.split('/')
+			content = {
+				link: splittedLink[splittedLink.length - 1],
+				type: splittedLink[splittedLink.length - 2]
+			}
 		} else {
 			content = this.content;
 		}
@@ -113,8 +118,12 @@ export default class editorCompController {
 	}
 
 	execAction(action) {
+		if (action == 'addlink') {
+			// show input
+			// get link and wrap highlightedtext with it
+		}
 		$('#highlighted-text').addClass(action).removeAttr('id');
-		this.content = $(".editor-comp_content").html();
+		this.content = $(".editor-comp_content").html().replace(/<!--[^>]*-->?/gm, '');
 		this.unsetActionsElement()
 	}
 

@@ -317,6 +317,11 @@ img {
     align-items: center;
   }
 
+  &_buttons {
+    display: flex;
+    width: 25%;
+  }
+
   &_content {
     font-size: 1.5em;
     padding: 0.5em;
@@ -392,7 +397,7 @@ img {
       border-radius: 50%;
 
       & i {
-        margin: 0 0 0.2em 0;
+        margin: 0 0 0.2em 0 !important;
       }
 
       &:hover {
@@ -429,4 +434,8 @@ img {
 .ui.modal.maincover {
   max-height: 80vh !important;
   overflow: scroll;
+}
+
+.home__title-input:hover {
+  cursor: pointer;
 }

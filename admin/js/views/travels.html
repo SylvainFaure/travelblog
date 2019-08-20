@@ -157,6 +157,27 @@
               </div>
             </div>
           </div>
+          <div class="field">
+            <div class="ui basic segment">
+              <h4 ng-show="vm.fr" class="ui horizontal divider">Instagram - Ajouter un hashtag</h4>
+              <h4 ng-show="vm.it" class="ui horizontal divider">Instagram - Aggiungere un hashtag</h4> 
+              <h4>Hashtags</h4>
+              <p>
+                <tag 
+                  ng-repeat="hash in vm.travel.travel_hashtags track by $index" 
+                  label="hash"
+                  deletable="true"
+                  id="{{vm.travel.travel_id}}"
+                  cb="vm.deleteTravelHashtag(hash)"
+                >
+                </tag>
+              </p>
+              <div class="ui large fluid action input">
+                <input ng-keyup="vm.handleTravelHashtags($event)" type="text" class="" placeholder="Hashtags" ng-model="vm.travel.travel_editing_hashtag">
+                <button ng-click="vm.addTravelHashtag()" class="ui button">+</button>
+              </div>
+            </div>
+          </div>
          <!--  <div class="inline field">
             <div class="ui basic segment">
               <div ng-show="vm.fr" class="ui toggle checkbox">

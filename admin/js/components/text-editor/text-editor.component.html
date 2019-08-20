@@ -6,7 +6,7 @@
     <div 
       class="action-button" 
       ng-repeat="action in vm.actions"
-      ng-click="vm.triggerAction(action.label)"
+      ng-click="vm.triggerAction(action.key)"
     >
         {{action.label}} 
         <i class="{{action.icon}} icon"></i>

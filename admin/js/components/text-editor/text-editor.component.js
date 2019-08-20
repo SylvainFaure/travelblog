@@ -8,24 +8,6 @@ export default class textEditorController {
 		this.$scope = $scope;
 		this.$compile = $compile;
 		this.TextEditor = TextEditor;
-		this.elementActions = [
-			{
-				icon: 'bold',
-				action: 'bold'
-			},
-			{
-				icon: 'font',
-				action: 'normal'
-			},
-			{
-				icon: 'italic',
-				action: 'italic'
-			},
-			{
-				icon: 'linkify',
-				action: 'addlink'
-			}
-		]
 	}
 	toCamelCase(str) {
 		return str.replace(/(?:^\w|[A-Z]|\b\w)/g, (letter, index) => {
@@ -36,8 +18,8 @@ export default class textEditorController {
 	triggerAction(action) {
 		this.TextEditor.isEditingComponent = true
 		let elmt = $('.text-editor_active-action')
-		let assets = action == "Image" ? JSON.stringify(this.assets) : '';
-		elmt.append(`<editor-comp type="${this.toCamelCase(action)}" actions='${JSON.stringify(this.elementActions)}' assets='${assets}'></editor-comp>`)
+		let assets = action == "image" ? JSON.stringify(this.assets) : '';
+		elmt.append(`<editor-comp type="${action}" actions='${JSON.stringify(this.TextEditor.elementActions)}' assets='${assets}'></editor-comp>`)
 		this.$compile($('editor-comp'))(this.$scope)
   }
 

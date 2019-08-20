@@ -36,6 +36,7 @@ import * as previewEditorComponent from "./components/preview-editor/preview-edi
 
 // Filters
 import byTag from './filters/tag.filter';
+import trustedUrl from './filters/trustedUrl.filter';
 
 // Style, semantic
 import "./vendors/semantic/components/modal";
@@ -88,13 +89,14 @@ angular
   .component('editorComp', editorCompComponent.editorCompComponent)
   .component('previewEditor', previewEditorComponent.previewEditorComponent)
   .filter('byTag', byTag)
+  .filter('trustedUrl', trustedUrl)
   .config(toastrConfig => {
     angular.extend(toastrConfig, {
       positionClass: 'toast-bottom-right',
       timeOut: 30000
     });
   })
-  .run($rootScope => {
+  .run(($transitions, $rootScope) => {
     const devPorts = ['3000', '3001']
     if (!$rootScope.rvm) {
       $rootScope.rvm = {}
@@ -104,4 +106,11 @@ angular
       $rootScope.rvm.fr = true;
       $rootScope.rvm.it = false;
     }
+    $transitions.onStart({}, ($transition) => {
+      if ($transition.$to().name !== 'logged') {
+        $rootScope.rvm.isHome = false
+      } else {
+        $rootScope.rvm.isHome = true
+      }
+    })
   })

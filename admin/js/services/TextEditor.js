@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash/isEqual';
+import isEqual from 'lodash.isequal';
 export default class TextEditor {
   constructor (
     $rootScope
@@ -6,66 +6,42 @@ export default class TextEditor {
     this.isEditingComponent = false;
     this.components = [];
     this.$rootScope = $rootScope;
-  }
 
-
-  addParagraph(para) {
-    let paragraphComp = {
-      type: "paragraph",
-      content: para,
-      position: this.components.length
-    }
-    this.components.push(paragraphComp);
-    this.$rootScope.$emit("articleComponentsChange", this.components);
-  }
-
-  addCatchPhrase(catchPhrase) {
-    const catchPhraseComp = {
-      type: "catch",
-      content: catchPhrase,
-      position: this.components.length
-    }
-    this.components.push(catchPhraseComp);
-    this.$rootScope.$emit("articleComponentsChange", this.components);
-  }
-
-  addSubtitle(subtitle) {
-    const subtitleComp = {
-      type: "subtitle",
-      content: subtitle,
-      position: this.components.length
-    }
-    this.components.push(subtitleComp);
-    this.$rootScope.$emit("articleComponentsChange", this.components);
-  }
-
-  addImage(image) { 
-    const imageComp = {
-      type: "image",
-      content: image,
-      position: this.components.length
-    }
-    this.components.push(imageComp);
-    this.$rootScope.$emit("articleComponentsChange", this.components);
+    this.elementActions = [
+			{
+				icon: 'bold',
+				action: 'bold'
+			},
+			{
+				icon: 'font',
+				action: 'normal'
+			},
+			{
+				icon: 'italic',
+				action: 'italic'
+			},
+			{
+				icon: 'linkify',
+				action: 'addlink'
+			}
+		]
   }
 
   addContent(type, content) {
-    switch(type) {
-      case "subtitle":
-        this.addSubtitle(content);
-        break;
-      case "catchPhrase":
-        this.addCatchPhrase(content);
-        break;
-      case "paragraph":
-        this.addParagraph(content);
-        break;
-      case "image":
-        this.addImage(content);
-        break;
-      default:
-        // do sthg
+    if (typeof content == 'string') {
+      content.replace(/<!--[^>]*-->?/gm, '');
     }
+    const comp = {
+      type: type,
+      content: content,
+      position: this.components.length
+    }
+    if (comp.$$hashKey) {
+      delete comp.$$hashKey
+    }
+    this.components.push(comp);
+    console.log(this.components)
+    this.$rootScope.$emit("articleComponentsChange", this.components);
   }
 
   updateContent(comp, content) {
@@ -102,7 +78,7 @@ export default class TextEditor {
       })
       if (isCompUp) {
         this.components.forEach((c, i) => {
-          if  (isEqual(c, comp)) {
+          if (isEqual(c, comp)) {
             this.components[i].position -= 1;
           }
         })
@@ -118,7 +94,7 @@ export default class TextEditor {
       })
       if (isCompDown) {
         this.components.forEach((c, i) => {
-          if  (isEqual(c, comp)) {
+          if (isEqual(c, comp)) {
             this.components[i].position += 1;
           }
         })

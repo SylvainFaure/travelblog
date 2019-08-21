@@ -18,7 +18,7 @@ travels.route('/')
 
 travels.route('/:id([0-9]+)')
   .get((req, res, next) => {
-    Travel.getTravel(false, req.params.travel, travel => {
+    Travel.getTravel(false, req.params.id, travel => {
       res.json(travel)
     })
   })

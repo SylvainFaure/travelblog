@@ -1,7 +1,7 @@
 module.exports = function (err, req, res, next) {
   console.log('ERROR MIDDLEWARE', err, err.type)
   let error = process.env.NODE_ENV == 'development' ? err : {};
-  console.log(error)
+  const fatal = !!error.fatal
   let errorObj = {
     type: error.type || "ServerError",
     status: error.status || 500,
@@ -31,5 +31,7 @@ module.exports = function (err, req, res, next) {
   }
   res.status(errorObj.status);
   res.json(errorObj);
-  next();
+  if (!fatal) {
+    next();
+  } 
 }

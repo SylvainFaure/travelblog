@@ -22,6 +22,18 @@ img {
   margin: 50px 20px 0 0;
 }
 
+.travel-section {
+  display: flex; 
+  flex-direction: column;
+  margin: 50px 20px;
+}
+
+.travel-btns {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
 
 .no-margin {
   margin-top: 0 !important;
@@ -354,6 +366,9 @@ img {
     &-btn {
       padding: 0.5em;
       cursor: pointer;
+    }
+    &-link-input {
+      display: none;
     }
   }
 }

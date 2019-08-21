@@ -10,7 +10,7 @@ class TravelController {
 	) {
 		this.$state = $state;
 		this.$scope = $scope;
-
+		console.log('TravelController')
 		this.travel = Travel;
 		this.travelArticles = TravelArticles; 
 		this.assets = Assets
@@ -52,6 +52,7 @@ class TravelController {
 			})
 	}
 	activeSortable() {
+		// need to reinstall jqueryui
 		$('#sortable').sortable({
 			update: (event, ui) => {
 				this.sortedArticles = $('#sortable').sortable('toArray', {attribute: "data-article"})

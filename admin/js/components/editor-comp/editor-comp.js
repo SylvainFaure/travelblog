@@ -121,10 +121,23 @@ export default class editorCompController {
 		if (action == 'addlink') {
 			// show input
 			// get link and wrap highlightedtext with it
+			this.unsetActionsElement()
+			$('.editor-comp_actions-link-input').fadeIn().css({'display':'flex'})
+		} else {
+			$('#highlighted-text').addClass(action).removeAttr('id');
+			this.content = $(".editor-comp_content").html().replace(/<!--[^>]*-->?/gm, '');
+			this.unsetActionsElement()
 		}
-		$('#highlighted-text').addClass(action).removeAttr('id');
-		this.content = $(".editor-comp_content").html().replace(/<!--[^>]*-->?/gm, '');
-		this.unsetActionsElement()
+	}
+
+	addLink() {
+		const link = document.createElement('a')
+		$(link).attr('href', this.activeLink)
+		$(link).attr('id', 'active-link')
+		const text = $('#highlighted-text').text()
+		$(link).html(text)
+		$('#highlighted-text').replaceWith(link)
+		$('.editor-comp_actions-link-input').fadeOut().css({'display':'none'})
 	}
 
 	getPosition() {

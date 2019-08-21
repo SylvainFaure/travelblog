@@ -21,6 +21,7 @@ class Travel {
 			if (err) {
 				cb({type: 'DatabaseError', error: err})
 			} else {
+				console.log(rows)
 				var records = JSON.stringify(rows);
 				var travel = JSON.parse(records);
 				cb(travel)

@@ -151,6 +151,7 @@ export default function Router ($stateProvider, $urlRouterProvider) {
           return ApiService
             .travelDetail($stateParams.travelId)
             .then((r) => {
+              console.log(r)
               if (!r.data.length) {
                 $state.go("logged.travels", {location: "replace"});
               }

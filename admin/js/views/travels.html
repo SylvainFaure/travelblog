@@ -20,9 +20,11 @@
           <td><p>{{travel.travel_start_date}} - {{travel.travel_end_date}}</p></td>
           <td><p ng-show="vm.fr">{{travel.travel_published_date_fr}}</p><p ng-show="vm.it">{{travel.travel_published_date_it}}</p></td>
           <td style="" class="right aligned">
-            <i class="pencil alternate icon" ng-click="vm.editTravel(travel)" style="cursor: pointer;"></i>
+            <a ui-sref="logged.travel({travelId: travel.travel_id})">
+              <i class="pencil alternate icon" style="cursor: pointer;"></i>
+            </a>
             <i class="trash alternate icon" ng-click="vm.removeTravel(travel.travel_id)" style="cursor: pointer;"></i>
-        </td> 
+          </td> 
         </tr>
       </tbody>
     </table>
@@ -178,18 +180,7 @@
               </div>
             </div>
           </div>
-         <!--  <div class="inline field">
-            <div class="ui basic segment">
-              <div ng-show="vm.fr" class="ui toggle checkbox">
-                <input type="checkbox" tabindex="0" class="hidden" ng-click="vm.publishTravel()" ng-model="vm.travel.travel_published_fr">
-                <label>Publié ?</label>
-              </div>
-              <div ng-show="vm.it" class="ui toggle checkbox">
-                <input type="checkbox" tabindex="0" class="hidden" ng-model="vm.travel.travel_published_it">
-                <label>Pubblicato ?</label>
-              </div>
-            </div>
-          </div> -->
+
           <div class="field">
             <div class="ui basic segment">
               <h4 ng-show="vm.fr" class="ui horizontal divider">Choisis une image principale pour ce pays</h4>
@@ -214,14 +205,6 @@
             <span ng-show="vm.it">Salva</span>
             <i class="checkmark icon"></i>
           </div>
-         <!--  <div 
-            ng-show="!vm.edit" 
-            class="ui positive right labeled icon button" 
-            ng-click="vm.saveAndPublishTravel(vm.travel)">
-            <span ng-show="vm.fr">Enregistrer et publier</span>
-            <span ng-show="vm.it">Salva e pubblica</span>
-            <i class="checkmark icon"></i>
-          </div> -->
           <div 
             ng-show="vm.edit" 
             class="ui positive right labeled icon button" 
@@ -239,12 +222,7 @@
               <i class="checkmark icon"></i> 
           </div>
         </div>
-      </div>
+    </div>
     </div>
     </div>
 </div>
-
-
-
-
-

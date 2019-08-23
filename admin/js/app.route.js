@@ -148,14 +148,30 @@ export default function Router ($stateProvider, $urlRouterProvider) {
       controllerAs: "vm",
       resolve: {
         Travel: ($stateParams, ApiService, $state) => {
+          if ($stateParams.travelId === "new") {
+            return {
+              newtravel: true
+            }
+          } else {
+            return ApiService
+              .travelDetail($stateParams.travelId)
+              .then((r) => {
+                console.log(r)
+                if (!r.data.length) {
+                  $state.go("logged.travels", {location: "replace"});
+                }
+                return r.data[0]
+              })
+              .catch(err => {
+                console.log(err)
+              })
+          }
+        },
+        Travels: (ApiService) => {
           return ApiService
-            .travelDetail($stateParams.travelId)
+            .travelsList()
             .then((r) => {
-              console.log(r)
-              if (!r.data.length) {
-                $state.go("logged.travels", {location: "replace"});
-              }
-              return r.data[0]
+              return r.data;
             })
             .catch(err => {
               console.log(err)

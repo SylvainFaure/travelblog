@@ -39,6 +39,7 @@ export default class editorCompController {
 			]
 		}
 	}
+
 	mouseUpEvent(e) {
 		this.unsetActionsElement();
 		if (window.getSelection().toString().length) {
@@ -123,6 +124,9 @@ export default class editorCompController {
 			// get link and wrap highlightedtext with it
 			this.unsetActionsElement()
 			$('.editor-comp_actions-link-input').fadeIn().css({'display':'flex'})
+		} else if (action == 'addanecdote') {
+			this.unsetActionsElement()
+			$('.editor-comp_actions-anecdote-input').fadeIn().css({'display':'flex'})
 		} else {
 			$('#highlighted-text').addClass(action).removeAttr('id');
 			this.content = $(".editor-comp_content").html().replace(/<!--[^>]*-->?/gm, '');
@@ -138,6 +142,13 @@ export default class editorCompController {
 		$(link).html(text)
 		$('#highlighted-text').replaceWith(link)
 		$('.editor-comp_actions-link-input').fadeOut().css({'display':'none'})
+	}
+
+	addAnecdote() {
+		$('#highlighted-text').addClass(`anecdote_${this.activeAnecdote.anecdote_id}`).removeAttr('id').attr('data-title', this.activeAnecdote.anecdote_title);
+		this.content = $(".editor-comp_content").html().replace(/<!--[^>]*-->?/gm, '');
+		console.log(this.content)
+		$('.editor-comp_actions-anecdote-input').fadeOut().css({'display':'none'})
 	}
 
 	getPosition() {
@@ -182,6 +193,7 @@ export const editorCompComponent = {
 		type: '@',
 		actions: '<',
 		assets: "<",
+		anecdotes: '<',
 		comp: "<"
 	}
 }

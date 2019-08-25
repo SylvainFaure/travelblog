@@ -43,6 +43,7 @@
         type="{{comp.type}}"
         comp="comp"
         actions="vm.TextEditor.elementActions"
+        anecdotes="vm.previewEditorAnecdotes"
       >
       </editor-comp>
       <editor-comp 
@@ -57,7 +58,7 @@
     <div ng-if="!comp.isEditing">
       <div 
         ng-if="comp.type == 'paragraph' || comp.type == 'subtitle'"
-        ng-bind-html="comp.content"
+        ng-bind-html="vm.TextEditor.trustedHtml(comp.content)"
         class="preview-editor_text-{{comp.type}}"
       >
       </div>
@@ -69,7 +70,7 @@
         >
       </div>
       <div ng-if="comp.type == 'catch'">
-        <p class="preview-editor_catch">"<span ng-bind-html="comp.content"></span>"</p>
+        <p class="preview-editor_catch">"<span ng-bind-html="vm.TextEditor.trustedHtml(comp.content)"></span>"</p>
       </div>
       <div ng-if="comp.type == 'music'">
         <div class="preview-editor_music">

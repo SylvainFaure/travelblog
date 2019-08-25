@@ -140,6 +140,54 @@ export default function Router ($stateProvider, $urlRouterProvider) {
         }
       }
     })
+    .state('logged.anecdotes', {
+      url: 'anecdotes',
+      sticky: true,
+      templateUrl: "../js/views/anecdotes.html",
+      controller: "AnecdotesController",
+      controllerAs: "vm",
+      resolve: {
+        Anecdotes: (ApiService) => {
+          return ApiService
+            .anecdotesList()
+            .then((r) => {
+              return r.data;
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        },
+      }  
+    })
+    .state('logged.anecdote', {
+      url: 'anecdotes/{anecdoteId}',
+      sticky: true,
+      templateUrl: "../js/views/anecdote.html",
+      controller: "AnecdoteController",
+      controllerAs: "vm",
+      resolve: {
+        Anecdote: ($stateParams, ApiService) => {
+          return ApiService
+            .anecdoteDetail($stateParams.anecdoteId)
+            .then((r) => {
+              return r.data;
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        },
+        Assets: (ApiService) => {
+          return ApiService
+            .assetsList()
+            .then((r) => {
+              return r.data;
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        }
+      }  
+    })
     .state('logged.travel', {
       url: 'travel/{travelId}',
       sticky: true,
@@ -156,7 +204,6 @@ export default function Router ($stateProvider, $urlRouterProvider) {
             return ApiService
               .travelDetail($stateParams.travelId)
               .then((r) => {
-                console.log(r)
                 if (!r.data.length) {
                   $state.go("logged.travels", {location: "replace"});
                 }
@@ -166,16 +213,6 @@ export default function Router ($stateProvider, $urlRouterProvider) {
                 console.log(err)
               })
           }
-        },
-        Travels: (ApiService) => {
-          return ApiService
-            .travelsList()
-            .then((r) => {
-              return r.data;
-            })
-            .catch(err => {
-              console.log(err)
-            })
         },
         TravelArticles: ($stateParams, ApiService) => {
           return ApiService 
@@ -242,6 +279,16 @@ export default function Router ($stateProvider, $urlRouterProvider) {
             return ApiService
               .assetsList()
               .then((r) => {
+                return r.data;
+              })
+              .catch(err => {
+                console.log(err)
+              })
+          },
+          Anecdotes: (ApiService) => {
+            return ApiService
+              .anecdotesList()
+              .then(r => {
                 return r.data;
               })
               .catch(err => {

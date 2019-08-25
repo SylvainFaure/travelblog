@@ -15,6 +15,7 @@ export default class previewEditorController {
 		});
 		this.rvm = $rootScope.rvm;
 		this.$sce = $sce
+		this.tooltipAnecdote()
 	}	
 
 	$onInit() {
@@ -24,6 +25,18 @@ export default class previewEditorController {
 			})
 		}
 	}	
+
+	tooltipAnecdote() {
+		setTimeout(() => {
+			$('[class^=anecdote]').hover(function () {
+				const pos = $(this).position()
+				const text = $(this).data('title')
+				$(this).prepend(`<span class="anecdote_tooltip" style="top: ${pos.top - 20}px; left: ${pos.left - 10}px;">${text}</span>`)
+			}, function () {
+				$('.anecdote_tooltip').remove()
+			})
+		}, 200)
+	}
 
 	getTrustedSce(type, url) {
 		return this.$sce.trustAsResourceUrl(`https://open.spotify.com/embed/${type}/${url}`)
@@ -96,6 +109,7 @@ export const previewEditorComponent = {
 	bindings: {
 		components: "=",
 		editable: "<",
-		previewEditorAssets: "="
+		previewEditorAssets: "=",
+		previewEditorAnecdotes: "<"
 	}
 }

@@ -20,6 +20,19 @@
     </div>
   </div>
 
+  <div class="editor-comp_actions-anecdote-input">
+      <div class="form field select">
+        <select class="ui fluid dropdown" 
+          ng-model="vm.activeAnecdote"
+          ng-options="anec.anecdote_title for anec in vm.anecdotes"
+        >
+        </select>
+        <button class="ui icon button" ng-click="vm.addAnecdote()" >
+          <i class="check icon"></i>
+        </button>
+      </div>
+    </div>
+
   <div 
     ng-if="vm.type !== 'image' && vm.type !== 'music'"
     ng-keyup="vm.getContent($event)"
@@ -28,7 +41,7 @@
     tabindex="0" 
     class="editor-comp_content {{vm.type}}-content" 
     contenteditable="true">
-    <span class="editor-comp_content-edit" ng-if="vm.comp" ng-bind-html="vm.comp.content"></span>
+    <span class="editor-comp_content-edit" ng-if="vm.comp" ng-bind-html="vm.TextEditor.trustedHtml(vm.comp.content)"></span>
   </div>
 
   <div ng-if="vm.type == 'image'" class="editor-comp_image">

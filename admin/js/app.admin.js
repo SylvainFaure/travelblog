@@ -25,6 +25,8 @@ import TravelController from './controllers/TravelController';
 import AssetsController from './controllers/AssetsController';
 import LoginController from './controllers/LoginController';
 import UserRequestController from './controllers/UserRequestController';
+import AnecdotesController from './controllers/AnecdotesController';
+import AnecdoteController from './controllers/AnecdoteController';
 
 // Components
 import * as asideMenuComponent from "./components/aside-menu/aside-menu.component";
@@ -82,6 +84,8 @@ angular
   .controller('AssetsController', AssetsController)
   .controller('LoginController', LoginController)
   .controller('UserRequestController', UserRequestController)
+  .controller('AnecdotesController', AnecdotesController)
+  .controller('AnecdoteController', AnecdoteController)
   .component('asideMenu', asideMenuComponent.asideMenuComponent)
   .component('assetPicker', assetPickerComponent.assetPickerComponent)
   .component('tag', tagComponent.tagComponent)

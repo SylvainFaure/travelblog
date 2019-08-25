@@ -7,7 +7,8 @@ class ArticleController {
     $state, 
     ArticleDetail, 
     Assets, 
-    Travels, 
+    Travels,
+    Anecdotes,
     ApiService,
     TextEditor,
     toastr
@@ -20,6 +21,7 @@ class ArticleController {
     this.json_in = ArticleDetail;
     this.articleAssets = Assets;
     this.travels = Travels;
+    this.anecdotes = Anecdotes;
     this.ApiService = ApiService;
     this.TextEditor = TextEditor;
     this.toastr = toastr;
@@ -29,6 +31,7 @@ class ArticleController {
     this.stepOne = true;
     this.hasGallery = this.hasGallery();
     this.editGallery = false;
+    this.TextEditor.context = 'article'
 
     /* Mapping db data */
     if (this.json_in.newarticle) {
@@ -84,8 +87,10 @@ class ArticleController {
         this.isPublished = this.json_in.article_published_it;
       }
     }
-    $rootScope.$on("articleComponentsChange", (e, comps) => {
-      this.articleComponents = comps;
+    $rootScope.$on("componentsChange", (e, context, comps) => {
+      if (context === 'article') {
+        this.articleComponents = comps;
+      }
       // $state.reload();
     })
 

@@ -37,7 +37,11 @@ export default class ApiService {
  }
 
  travelPublish(travel, id) {
-   return this.$http.put(this.BASE_PATH + 'api/travels/published/' + id, travel)
+   return this.$http.post(this.BASE_PATH + 'api/travels/published/' + id, travel)
+ }
+
+ travelUnpublish(id) {
+  return this.$http.delete(this.BASE_PATH + 'api/travels/published/' + id)
  }
 
  travelDelete(id) {
@@ -98,5 +102,25 @@ export default class ApiService {
 
  updateSettings(settings) {
    return this.$http.put(this.BASE_PATH + 'api/settings', settings);
+ }
+
+ anecdotesList() {
+   return this.$http.get(this.BASE_PATH + 'api/anecdotes');
+ }
+
+ anecdoteDetail(id) {
+   return this.$http.get(this.BASE_PATH + 'api/anecdotes/' + id);
+ }
+
+ anecdoteCreate(anecdote) {
+   return this.$http.post(this.BASE_PATH + 'api/anecdotes', anecdote)
+ }
+
+ anecdoteUpdate(anecdote, id) {
+  return this.$http.put(this.BASE_PATH + 'api/anecdotes/' + id, anecdote)
+ }
+
+ anecdoteDelete(id) {
+  return this.$http.delete(this.BASE_PATH + 'api/anecdotes/' + id)
  }
 }

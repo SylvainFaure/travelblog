@@ -6,7 +6,6 @@ class TravelController {
 		$state, 
 		$rootScope, 
 		Travel,
-		Travels,
 		TravelArticles, 
 		Assets, 
 		ApiService,
@@ -18,7 +17,6 @@ class TravelController {
 		this.$scope = $scope;
 
 		this.travel = Travel;
-		this.travels = Travels;
 		this.travelArticles = TravelArticles; 
 		this.assets = Assets
 		this.ApiService = ApiService;
@@ -34,7 +32,6 @@ class TravelController {
 			this.fr = $rootScope.rvm.fr;
 			this.it = $rootScope.rvm.it;
 		})
-		this.isEditing = false;
 		this.isPublished = false;
 		this.editingCover = '';
 
@@ -50,11 +47,12 @@ class TravelController {
 			}
 		});
 
-		this.getTravelSteps = this.getTravelSteps();
 		this.appendCalendar = this.appendCalendar();
-		this.mapTravels()
 		this.mapTravel()
-		this.initCalendar();
+
+		setTimeout(() => {
+			this.initCalendar();
+		})
 
 	}
 
@@ -71,44 +69,14 @@ class TravelController {
 			this.travel.travel_cover_fr = this.editingCover;
 		}
 		if (this.it) {
+			this.travel.travel_cover_it = this.editingCover;
 		}
-	}
-
-	saveCountry() {
-		this.ApiService
-			.travelUpdate(this.travel, this.travel.travel_id)
-			.then(function(r) {
-				// success message
-				this.isEditing = false;
-				this.$state.reload()
-			})
-	}
-
-	mapTravels() {
-		this.travels.map(travel => {
-			travel.travel_countries_fr = JSON.parse(travel.travel_countries_fr)
-			travel.travel_countries_it = JSON.parse(travel.travel_countries_it)
-			travel.travel_hashtags = [] //JSON.parse(travel.travel_hashtags) add entry in db
-			travel.travel_published_fr = this.handleBoolean(travel.travel_published_fr)
-			travel.travel_published_it = this.handleBoolean(travel.travel_published_it)
-			travel.dates_raw = {
-				start_date: travel.travel_start_date,
-				end_date: travel.travel_end_date,
-				published_fr: travel.travel_published_date_fr,
-				published_it: travel.travel_published_date_it
-			}
-			travel.travel_start_date = travel.travel_start_date ? this.format(new Date(travel.travel_start_date), 'dd/M/yyyy') : ''
-			travel.travel_end_date = travel.travel_end_date ? this.format(new Date(travel.travel_end_date), 'dd/M/yyyy') : ''
-			travel.travel_published_date_fr = travel.travel_published_date_fr ? this.format(new Date(travel.travel_published_date_fr), 'dd/M/yyyy') : ''
-			travel.travel_published_date_it = travel.travel_published_date_it ? this.format(new Date(travel.travel_published_date_it), 'dd/M/yyyy') : ''
-			return travel
-		})
 	}
 
 	mapTravel() {
 		this.travel.travel_countries_fr = JSON.parse(this.travel.travel_countries_fr)
 		this.travel.travel_countries_it = JSON.parse(this.travel.travel_countries_it)
-		this.travel.travel_hashtags = [] //JSON.parse(travel.travel_hashtags) add entry in db,
+		this.travel.travel_hashtags = JSON.parse(this.travel.travel_hashtags),
 		this.travel.travel_published_fr = this.handleBoolean(this.travel.travel_published_fr)
 		this.travel.travel_published_it = this.handleBoolean(this.travel.travel_published_it)
 		this.travel.dates_raw = {
@@ -125,7 +93,6 @@ class TravelController {
 		if ((this.fr && this.travel.travel_published_fr) || (this.it && this.travel.travel_published_it)) {
 			this.isPublished = true
 		}
-		console.log(this.travel)
 	}
 
 	appendCalendar() {
@@ -164,23 +131,6 @@ class TravelController {
 			return dateObj
 		}
 	}
-
-	getTravelSteps() {
-		let self = this;
-		this.travels.forEach((travel) =>{
-			self.ApiService.travelArticles(travel.travel_id)
-			.then(function(r){
-				var steps = ''
-				r.data.forEach(function(a){
-					steps += '<a ui-sref="logged.article({articleId: ' + a.article_id + '})"><span ng-if="vm.fr">' + a.article_place_fr + '</span><span ng-if="vm.it">' + a.article_place_it + '</span></a>, '
-				})
-				steps = steps.slice(0, steps.lastIndexOf(','))
-				var elem = $('#travel_' + travel.travel_id)
-				elem.html(steps)
-				self.$compile(elem.contents())(self.$scope)
-			})	
-		})	
-	}
 	
 	handleBoolean(value) {
 		let val
@@ -192,9 +142,8 @@ class TravelController {
 		return val
 	}
 
-	formatTravel(travel) {
+	formatTravel(travel, publish) {
 		let formattedTravel = travel;
-		delete formattedTravel.travel_editing_country;
 		formattedTravel.travel_countries_fr = formattedTravel.travel_countries_fr ? JSON.stringify(formattedTravel.travel_countries_fr) : JSON.stringify([])
 		formattedTravel.travel_countries_it = formattedTravel.travel_countries_it ? JSON.stringify(formattedTravel.travel_countries_it) : JSON.stringify([])
 		formattedTravel.travel_hashtags = formattedTravel.travel_hashtags ? JSON.stringify(formattedTravel.travel_hashtags) : JSON.stringify([])
@@ -202,21 +151,19 @@ class TravelController {
 		formattedTravel.travel_long_desc_it = formattedTravel.travel_long_desc_it ? formattedTravel.travel_long_desc_it : ''
 		const publishedFr = this.handleBoolean(formattedTravel.travel_published_fr)
 		const publishedIt = this.handleBoolean(formattedTravel.travel_published_it)
-
+		
 		formattedTravel.travel_published_fr = publishedFr
 		formattedTravel.travel_published_it = publishedIt
 		formattedTravel.travel_start_date = formattedTravel.dates_raw.start_date
 		formattedTravel.travel_end_date = formattedTravel.dates_raw.end_date
+		if (!publish) {
+			formattedTravel.travel_published_date_fr = formattedTravel.dates_raw.published_fr
+			formattedTravel.travel_published_date_it = formattedTravel.dates_raw.published_it
+		}
 		delete formattedTravel.dates_raw
+		delete formattedTravel.travel_editing_country
+		delete formattedTravel.travel_editing_hashtag
 		return formattedTravel;
-	}
-
-	addTravel() {
-		this.edit = false
-		this.travel = {
-			dates_raw: {}
-		};
-		this.openModal('travel')
 	}
 
 	handleTravelCountries(ev) {
@@ -263,31 +210,47 @@ class TravelController {
 	deleteTravelHashtag(hash) {
 		this.travel.travel_hashtags.splice(this.travel.travel_hashtags.indexOf(hash), 1)
 	}
-
-
-	editTravel(travel) {
-		this.openModal('travel', travel.travel_id)
-		this.travel = travel
-		this.edit = true		
+	saveTravel(publish) {
+		if (this.travel.newtravel && !this.travel.travel_id) {
+			this.createTravel(publish)
+		} else {
+			this.updateTravel(this.travel, this.travel.travel_id, publish)
+		}
 	}
-
-	saveTravel(travel) {
-		let formattedTravel = this.formatTravel(travel)
+	createTravel(publish) {
+		let formattedTravel = this.formatTravel(this.travel, publish)
 		this.ApiService.travelCreate(formattedTravel)
 			.then(resp => {
-				console.log(resp)
 				this.toastr.success("Your travel has been successfully registered")
 				/**IF PUBLISHED -> HANDLE PUBLISHED */
-				this.closeModal()
-				this.$state.reload('logged')
+				if (publish) {
+					this.publishTravel()
+				} else {
+					this.$state.reload('logged')
+				}
 			}).catch(err => {
 				this.toastr.error("There was an unexpected error" + err)
 				console.log(err)
 			})
 	}
 
-	saveAndPublishTravel(travel, travelId) {
-		/**SAVE AND PUBLISH NEW TRAVEL ? */
+	updateTravel(travel, id, publish) {
+		let formattedTravel = this.formatTravel(travel, publish)
+		console.log(formattedTravel)
+		this.ApiService.travelUpdate(formattedTravel, id)
+			.then(resp => {
+				if (publish) {
+					this.publishTravel()
+				} else {
+					this.$state.reload('logged')
+				}
+			})
+			.catch(err => {
+				console.log(err)
+			})
+	}
+
+	saveAndPublishTravel() {
 		if (this.fr) {
 			this.travel.travel_published_fr = true
 			this.travel.travel_published_date_fr = Date.parse(new Date())
@@ -302,39 +265,46 @@ class TravelController {
 				this.travel.travel_published_date_fr = this.travel.dates_raw.published_fr
 			}
 		}
-		if (travelId) {
-			this.updateTravel(travel, travelId)
-			this.ApiService.travelPublish(travel, travelId)
-				.then(resp => {
-					this.toastr.success("The travel has been successfully published")
-					console.log(resp)
-				})
-				.catch(err => {
-					console.log(err)
-					this.toastr.error("There was an unexpected error" + err)
-
-				})
-		}
+		this.saveTravel(true)		
 	}
-
-	updateTravel(travel, id) {
-		let formattedTravel = this.formatTravel(travel)
-		console.log(formattedTravel)
-		this.ApiService.travelUpdate(formattedTravel, id)
+	publishTravel() {
+		this.ApiService.travelPublish(this.travel, this.travel.travel_id)
 			.then(resp => {
-				console.log(resp)
-				this.closeModal()
-				this.$state.reload('logged')
+				this.toastr.success("The travel has been successfully published")
+				this.$state.reload()
 			})
 			.catch(err => {
 				console.log(err)
+				this.toastr.error("There was an unexpected error" + err)
 			})
 	}
 
-	removeTravel(id) {
-		this.ApiService.travelDelete(id)
+	unpublishTravel() {
+		if (this.fr) {
+			this.travel.travel_published_fr = 0
+			this.travel.travel_published_date_fr = null
+		}
+		if (this.it) {
+			this.travel.travel_published_it = 0
+			this.travel.travel_published_date_it = null
+		}
+		this.ApiService.travelUnpublish(this.travel.travel_id)
+		.then(resp => {
+			this.toastr.success("The travel has been successfully unpublished")
+			this.saveTravel(false)
+			setTimeout(() => {
+				this.$state.reload()
+			})
+		})
+		.catch(err => {
+			console.log(err)
+			this.toastr.error("There was an unexpected error" + err)
+		})
+	}
+
+	removeTravel() {
+		this.ApiService.travelDelete(this.travel.travel_id)
 			.then(resp => {
-				console.log(resp)
 				this.$state.reload('logged')
 			})
 			.catch(err => {

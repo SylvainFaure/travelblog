@@ -5,6 +5,17 @@ export default class asideMenuController {
 		'ngInject'
     this.$rootScope = $rootScope;
   }	
+  getItemLink (item) {
+    if (item.travel_id) {
+      return 'logged.travel({travelId: item.travel_id})'
+    }
+    if (item.article_id) {
+      return 'logged.article({articleId: item.article_id})'
+    }
+    if (item.anecdote_id) {
+      return 'logged.anecdote({anecdoteId: item.anecdote_id})'
+    }
+  }
 
   getItemName (item) {
     if (item.travel_id) {
@@ -20,6 +31,9 @@ export default class asideMenuController {
       } else {
         return item.article_title_it
       }
+    }
+    if (item.anecdote_id) {
+      return item.anecdote_title
     }
   }
 }

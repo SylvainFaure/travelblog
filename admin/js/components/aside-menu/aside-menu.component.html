@@ -1,10 +1,10 @@
 <div class="ui vertical menu two wide column">
-  <div class="item">
+  <div class="item" ng-if="vm.search">
     <div class="ui input"><input type="text" placeholder="Search..."></div>
   </div>
   <div class="item">
     <div class="menu menu-item">
-      <a class="item" ng-repeat="item in vm.items" ui-sref="{{ item.travel_id ? 'logged.travel({travelId: item.travel_id})' : 'logged.article({articleId: item.article_id})' }}"> {{ vm.getItemName(item) }} </a>
+      <a class="item" ng-repeat="item in vm.items" ui-sref="{{ vm.getItemLink(item) }}"> {{ vm.getItemName(item) }} </a>
     </div>
   </div>  
 </div>

@@ -1,8 +1,7 @@
 <div class="travel-section">
   <div class="travel-btns">
     <div class="ui vertical animated button blue right floated" 
-          ng-if="!vm.isEditing"
-          ng-click="vm.deleteCountry()">
+          ng-click="vm.removeTravel()">
       <div ng-if="vm.fr" class="hidden content">Supprimer</div>
       <div ng-if="vm.it" class="hidden content">Cancellare</div>
       <div class="visible content">
@@ -10,17 +9,7 @@
       </div>
     </div>
     <div class="ui vertical animated button blue right floated" 
-          ng-if="!vm.isEditing"
-          ng-click="vm.isEditing = !vm.isEditing">
-      <div ng-if="vm.fr" class="hidden content">Editer</div>
-      <div ng-if="vm.it" class="hidden content">Modificare</div>
-      <div class="visible content">
-        <i class="pencil alternate icon"></i>
-      </div>
-    </div>
-    <div class="ui vertical animated button blue right floated" 
-          ng-if="!vm.isEditing"
-          ng-click="vm.saveTravel(vm.travel)">
+          ng-click="vm.saveTravel()">
       <div ng-if="vm.fr" class="hidden content">Enregistrer</div>
       <div ng-if="vm.it" class="hidden content">Salva</div>
       <div class="visible content">
@@ -28,8 +17,7 @@
       </div>
     </div>
     <div class="ui vertical animated button blue right floated" 
-          ng-if="!vm.isEditing"
-          ng-click="vm.saveAndPublishTravel(vm.travel, vm.travel.travel_id)">
+          ng-click="vm.saveAndPublishTravel()">
       <div ng-if="vm.fr" class="hidden content">Publier</div>
       <div ng-if="vm.it" class="hidden content">Pubblica</div>
       <div class="visible content">
@@ -37,7 +25,7 @@
       </div>
     </div>
     <div class="ui vertical animated button blue right floated" 
-          ng-if="!vm.isEditing && vm.isPublished"
+          ng-if="vm.isPublished"
           ng-click="vm.unpublishTravel()">
       <div ng-if="vm.fr" class="hidden content">Dépublier</div>
       <div ng-if="vm.it" class="hidden content">Depubblicare</div>
@@ -50,12 +38,16 @@
   <div class="ui basic segment">
     <h1 ng-if="vm.fr">{{vm.travel.travel_title_fr}}</h1>
     <h1 ng-if="vm.it">{{vm.travel.travel_title_it}}</h1>
+    <span ng-if="vm.isPublished && vm.fr">Publié le {{vm.travel.travel_published_date_fr}}</span>
+    <span ng-if="vm.isPublished && vm.it">Pubblicato {{vm.travel.travel_published_date_it}}</span>
+    <span ng-if="!vm.isPublished && vm.fr">Non publié</span>
+    <span ng-if="!vm.isPublished && vm.it">Non pubblicato</span>
   </div>
   
   
   <div class="country-header">
     <div class="country-cover-img">
-      <div ng-click="vm.editCover()" ng-if="vm.isEditing" class="image-edit">
+      <div ng-click="vm.editCover()" class="image-edit">
         <i class="pencil alternate icon"></i>
       </div>
       <img ng-src="assets/img/{{vm.country.country_cover}}" alt="">
@@ -86,7 +78,6 @@
           </div>
           <div>
             <div class="ui vertical animated button blue right floated" 
-                ng-if="vm.isEditing"
                 ng-click="vm.openCoverModal()">
             <div ng-if="vm.fr" class="hidden content">Editer</div>
             <div ng-if="vm.it" class="hidden content">Cambiare</div>
@@ -128,6 +119,8 @@
           </div>
         </div>
       </div>
+
+      <!--TABLE STEPS-->
       <div class="ui basic segment">
         <h4 ng-show="vm.fr" class="ui horizontal divider">Etapes du voyage</h4>
         <h4 ng-show="vm.it" class="ui horizontal divider">Tappe del viaggio</h4> 
@@ -143,6 +136,10 @@
                   <span ng-show="vm.fr">Titre</span>
                   <span ng-show="vm.it">Titolo</span>
                 </th>
+                <th>
+                  <span ng-show="vm.fr">Statut</span>
+                  <span ng-show="vm.it">Stato</span>
+                </th>
                 <th class="right aligned">
                   <span ng-show="vm.fr">Détail de l'article</span>
                   <span ng-show="vm.it">Dettaglio dell'articolo</span>
@@ -153,6 +150,9 @@
               <tr data-article={{article}} ng-repeat="article in vm.travelArticles" style="cursor: pointer;"> 
                 <td><p ng-show="vm.fr">{{article.article_place_fr}}</p><p ng-show="vm.it">{{article.article_place_it}}</p></td>
                 <td><p ng-show="vm.fr">{{article.article_title_fr}}</p><p ng-show="vm.it">{{article.article_title_it}}</p></td>
+                <td>
+                  <p ng-show="vm.fr">{{article.article_published_fr === 1 ? 'Publié' : 'Brouillon'}}</p>
+                  <p ng-show="vm.it">{{article.article_published_it === 1 ? 'Pubblicato' : 'Salvato'}}</p></td>
                 <td class="right aligned">
                   <a ui-sref="logged.article({articleId: article.article_id})">
                     <i class="pencil alternate icon" style="cursor: pointer;"></i>
@@ -164,6 +164,7 @@
         </div>
       </div>
         
+      <!--DATES-->
       <div class="ui basic segment">
         <h4 ng-show="vm.fr" class="ui horizontal divider">Dates du voyage</h4>
         <h4 ng-show="vm.it" class="ui horizontal divider">Date del viaggio</h4> 
@@ -189,6 +190,7 @@
         </div>
       </div>
       
+      <!--SHORT DESCRIPTION-->
       <div class="field">
         <div class="ui basic segment">
           <h4 ng-show="vm.fr" class="ui horizontal divider">Description courte</h4>
@@ -199,6 +201,8 @@
           </div>
         </div>
       </div>
+
+      <!--LONG DESCRIPTION-->
       <div class="field">
         <div class="ui basic segment">
           <h4 ng-show="vm.fr" class="ui horizontal divider">Description longue</h4>
@@ -209,6 +213,8 @@
           </div>
         </div>
       </div>
+
+      <!--SLUG-->
       <div class="field">
         <div class="ui basic segment">
           <h4 ng-show="vm.fr" class="ui horizontal divider">Slug</h4>
@@ -219,6 +225,8 @@
           </div>
         </div>
       </div>
+
+      <!--HASHTAGS-->
       <div class="field">
         <div class="ui basic segment">
           <h4 ng-show="vm.fr" class="ui horizontal divider">Instagram - Ajouter un hashtag</h4>
@@ -243,8 +251,7 @@
 
       <div class="ui basic segment">
         <div class="ui vertical animated button blue right floated" 
-              ng-if="vm.isEditing"
-              ng-click="vm.saveCountry()">
+              ng-click="vm.saveTravel()">
           <div ng-if="vm.fr" class="hidden content">Enregistrer</div>
           <div ng-if="vm.it" class="hidden content">Salvare</div>        
           <div class="visible content">

@@ -383,12 +383,14 @@
           <h4 ng-show="vm.it" class="ui horizontal divider">Lungha descrizione</h4>
           <div class="ui basic segment" ng-if="vm.isEditing">
             <div>
-              <text-editor actions="vm.actions" assets="vm.articleAssets"></text-editor>
+              <text-editor actions="vm.actions" anecdotes="vm.anecdotes" assets="vm.articleAssets"></text-editor>
               <preview-editor 
                 ng-if="vm.articleComponents.length" 
                 components="vm.articleComponents"
                 editable="true"
                 preview-editor-assets="vm.articleAssets"
+                preview-editor-anecdotes="vm.anecdotes"
+                context="article"
               >
               </preview-editor>
             </div>
@@ -399,6 +401,7 @@
               ng-if="vm.articleComponents.length" 
               components="vm.articleComponents"
               editable="false"
+              context="article"
             >
           </div>
         </div>

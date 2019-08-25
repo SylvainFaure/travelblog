@@ -1,6 +1,9 @@
 module.exports = function (err, req, res, next) {
   console.log('ERROR MIDDLEWARE', err, err.type)
   let error = process.env.NODE_ENV == 'development' ? err : {};
+  if (error.includes('Cannot enqueue Query after fatal error')){
+    process.exit(1)
+  }
   const fatal = !!error.fatal
   let errorObj = {
     type: error.type || "ServerError",
@@ -29,9 +32,11 @@ module.exports = function (err, req, res, next) {
         error: error
       }
   }
-  res.status(errorObj.status);
-  res.json(errorObj);
   if (!fatal) {
+    res.status(errorObj.status);
+    res.json(errorObj);
     next();
-  } 
+  } else {
+    console.log('FATAL ERROR')
+  }
 }

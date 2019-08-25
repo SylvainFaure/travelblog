@@ -30,14 +30,41 @@ class Travel {
 	}
 
 	static addTravel(published, travel, cb) {
-		let table = published ? 'published_travels' : 'travels';
-		db.query(`INSERT INTO ${table} SET ?`, travel, (err, results, fields) => { 
-			if (err) {
-				cb({type: 'DatabaseError', error: err});
-			} else {
-				cb(results)			
-			}
-		})
+		if (published) {
+			db.query('SELECT * FROM published_travels WHERE travel_id = ?', travel.travel_id, (err, rows) => {
+				if (err) {
+					cb({type: 'DatabaseError', error: err})
+				} else {
+					console.log(rows)
+					if (rows.length) {
+						// update
+						db.query('UPDATE published_travels SET ? WHERE travel_id = ?', [travel, travel.travel_id], (error, results) => {
+							if (error) {
+								cb({type: 'DatabaseError', error: error})
+							} else {
+								cb(results)
+							}
+						})
+					} else {
+						db.query(`INSERT INTO published_travels SET ?`, travel, (err, results, fields) => { 
+							if (err) {
+								cb({type: 'DatabaseError', error: err});
+							} else {
+								cb(results)			
+							}
+						})
+					}
+				} 
+			});
+		} else {
+			db.query(`INSERT INTO travels SET ?`, travel, (err, results, fields) => { 
+				if (err) {
+					cb({type: 'DatabaseError', error: err});
+				} else {
+					cb(results)			
+				}
+			})
+		}
 	}
 
 	static updateTravel(published, travel, id, cb) {

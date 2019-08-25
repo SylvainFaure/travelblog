@@ -2,11 +2,11 @@ class AnecdotesController {
   constructor (
     $rootScope, 
     $state, 
-    Assets, 
+    Anecdotes
   ) {
-    this.assets = Assets;
     this.$rootScope = $rootScope;
     this.$state = $state;
+    this.anecdotes = Anecdotes;
     this.fr = $rootScope.rvm.fr;
     this.it = $rootScope.rvm.it;
     this.$rootScope.$on('changeLang', () => {

@@ -22,7 +22,7 @@ img {
   margin: 50px 20px 0 0;
 }
 
-.travel-section {
+.travel-section, .anecdote-section {
   display: flex; 
   flex-direction: column;
   margin: 50px 20px;
@@ -47,7 +47,7 @@ img {
   margin: 4em 1em 0 0 !important;
 }
 
-.travels-table, .articles-table {
+.travels-table, .articles-table, .anecdotes-table {
   margin-left: 20px;
   width: 80%;
 }
@@ -318,6 +318,30 @@ img {
   }
 }
 
+#highlighted-text {
+  background-color: #2185D0;
+  color: white;
+}
+
+[class^=anecdote] {
+  position: relative;
+  &:hover {
+    cursor: pointer;
+    background-color: #2185D0;
+    color: white;
+  }
+  &::after {
+    content: '*'
+  }
+}
+
+.anecdote_tooltip {
+  background-color: lightgray;
+  border-radius: 5px;
+  padding: 5px;
+  position: absolute;
+}
+
 .editor-comp {
   display: flex;
   flex-direction: column;
@@ -369,6 +393,13 @@ img {
     }
     &-link-input {
       display: none;
+    }
+    &-anecdote-input {
+      display: none;
+      & > .select {
+        display: flex;
+        justify-content: center;
+      }
     }
   }
 }
@@ -453,4 +484,10 @@ img {
 
 .home__title-input:hover {
   cursor: pointer;
+}
+
+.anecdotes.add-btn {
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px 20px;
 }

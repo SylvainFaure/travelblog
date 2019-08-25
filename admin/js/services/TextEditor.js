@@ -1,11 +1,14 @@
 import isEqual from 'lodash.isequal';
 export default class TextEditor {
   constructor (
-    $rootScope
+    $rootScope,
+    $sce
   ) {
     this.isEditingComponent = false;
     this.components = [];
+    this.context = '';
     this.$rootScope = $rootScope;
+    this.$sce = $sce;
 
     this.elementActions = [
 			{
@@ -23,9 +26,13 @@ export default class TextEditor {
 			{
 				icon: 'linkify',
 				action: 'addlink'
-			}
-		]
+      }
+    ]
   }
+
+  trustedHtml(html) {
+		return this.$sce.trustAsHtml(html)
+	}
 
   addContent(type, content) {
     if (typeof content == 'string') {
@@ -40,8 +47,7 @@ export default class TextEditor {
       delete comp.$$hashKey
     }
     this.components.push(comp);
-    console.log(this.components)
-    this.$rootScope.$emit("articleComponentsChange", this.components);
+    this.$rootScope.$emit("componentsChange", this.context, this.components);
   }
 
   updateContent(comp, content) {
@@ -50,7 +56,7 @@ export default class TextEditor {
         c.content = content;
       }
     })
-    this.$rootScope.$emit("articleComponentsChange", this.components);
+    this.$rootScope.$emit("componentsChange", this.context, this.components);
   }
 
   deleteComponent(comp) {
@@ -64,7 +70,7 @@ export default class TextEditor {
         }
       }
     })
-    this.$rootScope.$emit("articleComponentsChange", this.components);
+    this.$rootScope.$emit("componentsChange", this.context, this.components);
   }
 
   changePosition(comp, direction) {
@@ -100,7 +106,7 @@ export default class TextEditor {
         })
       }
     }
-    this.$rootScope.$emit("articleComponentsChange", this.components);
+    this.$rootScope.$emit("componentsChange", this.context, this.components);
   }
 
 }

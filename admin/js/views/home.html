@@ -19,6 +19,11 @@
           <span ng-if="rvm.fr">Images / Vidéos</span>
           <span ng-if="rvm.it">Foto / Video</span>
         </a>
+
+        <a class="item" ui-sref=".anecdotes">
+            <span ng-if="rvm.fr">Anecdotes</span>
+            <span ng-if="rvm.it">Anedotti</span>
+          </a>
         <div class="header-pos change-lang">
           <h4 class="ui grey inverted right floated header" style="cursor: pointer;">
               <span ng-click="vm.changeLang()"><i class="france flag"></i> FR</span> | <span ng-click="vm.changeLang()"><i class="italy flag"></i> IT</span>

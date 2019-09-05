@@ -74,7 +74,8 @@ app.get('*', (req, res, next) => {
     next()
   } else if (subdomains.includes('admin') && req.url.indexOf('.') === -1 && req.url.indexOf('json') == -1){
     console.log('Admin: %s', req.url)
-    res.sendFile(path.join(__dirname, '../admin/js', 'index.html'));
+    const path = app.get("env") === 'development' ? '../admin/js' : '../admin';
+    res.sendFile(path.join(__dirname, path, 'index.html'));
   } else {
     console.log('Not found: %s', req.url)
     res.sendFile(path.join(__dirname, '../', req.url));

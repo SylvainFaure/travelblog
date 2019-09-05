@@ -8,7 +8,7 @@
     "start": "node dist/server/app.js",
     "dev": "cross-env NODE_ENV=development env-cmd .env pm2 start -f server/app.js && pm2 monit",
     "dev:standalone": "cross-env NODE_ENV=development STANDALONE=true env-cmd .env node server/app.standalone.js",
-    "build": "cross-env NODE_ENV=production env-cmd .env webpack",
+    "build": "cross-env NODE_ENV=production env-cmd .env webpack nuxt build",
     "postinstall": "npm run build",
     "report": "cross-env REPORT=true npm run dev"
   },

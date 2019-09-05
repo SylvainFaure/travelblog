@@ -66,8 +66,9 @@ app.use('/api/anecdotes', anecdotesRouter);
 app.use(errorMiddleware);
 /*** ANGULAR ONE PAGE APP ***/
 app.get('*', (req, res, next) => {
-  var firstIndex = req.get('host').indexOf('.');
-  var subdomain = req.get('host').substr(0, firstIndex).toLowerCase();
+  const firstIndex = req.get('host').indexOf('.');
+  const subdomain = req.get('host').substr(0, firstIndex).toLowerCase();
+  console.log('Debug - subdomain: %s, url: %s', subdomain, req.url)
   if (subdomain === '' || subdomain === 'infinite-plateau-63225' && req.url.indexOf('.') === -1 && req.url.indexOf('json') == -1) {
     console.log('Public: %s', req.url)
     // res.sendFile(path.join(__dirname, '../public', 'index.html'));

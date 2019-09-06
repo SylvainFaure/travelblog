@@ -157,6 +157,7 @@ module.exports = {
       }
     },
   },
+  buildDir: 'nuxt',
   srcDir: 'public/',
   dev: process.env.NODE_ENV == 'development',
   env: {

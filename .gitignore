@@ -1,5 +1,7 @@
+.nuxt
 .env
 dist/
 node_modules/
 __git
 /build/
+infinite-plateau-63225/

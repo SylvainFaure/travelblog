@@ -100,7 +100,7 @@ const plugins = [
 
     {from: './server', to: 'server'},
     {from: './public', to: 'public'},
-    {from: './nuxt', to: 'nuxt'}
+    {from: './.nuxt', to: 'nuxt'}
   ])
 ]
 

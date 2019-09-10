@@ -1,5 +1,6 @@
 .env
 .nuxt
+nuxt-dist
 dist/
 node_modules/
 __git

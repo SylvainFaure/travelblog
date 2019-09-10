@@ -158,6 +158,7 @@ module.exports = {
     },
   },
   srcDir: 'public/',
+  buildDir: 'nuxt-dist',
   dev: process.env.NODE_ENV == 'development',
   env: {
     AWS_BUCKET_PATH: process.env.AWS_BUCKET_PATH,

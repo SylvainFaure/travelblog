@@ -98,7 +98,8 @@ const plugins = [
     {from: './admin/js/vendors/semantic/themes/default/assets/images/*', to: 'admin/vendors/semantic/themes/default/assets/images', flatten: true},
     {from: './admin/js/vendors/semantic/semantic.min.css', to: 'admin/vendors/semantic'},
 
-    {from: './server', to: 'server'}
+    {from: './server', to: 'server'},
+    {from: './nuxt-dist', to: 'nuxt-dist'}
   ])
 ]
 

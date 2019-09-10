@@ -42,10 +42,10 @@ if (app.get("env") === 'development') {
   app.use(subdomain('/admin', express.static(path.join(__dirname, 'admin'))));
 }
 
-if (app.get("env") !== "development") {
+/* if (app.get("env") !== "development") {
   app.use(subdomain('/', express.static(path.join(__dirname, 'dist/public'))));
   app.use(subdomain('/admin', express.static(path.join(__dirname, 'dist/admin'))));
-}
+} */
 
 /** MIDDLEWARES **/
 if (app.get("env") === 'development') {

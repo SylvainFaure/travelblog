@@ -99,7 +99,7 @@ const plugins = [
     {from: './admin/js/vendors/semantic/semantic.min.css', to: 'admin/vendors/semantic'},
 
     {from: './server', to: 'server'},
-    {from: './nuxt-dist', to: 'nuxt-dist'}
+    {from: './public', to: 'public'}
   ])
 ]
 

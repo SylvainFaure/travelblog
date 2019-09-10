@@ -1,8 +1,9 @@
-.env
 .nuxt
 nuxt-dist
 dist/
 node_modules/
 __git
 /build/
+infinite-plateau-63225/
+.env
 admin/assets/

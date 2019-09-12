@@ -1,0 +1,23 @@
+{
+  "entry": "server.js",
+  "files": {
+    "003340e238161e97d5fb.js": "003340e238161e97d5fb.js",
+    "0c14ca5613f2403f2540.js": "0c14ca5613f2403f2540.js",
+    "19d058701e2bf5b2a6e6.js": "19d058701e2bf5b2a6e6.js",
+    "27ced79bf3fae1ec2d78.js": "27ced79bf3fae1ec2d78.js",
+    "4b8f4754459602b89d2f.js": "4b8f4754459602b89d2f.js",
+    "a5546e804ad6a3efcaf6.js": "a5546e804ad6a3efcaf6.js",
+    "b2d48f94aa3b16ff622e.js": "b2d48f94aa3b16ff622e.js",
+    "server.js": "server.js"
+  },
+  "maps": {
+    "003340e238161e97d5fb.js": "003340e238161e97d5fb.js.map",
+    "0c14ca5613f2403f2540.js": "0c14ca5613f2403f2540.js.map",
+    "19d058701e2bf5b2a6e6.js": "19d058701e2bf5b2a6e6.js.map",
+    "27ced79bf3fae1ec2d78.js": "27ced79bf3fae1ec2d78.js.map",
+    "4b8f4754459602b89d2f.js": "4b8f4754459602b89d2f.js.map",
+    "a5546e804ad6a3efcaf6.js": "a5546e804ad6a3efcaf6.js.map",
+    "b2d48f94aa3b16ff622e.js": "b2d48f94aa3b16ff622e.js.map",
+    "server.js": "server.js.map"
+  }
+}

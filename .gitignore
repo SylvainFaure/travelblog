@@ -1,5 +1,6 @@
 .nuxt
-nuxt-dist
+./nuxt-dist
+!dist/*
 node_modules/
 __git
 /build/

@@ -70,8 +70,8 @@ app.get('*', (req, res, next) => {
   console.log('Debug - subdomains: %s, url: %s', subdomains.join(' '), req.url)
   if ((subdomains.length === 1 && subdomains[0] === 'www') || !subdomains.length || subdomains.includes('infinite-plateau-63225') && req.url.indexOf('.') === -1 && req.url.indexOf('json') == -1) {
     console.log('Public: %s', req.url)
-    // res.sendFile(path.join(__dirname, '../public', 'index.html'));
-    next()
+    res.sendFile(path.join(__dirname, './', 'nuxt.config.js'));
+    //next()
   } else if (subdomains.includes('admin') && req.url.indexOf('.') === -1 && req.url.indexOf('json') == -1){
     console.log('Admin: %s', req.url)
     const indexPath = app.get("env") === 'development' ? '../admin/js' : '../admin';

@@ -1,0 +1,170 @@
+<div class="editor-comp_container">
+  <div class="editor-comp_actions">
+    <div 
+      ng-repeat="action in vm.actions" 
+      class="editor-comp_actions-btn"
+      ng-click="vm.execAction(action.action, $event)">
+      <i class="{{action.icon}} icon"></i>
+    </div>
+    
+    <div class="editor-comp_actions-arrow"></div>
+  </div>
+  <div class="editor-comp_actions-link-input">
+    <div class="form field">
+      <div class="ui action input">
+        <input type="text" placeholder="Link" ng-model="vm.activeLink" />
+        <button class="ui icon button" ng-click="vm.addLink()" >
+          <i class="check icon"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="editor-comp_actions-anecdote-input">
+      <div class="form field select">
+        <select class="ui fluid dropdown" 
+          ng-model="vm.activeAnecdote"
+          ng-options="anec.anecdote_title for anec in vm.anecdotes"
+        >
+        </select>
+        <button class="ui icon button" ng-click="vm.addAnecdote()" >
+          <i class="check icon"></i>
+        </button>
+      </div>
+    </div>
+
+  <div 
+    ng-if="vm.type !== 'image' && vm.type !== 'music'"
+    ng-keyup="vm.getContent($event)"
+    ng-paste="vm.getContent($event)"
+    ng-mouseup="vm.mouseUpEvent($event)"
+    tabindex="0" 
+    class="editor-comp_content {{vm.type}}-content" 
+    contenteditable="true">
+    <span class="editor-comp_content-edit" ng-if="vm.comp" ng-bind-html="vm.TextEditor.trustedHtml(vm.comp.content)"></span>
+  </div>
+
+  <div ng-if="vm.type == 'image'" class="editor-comp_image">
+    <div class="editor-comp_image-image">
+      <img 
+        ng-if="vm.comp.content"
+        class="article-gallery-img"
+        ng-src="{{vm.AWS_BUCKET_PATH}}thumb/mini_{{vm.comp.content.name}}" 
+      >
+    </div>
+    <div class="editor-comp_image-infos">
+      <div>
+        <h4 ng-show="vm.rvm.fr" class="ui horizontal divider no-margin">Position</h4> 
+        <h4 ng-show="vm.rvm.it" class="ui horizontal divider no-margin">Posizione</h4> 
+        <select class="ui fluid dropdown" 
+          ng-model="vm.comp.content.position"
+          ng-options="pos.label for pos in vm.imgPositionOptions"
+        >
+        </select>
+      </div>
+    
+      <div>
+        <h4 ng-if="vm.rvm.fr" class="ui horizontal divider">Largeur</h4> 
+        <h4 ng-if="vm.rvm.it" class="ui horizontal divider">Larghezza</h4> 
+        <div class="field">
+          <span class="right floated">
+            <div class="ui checkbox right floated">
+              <input class="" type="checkbox" value="{{vm.comp.content.fullWidth}}">
+              <label>
+                <span ng-if="vm.rvm.fr">Pleine largeur</span>
+                <span ng-if="vm.rvm.it">Piena larghezza</span>
+              </label>
+            </div>
+          </span>
+        </div>
+      </div>
+      
+      <div class="editor-comp_image-infos-btn">
+        <div 
+          ng-click="vm.chooseImage(vm.comp.content)"
+          class="ui positive right labeled icon button"
+        >
+          <span ng-show="vm.rvm.fr">Choisir une image</span>
+          <span ng-show="vm.rvm.it">Cambiare immagine</span>
+          <i class="checkmark icon"></i>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SPOTIFY LINK -->
+  <div ng-if="vm.type == 'music'" class="editor-comp_music">
+    <div class="ui form">
+      <div class="field">
+        <div class="ui icon input">
+          <input ng-if="vm.rvm.fr" type="text" placeholder="Lien" ng-model="vm.comp.content.link" />
+          <input ng-if="vm.rvm.it" type="text" placeholder="Link" ng-model="vm.comp.content.link" />
+          <i class="link icon"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="editor-comp_buttons">
+    <button 
+      ng-click="vm.comp.type ? vm.updateContent() : vm.addContent()"
+      class="ui positive right labeled icon button"
+    > 
+      <span ng-if="!vm.comp">
+        <span ng-show="vm.rvm.fr">Ajouter</span>
+        <span ng-show="vm.rvm.it">Aggiungere</span>
+      </span>
+      <span ng-if="vm.comp">
+        <span ng-show="vm.rvm.fr">Changer</span>
+        <span ng-show="vm.rvm.it">Cambiare</span>
+      </span>
+      <i class="checkmark icon"></i>
+    </button>
+    <button 
+      ng-click="vm.destroyComponent()"
+      class="ui black deny button">
+      Cancel
+    </button>
+  </div>
+</div>
+
+<!--MODAL IMAGE-->
+<div class="ui modal choose-image {{vm.randomModalClass}}">
+    <i class="close icon"></i>
+    <div class="header">
+      <div>
+        <span ng-show="vm.rvm.fr">Choisis une nouvelle image</span>
+        <span ng-show="vm.rvm.it">Scegli un'altra immagine</span>      
+      </div>
+      <img 
+        ng-if="vm.asset"
+        class="article-gallery-img"
+        ng-src="{{vm.AWS_BUCKET_PATH}}thumb/mini_{{vm.asset.asset_name}}" 
+      >
+    </div>
+    <div class="description">
+      <div class="field assets_modal">
+        <asset-picker
+          ng-if="vm.showAssetPicker"
+          assets="vm.assets"
+          actions="false"
+          allow-upload="false"  
+          context="editorComp"
+        >
+        </asset-picker>
+      </div>
+      
+      
+    </div>
+    <div class="actions">
+      <div 
+        class="ui positive right labeled icon button"
+        ng-click="vm.confirmImage()"
+      >
+        <span ng-show="vm.rvm.fr">Confirmer</span>
+        <span ng-show="vm.rvm.it">Confermare</span>
+        <i class="checkmark icon"></i>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,82 @@
+<div class="section">
+  <aside-menu items="vm.articles" context="articles"></aside-menu>
+  <div class="articles-table">
+    <table class="ui blue striped table">
+      <thead>
+        <tr>
+          <th>
+            <span ng-if="vm.fr">Lieu</span>
+            <span ng-if="vm.it">Luogo</span>
+          </th>
+          <th>
+            <span ng-if="vm.fr">Titre</span>
+            <span ng-if="vm.it">Titolo</span>
+          </th>
+          <th>
+            <span ng-if="vm.fr">Voyage</span>
+            <span ng-if="vm.it">Viaggio</span>
+          </th>
+          <th>
+            <span ng-if="vm.fr">Pays</span>
+            <span ng-if="vm.it">Paese</span>
+          </th>
+          <th>
+            <span ng-if="vm.fr">Actions</span>
+            <span ng-if="vm.it">Azioni</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="article in vm.articles" style="cursor: pointer;"> 
+          <td ui-sref="logged.article({articleId: article.article_id})">
+            <p ng-show="vm.fr">
+              {{article.article_place_fr}}
+              <span class="italic" ng-show="!article.article_place_fr.length">
+                it : {{article.article_place_it}}
+              </span>
+            </p>
+            <p ng-show="vm.it">
+              {{article.article_place_it}}
+              <span class="italic" ng-show="!article.article_place_it.length">
+                fr : {{article.article_place_fr}}
+              </span>
+            </p>
+          </td>
+          <td ui-sref="logged.article({articleId: article.article_id})">
+            <p ng-show="vm.fr">
+              {{article.article_title_fr}}
+              <span class="italic" ng-show="!article.article_title_fr.length">
+                it : {{article.article_title_it}}
+              </span>
+            </p>
+            <p ng-show="vm.it">
+              {{article.article_title_it}}
+              <span class="italic" ng-show="!article.article_title_it.length">
+                fr : {{article.article_title_fr}}
+              </span>
+            </p>
+          </td>
+          <td>
+            <p>{{article.travel}}</p>
+          </td>
+          <td>
+            <p ng-show="vm.fr">{{article.article_country_fr}}</p>
+            <p ng-show="vm.it">{{article.article_country_it}}</p>
+          </td>
+          <td style="width: 110px;" class="right aligned">
+            <i class="pencil alternate icon" ui-sref="logged.article({articleId: article.article_id})" style="cursor: pointer;"></i>
+            <i class="trash alternate icon" ng-click="vm.deleteArticle(article.article_id)" style="cursor: pointer;"></i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="ui vertical animated button blue right floated" 
+      ui-sref="logged.article({articleId:'newarticle'})">
+      <div class="hidden content">Add</div>
+      <div class="visible content">
+        <i class="plus icon"></i>
+      </div>
+    </div>
+  </div>
+</div>
+

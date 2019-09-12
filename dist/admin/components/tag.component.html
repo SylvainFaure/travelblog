@@ -1,0 +1,5 @@
+<a class="ui {{vm.tagColor}} label tag_component">
+  <span ng-if="vm.label.length">#{{vm.label}}</span> 
+  <span ng-if="!vm.label.length"># No place</span> 
+  <span ng-if="vm.deletable" ng-click="vm.cbFn(vm.label)">x</span>  
+</a>

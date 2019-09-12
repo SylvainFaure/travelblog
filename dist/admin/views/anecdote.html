@@ -1,0 +1,62 @@
+<div class="anecdote-section">
+  <div class="anecdote-btns">
+    <div class="ui vertical animated button blue right floated" 
+          ng-click="vm.isEditing = true">
+      <div ng-if="vm.fr" class="hidden content">Editer</div>
+      <div ng-if="vm.it" class="hidden content">Modificare</div>
+      <div class="visible content">
+        <i class="pencil alternate icon"></i>
+      </div>
+    </div>
+    <div class="ui vertical animated button blue right floated" 
+          ng-click="vm.saveAnecdote()">
+      <div ng-if="vm.fr" class="hidden content">Enregistrer</div>
+      <div ng-if="vm.it" class="hidden content">Salva</div>
+      <div class="visible content">
+        <i class="check icon"></i>
+      </div>
+    </div>
+    <div class="ui vertical animated button blue right floated" 
+          ng-click="vm.removeAnecdote()">
+      <div ng-if="vm.fr" class="hidden content">Supprimer</div>
+      <div ng-if="vm.it" class="hidden content">Cancellare</div>
+      <div class="visible content">
+        <i class="trash alternate icon"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui basic segment">
+    <h1 ng-show="!vm.isEditing">{{vm.anecdote.anecdote_title}}</h1>
+    <div ng-show="vm.isEditing" class="field">
+      <div class="ui input">
+        <input type="text" class="" placeholder="Title" ng-model="vm.anecdote.anecdote_title">
+      </div>
+    </div>
+  </div>
+  <div class="ui basic segment">
+    <h4 ng-show="vm.fr" class="ui horizontal divider">Description longue</h4>
+    <h4 ng-show="vm.it" class="ui horizontal divider">Lungha descrizione</h4>
+    <div class="ui basic segment" ng-if="vm.isEditing">
+      <div>
+        <text-editor actions="vm.actions" assets="vm.anecdoteAssets"></text-editor>
+        <preview-editor 
+          ng-if="vm.anecdoteComponents.length" 
+          components="vm.anecdoteComponents"
+          editable="true"
+          preview-editor-assets="vm.anecdoteAssets"
+        >
+        </preview-editor>
+      </div>
+    </div>
+
+    <div class="ui basic segment" ng-if="!vm.isEditing">
+      <preview-editor 
+        ng-if="vm.anecdoteComponents.length" 
+        components="vm.anecdoteComponents"
+        editable="false"
+        context="anecdote"
+      >
+    </div>
+  </div>
+</div>

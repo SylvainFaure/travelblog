@@ -105,7 +105,7 @@
             <span ng-if="vm.fr">Insérez votre adresse email</span>
             <span ng-if="vm.it">Inserire un indirizzo mail valido</span>
           </label>
-          <input type="text" ng-model="vm.sendRequestMail" ng-keypress="vm.confirmEmail(vm.sendRequestEmail)" placeholder="Email">
+          <input type="text" ng-model="vm.sendRequestMail" ng-keypress="vm.confirmEmail(vm.sendRequestMail)" placeholder="Email">
         </div>
         <div class="field">
           <label>
@@ -126,7 +126,7 @@
           <button 
             class="ui button blue"
             ng-click="vm.sendUserRequest()"
-            ng-disabled="!vm.confirmEmail(vm.sendRequestEmail)"
+            ng-disabled="!vm.confirmEmail(vm.sendRequestMail)"
           >
             <span ng-if="vm.fr">Envoyer</span>
             <span ng-if="vm.it">Mandare</span>   

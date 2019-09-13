@@ -100,8 +100,6 @@ const plugins = [
 
     {from: './server', to: 'server'},
     {from: './public', to: 'public'},
-    {from: './nuxt-dist', to: 'nuxt-dist'},
-    
   ])
 ]
 

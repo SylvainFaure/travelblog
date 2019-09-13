@@ -3,6 +3,7 @@ const subdomain = require('express-subdomain');
 const app = express();
 const port = process.env.PORT || 3000;
 const path = require('path');
+process.env.DEBUG = 'nuxt:*'
 const { Nuxt, Builder } = require('nuxt')
 const config = require('../nuxt.config.js')
 const nuxt = new Nuxt(config)

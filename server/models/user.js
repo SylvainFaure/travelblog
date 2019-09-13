@@ -206,6 +206,7 @@ class User {
 				cb(result)
 			})
 		}
+		console.log(params)
 		// verify if this user is superadmin
 		this.getSuperAdmin((admin) => {
 			Mail.sendMail(admin.user_email, params, (res) => {

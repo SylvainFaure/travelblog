@@ -35,17 +35,34 @@ class UserRequestController {
       email: this.userRequestEmail,
       role: this.userRequestRole
     }
-    this.AuthService.insertNewUser(user).then(res => {
-      console.log(res)
-      this.toastr.success("The user is registered correctly in database", "Success");
-      // send mail to user inserted
+    this.AuthService.sendRequest('confirm', user.email, user.role).then(res => {
+      if (res.status == 200) {
+        this.toastr.success("Your request has been sent !", "Success !")
+      }
     }, rej => {
-      console.log(rej)
-      this.toastr.success("The user has not been registered", "Error");
+      console.debug(rej);
+      this.toastr.error("There was an unexpected error, please retry !", "Error")
     })
+    // this.AuthService.insertNewUser(user).then(res => {
+    //   console.log(res)
+    //   this.toastr.success("The user is registered correctly in database", "Success");
+    //   // send mail to user inserted
+      
+    // }, rej => {
+    //   console.log(rej)
+    //   this.toastr.success("The user has not been registered", "Error");
+    // })
   }
 
   refuseUserRequest() {
+    this.AuthService.sendRequest('refuse', this.userRequestEmail, this.userRequestRole).then(res => {
+      if (res.status == 200) {
+        this.toastr.success("Your request has been sent !", "Success !")
+      }
+    }, rej => {
+      console.debug(rej);
+      this.toastr.error("There was an unexpected error, please retry !", "Error")
+    })
     // new view with textarea and a message to send
     // api -> send a mail to the user with explanation
   }

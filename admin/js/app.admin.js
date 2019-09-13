@@ -109,6 +109,9 @@ angular
       $rootScope.rvm.debug = true;
       $rootScope.rvm.fr = true;
       $rootScope.rvm.it = false;
+    } else {
+      $rootScope.rvm.fr = true;
+      $rootScope.rvm.it = false;
     }
     $transitions.onStart({}, ($transition) => {
       if ($transition.$to().name !== 'logged') {

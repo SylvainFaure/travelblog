@@ -1,12 +1,7 @@
 const express = require('express');
-const subdomain = require('express-subdomain');
 const app = express();
 const port = process.env.PORT || 3000;
 const path = require('path');
-process.env.DEBUG = 'nuxt:*'
-const { Nuxt, Builder } = require('nuxt')
-const config = require('../nuxt.config.js')
-const nuxt = new Nuxt(config)
 
 /** MIDDLEWARES **/
 const corsMiddleware = require('./middleware/cors');
@@ -37,16 +32,7 @@ if (app.get("env") === 'development') {
     publicPath: webpackConfig.output.publicPath
   }));
   app.use(webpackHotMiddleware(compiler));
-
-  /**PATH */
-  app.use(subdomain('/', express.static(path.join(__dirname, 'public'))));
-  app.use(subdomain('/admin', express.static(path.join(__dirname, 'admin'))));
 }
-
-/* if (app.get("env") !== "development") {
-  app.use(subdomain('/', express.static(path.join(__dirname, 'dist/public'))));
-  app.use(subdomain('/admin', express.static(path.join(__dirname, 'dist/admin'))));
-} */
 
 /** MIDDLEWARES **/
 if (app.get("env") === 'development') {
@@ -65,32 +51,18 @@ app.use('/api/settings', settingsRouter);
 app.use('/api/anecdotes', anecdotesRouter);
 
 app.use(errorMiddleware);
+
 /*** ANGULAR ONE PAGE APP ***/
 app.get('*', (req, res, next) => {
-  const subdomains = req.subdomains
-  console.log('Debug - subdomains: %s, url: %s', subdomains.join(' '), req.url)
-  if ((subdomains.length === 1 && subdomains[0] === 'www') || !subdomains.length || subdomains.includes('infinite-plateau-63225') && req.url.indexOf('.') === -1 && req.url.indexOf('json') == -1) {
-    console.log('Public: %s', req.url)
-    const indexPath = app.get("env") === 'development' ? '../admin/js' : '../admin';
-    res.sendFile(path.join(__dirname, indexPath, 'index.html'));
-    //res.sendFile(path.join(__dirname, './', 'nuxt.config.js'));
-    //next()
-  } else if (subdomains.includes('admin') && req.url.indexOf('.') === -1 && req.url.indexOf('json') == -1){
-    console.log('Admin: %s', req.url)
+  if (req.url.indexOf('.') === -1 && req.url.indexOf('json') == -1) {
+    console.log('SPA: %s', req.url)
     const indexPath = app.get("env") === 'development' ? '../admin/js' : '../admin';
     res.sendFile(path.join(__dirname, indexPath, 'index.html'));
   } else {
-    console.log('Not found: %s', req.url)
+    console.log('Static: %s', req.url)
     res.sendFile(path.join(__dirname, '../', req.url));
   }
 });
-
-// Build only in dev mode
-if (config.dev) {
- const builder = new Builder(nuxt)
- builder.build()
-} 
-app.use(nuxt.render);
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}!`)

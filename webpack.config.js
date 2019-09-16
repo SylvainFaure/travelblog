@@ -89,8 +89,6 @@ const plugins = [
     {from: './admin/js/views/*', to: 'admin/views', flatten: true},
 
     {from: './admin/js/index.html', to: 'admin/index.html'},
-    {from: './nuxt.config.js', to: 'nuxt.config.js'},
-
     {from: './admin/js/components/**/*', to: 'admin/components', flatten: true, test: /\.html$/, ignore: [ '*.js' ]},
 
     {from: './admin/js/vendors/semantic/components/*', to: 'admin/vendors/semantic/components', flatten: true},
@@ -99,7 +97,6 @@ const plugins = [
     {from: './admin/js/vendors/semantic/semantic.min.css', to: 'admin/vendors/semantic'},
 
     {from: './server', to: 'server'},
-    {from: './public', to: 'public'},
   ])
 ]
 

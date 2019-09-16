@@ -15,16 +15,30 @@ class AssetsController {
         this.it = $rootScope.rvm.it;
         this.$state.reload();
     })
+    this.labels = this.fr ? {
+        edit: 'Modifier / Charger les images',
+        associate: 'Associer les images',
+        wip: 'En cours'
+    } : {
+      edit: 'Modificare / Caricare le immagini',
+      associate: 'Associare le immagini',
+      wip: 'Ci stiamo lavorando'
+    }
+    
     $('.ui.secondary.menu')
       .on('click', (ev) => {
-        $(ev.target).addClass('active')
-        if (ev.target.dataset.tab == 'first') {
+        let elt = ev.target
+        if  (!Object.keys(elt.dataset).length) {
+          elt = $(ev.target).parents('[data-tab]')[0]
+        }
+        $(elt).addClass('active')
+        if (elt.dataset.tab == 'first') {
           $('[data-tab=second]').removeClass('active')
         } else {
           $('[data-tab=first]').removeClass('active')
         }
 
-        $.tab('change tab', ev.target.dataset.tab);
+        $.tab('change tab', elt.dataset.tab);
       })
     
     $('.ui.accordion').accordion();

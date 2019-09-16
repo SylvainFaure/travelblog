@@ -1,5 +1,13 @@
 <!--ADD AN ASSET-->
-<div class="assets_upload ui container" ng-if="vm.allowUpload" class="ui accordion" ng-init="vm.initAccordion()">
+<div 
+  ng-if="vm.allowUpload" 
+  class="assets_upload ui container accordion"
+  ng-class="{'loading': vm.isSubmitted}"
+  ng-init="vm.initAccordion()"
+>
+  <div ng-if="vm.isSubmitted" class="assets_upload-loading">
+    <div class="loader"></div>
+  </div>
   <div class="title upload_title">
     <i class="dropdown icon"></i>
     <span ng-if="vm.fr" style="font-size: 1.2em">Charger un fichier</span>

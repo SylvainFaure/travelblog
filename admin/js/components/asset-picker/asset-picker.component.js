@@ -148,21 +148,23 @@ export default class assetPickerController {
     if (data == undefined) {
       data = {}
     }
-    this.ApiService
-      .assetsUpload(assets, data)
-      .then((resp) => {  
-          this.newAssets = null
+    setTimeout(() =>{
+      this.ApiService
+        .assetsUpload(assets, data)
+        .then((resp) => {  
+            this.newAssets = null
+            this.isSubmitted = false;
+            resp.config.data.file.forEach((file) => {
+                this.toastr.success(`${file.name} correctly uploaded`, "Success !");
+            })
+            this.updateAssets();
+        }, (err) => { 
           this.isSubmitted = false;
-          resp.config.data.file.forEach((file) => {
-              this.toastr.success(`${file.name} correctly uploaded`, "Success !");
-          })
-          this.updateAssets();
-      }, (err) => { 
-	      this.isSubmitted = false;
-	      this.toastr.error(`There was an error ${err.status}`, "Error");
-      }, (evt) => {
-        this.progress = parseInt(100.0 * evt.loaded / evt.total);            
-      });
+          this.toastr.error(`There was an error ${err.status}`, "Error");
+        }, (evt) => {
+          this.progress = parseInt(100.0 * evt.loaded / evt.total);            
+        });
+    }, 2000)
   };
   
 

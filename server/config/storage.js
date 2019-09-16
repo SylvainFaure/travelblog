@@ -41,8 +41,9 @@ if (process.env.NODE_ENV !== "development") {*/
     acl: 'public-read',
     contentType: multerS3.AUTO_CONTENT_TYPE,
     key: (req, file, cb) => {
-      var timestamp = new Date().getTime();
-      cb(null, `img/${timestamp}_${file.originalname}`);
+      const timestamp = new Date().getTime();
+      const name = file.originalname.toLowerCase()
+      cb(null, `img/${timestamp}_${name}`);
     }
   })
 //}

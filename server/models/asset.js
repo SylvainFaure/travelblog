@@ -47,7 +47,7 @@ class Asset {
 				console.log(assets)
 				console.log(data)
 				/* Multer doesn't return the same object if used with AWS S3 */
-				const name = assets[i].key ? assets[i].key.split('/')[1] : assets[i].filename; 
+				const name = assets[i].key ? assets[i].key.split('/')[1].toLowerCase() : assets[i].filename.toLowerCase(); 
 				const src = assets[i].location ? assets[i].location : assets[i].filename;
 				var asset = {
 					asset_title_fr: data[i].title_fr,

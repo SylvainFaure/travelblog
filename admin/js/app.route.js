@@ -137,6 +137,14 @@ export default function Router ($stateProvider, $urlRouterProvider) {
             .catch(err => {
               console.log(err)
             })
+        },
+        Travels: (ApiService) => {
+          return ApiService
+            .travelsList()
+            .then(r => r.data)
+            .catch(err => {
+              console.warn(err)
+            })
         }
       }
     })

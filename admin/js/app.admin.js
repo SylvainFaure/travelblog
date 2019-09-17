@@ -97,7 +97,7 @@ angular
   .config(toastrConfig => {
     angular.extend(toastrConfig, {
       positionClass: 'toast-bottom-right',
-      timeOut: 30000
+      timeOut: 3000
     });
   })
   .run(($transitions, $rootScope) => {

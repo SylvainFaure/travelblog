@@ -95,17 +95,21 @@ class ArticleController {
     })
 
     /* Gallery */
-		$rootScope.$on('addArticleAssetGallery', (e, asset) => {
-			this.assetsGallery.push(asset);
+		$rootScope.$on('addAssetGallery', (e, asset, context) => {
+      if (context == 'article') {
+        this.assetsGallery.push(asset);
+      }
 		});
-		$rootScope.$on('deleteArticleAssetGallery', (e, asset) => {
-			const copyAssetGallery = this.assetsGallery;
-			this.assetsGallery.map((a, i) => {
-				if (a.asset_id == asset.asset_id) {
-					copyAssetGallery.splice(i, 1);
-				}
-			this.assetsGallery = copyAssetGallery;
-			})
+		$rootScope.$on('deleteAssetGallery', (e, asset, context) => {
+      if (context == 'article') {
+        const copyAssetGallery = this.assetsGallery;
+        this.assetsGallery.map((a, i) => {
+          if (a.asset_id == asset.asset_id) {
+            copyAssetGallery.splice(i, 1);
+          }
+          this.assetsGallery = copyAssetGallery;
+        })
+      }
     });
     
     $rootScope.$on('changeAsset', (e, from, asset) => {

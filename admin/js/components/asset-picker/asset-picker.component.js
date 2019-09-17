@@ -27,7 +27,6 @@ export default class assetPickerController {
     this.travelCategories = []
     this.placeCategories = []
     this.travels = []
-    this.dimmer();
     this.getTravels();
 		this.AWS_BUCKET_PATH = process.env.AWS_BUCKET_PATH
 
@@ -55,7 +54,6 @@ export default class assetPickerController {
         asset.assetDate = asset.name ? this.format(new Date(Number(asset.asset_name.split("_")[0])), 'dd/MM/yyyy') : this.format(Date.parse(new Date), 'dd/MM/yyyy')
       })
     })
-
   }	
 
   initNewAssetsObjects(files) {
@@ -109,7 +107,7 @@ export default class assetPickerController {
   
   dimmer (){
     if (this.actions) {
-      $('.special.cards .image').dimmer({on: 'hover'})
+      $(`.special.cards.${this.context} .image`).dimmer({on: 'hover'})
     }
   };
 
@@ -124,9 +122,9 @@ export default class assetPickerController {
 
   toggleAsset(asset, checked) {
     if (checked) {
-      this.$rootScope.$emit('addArticleAssetGallery', asset);
+      this.$rootScope.$emit('addAssetGallery', asset, this.context);
     } else {
-      this.$rootScope.$emit('deleteArticleAssetGallery', asset);
+      this.$rootScope.$emit('deleteAssetGallery', asset, this.context);
     }
   }
 	

@@ -1,6 +1,6 @@
 <h1>Assets</h1>
 <div>
-  <div class="ui secondary menu">
+  <div class="ui secondary menu main">
       <a class="item active" data-tab="first">
         <span>{{ vm.labels.edit }}</span>
       </a>
@@ -12,10 +12,58 @@
     <asset-picker 
         assets="vm.assets" 
         actions="true" 
-        allow-upload="true">
+        allow-upload="true"
+        context="assets-upload">
     </asset-picker>
   </div>
   <div class="ui tab segment" data-tab="second">
+    <div class="ui secondary menu travels">
+      <a 
+        ng-repeat="travel in vm.travels" 
+        class="item" 
+        ng-class="{'active': $index == 0}"
+        data-tab="second/{{travel.travel_id}}"
+      >
+        <span ng-if="vm.fr">{{ travel.travel_title_fr }}</span>
+        <span ng-if="vm.it">{{ travel.travel_title_it }}</span>
+      </a>
+      <div style="width: 100%">
+        <div class="ui vertical animated button blue right floated large-button" 
+            ng-click="vm.saveAssets()">
+          <div ng-if="vm.fr" class="hidden content">Enregistrer</div>
+          <div ng-if="vm.it" class="hidden content">Salvare</div>        
+          <div class="visible content">
+            <i class="check icon"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div 
+      ng-repeat="travel in vm.travels"
+      class="ui tab segment" 
+      ng-class="{'active': $index == 0}"
+      data-tab="second/{{travel.travel_id}}"
+    >
+      <div style="min-height: 150px" ng-if="!vm.getTravelAssets(travel.travel_id).length">
+          <span ng-if="vm.fr">Ce voyage n'a pas de photos associées</span>
+          <span ng-if="vm.it">Questo viaggio non ha foto associate</span>
+      </div>
+      <img 
+        ng-repeat="asset in vm.getTravelAssets(travel.travel_id)"
+        class="article-gallery-img"
+        ng-src="{{vm.AWS_BUCKET_PATH}}thumb/mini_{{asset.asset_name}}" 
+      >
+      <div class="ui divider"></div>
+      <div ng-if="true">
+        <asset-picker
+          assets="vm.assets"
+          actions="false"
+          allow-upload="false"
+          is-gallery="true"
+          context="assets">
+        </asset-picker>
+      </div>
+    </div>
     <span>{{ vm.labels.wip }}</span>
   </div>
 </div>

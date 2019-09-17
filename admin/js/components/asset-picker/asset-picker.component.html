@@ -121,7 +121,7 @@
 
   <div class="assets-library scrolling content">
     <div class="card_gallery">
-      <div class="ui special cards" style="justify-content: space-between">
+      <div class="ui special cards {{vm.context}}" style="justify-content: space-between">
         <div class="card" ng-repeat="asset in vm.assets | byTag: vm.tag: vm.category">
           
           <div class="blurring dimmable image" ng-init="vm.dimmer()">

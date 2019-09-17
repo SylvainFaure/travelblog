@@ -70,6 +70,7 @@
             <input ng-show="vm.fr" ng-model="vm.newAssetsData[$index].desc_fr" type="text" placeholder="Description...">
             <input ng-show="vm.it" ng-model="vm.newAssetsData[$index].desc_it" type="text" placeholder="Descrizione...">                
           </div>
+          <div class="preview-error" ng-if="vm.assetError" ng-bind-html="vm.assetError"></div>
           <img style="height: 150px; margin: 10px;" ngf-src="vm.newAssets[$index]"> 
         </div>
       </div>
@@ -147,7 +148,7 @@
             <img  
               ng-click="!vm.isGallery ? vm.chooseAsset(asset, $event, vm.context) : ''" 
               class="asset-picker-img"
-              ng-src="https://s3.eu-west-3.amazonaws.com/carte-de-voyages-948176/img/{{asset.asset_name}}" 
+              ng-src="{{vm.AWS_BUCKET_PATH}}img/{{asset.asset_name}}" 
               style="max-height: 200px"
             >
           </div>
@@ -193,7 +194,7 @@
 
 
 <!--MODAL-->
-<div class="ui modal">
+<div class="ui modal asset-editing" id="{{vm.modalId}}">
   <i class="close icon"></i>
   <div class="header">
     <span ng-show="vm.fr">Edition de l'image</span>

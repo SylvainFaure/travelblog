@@ -180,6 +180,7 @@ export default class editorCompController {
 	openModal() {
 		this.randomModalClass = "" + Math.floor(Math.random() * 1000);
 		setTimeout(() => {
+			$('.ui.modal').modal('hide others')
 			$(`.ui.modal.choose-image.${this.randomModalClass}`).modal('show');
 		})
 	}

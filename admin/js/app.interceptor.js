@@ -1,4 +1,4 @@
-export default function AuthInterceptor($injector) {
+export default function AuthInterceptor($injector, $q) {
   "ngInject";
   return {
     request: (config) => {
@@ -13,7 +13,7 @@ export default function AuthInterceptor($injector) {
     },
     responseError: (res) => {
       console.log(res)
-      return res;
+      return $q.reject(res);
     }
   }
 }

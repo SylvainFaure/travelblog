@@ -43,15 +43,6 @@ class UserRequestController {
       console.debug(rej);
       this.toastr.error("There was an unexpected error, please retry !", "Error")
     })
-    // this.AuthService.insertNewUser(user).then(res => {
-    //   console.log(res)
-    //   this.toastr.success("The user is registered correctly in database", "Success");
-    //   // send mail to user inserted
-      
-    // }, rej => {
-    //   console.log(rej)
-    //   this.toastr.success("The user has not been registered", "Error");
-    // })
   }
 
   refuseUserRequest() {

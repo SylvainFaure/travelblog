@@ -20,6 +20,8 @@ export default class assetPickerController {
     this.isSubmitted = false;
     this.assetToModify = '';
     this.modifiedAsset = '';
+    this.modalId = '';
+    this.assetError = null;
     this.newAssets = [];
     this.newAssetsData = { "0": {} }
     this.travelCategories = []
@@ -137,9 +139,29 @@ export default class assetPickerController {
       //this.$window.location.reload();
   }
 
-  submit (){
-    if (this.newAssets) { 
+  validateNewAssets () {
+    if (!this.newAssets) {
+      return false
+    }
+    if (this.newAssets) {
+      let bool = true
+      Object.keys(this.newAssetsData).forEach(obj => {
+        if (!this.newAssetsData[obj].travel_id) {
+          bool = false
+        }
+      })
+      return bool
+    }
+    return true
+  }
+
+  submit () {
+    const valid = this.validateNewAssets()
+    if (valid) { 
       this.uploadAsset(this.newAssets, this.newAssetsData); 
+    } else {
+      // handle validation message
+      this.toastr.warning(`You should provide a travel for each asset`, "Warning!");
     }
   }
 
@@ -148,27 +170,25 @@ export default class assetPickerController {
     if (data == undefined) {
       data = {}
     }
-    setTimeout(() =>{
-      this.ApiService
-        .assetsUpload(assets, data)
-        .then((resp) => {  
-            this.newAssets = null
-            this.isSubmitted = false;
-            resp.config.data.file.forEach((file) => {
-                this.toastr.success(`${file.name} correctly uploaded`, "Success !");
-            })
-            this.updateAssets();
-        }, (err) => { 
+    this.ApiService
+      .assetsUpload(assets, data)
+      .then((resp) => {  
+          this.newAssets = null
           this.isSubmitted = false;
-          this.toastr.error(`There was an error ${err.status}`, "Error");
-        }, (evt) => {
-          this.progress = parseInt(100.0 * evt.loaded / evt.total);            
-        });
-    }, 2000)
+          resp.config.data.file.forEach((file) => {
+              this.toastr.success(`${file.name} correctly uploaded`, "Success !");
+          })
+          this.updateAssets();
+      }, (err) => { 
+        this.isSubmitted = false;
+        this.toastr.error(`There was an error ${err.status}`, "Error");
+        console.warn(err)
+      })
   };
   
 
   editAsset(asset) {
+    this.modalId = asset.asset_id;
     asset.asset_article_ids = JSON.parse(asset.asset_article_ids)
     this.asset = asset
     this.ApiService.articlesList()
@@ -180,8 +200,8 @@ export default class assetPickerController {
         })
         this.selectedArticle = {}
         this.selectedArticles = this.articles.filter(art => art.checked)
-
-        $('.ui.modal').modal('show')
+        $('.ui.modal').modal('hide others')
+        $(`.ui.modal#${asset.asset_id}`).modal('show')
         $('.ui.dropdown').dropdown()
       })
       .catch(err => {
@@ -194,6 +214,9 @@ export default class assetPickerController {
           return travel
         })
         this.selectedTravel = this.travels.filter(travel => travel.travel_id == asset.asset_travel_id)[0]
+      })
+      .catch(err => {
+        console.warn(err)
       })
 
   }
@@ -231,7 +254,6 @@ export default class assetPickerController {
       })
       .catch(err => {
         this.toastr.error("There was an error! Try again")
-
         console.log(err)
       })
     // if (this.removeOriginal) {
@@ -240,13 +262,18 @@ export default class assetPickerController {
   }
 
   deleteAsset (index, name) {
-    this.ApiService.assetsDelete([index], [name]).then((resp) => {
-	    this.toastr.success(`The file was correctly deleted`, "Success !");
-    	this.$state.reload()
-    	//this.$window.location.reload()
-    }, (err) => {
-    	this.toastr.error(`There was an error ${err.status}`, "Error");
-    })
+    this.ApiService.assetsDelete([index], [name])
+      .then((resp) => {
+        this.toastr.success(`The file was correctly deleted`, "Success !");
+        this.$state.reload()
+        //this.$window.location.reload()
+      }, (err) => {
+        this.toastr.error(`There was an error ${err.status}`, "Error");
+      })
+      .catch(err => {
+        console.warn(err)
+        this.toastr.error(`There was an error ${err.status}`, "Error");
+      })
     
   }
 
@@ -260,13 +287,17 @@ export default class assetPickerController {
         names.push(toDelete[i].name)
       }
     }
-    this.ApiService.assetsDelete(index, names).then((resp) => {
-	this.toastr.success(`Files were correctly deleted`, "Success !");
-    	this.$state.reload()
-    	this.$window.location.reload()
-    }, (err) => {
-    	this.toastr.error(`There was an error ${err.status}`, "Error");
-    })
+    this.ApiService.assetsDelete(index, names)
+      .then((resp) => {
+        this.toastr.success(`Files were correctly deleted`, "Success !");
+        this.$state.reload()
+        this.$window.location.reload()
+      }, (err) => {
+        this.toastr.error(`There was an error ${err.status}`, "Error");
+      })
+      .catch(err => {
+        this.toastr.error(`There was an error ${err.status}`, "Error");
+      })
   }
 
   resetFilter() {

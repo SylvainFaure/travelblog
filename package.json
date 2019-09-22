@@ -10,6 +10,7 @@
     "dev:standalone": "cross-env NODE_ENV=development STANDALONE=true env-cmd .env node server/app.standalone.js",
     "build": "cross-env NODE_ENV=production env-cmd .env webpack",
     "postinstall": "npm run build",
+    "server": "cross-env NODE_ENV=development env-cmd .env node server/app.server.js",
     "report": "cross-env REPORT=true npm run dev"
   },
   "dependencies": {

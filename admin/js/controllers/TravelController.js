@@ -25,6 +25,7 @@ class TravelController {
 		this.$window = $window;
 		this.toastr = toastr
 		this.AWS_BUCKET_PATH = process.env.AWS_BUCKET_PATH 
+		this.travelModalId = `travel_${this.travel.travel_id}`
 
 		this.fr = $rootScope.rvm.fr;
 		this.it = $rootScope.rvm.it;
@@ -57,7 +58,8 @@ class TravelController {
 	}
 
 	openCoverModal() {
-		$('.ui.modal.cover').modal('show')
+		console.log(this.travelModalId)
+		$(`.ui.modal.travelcover#${this.travelModalId}`).modal('show')
 	}
 
 	closeCoverModal() {

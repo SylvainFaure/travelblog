@@ -429,7 +429,7 @@
 
 
   <!--MODAL COVER-->
-  <div class="ui modal cover">
+  <div class="ui modal articlecover" id="{{vm.modalId}}">
     <i class="close icon"></i>
     <div class="header">
       <div ng-if="">
@@ -458,64 +458,6 @@
         <i class="checkmark icon"></i>
       </div>
     </div>
-  </div>
-
-  <!--MODAL STEP-->
-  <div class="ui modal dates {{vm.randomClass}}">
-    <i class="close icon"></i>
-    <div class="header">
-      <span ng-show="vm.fr">Modifie les informations sur cette étape</span>
-      <span ng-show="vm.it">Modificca le informazioni su questa tappa</span>      
-    </div>
-
-    <div class="content">
-      <div class="ui form">
-        <div class="two fields">
-          <div class="field">
-            <label>
-              <span ng-show="vm.fr">Début de l'étape</span>
-              <span ng-show="vm.it">Inizio della tappa</span> 
-            </label>
-            <div class="ui calendar" id="rangestart">
-              <div class="ui input left icon">
-                <i class="calendar icon"></i>
-                <input 
-                  type="text" 
-                  placeholder="Start" 
-                  value="{{vm.articleDates.from}}" 
-                />
-              </div>
-            </div>
-          </div>
-          <div class="field">
-            <label>
-              <span ng-show="vm.fr">Fin de l'étape</span>
-              <span ng-show="vm.it">Fine della tappa</span> 
-            </label>
-            <div class="ui calendar" id="rangeend">
-              <div class="ui input left icon">
-                <i class="calendar icon"></i>
-                <input 
-                  type="text" 
-                  placeholder="End" 
-                  value="{{vm.articleDates.to}}" 
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="actions">
-      <div class="ui positive right labeled icon button">
-        <span ng-show="vm.fr">Confirmer</span>
-        <span ng-show="vm.it">Confermare</span>
-        <i class="checkmark icon"></i>
-      </div>
-    </div>
-  </div>
-
-
-        
+  </div>       
 
 <!-- <pre>{{vm.json_in | json}}</pre> -->

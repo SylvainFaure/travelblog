@@ -32,10 +32,18 @@ class ArticleController {
     this.hasGallery = this.hasGallery();
     this.editGallery = false;
     this.TextEditor.context = 'article'
+    this.modalId = this.json_in.newarticle ? 'newarticle' : this.json_in.article_id.toString()
 
     /* Mapping db data */
     if (this.json_in.newarticle) {
-      this.assetsGallery = [];      
+      this.assetsGallery = [];
+      this.articleDates = {
+        from: this.format(new Date(), 'dd/MM/yyyy'),
+        to: this.format(new Date(), 'dd/MM/yyyy')
+      }
+      setTimeout(() => {
+        this.initDatepicker()
+      })
     } else {
       /* Dates */
       this.articleDates = {
@@ -232,16 +240,9 @@ class ArticleController {
     }
   }
 
-  openModal(type) {
-    if (type == 'cover') {
-      $('.ui.modal.cover').modal('show')
-    }
-    if (type == 'dates') {
-      this.randomClass = "" + Math.floor(Math.random() * 1000);
-      setTimeout(() => {
-        $(`.ui.modal.dates.${this.randomClass}`).modal('show')
-      })
-    }
+  openModal() {
+    $('.ui.modal').modal('hide others')
+    $(`.ui.modal.articlecover#${this.modalId}`).modal('show')
   }
 
   initDatepicker() {
@@ -306,6 +307,9 @@ class ArticleController {
 
   formatArticle(article) {
     if (this.fr) {
+      if (!article.article_slug_fr) {
+        article.article_slug_fr = this.slugify(article.article_title_fr)
+      }
       if (article.article_travel_fr) {
         delete article.article_travel_fr
       }
@@ -322,6 +326,9 @@ class ArticleController {
       }
     }
     if (this.it) {
+      if (!article.article_slug_it) {
+        article.article_slug_it = this.slugify(article.article_title_it)
+      }
       if (article.article_travel_it) {
         delete article.article_travel_it
       }
@@ -338,6 +345,10 @@ class ArticleController {
       }
     }
     return article;
+  }
+
+  slugify (string) {
+    return string.toLowerCase().replace(/[^\w\s]/g, '').split(' ').join('-')
   }
 
   saveArticle(mode) {

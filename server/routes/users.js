@@ -47,7 +47,12 @@ users.route('/:id([0-9]+)')
         res.json(err)
       })
   })
-
+users.route('/email/:email')
+  .get((req, res, next) => {
+    User.getUserByEmail(req.params.email, user => {
+      handleResponse(res, next, user);
+    })
+  })
 users.route('/request')
   .post((req, res, next) => {
     // 'request' | 'confirm' | 'refuse'
@@ -56,7 +61,7 @@ users.route('/request')
         if (req.body.type !== 'request') {
           validateRole(req.headers['x-access-token'], 'superadmin')
             .then(() => {
-              User.userRequest(req.body.type, req.body.email, req.body.role, result => {
+              User.userRequest(req.body.type, req.body.email, req.body.role, req.body.pwd_token, result => {
                 handleResponse(res, next, result);
               })
             })
@@ -64,7 +69,7 @@ users.route('/request')
               res.json(err) 
             })
         } else {
-          User.userRequest(req.body.type, req.body.email, req.body.role, result => {
+          User.userRequest(req.body.type, req.body.email, req.body.role, req.body.pwd_token, result => {
             handleResponse(res, next, result);
           })
         }

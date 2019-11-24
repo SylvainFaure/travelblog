@@ -68,6 +68,26 @@
       </div>
       <div class="field">
         <div class="ui basic segment">
+          <h4 ng-show="vm.fr" class="ui horizontal divider">Type de voyage</h4>
+          <h4 ng-show="vm.it" class="ui horizontal divider">Tipo di viaggio</h4> 
+          <div class="form field select">
+            <select ng-if="vm.fr" class="ui fluid dropdown" 
+              ng-model="vm.selectedCategory"
+              ng-change="vm.setSelectedCategory($event)"
+              ng-options="category.category_label_fr for category in vm.categories"
+            >
+            </select>
+            <select ng-if="vm.it" class="ui fluid dropdown" 
+              ng-model="vm.selectedCategory"
+              ng-change="vm.setSelectedCategory(category)"
+              ng-options="category.category_label_it for category in vm.categories"
+            >
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <div class="ui basic segment">
           <h4 ng-show="vm.fr" class="ui horizontal divider">Photo principale</h4>
           <h4 ng-show="vm.it" class="ui horizontal divider">Foto principale</h4>
           <div ng-show="vm.fr && vm.travel.travel_cover_fr">
@@ -161,6 +181,13 @@
               </tr>
             </tbody>
           </table>
+          <div> 
+            <label for="travel_same_start_end">
+              <span ng-show="vm.fr">L'étape de départ et l'étape d'arrivée sont la même</span>
+              <span ng-show="vm.it">La tappa di arrivo e di partenza sono la stessa</span>
+            </label>
+            <input id="travel_same_start_end" type="checkbox" ng-model="vm.travel.travel_same_start_end">
+          </div>
         </div>
       </div>
         

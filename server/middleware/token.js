@@ -6,10 +6,11 @@ module.exports = function (req, res, next) {
   let shouldVerifyToken = true;
   if (
       (req.method == 'OPTIONS') ||
-      (req.method == 'GET' && req.url.indexOf('users') == -1) || // all GET excepts for users
-      (req.method == 'POST' && req.originalUrl.indexOf('users/request') !== -1 && req.body.type == 'request') || // first user request
-      (req.method == 'POST' || req.method == 'OPTIONS' && req.originalUrl.indexOf('users/signin') !== -1) || // user not yet authenticated
-      (req.method == 'POST' && req.originalUrl.indexOf('users/signup') !== -1) // user is not fully registered
+      (req.method == 'GET' && !req.url.includes('users')) || // all GET excepts for users
+      (req.method == 'GET' && req.originalUrl.includes('users/email')) || // GET users by email for first pwd change
+      (req.method == 'POST' && req.originalUrl.includes('users/request') && req.body.type == 'request') || // first user request
+      (req.method == 'POST' || req.method == 'OPTIONS' && req.originalUrl.includes('users/signin')) || // user not yet authenticated
+      (req.method == 'POST' && req.originalUrl.includes('users/signup')) // user is not fully registered
      ) {
     shouldVerifyToken = false;
   }

@@ -113,14 +113,34 @@ export default class ApiService {
  }
 
  anecdoteCreate(anecdote) {
-   return this.$http.post(this.BASE_PATH + 'api/anecdotes', anecdote)
+   return this.$http.post(this.BASE_PATH + 'api/anecdotes', {anecdote})
  }
 
  anecdoteUpdate(anecdote, id) {
   return this.$http.put(this.BASE_PATH + 'api/anecdotes/' + id, anecdote)
  }
 
- anecdoteDelete(id) {
-  return this.$http.delete(this.BASE_PATH + 'api/anecdotes/' + id)
+ categoryDelete(id) {
+  return this.$http.delete(this.BASE_PATH + 'api/categories/' + id)
  }
+
+ categoriesList() {
+  return this.$http.get(this.BASE_PATH + 'api/categories');
+}
+
+categoryDetail(id) {
+  return this.$http.get(this.BASE_PATH + 'api/categories/' + id);
+}
+
+categoryCreate(category) {
+  return this.$http.post(this.BASE_PATH + 'api/categories', {category})
+}
+
+categoryUpdate(category, id) {
+ return this.$http.put(this.BASE_PATH + 'api/categories/' + id, category)
+}
+
+categoryDelete(id) {
+ return this.$http.delete(this.BASE_PATH + 'api/categories/' + id)
+}
 }

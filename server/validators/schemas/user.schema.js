@@ -22,7 +22,8 @@ const token = Joi.object({
 const request = Joi.object({
   type: Joi.string().required(),
   email: Joi.string().email().required(),
-  role: Joi.string().required().valid('admin', 'visitor', 'editor')
+  role: Joi.string().required().valid('admin', 'visitor', 'editor'),
+  pwd_token: Joi.any()
 })
 
 const userSchemas = { create, signup, signin, request, token };

@@ -15,6 +15,7 @@ const travelsRouter = require('./routes/travels');
 const usersRouter = require('./routes/users');
 const assetsRouter = require('./routes/assets');
 const anecdotesRouter = require('./routes/anecdotes');
+const categoriesRouter = require('./routes/categories');
 const settingsRouter = require('./routes/settings');
 
 /** STATIC FILES **/
@@ -49,6 +50,8 @@ app.use('/api/users', usersRouter);
 app.use('/api/assets', assetsRouter);
 app.use('/api/settings', settingsRouter);
 app.use('/api/anecdotes', anecdotesRouter);
+app.use('/api/categories', categoriesRouter);
+
 
 app.use(errorMiddleware);
 

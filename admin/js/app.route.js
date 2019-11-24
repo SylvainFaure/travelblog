@@ -117,6 +117,16 @@ export default function Router ($stateProvider, $urlRouterProvider) {
             .catch(err => {
               console.log(err)
             })
+        },
+        Categories: (ApiService) => {
+          return ApiService
+            .categoriesList()
+            .then((r) => {
+              return r.data
+            })
+            .catch(err => {
+              console.log(err)
+            })
         }
       }
       
@@ -234,6 +244,16 @@ export default function Router ($stateProvider, $urlRouterProvider) {
             .assetsList()
             .then((r) => {
               return r.data;
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        },
+        Categories: (ApiService) => {
+          return ApiService
+            .categoriesList()
+            .then(r => {
+              return r.data
             })
             .catch(err => {
               console.log(err)

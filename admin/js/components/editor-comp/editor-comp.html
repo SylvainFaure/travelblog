@@ -21,17 +21,17 @@
   </div>
 
   <div class="editor-comp_actions-anecdote-input">
-      <div class="form field select">
-        <select class="ui fluid dropdown" 
-          ng-model="vm.activeAnecdote"
-          ng-options="anec.anecdote_title for anec in vm.anecdotes"
-        >
-        </select>
-        <button class="ui icon button" ng-click="vm.addAnecdote()" >
-          <i class="check icon"></i>
-        </button>
-      </div>
+    <div class="form field select">
+      <select class="ui fluid dropdown" 
+        ng-model="vm.activeAnecdote"
+        ng-options="anec.anecdote_title for anec in vm.anecdotes"
+      >
+      </select>
+      <button class="ui icon button" ng-click="vm.addAnecdote()" >
+        <i class="check icon"></i>
+      </button>
     </div>
+  </div>
 
   <div 
     ng-if="vm.type !== 'image' && vm.type !== 'music'"

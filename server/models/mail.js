@@ -35,7 +35,8 @@ class Mail {
   /* params = {
       type = 'request' | 'confirm' | 'refuse' | 'add/publish/Article/Travel',
       requestedRole = 'visitor', etc,
-      email = string
+			email = string,
+			pwd_token = string
      }
   */ 
 	let emailFrom = params.email;

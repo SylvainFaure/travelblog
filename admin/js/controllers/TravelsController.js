@@ -9,6 +9,7 @@ class TravelsController {
 		toastr,
 		Travels, 
 		Assets, 
+		Categories,
 		ApiService
 	) {
 	this.format = format
@@ -18,34 +19,24 @@ class TravelsController {
 	this.$window = $window;
 	this.toastr = toastr
 	this.travels = Travels
-	this.AWS_BUCKET_PATH = process.env.AWS_BUCKET_PATH 
-
 
 	this.assets = Assets
+	this.categories = Categories
 	this.ApiService = ApiService;
 	this.fr = $rootScope.rvm.fr;
 	this.it = $rootScope.rvm.it;
+
+	this.categories = this.categories.map(category => {
+		category.isEditing = false
+		return category
+	})
 
 	$rootScope.$on('changeLang', () => {
 		this.fr = $rootScope.rvm.fr;
 		this.it = $rootScope.rvm.it;
 	})
-		
-	$rootScope.$on('changeAsset', (e, from, asset) => {
-		if (from == "travels" && this.travel) {
-			if (this.fr) {
-				this.travel.travel_cover_fr = asset.asset_name
-			}
-			if (this.it) {
-				this.travel.travel_cover_it = asset.asset_name
-			}
-		}
-	});
-
-	$('.ui.checkbox').checkbox()
 	
 	this.getTravelSteps = this.getTravelSteps();
-	this.appendCalendar = this.appendCalendar();
 	this.mapTravels()
 }
 
@@ -68,42 +59,6 @@ class TravelsController {
 			travel.travel_published_date_it = travel.travel_published_date_it ? this.format(new Date(travel.travel_published_date_it), 'dd/M/yyyy') : ''
 			return travel
 		})
-	}
-
-	openModal(travel, travelId) {
-		const id = travelId ? `#${travelId}` : ''
-		if (travel == 'travel') {
-			setTimeout(() => {
-				$(`.ui.modal.travel${id}`).modal('show');
-				this.initCalendar();
-			})
-		}
-	}
-	closeModal() {
-    $('.ui.modal.travel').modal('hide')
-  }
-
-
-	appendCalendar() {
-		$('head').append(`<link href="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.css" rel="stylesheet" type="text/css" />
-		<script src="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.js"></script>`)
-	}
-
-	initCalendar() {
-		$('#rangestart').calendar({
-			type: 'date',
-			endCalendar: $('#rangeend'),
-			onChange: (date) => {
-				this.parseDate(date, "start") 
-			}
-		});
-		$('#rangeend').calendar({
-			type: 'date',
-			startCalendar: $('#rangestart'),
-			onChange: (date) => { 
-				this.parseDate(date, "end") 
-			}
-		});
 	}
 
 	parseDate(date, range) {
@@ -167,14 +122,6 @@ class TravelsController {
 		return formattedTravel;
 	}
 
-	addTravel() {
-		this.edit = false
-		this.travel = {
-			dates_raw: {}
-		};
-		this.openModal('travel')
-	}
-
 	handleTravelCountries(ev) {
 		if (ev.key === "Enter") {
 			this.addTravelCountry()
@@ -203,6 +150,67 @@ class TravelsController {
 		}
 	}
 
+	addCategory() {
+		this.categories.push({
+			category_label_fr: '',
+			category_label_it: '',
+			category_name: '',
+			isEditing: true,
+			isNew: true
+		})
+	}
+	saveCategory(category) {
+		delete category.isEditing
+		delete category.isNew
+		this.ApiService
+			.categoryCreate(category)
+			.then(res => {
+				this.toastr.success("The category has been created with success", "Hurray!")
+				this.refreshCategories()
+			})
+			.catch(err => {
+				console.warn(err)
+				this.toastr.error("There was an unexpected error...try again!", "Ops!")
+			})
+	}
+	updateCategory(category) {
+		delete category.isEditing
+		this.ApiService
+			.categoryUpdate(category, category.category_id)
+			.then(res => {
+				this.toastr.success("The category has been updated with success", "Hurray!")
+				// this.refreshCategories()
+			})
+			.catch(err => {
+				console.warn(err)
+				this.toastr.error("There was an unexpected error...try again!", "Ops!")
+			})
+	}
+
+	removeCategory(id) {
+		this.ApiService
+			.categoryDelete(id)
+			.then(res => {
+				this.toastr.success("The category has been removed with success", "Hurray!")
+				this.refreshCategories()
+			})
+			.catch(err => {
+				console.warn(err)
+				this.toastr.error("There was an unexpected error...try again!", "Ops!")
+
+			})
+	}
+	refreshCategories() {
+		this.ApiService
+			.categoriesList()
+			.then(r => {
+				this.categories = r.data
+			})
+			.catch(err => {
+				console.warn('Could not get updated categories')
+			})
+	}
+
 	handleTravelHashtags(ev) {
 		if (ev.key === "Enter") {
 			this.addTravelHashtag()
@@ -218,13 +226,6 @@ class TravelsController {
 	}
 	deleteTravelHashtag(hash) {
 		this.travel.travel_hashtags.splice(this.travel.travel_hashtags.indexOf(hash), 1)
-	}
-
-
-	editTravel(travel) {
-		this.openModal('travel', travel.travel_id)
-		this.travel = travel
-		this.edit = true		
 	}
 
 	saveTravel(travel) {

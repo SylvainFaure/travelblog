@@ -16,8 +16,8 @@ export default class AuthService {
    return this.$http.post(this.BASE_PATH + 'api/users/signin', {email: email, password: password});
   }
  
-  sendRequest (requestType, email, role) {
-   return this.$http.post(this.BASE_PATH + 'api/users/request', {type: requestType, email: email, role: role});   
+  sendRequest (requestType, email, role, token = null) {
+   return this.$http.post(this.BASE_PATH + 'api/users/request', {type: requestType, email: email, role: role, pwd_token: token});   
   }
  
   loginLogout () {
@@ -35,11 +35,7 @@ export default class AuthService {
 
   isAuthenticated () {
     const token = this.getToken();
-    if (token.indexOf("token") !== -1) {
-      return this.$http.post(this.BASE_PATH + 'api/users/verifytoken', {token: token})
-    } else {
-      return this.$http.post(this.BASE_PATH + 'api/users/verifytoken', {token: token})
-    }
+    return this.$http.post(this.BASE_PATH + 'api/users/verifytoken', {token: token})
   }
 
   getToken () {
@@ -53,6 +49,10 @@ export default class AuthService {
   
   getUser () {
     return JSON.parse(this.$window.localStorage.getItem('user'));
+  }
+
+  getUserByEmail (email) {
+    return this.$http.get(this.BASE_PATH + 'api/users/email/' + email)
   }
  
 }

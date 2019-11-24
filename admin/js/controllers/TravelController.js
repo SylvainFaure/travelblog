@@ -7,7 +7,8 @@ class TravelController {
 		$rootScope, 
 		Travel,
 		TravelArticles, 
-		Assets, 
+		Assets,
+		Categories,
 		ApiService,
 		$window, 
 		$compile, 
@@ -19,6 +20,7 @@ class TravelController {
 		this.travel = Travel;
 		this.travelArticles = TravelArticles; 
 		this.assets = Assets
+		this.categories = Categories
 		this.ApiService = ApiService;
 		this.format = format
 		this.$compile = $compile;
@@ -50,6 +52,7 @@ class TravelController {
 
 		this.appendCalendar = this.appendCalendar();
 		this.mapTravel()
+		this.selectedCategory = this.categories.find(c => c.category_id === this.travel.travel_category)
 
 		setTimeout(() => {
 			this.initCalendar();
@@ -58,7 +61,6 @@ class TravelController {
 	}
 
 	openCoverModal() {
-		console.log(this.travelModalId)
 		$(`.ui.modal.travelcover#${this.travelModalId}`).modal('show')
 	}
 
@@ -75,12 +77,16 @@ class TravelController {
 		}
 	}
 
+
 	mapTravel() {
 		this.travel.travel_countries_fr = JSON.parse(this.travel.travel_countries_fr)
 		this.travel.travel_countries_it = JSON.parse(this.travel.travel_countries_it)
 		this.travel.travel_hashtags = JSON.parse(this.travel.travel_hashtags),
 		this.travel.travel_published_fr = this.handleBoolean(this.travel.travel_published_fr)
 		this.travel.travel_published_it = this.handleBoolean(this.travel.travel_published_it)
+		this.travel.travel_same_start_end = this.handleBoolean(this.travel.travel_same_start_end)
+		this.travel.travel_category = this.travel.travel_category ? this.travel.travel_category : this.categories[0].category_id
+
 		this.travel.dates_raw = {
 			start_date: this.travel.travel_start_date,
 			end_date: this.travel.travel_end_date,
@@ -136,8 +142,10 @@ class TravelController {
 	
 	handleBoolean(value) {
 		let val
-		if (typeof value == 'string') {
+		if (typeof value === 'string') {
 			val = value == 'true' ? true : false
+		} else if (typeof value === 'number') {
+			val = value == 1 ? true : false
 		} else {
 			val = value
 		}
@@ -196,6 +204,10 @@ class TravelController {
 		}
 	}
 
+	setSelectedCategory() {
+		this.travel.travel_category = this.selectedCategory.category_id
+	}
+
 	handleTravelHashtags(ev) {
 		if (ev.key === "Enter") {
 			this.addTravelHashtag()
@@ -238,7 +250,6 @@ class TravelController {
 
 	updateTravel(travel, id, publish) {
 		let formattedTravel = this.formatTravel(travel, publish)
-		console.log(formattedTravel)
 		this.ApiService.travelUpdate(formattedTravel, id)
 			.then(resp => {
 				if (publish) {

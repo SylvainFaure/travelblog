@@ -18,9 +18,10 @@ class LoginController {
     this.isSignup = false;
     this.userRequest = false;
     this.userRequestToValid = false;
+    this.canUpdatePassword = false;
     this.fr = $rootScope.rvm.fr
     this.it = $rootScope.rvm.it
-
+    this.verifyPwdToken();
     this.verifyToken();
   }
 
@@ -102,6 +103,31 @@ class LoginController {
     }
     this.$rootScope.rvm.userInfo = userInfo;
     this.$window.localStorage.setItem('user', JSON.stringify(userInfo));
+  }
+
+  verifyPwdToken() {
+    const hash = this.$window.location.hash
+    if (hash.includes('email') && hash.includes('pwd_token')) {
+      const hashArr = hash.split('&')
+      const email = hashArr[0].replace('#!/?email=', '')
+      const token = hashArr[1].replace('pwd_token=', '')
+      // find user by email
+      this.AuthService.getUserByEmail(email)
+      .then(resp => {
+          const user = resp.data
+          console.log(user, token)
+          if (user.user_pwd_token == token) {
+            console.log('hello')
+            this.canUpdatePassword = true
+            this.switchSignInSignUp()
+            this.signupEmail = email
+          }
+        })
+        .catch(err => {
+          console.warn(err)
+        })
+
+    }
   }
 
   verifyToken() {

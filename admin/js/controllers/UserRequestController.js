@@ -30,12 +30,23 @@ class UserRequestController {
     this.$state.reload('logged')
   }
 
+  generateToken() {
+    const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_'
+    let token = ''
+    for (let i = 0; i <= 12; i++) {
+      const randomNumber = Math.floor(Math.random() * 62)
+      token += characters[randomNumber]
+    }
+    return token
+  }
+
   confirmUserRequest() {
     const user = {
       email: this.userRequestEmail,
-      role: this.userRequestRole
+      role: this.userRequestRole,
+      token: this.generateToken()
     }
-    this.AuthService.sendRequest('confirm', user.email, user.role).then(res => {
+    this.AuthService.sendRequest('confirm', user.email, user.role, user.token).then(res => {
       if (res.status == 200) {
         this.toastr.success("Your request has been sent !", "Success !")
       }

@@ -27,6 +27,11 @@ img {
   flex-direction: column;
   margin: 50px 20px;
 }
+.travels-section {
+  display: flex; 
+  flex-direction: column;
+  align-items: flex-end;
+}
 
 .travel-btns {
   display: flex;
@@ -34,6 +39,9 @@ img {
   justify-content: flex-end;
 }
 
+.travels-btn {
+  max-width: 6em;
+}
 
 .no-margin {
   margin-top: 0 !important;
@@ -47,9 +55,16 @@ img {
   margin: 4em 1em 0 0 !important;
 }
 
-.travels-table, .articles-table, .anecdotes-table {
+.articles-table, .anecdotes-table {
   margin-left: 20px;
   width: 80%;
+}
+.travels-table {
+  width: 100%;
+  margin: 0 0 20px 20px;
+  &:not(:first-child) {
+    margin: 20px 0 20px 20px;
+  }
 }
 
 .article {

@@ -27,6 +27,18 @@ class User {
 			}
 		})
 	}
+
+	static getUserByEmail(email, cb) {
+		db.query('SELECT * FROM `users` WHERE `user_email` = ?', [email], (err, rows) => {
+			if (err) {
+				cb({type: 'DatabaseError', error: err})
+			} else {
+				var records = JSON.stringify(rows[0]);
+				var user = records == undefined ? {type: 'DatabaseError', error: err, message: 'This user is not registered in database'} : JSON.parse(records);
+				cb(user)
+			}
+		})
+	}
 	
 	static updateUser(user, id, cb) { // saveUserPwd??
 		db.query('UPDATE `users` SET ? WHERE `user_id` = ?', [user, id], (err, rows) => {
@@ -156,8 +168,10 @@ class User {
 				user_email: _user.email,
 				user_role: _user.role,
 				user_password: '',
-				user_username: _user.email
-	   }
+				user_username: _user.email,
+				user_pwd_token: _user.pwd_token
+		 }
+		 console.log(_user)
 	   db.query('INSERT INTO `users` SET ?', user, (err, results) => {
 			if (err) {
 				cb({type: 'DatabaseError', error: err})
@@ -193,16 +207,17 @@ class User {
 			}
 		})
  }
-	static userRequest(type, email, role, cb) {
+	static userRequest(type, email, role, token, cb) {
 		// TO TEST
 		const params = {
 		  type: type,
 	  	requestedRole: role,
-	    email: email
+			email: email,
+			pwd_token: token
 		}
 		// Handle confirm (and refuse) for db
 		if (type == "confirm") {
-			this.createNewUser({email, role}, result => {
+			this.createNewUser({email, role, pwd_token: token}, result => {
 				cb(result)
 			})
 		}

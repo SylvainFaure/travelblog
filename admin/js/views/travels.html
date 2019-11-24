@@ -1,35 +1,37 @@
 <div class="section">
   <aside-menu items="vm.travels" context="travels"></aside-menu>
+  <div class="travels-section">
     <div class="travels-table">
-    <table class="ui blue striped table">
-      <thead>
-        <tr>
-          <th><span ng-show="vm.fr">Voyages</span><span ng-show="vm.it">Viaggi</span></th>
-            <th><span ng-show="vm.fr">Description</span><span ng-show="vm.it">Descrizione</span></th>
-            <th><span ng-show="vm.fr">Etapes</span><span ng-show="vm.it">Tappe</span></th>
-            <th><span ng-show="vm.fr">Dates</span><span ng-show="vm.it">Date</span></th>
-            <th><span ng-show="vm.fr">Publié</span><span ng-show="vm.it">Pubblicato</span></th>
-            <th><span ng-show="vm.fr">Modifier/Suppr</span><span ng-show="vm.it">Modif./Canc.</span></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="travel in vm.travels track by $index"> 
-          <td><p ng-show="vm.fr">{{travel.travel_title_fr}}</p><p ng-show="vm.it">{{travel.travel_title_it}}</p></td>
-          <td style="max-width: 20em"><p ng-show="vm.fr">{{travel.travel_desc_fr}}</p><p ng-show="vm.it">{{travel.travel_desc_it}}</p></td>
-          <td><p id="travel_{{travel.travel_id}}"></p></td>
-          <td><p>{{travel.travel_start_date}} - {{travel.travel_end_date}}</p></td>
-          <td><p ng-show="vm.fr">{{travel.travel_published_date_fr}}</p><p ng-show="vm.it">{{travel.travel_published_date_it}}</p></td>
-          <td style="" class="right aligned">
-            <a ui-sref="logged.travel({travelId: travel.travel_id})">
-              <i class="pencil alternate icon" style="cursor: pointer;"></i>
-            </a>
-            <i class="trash alternate icon" ng-click="vm.removeTravel(travel.travel_id)" style="cursor: pointer;"></i>
-          </td> 
-        </tr>
-      </tbody>
-    </table>
+      <table class="ui blue striped table">
+        <thead>
+          <tr>
+            <th><span ng-show="vm.fr">Voyages</span><span ng-show="vm.it">Viaggi</span></th>
+              <th><span ng-show="vm.fr">Description</span><span ng-show="vm.it">Descrizione</span></th>
+              <th><span ng-show="vm.fr">Etapes</span><span ng-show="vm.it">Tappe</span></th>
+              <th><span ng-show="vm.fr">Dates</span><span ng-show="vm.it">Date</span></th>
+              <th><span ng-show="vm.fr">Publié</span><span ng-show="vm.it">Pubblicato</span></th>
+              <th><span ng-show="vm.fr">Modifier/Suppr</span><span ng-show="vm.it">Modif./Canc.</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="travel in vm.travels track by $index"> 
+            <td><p ng-show="vm.fr">{{travel.travel_title_fr}}</p><p ng-show="vm.it">{{travel.travel_title_it}}</p></td>
+            <td style="max-width: 20em"><p ng-show="vm.fr">{{travel.travel_desc_fr}}</p><p ng-show="vm.it">{{travel.travel_desc_it}}</p></td>
+            <td><p id="travel_{{travel.travel_id}}"></p></td>
+            <td><p>{{travel.travel_start_date}} - {{travel.travel_end_date}}</p></td>
+            <td><p ng-show="vm.fr">{{travel.travel_published_date_fr}}</p><p ng-show="vm.it">{{travel.travel_published_date_it}}</p></td>
+            <td style="" class="right aligned">
+              <a ui-sref="logged.travel({travelId: travel.travel_id})">
+                <i class="pencil alternate icon" style="cursor: pointer;"></i>
+              </a>
+              <i class="trash alternate icon" ng-click="vm.removeTravel(travel.travel_id)" style="cursor: pointer;"></i>
+            </td> 
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <div
-      class="ui vertical animated button blue right floated" 
+      class="ui vertical animated button blue right floated travels-btn" 
       ng-click="vm.addTravel()">
       <div class="hidden content">
         <span ng-if="vm.fr">Ajouter</span>
@@ -39,190 +41,59 @@
         <i class="plus icon"></i>
       </div>
     </div>
-    
-    <!--MODAL-->
-    <div class="ui modal travel" id="{{vm.travel.travel_id}}">
-      <i class="close icon"></i>
-      <div class="header">
-        <div ng-if="!vm.edit">
-          <span ng-show="vm.fr">Nouveau voyage</span>
-          <span ng-show="vm.it">Nuovo viaggio</span>      
-        </div>
-        <div ng-if="vm.edit">
-          <span ng-show="vm.fr">Modifier le pays</span>
-          <span ng-show="vm.it">Modificare il paese</span>      
-        </div>
-      </div>
-      <div>
-        <div class="description scrolling content">
-          <div class="field">
-            <div class="ui basic segment">
-              <h4 ng-show="vm.fr" class="ui horizontal divider">Titre du voyage</h4>
-              <h4 ng-show="vm.it" class="ui horizontal divider">Titolo del viaggio</h4> 
-              <div class="ui large fluid input">
-                <input ng-if="vm.fr" type="text" class="" placeholder="Nom" ng-model="vm.travel.travel_title_fr">
-                <input ng-if="vm.it" type="text" class="" placeholder="Nome" ng-model="vm.travel.travel_title_it">
-              </div>
-              <div ng-show="vm.edit && vm.fr && vm.travel.travel_cover_fr">
-                <img class="travel-img" ng-src="{{vm.AWS_BUCKET_PATH}}thumb/mini_{{vm.travel.travel_cover_fr}}" alt="">
-              </div>
-              <div ng-show="vm.edit && vm.it && vm.travel.travel_cover_it">
-                <img class="travel-img" ng-src="{{vm.AWS_BUCKET_PATH}}thumb/mini_{{vm.travel.travel_cover_it}}" alt="">
-              </div>
-            </div>
-          </div>
-          <div class="field">
-            <div class="ui basic segment">
-              <h4 ng-show="vm.fr" class="ui horizontal divider">Ajouter un pays</h4>
-              <h4 ng-show="vm.it" class="ui horizontal divider">Aggiungere un paese</h4> 
-              <h4 ng-show="vm.fr">Pays traversés</h4>
-              <h4 ng-show="vm.it">Paesi attraversati</h4>
-              <p ng-show="vm.fr">
-                <tag 
-                  ng-repeat="travel in vm.travel.travel_countries_fr track by $index"
-                  label="travel"
-                  deletable="true"
-                  id="{{vm.travel.travel_id}}"
-                  cb="vm.deleteTravelCountry(travel)"></tag>
-              </p>
-              <p ng-show="vm.it">
-                <tag 
-                  ng-repeat="travel in vm.travel.travel_countries_it track by $index" 
-                  label="travel"
-                  deletable="true"
-                  id="{{vm.travel.travel_id}}"
-                  cb="vm.deleteTravelCountry(travel)"
-                >
-                </tag>
-              </p>
-              <div class="ui large fluid action input">
-                <input ng-keyup="vm.handleTravelCountries($event)" ng-if="vm.fr" type="text" class="" placeholder="Nom" ng-model="vm.travel.travel_editing_country">
-                <input ng-keyup="vm.handleTravelCountries($event)" ng-if="vm.it" type="text" class="" placeholder="Nome" ng-model="vm.travel.travel_editing_country">
-                <button ng-click="vm.addTravelCountry()" class="ui button">+</button>
-              </div>
-            </div>
-          </div>
-  
-            
-          <div class="ui basic segment">
-            <h4 ng-show="vm.fr" class="ui horizontal divider">Dates du voyage</h4>
-            <h4 ng-show="vm.it" class="ui horizontal divider">Date del viaggio</h4> 
-            <div class="ui form">
-              <div class="two fields">
-                <div class="field">
-                  <div class="ui calendar" id="rangestart">
-                    <div class="ui input left icon">
-                      <i class="calendar icon"></i>
-                      <input type="text" placeholder="Start" value="vm.travel.travel_start_date" ng-model="vm.travel.travel_start_date">
-                    </div>
-                  </div>
-                </div>
-                <div class="field">
-                  <div class="ui calendar" id="rangeend">
-                    <div class="ui input left icon">
-                      <i class="calendar icon"></i>
-                      <input type="text" placeholder="End" value="vm.travel.travel_end_date" ng-model="vm.travel.travel_end_date">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-         
-          <div class="field">
-            <div class="ui basic segment">
-              <h4 ng-show="vm.fr" class="ui horizontal divider">Description courte</h4>
-              <h4 ng-show="vm.it" class="ui horizontal divider">Descrizione breve</h4>
-              <div class="ui large fluid input">
-                <input ng-show="vm.fr" type="text" class="" placeholder="Description" ng-model="vm.travel.travel_desc_fr">
-                <input ng-show="vm.it" type="text" class="" placeholder="Descrizione" ng-model="vm.travel.travel_desc_it">
-              </div>
-            </div>
-          </div>
-          <div class="field">
-            <div class="ui basic segment">
-              <h4 ng-show="vm.fr" class="ui horizontal divider">Description longue</h4>
-              <h4 ng-show="vm.it" class="ui horizontal divider">Descrizione lunga</h4>
-              <div class="ui large fluid input">
-                <input ng-show="vm.fr" type="text" class="" placeholder="Description" ng-model="vm.travel.travel_long_desc_fr">
-                <input ng-show="vm.it" type="text" class="" placeholder="Descrizione" ng-model="vm.travel.travel_long_desc_it">
-              </div>
-            </div>
-          </div>
-          <div class="field">
-            <div class="ui basic segment">
-              <h4 ng-show="vm.fr" class="ui horizontal divider">Slug</h4>
-              <h4 ng-show="vm.it" class="ui horizontal divider">Slug</h4>
-              <div class="ui large fluid input">
-                <input ng-show="vm.fr" type="text" class="" placeholder="Slug" ng-model="vm.travel.travel_slug_fr">
-                <input ng-show="vm.it" type="text" class="" placeholder="Slug" ng-model="vm.travel.travel_slug_it">
-              </div>
-            </div>
-          </div>
-          <div class="field">
-            <div class="ui basic segment">
-              <h4 ng-show="vm.fr" class="ui horizontal divider">Instagram - Ajouter un hashtag</h4>
-              <h4 ng-show="vm.it" class="ui horizontal divider">Instagram - Aggiungere un hashtag</h4> 
-              <h4>Hashtags</h4>
-              <p>
-                <tag 
-                  ng-repeat="hash in vm.travel.travel_hashtags track by $index" 
-                  label="hash"
-                  deletable="true"
-                  id="{{vm.travel.travel_id}}"
-                  cb="vm.deleteTravelHashtag(hash)"
-                >
-                </tag>
-              </p>
-              <div class="ui large fluid action input">
-                <input ng-keyup="vm.handleTravelHashtags($event)" type="text" class="" placeholder="Hashtags" ng-model="vm.travel.travel_editing_hashtag">
-                <button ng-click="vm.addTravelHashtag()" class="ui button">+</button>
-              </div>
-            </div>
-          </div>
 
-          <div class="field">
-            <div class="ui basic segment">
-              <h4 ng-show="vm.fr" class="ui horizontal divider">Choisis une image principale pour ce pays</h4>
-              <h4 ng-show="vm.it" class="ui horizontal divider">Scegli un'immagine principale per questo paese</h4>
-              <asset-picker 
-                assets="vm.assets" 
-                disable-place="true"
-                context="travels"
-              >
-              </asset-picker>
-            </div>
-          </div>
-        </div>
+    <div class="travels-table">
+      <table class="ui blue striped table">
+        <thead>
+          <tr>
+            <th><span ng-show="vm.fr">Categorie</span><span ng-show="vm.it">Categoria</span></th>
+            <th><span ng-show="vm.fr">Nom</span><span ng-show="vm.it">Nome</span></th>
+            <th class="right aligned"><span ng-show="vm.fr">Modifier/Suppr</span><span ng-show="vm.it">Modif./Canc.</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="category in vm.categories track by $index"> 
+            <td>
+              <div ng-if="!category.isEditing">
+                <p ng-show="vm.fr">{{category.category_label_fr}}</p>
+                <p ng-show="vm.it">{{category.category_label_it}}</p>
+              </div>
+              <div class="ui action input" ng-if="category.isEditing">
+                <input type="text" ng-model="category.category_label_fr" ng-if="vm.fr" />
+                <input type="text" ng-model="category.category_label_it" ng-if="vm.it" />
+                <button ng-if="!category.isNew" class="ui button" ng-click="category.isEditing = false; vm.updateCategory(category)">Ok</button>
+              </div>
+            </td>
+            <td>
+              <p ng-if="!category.isNew">{{category.category_name}}</p>
+              <div class="ui action input" ng-if="category.isNew">
+                <input type="text" ng-model="category.category_name" />
+                <button class="ui button" ng-click="vm.saveCategory(category)">Ok</button>
+              </div>
+            </td>
+            <td class="right aligned">
+              <div ng-if="!category.isNew">
+                <a ng-click="category.isEditing = true">
+                  <i class="pencil alternate icon" style="cursor: pointer;"></i>
+                </a>
+                <i class="trash alternate icon" ng-click="vm.removeCategory(category.category_id)" style="cursor: pointer;"></i>
+              </div>
+            </td> 
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div
+      class="ui vertical animated button blue right floated travels-btn" 
+      ng-click="vm.addCategory()">
+      <div class="hidden content">
+        <span ng-if="vm.fr">Ajouter</span>
+        <span ng-if="vm.it">Nuovo</span>
       </div>
-        <div class="actions">
-          <div class="ui black deny button">Cancel</div>
-          <div 
-            ng-show="!vm.edit" 
-            class="ui positive right labeled icon button" 
-            ng-click="vm.saveTravel(vm.travel)">
-            <span ng-show="vm.fr">Enregistrer</span>
-            <span ng-show="vm.it">Salva</span>
-            <i class="checkmark icon"></i>
-          </div>
-          <div 
-            ng-show="vm.edit" 
-            class="ui positive right labeled icon button" 
-            ng-click="vm.updateTravel(vm.travel, vm.travel.travel_id)">
-              <span ng-show="vm.fr">Enregistrer</span>
-              <span ng-show="vm.it">Salva</span>
-              <i class="checkmark icon"></i> 
-          </div>
-          <div 
-            ng-show="vm.edit" 
-            class="ui positive right labeled icon button" 
-            ng-click="vm.saveAndPublishTravel(vm.travel, vm.travel.travel_id)">
-              <span ng-show="vm.fr">Enregistrer et publier</span>
-              <span ng-show="vm.it">Salva e pubblica</span>
-              <i class="checkmark icon"></i> 
-          </div>
-        </div>
+      <div class="visible content">
+        <i class="plus icon"></i>
+      </div>
     </div>
-    </div>
-    </div>
+  </div>
 </div>
+

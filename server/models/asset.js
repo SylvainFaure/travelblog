@@ -1,7 +1,4 @@
 const db = require('../db.js');
-const sharp = require('sharp');
-const aws = require('../config/aws');
-sharp.cache( { files: 0 } );
 
 class Asset {
 
@@ -44,11 +41,12 @@ class Asset {
 		var results = []
 		try {
 			for (var i = 0; i < assets.length; i++) {
-				console.log(assets)
-				console.log(data)
+				// console.log(data)
 				/* Multer doesn't return the same object if used with AWS S3 */
-				const name = assets[i].key ? assets[i].key.split('/')[1].toLowerCase() : assets[i].filename.toLowerCase(); 
-				const src = assets[i].location ? assets[i].location : assets[i].filename;
+				const original = assets[i].transforms.find(img => img.id === 'original')
+				// console.log('Controller', original)
+				const name = original ? original.key.split('/')[1].toLowerCase() : assets[i].originalname.toLowerCase(); 
+				const src = original.location
 				var asset = {
 					asset_title_fr: data[i].title_fr,
 					asset_title_it: data[i].title_it,
@@ -62,7 +60,8 @@ class Asset {
 					asset_country_fr: data[i].country_fr,
 					asset_desc_it: data[i].desc_it,
 					asset_desc_fr: data[i].desc_fr,				
-					asset_type: assets[i].mimetype
+					asset_type: assets[i].mimetype,
+					asset_article_ids: assets[i].article_ids || JSON.stringify([])
 				}
 				db.query('INSERT INTO assets SET ?', asset, (error, result) => {
 					if (error) {
@@ -72,7 +71,7 @@ class Asset {
 						results.push(result)
 					}
 				});
-				this.resizeAsset(asset)
+				// this.resizeAsset(asset)
 			}
 			cb(results)
 		} catch (error) {
@@ -80,7 +79,7 @@ class Asset {
 		}
 	}
 
-	static resizeAsset(asset) {		
+/* 	static resizeAsset(asset) {		
 		const s3 = new aws.S3();
 		s3.getObject({
 			Bucket: process.env.S3_BUCKET_NAME,
@@ -93,7 +92,8 @@ class Asset {
 					const params = {
 						Bucket: process.env.S3_BUCKET_NAME,
 						Key: `thumb/mini_${asset.asset_name}`,
-						Body: resizedImage
+						Body: resizedImage,
+						ContentType: 'image/jpeg'
 					}
 					s3.putObject(params, (err, data) => {
 						if (err) console.log(err)
@@ -102,7 +102,7 @@ class Asset {
 				})	
 			}
 		})
-	}
+	} */
 
 	static updateAsset(asset, id, cb) {
 		db.query('UPDATE assets SET ? WHERE asset_id = ?', [asset, id], function(error, results){
@@ -115,7 +115,7 @@ class Asset {
 	}
 
 	static deleteAssets(ids, names, cb) {
-		console.info(ids, names)
+		// console.info(ids, names)
 		try {
 			var results = []
 			for (var i = 0; i < ids.length; i++) {
@@ -129,6 +129,7 @@ class Asset {
 					}
 				})
 				/**TODO Delete for AWS */
+				
 				/* fs.unlinkSync('admin/assets/img/' + name, (err) => {
 					if (err) throw err
 				})

@@ -1,7 +1,7 @@
 const mysql      = require('mysql');
 
 var connection;
-if (process.env.PORT) {
+if (process.env.NODE_ENV !== 'development') {
   connection = mysql.createConnection(process.env.JAWSDB_URL);
   connection.connect(err => {
     if (err) {

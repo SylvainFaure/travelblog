@@ -247,7 +247,7 @@ export default class assetPickerController {
     asset.asset_article_ids = JSON.stringify(asset.asset_article_ids)
     this.ApiService.assetUpdate(asset, asset.asset_id)
       .then(resp => {
-        console.log(resp)
+        // console.log(resp)
         this.toastr.success("Asset updated successfully")
       })
       .catch(err => {

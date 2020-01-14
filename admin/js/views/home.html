@@ -51,11 +51,19 @@
                 <h4 ng-if="rvm.fr">Titre principal : {{ vm.settings.site_name_fr }}</h4>
                 <h4 ng-if="rvm.it">Titolo principale: {{ vm.settings.site_name_it }}</h4>
               </div>
-              <div class="blurring dimmable image" ng-init="vm.dimmer()">
+              <div style="margin-top: 20px" ng-if="!vm.cover.asset_name">
+                <h4 ng-show="rvm.fr" class="left floated">Image principale :</h4>
+                <h4 ng-show="rvm.it" class="left floated">Immagine principale:</h4>   
+                <button ng-click="vm.changeCover()" class="ui button primary">
+                  <span ng-show="rvm.fr">Charger</span>
+                  <span ng-show="rvm.it">Caricare</span>
+                </button>
+              </div>
+              <div ng-if="vm.cover.asset_name" class="blurring dimmable image" ng-init="vm.dimmer()">
                 <div class="ui inverted dimmer">
                   <div class="content">
                     <div class="center">
-                      <div class="ui primary button" ng-click='vm.changeCover(vm.cover)'>
+                      <div class="ui primary button" ng-click='vm.changeCover()'>
                         <span><i class="pencil alternate icon"></i></span>                  
                       </div>
                     </div>

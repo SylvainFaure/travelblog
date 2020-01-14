@@ -12,7 +12,7 @@ export default function AuthInterceptor($injector, $q) {
       return config
     },
     responseError: (res) => {
-      console.log(res)
+      console.warn(res)
       return $q.reject(res);
     }
   }

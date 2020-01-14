@@ -73,7 +73,7 @@ class HomeController {
     this.$window.location.reload();
   }
 
-  changeCover(cover) {
+  changeCover() {
     $('.ui.modal.maincover').modal('show')
   }
 

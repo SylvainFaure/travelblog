@@ -111,12 +111,16 @@ class TravelController {
 			this.isPublished = true
 		}
 		if (this.fr) {
-			this.descEditorContent = this.travel.travel_long_desc_fr && this.travel.travel_long_desc_fr[0].rawContent ? this.travel.travel_long_desc_fr[0].rawContent : {} 
-			this.mapEditorContent = this.travel.travel_desc_map_fr && this.travel.travel_desc_map_fr[0].rawContent ? this.travel.travel_desc_map_fr[0].rawContent : {} 
+			const d = this.travel.travel_long_desc_fr
+			const m = this.travel.travel_desc_map_fr
+			this.descEditorContent = d && d[0] && d[0].rawContent ? d[0].rawContent : {} 
+			this.mapEditorContent = m && m[0] && m[0].rawContent ? m[0].rawContent : {} 
 		}
 		if (this.it) {
-			this.descEditorContent = this.travel.travel_long_desc_it && this.travel.travel_long_desc_it[0].rawContent ? this.travel.travel_long_desc_it[0].rawContent : {} 
-			this.mapEditorContent = this.travel.travel_desc_map_it && this.travel.travel_desc_map_it[0].rawContent ? this.travel.travel_desc_map_it[0].rawContent : {} 
+			const d = this.travel.travel_long_desc_it
+			const m = this.travel.travel_desc_map_it
+			this.descEditorContent = d && d[0] && d[0].rawContent ? d[0].rawContent : {} 
+			this.mapEditorContent = m && m[0] && m[0].rawContent ? m[0].rawContent : {} 
 		}
 	}
 

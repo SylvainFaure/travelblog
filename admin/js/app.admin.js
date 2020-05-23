@@ -58,11 +58,13 @@ import './vendors/semantic/themes/default/assets/images/flags.png';
 import '../css/app.admin.scss';
 import '../../node_modules/angular-toastr/dist/angular-toastr.css';
 
+// Personal dependencies
+
 const dependencies = [
   uirouter,
   ngFileUpload,
   ngSanitize,
-  toastr
+  toastr,
 ]
 
 

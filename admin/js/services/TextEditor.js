@@ -1,4 +1,3 @@
-import isEqual from 'lodash.isequal';
 export default class TextEditor {
   constructor (
     $rootScope,
@@ -34,13 +33,16 @@ export default class TextEditor {
 		return this.$sce.trustAsHtml(html)
 	}
 
-  addContent(type, content) {
+  addContent(type, content, _content) {
     if (typeof content == 'string') {
       content.replace(/<!--[^>]*-->?/gm, '');
     }
+    const randomId = Math.floor(Math.random() * 100)
     const comp = {
-      type: type,
-      content: content,
+      id: `${type}-${randomId}`,
+      type,
+      content,
+      rawContent: _content,
       position: this.components.length
     }
     if (comp.$$hashKey) {
@@ -50,12 +52,10 @@ export default class TextEditor {
     this.$rootScope.$emit("componentsChange", this.context, this.components);
   }
 
-  updateContent(comp, content) {
-    this.components.forEach((c) => {
-      if (isEqual(c, comp)) {
-        c.content = content;
-      }
-    })
+  updateContent(comp, content, _content) {
+    const c = this.components.find(c => c.id === comp.id)
+    c.content = content
+    c.rawContent = _content
     this.$rootScope.$emit("componentsChange", this.context, this.components);
   }
 
@@ -65,7 +65,7 @@ export default class TextEditor {
         component.position -= 1;
       }
       if (component.position == comp.position) {
-        if (isEqual(component, comp)) {
+        if (component.id == comp.id) {
           this.components.splice(index, 1);
         }
       }
@@ -84,7 +84,7 @@ export default class TextEditor {
       })
       if (isCompUp) {
         this.components.forEach((c, i) => {
-          if (isEqual(c, comp)) {
+          if (c.id === comp.id) {
             this.components[i].position -= 1;
           }
         })
@@ -100,7 +100,7 @@ export default class TextEditor {
       })
       if (isCompDown) {
         this.components.forEach((c, i) => {
-          if (isEqual(c, comp)) {
+          if (c.id === comp.id) {
             this.components[i].position += 1;
           }
         })

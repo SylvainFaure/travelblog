@@ -21,7 +21,6 @@ class Travel {
 			if (err) {
 				cb({type: 'DatabaseError', error: err})
 			} else {
-				console.log(rows)
 				var records = JSON.stringify(rows);
 				var travel = JSON.parse(records);
 				cb(travel)
@@ -103,7 +102,7 @@ class Travel {
 		} else {
 			db.query('UPDATE travels SET ? WHERE travel_id = ?', [travel, id], (error, results) => {
 				if (error) {
-					cb({type: 'DatabaseError', error: error});
+					cb({type: 'DatabaseError', error});
 				} else {
 					cb(results)
 				}
@@ -114,7 +113,7 @@ class Travel {
 	static unpublishTravel(id, cb) {
 		db.query(`DELETE FROM published_travels WHERE travel_id = ?`, id, (error, result) => {
 			if (error) {
-				cb({type: 'DatabaseError', error: error});
+				cb({type: 'DatabaseError', error});
 			} else {
 				if (result.affectedRows !== 1) {
 					cb({type: "ServerError", message: "There is no travel with such id in DB"})
@@ -130,13 +129,13 @@ class Travel {
 		var resultTwo = {};
 		db.query('DELETE FROM `travels` WHERE `travel_id` = ?', id, (error, result) => {
 			if (error) { 
-				cb({type: 'DatabaseError', error: error})
+				cb({type: 'DatabaseError', error})
 			}
 			resultOne = result;
 		})
 		db.query('SELECT * FROM `published_travels` WHERE `travel_id` = ?', id, (error, rows) => {
 			if (error) { 
-				cb({type: 'DatabaseError', error: error})
+				cb({type: 'DatabaseError', error})
 			} else {
 				if (rows.length) {
 					this.unpublishTravel(id, (result) => {
@@ -150,9 +149,9 @@ class Travel {
 	}
 	
 	static getAllArticlesByTravel(travel, cb) {
-		db.query('SELECT * FROM articles WHERE article_travel_id = ?', [travel], (err, rows) => {
-			if (err) {
-				cb({type: 'DatabaseError', error: err})
+		db.query('SELECT * FROM articles WHERE article_travel_id = ?', [travel], (error, rows) => {
+			if (error) {
+				cb({type: 'DatabaseError', error})
 			} else {
 				var records = JSON.stringify(rows);
 				var articles = JSON.parse(records);

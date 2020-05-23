@@ -5,7 +5,6 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-
 const mode = process.env.NODE_ENV
 
 const entry = { 
@@ -90,6 +89,8 @@ const plugins = [
 
     {from: './admin/js/index.html', to: 'admin/index.html'},
     {from: './admin/js/components/**/*', to: 'admin/components', flatten: true, test: /\.html$/, ignore: [ '*.js' ]},
+    
+    {from: './admin/js/custom-editor-actions/*', to: 'admin/custom-editor-actions', flatten: true },
 
     {from: './admin/js/vendors/semantic/components/*', to: 'admin/vendors/semantic/components', flatten: true},
     {from: './admin/js/vendors/semantic/themes/default/assets/fonts/*', to: 'admin/vendors/semantic/themes/default/assets/fonts', flatten: true},

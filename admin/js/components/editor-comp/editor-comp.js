@@ -1,9 +1,19 @@
+import EditorJS from'@editorjs/editorjs';
+import AddAnecdote from '../../custom-editor-actions/addanecdote';
+import { jsonToHTML } from '../../custom-editor-actions/editor-utils';
+
 export default class editorCompController {
   constructor(
 		TextEditor,
-		$rootScope
-  ) {
+		$rootScope,
+		ApiService,
+		$state
+	) {
 		'ngInject'
+		this.$state = $state;
+		this.editor = undefined;
+		this.editorUpdated = false
+		this.ApiService = ApiService;
 		this.TextEditor = TextEditor;
 		this.AWS_BUCKET_PATH = process.env.AWS_BUCKET_PATH
 		this.init()
@@ -21,7 +31,10 @@ export default class editorCompController {
 		})
 		this.rvm = $rootScope.rvm;
 		this.imgPositionOptions = this.getImgPosOptions()
-		this.showAssetPicker = false			
+		this.showAssetPicker = false	
+		
+		this.html = ''
+		
 	}
 	getImgPosOptions() {
 		if (this.fr) {
@@ -38,6 +51,27 @@ export default class editorCompController {
 				{ key: 'right', label: 'Destra' }
 			]
 		}
+	}
+
+	initEditor () {
+		console.log('init editor')
+		this.editor = new EditorJS({
+			holderId: 'editor',
+			onReady: () => {
+				// console.log('Editor.js is ready to work!')
+		  },
+		 	onChange: () => {
+			 // console.log('Now I know that Editor\'s content changed!')
+			},
+			tools: {
+				anecdote: {
+					class: AddAnecdote,
+					inlineToolbar : true,
+					config: {}
+				},
+			},
+			data: this.comp && this.comp.rawContent ? this.comp.rawContent : {}
+		})
 	}
 
 	mouseUpEvent(e) {
@@ -77,33 +111,53 @@ export default class editorCompController {
 		this.content = content;
 	}
 
-	addContent() {
-		let content;
-		if (this.type == "image") {
-			content = this.comp.content;
-		} else if (this.type == "music") {
-			const splittedLink = this.comp.content.link.split('/')
-			content = {
-				link: splittedLink[splittedLink.length - 1],
-				type: splittedLink[splittedLink.length - 2]
+	async addContent() {
+		const promise = new Promise(async (res, rej) => {
+			let content, _content;
+			if (this.type == "image") {
+				content = this.comp.content;
+			} else if (this.type == "music") {
+				const splittedLink = this.comp.content.link.split('/')
+				content = {
+					link: splittedLink[splittedLink.length - 1],
+					type: splittedLink[splittedLink.length - 2]
+				}
+			} else {
+				_content = await this.editor.save();
+				content = jsonToHTML(_content)
+				// console.log('ADD', _content, content)
 			}
-		} else {
-			content = this.content;
-		}
-		this.TextEditor.addContent(this.type, content);
+			res({content, _content})
+		})
+		const {content, _content} = await promise
+		console.log(content)
+		this.TextEditor.addContent(this.type, content, _content);
+		// console.log(this.TextEditor)
 		this.destroyComponent();
 	}	
 
-	updateContent() {
-		let content;
-		if (this.comp.type !== "image") {
-			content = $('.editor-comp_content-edit').html();
-		}
-		if (this.comp.type == "image") {
-			content = this.comp.content;
-		}
-		this.TextEditor.updateContent(this.comp, content);
-		this.comp.isEditing = false;
+	async updateContent() {
+		const promise = new Promise(async (res, rej) => {
+			let content, _content;
+			if (this.type == "image") {
+				content = this.comp.content;
+			} else if (this.type == "music") {
+				const splittedLink = this.comp.content.link.split('/')
+				content = {
+					link: splittedLink[splittedLink.length - 1],
+					type: splittedLink[splittedLink.length - 2]
+				}
+			} else {
+				_content = await this.editor.save();
+				content = jsonToHTML(_content)
+				// console.log('ADD', _content, content)
+			}
+			res({content, _content})
+		})
+		const {content, _content} = await promise
+		this.TextEditor.updateContent(this.comp, content, _content);
+		console.log(this.TextEditor)
+		this.comp.isEditing = false
 	}
 
 	destroyComponent() {
@@ -116,6 +170,10 @@ export default class editorCompController {
 	}
 	unsetActionsElement() {
 		$('.editor-comp_actions').fadeOut(400).css({'display':'none'})
+	}
+
+	turnBackToActions(type) {
+		$(`.editor-comp_actions-${type}-input`).fadeOut().css({'display':'none'})
 	}
 
 	execAction(action) {
@@ -147,7 +205,6 @@ export default class editorCompController {
 	addAnecdote() {
 		$('#highlighted-text').addClass(`anecdote_${this.activeAnecdote.anecdote_id}`).removeAttr('id').attr('data-title', this.activeAnecdote.anecdote_title);
 		this.content = $(".editor-comp_content").html().replace(/<!--[^>]*-->?/gm, '');
-		console.log(this.content)
 		$('.editor-comp_actions-anecdote-input').fadeOut().css({'display':'none'})
 	}
 
@@ -184,7 +241,6 @@ export default class editorCompController {
 			$(`.ui.modal.choose-image.${this.randomModalClass}`).modal('show');
 		})
 	}
-
 }
 export const editorCompComponent = {
 	templateUrl: 'admin/components/editor-comp.html',

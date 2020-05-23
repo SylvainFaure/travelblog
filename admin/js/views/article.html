@@ -314,11 +314,17 @@
           <h4 ng-show="vm.fr" class="ui horizontal divider">Gallerie</h4>
           <h4 ng-show="vm.it" class="ui horizontal divider">Gallery</h4>
           <div class="ui basic segment no-padding-right" ng-if="vm.isEditing">
-            <img  
-              ng-repeat="image in vm.assetsGallery"
-              class="article-gallery-img"
-              ng-src="{{vm.AWS_BUCKET_PATH}}thumb/mini_{{image.asset_name}}" 
-            >
+            <div class="article-gallery">
+              <div
+                ng-repeat="image in vm.assetsGallery"
+                class="article-gallery-img__wrapper">
+                <i ng-click="vm.removeFromGallery(image)" class="icon close"></i>
+                <img  
+                  class="article-gallery-img"
+                  ng-src="{{vm.AWS_BUCKET_PATH}}thumb/mini_{{image.asset_name}}" 
+                >
+              </div>
+            </div>
             <div 
               class="ui vertical animated button blue right floated"
               ng-click="vm.editGallery = true"
@@ -331,7 +337,11 @@
                 <i class="plus icon"></i>
               </div>
             </div>
-            <div ng-if="vm.editGallery">
+            <div ng-if="vm.editGallery && vm.assetsGallery.length === 4" class="ui blue message">
+              <div ng-if="vm.fr">La gallerie est limitée à 4 images</div>
+              <div ng-if="vm.it">Non puoi aggiungere più di 4 immagini</div>
+            </div>
+            <div ng-if="vm.editGallery && vm.assetsGallery.length < 4">
               <asset-picker
                 assets="vm.articleAssets"
                 actions="false"

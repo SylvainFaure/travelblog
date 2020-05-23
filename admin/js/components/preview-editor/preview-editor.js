@@ -29,13 +29,12 @@ export default class previewEditorController {
 	tooltipAnecdote() {
 		setTimeout(() => {
 			$('[class^=anecdote]').hover(function () {
-				const pos = $(this).position()
 				const text = $(this).data('title')
-				$(this).prepend(`<span class="anecdote_tooltip" style="top: ${pos.top - 20}px; left: ${pos.left - 10}px;">${text}</span>`)
+				$(this).prepend(`<span class="anecdote_tooltip" style="top: 30px; left: 10px;">${text}</span>`)
 			}, function () {
 				$('.anecdote_tooltip').remove()
 			})
-		}, 200)
+		}, 1000)
 	}
 
 	getTrustedSce(type, url) {
@@ -100,6 +99,8 @@ export default class previewEditorController {
 		this.content = $(".editor-comp_content").html();
 		this.unsetActionsElement()
 	}
+
+
 
 }
 export const previewEditorComponent = {

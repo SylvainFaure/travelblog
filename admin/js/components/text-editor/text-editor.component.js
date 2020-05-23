@@ -21,7 +21,7 @@ export default class textEditorController {
 		let assets = action == "image" ? JSON.stringify(this.assets) : '';
 		let anecdotes = JSON.stringify(this.anecdotes)
 		const isAnecdote = this.TextEditor.elementActions.filter(anec => anec.action == 'addanecdote')
-		if(this.TextEditor.context == 'article' && !isAnecdote.length) {
+		if(this.TextEditor.context == 'article' && !!isAnecdote.length) {
 			this.TextEditor.elementActions.push({
 				icon: 'sticky note outline',
 				action: 'addanecdote'

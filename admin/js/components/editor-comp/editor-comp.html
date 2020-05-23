@@ -16,6 +16,9 @@
         <button class="ui icon button" ng-click="vm.addLink()" >
           <i class="check icon"></i>
         </button>
+        <button class="ui icon button" ng-click="vm.turnBackToActions('link')" >
+          <i class="undo icon"></i>
+        </button>
       </div>
     </div>
   </div>
@@ -30,10 +33,13 @@
       <button class="ui icon button" ng-click="vm.addAnecdote()" >
         <i class="check icon"></i>
       </button>
+      <button class="ui icon button" ng-click="vm.turnBackToActions('anecdote')" >
+        <i class="undo icon"></i>
+      </button>
     </div>
   </div>
 
-  <div 
+  <!-- <div 
     ng-if="vm.type !== 'image' && vm.type !== 'music'"
     ng-keyup="vm.getContent($event)"
     ng-paste="vm.getContent($event)"
@@ -42,6 +48,12 @@
     class="editor-comp_content {{vm.type}}-content" 
     contenteditable="true">
     <span class="editor-comp_content-edit" ng-if="vm.comp" ng-bind-html="vm.TextEditor.trustedHtml(vm.comp.content)"></span>
+  </div> -->
+  <div 
+    ng-if="vm.type !== 'image' && vm.type !== 'music'"
+    ng-init="vm.initEditor()"
+    class="editor-comp_content {{vm.type}}-content" >
+    <div id="editor"></div>
   </div>
 
   <div ng-if="vm.type == 'image'" class="editor-comp_image">
@@ -161,6 +173,37 @@
       <div 
         class="ui positive right labeled icon button"
         ng-click="vm.confirmImage()"
+      >
+        <span ng-show="vm.rvm.fr">Confirmer</span>
+        <span ng-show="vm.rvm.it">Confermare</span>
+        <i class="checkmark icon"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL ANECDOTE -->
+  <div class="ui modal choose-anecdote">
+    <i class="close icon"></i>
+    <div class="header">
+      <div>
+        <span ng-show="vm.rvm.fr">Choisis une anecdote</span>
+        <span ng-show="vm.rvm.it">Scegli un'anedotto'</span>      
+      </div>
+      
+    </div>
+    <div class="ui basic segment description">
+      <div class="form field select">
+        <select class="ui fluid dropdown select-anecdote" >
+          <option></option>
+          <option ng-repeat="anec in vm.anecdotes" value="{{anec}}">{{ anec.anecdote_title }}</option>
+        </select>
+        <!-- TODO aggiungere contenuto dell'anedotto -->
+      </div>
+    </div>
+    <div class="actions">
+      <div 
+        class="ui positive right labeled icon button confirm-anecdote"
+        ng-click="vm.confirmAnecdote()"
       >
         <span ng-show="vm.rvm.fr">Confirmer</span>
         <span ng-show="vm.rvm.it">Confermare</span>

@@ -96,6 +96,7 @@ class ArticleController {
       }
     }
     $rootScope.$on("componentsChange", (e, context, comps) => {
+      console.log(context, comps)
       if (context === 'article') {
         this.articleComponents = comps;
       }
@@ -104,7 +105,7 @@ class ArticleController {
 
     /* Gallery */
 		$rootScope.$on('addAssetGallery', (e, asset, context) => {
-      if (context == 'article') {
+      if (context == 'article' && this.assetsGallery.length < 4) {
         this.assetsGallery.push(asset);
       }
 		});
@@ -209,6 +210,10 @@ class ArticleController {
       this.json_in.article_gallery_it = JSON.stringify(this.assetsGallery);
     }
     this.editGallery = false;
+  }
+
+  removeFromGallery (img) {
+    this.assetsGallery = this.assetsGallery.filter(a => a.asset_id !== img.asset_id)
   }
 
   formatTravelCountries() {

@@ -234,10 +234,25 @@
         <div class="ui basic segment">
           <h4 ng-show="vm.fr" class="ui horizontal divider">Description longue</h4>
           <h4 ng-show="vm.it" class="ui horizontal divider">Descrizione lunga</h4>
-          <div class="ui large fluid input">
+          <div id="editor-description"></div>
+
+          <!-- <div class="ui large fluid input">
             <input ng-show="vm.fr" type="text" class="" placeholder="Description" ng-model="vm.travel.travel_long_desc_fr">
             <input ng-show="vm.it" type="text" class="" placeholder="Descrizione" ng-model="vm.travel.travel_long_desc_it">
-          </div>
+          </div> -->
+        </div>
+      </div>
+      
+      <!--MAP DESCRIPTION-->
+      <div class="field">
+        <div class="ui basic segment">
+          <h4 ng-show="vm.fr" class="ui horizontal divider">Description avec carte</h4>
+          <h4 ng-show="vm.it" class="ui horizontal divider">Descrizione con mappa</h4>
+          <div id="editor-map"></div>
+         <!--  <div class="ui large fluid input">
+            <input ng-show="vm.fr" type="text" class="" placeholder="Description" ng-model="vm.travel.travel_long_desc_fr">
+            <input ng-show="vm.it" type="text" class="" placeholder="Descrizione" ng-model="vm.travel.travel_long_desc_it">
+          </div> -->
         </div>
       </div>
 
@@ -312,6 +327,45 @@
         <span ng-if="vm.it">Annula</span>
       </div>
       <div class="ui positive right labeled icon button" ng-click="vm.saveCover()">
+          <span ng-if="vm.fr">Enregistrer</span>
+          <span ng-if="vm.it">Salva</span>
+          <i class="checkmark icon"></i></div>
+    </div>
+  </div>
+
+
+  <div class="ui modal choose-map-point" id="{{vm.travelModalId}}">
+    <i class="close icon"></i>
+    <div class="header">
+      <span ng-show="vm.fr">Choisis un endroit sur la carte</span>
+      <span ng-show="vm.it">Scegli un posto sulla mappa</span>      
+    </div>
+    <div class="description">
+      
+      <div class="field">
+        <div class="ui basic segment">
+          <h4 ng-show="vm.fr" class="ui horizontal divider">Lieu</h4>
+          <h4 ng-show="vm.it" class="ui horizontal divider">Luogo</h4> 
+          <div class="ui large fluid input">
+            <input id="pac-input" type="text" class="" placeholder="Lieu - Luogo" ng-model="vm.chooseMapPoint">
+          </div>
+        </div>
+        <div class="ui basic segment">
+          <div id="map"></div>
+          <div id="infowindow-content">
+            <img src="" width="16" height="16" id="place-icon">
+            <span id="place-name"  class="title"></span><br>
+            <span id="place-address"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui black deny button" ng-click="vm.closeCoverModal()">
+        <span ng-if="vm.fr">Annuler</span>
+        <span ng-if="vm.it">Annula</span>
+      </div>
+      <div class="ui positive right labeled icon button confirm-map-point">
           <span ng-if="vm.fr">Enregistrer</span>
           <span ng-if="vm.it">Salva</span>
           <i class="checkmark icon"></i></div>

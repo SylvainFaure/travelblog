@@ -1,4 +1,7 @@
 import { format } from 'date-fns'
+import EditorJS from'@editorjs/editorjs';
+import AddMapPoint from '../custom-editor-actions/addmappoint';
+import { jsonToHTML } from '../custom-editor-actions/editor-utils';
 
 class TravelController {
 	constructor(
@@ -56,6 +59,8 @@ class TravelController {
 
 		setTimeout(() => {
 			this.initCalendar();
+			this.initEditor();
+			this.initMapEditor();
 		})
 
 	}
@@ -81,7 +86,11 @@ class TravelController {
 	mapTravel() {
 		this.travel.travel_countries_fr = JSON.parse(this.travel.travel_countries_fr)
 		this.travel.travel_countries_it = JSON.parse(this.travel.travel_countries_it)
-		this.travel.travel_hashtags = JSON.parse(this.travel.travel_hashtags),
+		this.travel.travel_hashtags = JSON.parse(this.travel.travel_hashtags)
+		this.travel.travel_long_desc_fr = this.travel.travel_long_desc_fr ? JSON.parse(this.travel.travel_long_desc_fr) : null
+		this.travel.travel_long_desc_it = this.travel.travel_long_desc_it ? JSON.parse(this.travel.travel_long_desc_it) : null
+		this.travel.travel_desc_map_fr = this.travel.travel_desc_map_fr ? JSON.parse(this.travel.travel_desc_map_fr) : null
+		this.travel.travel_desc_map_it = this.travel.travel_desc_map_it ? JSON.parse(this.travel.travel_desc_map_it) : null
 		this.travel.travel_published_fr = this.handleBoolean(this.travel.travel_published_fr)
 		this.travel.travel_published_it = this.handleBoolean(this.travel.travel_published_it)
 		this.travel.travel_same_start_end = this.handleBoolean(this.travel.travel_same_start_end)
@@ -100,6 +109,14 @@ class TravelController {
 		
 		if ((this.fr && this.travel.travel_published_fr) || (this.it && this.travel.travel_published_it)) {
 			this.isPublished = true
+		}
+		if (this.fr) {
+			this.descEditorContent = this.travel.travel_long_desc_fr && this.travel.travel_long_desc_fr[0].rawContent ? this.travel.travel_long_desc_fr[0].rawContent : {} 
+			this.mapEditorContent = this.travel.travel_desc_map_fr && this.travel.travel_desc_map_fr[0].rawContent ? this.travel.travel_desc_map_fr[0].rawContent : {} 
+		}
+		if (this.it) {
+			this.descEditorContent = this.travel.travel_long_desc_it && this.travel.travel_long_desc_it[0].rawContent ? this.travel.travel_long_desc_it[0].rawContent : {} 
+			this.mapEditorContent = this.travel.travel_desc_map_it && this.travel.travel_desc_map_it[0].rawContent ? this.travel.travel_desc_map_it[0].rawContent : {} 
 		}
 	}
 
@@ -157,8 +174,10 @@ class TravelController {
 		formattedTravel.travel_countries_fr = formattedTravel.travel_countries_fr ? JSON.stringify(formattedTravel.travel_countries_fr) : JSON.stringify([])
 		formattedTravel.travel_countries_it = formattedTravel.travel_countries_it ? JSON.stringify(formattedTravel.travel_countries_it) : JSON.stringify([])
 		formattedTravel.travel_hashtags = formattedTravel.travel_hashtags ? JSON.stringify(formattedTravel.travel_hashtags) : JSON.stringify([])
-		formattedTravel.travel_long_desc_fr = formattedTravel.travel_long_desc_fr ? formattedTravel.travel_long_desc_fr : ''
-		formattedTravel.travel_long_desc_it = formattedTravel.travel_long_desc_it ? formattedTravel.travel_long_desc_it : ''
+		formattedTravel.travel_long_desc_fr = formattedTravel.travel_long_desc_fr ? JSON.stringify(formattedTravel.travel_long_desc_fr) : '[]'
+		formattedTravel.travel_long_desc_it = formattedTravel.travel_long_desc_it ? JSON.stringify(formattedTravel.travel_long_desc_it) : '[]'
+		formattedTravel.travel_desc_map_fr = formattedTravel.travel_desc_map_fr ? JSON.stringify(formattedTravel.travel_desc_map_fr) : '[]'
+		formattedTravel.travel_desc_map_it = formattedTravel.travel_desc_map_it ? JSON.stringify(formattedTravel.travel_desc_map_it) : '[]'
 		const publishedFr = this.handleBoolean(formattedTravel.travel_published_fr)
 		const publishedIt = this.handleBoolean(formattedTravel.travel_published_it)
 		
@@ -204,6 +223,59 @@ class TravelController {
 		}
 	}
 
+	initEditor () {
+		console.log('init description editor')
+		this.descEditor = new EditorJS({
+			holderId: 'editor-description',
+			onReady: () => {
+				// console.log('Editor.js is ready to work!')
+		  },
+		 	onChange: () => {
+			 // console.log('Now I know that Editor\'s content changed!')
+			},
+			data: this.descEditorContent
+		})
+	}
+
+	initMapEditor () {
+		console.log('init map editor')
+		this.mapEditor = new EditorJS({
+			holderId: 'editor-map',
+			onReady: () => {
+				// console.log('Editor.js is ready to work!')
+		  },
+		 	onChange: () => {
+			 // console.log('Now I know that Editor\'s content changed!')
+			},
+			tools: {
+				map: {
+					class: AddMapPoint,
+					inlineToolbar : true,
+					config: {}
+				}
+			},
+			data: this.mapEditorContent
+		})
+	}
+
+	async handleEditorsContent () {
+		return new Promise(async (resolve, reject) => {
+			const descRawContent = await this.descEditor.save()
+			const mapRawContent = await this.mapEditor.save()
+			const descContent = jsonToHTML(descRawContent)
+			const mapContent = jsonToHTML(mapRawContent)
+			if (this.fr) {
+				this.travel.travel_long_desc_fr = [{ rawContent: descRawContent, content: descContent }]
+				this.travel.travel_desc_map_fr = [{ rawContent: mapRawContent, content: mapContent }]
+			}
+			if (this.it) {
+				this.travel.travel_long_desc_it = [{ rawContent: descRawContent, content: descContent }]
+				this.travel.travel_desc_map_it = [{ rawContent: mapRawContent, content: mapContent }]
+			}
+			resolve()
+		})
+	}
+
 	setSelectedCategory() {
 		this.travel.travel_category = this.selectedCategory.category_id
 	}
@@ -224,7 +296,9 @@ class TravelController {
 	deleteTravelHashtag(hash) {
 		this.travel.travel_hashtags.splice(this.travel.travel_hashtags.indexOf(hash), 1)
 	}
-	saveTravel(publish) {
+	async saveTravel(publish) {
+		await this.handleEditorsContent()
+		console.log(this.travel)
 		if (this.travel.newtravel && !this.travel.travel_id) {
 			this.createTravel(publish)
 		} else {

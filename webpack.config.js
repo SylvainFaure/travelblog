@@ -71,7 +71,8 @@ const plugins = [
     'process.env': {
       NODE_ENV: JSON.stringify(process.env.NODE_ENV),
       BASE_PATH: JSON.stringify(process.env.BASE_PATH),
-      AWS_BUCKET_PATH: JSON.stringify(process.env.AWS_BUCKET_PATH)
+      AWS_BUCKET_PATH: JSON.stringify(process.env.AWS_BUCKET_PATH),
+      NETLIFY_DEPLOY_ENDPOINT: JSON.stringify(process.env.NETLIFY_DEPLOY_ENDPOINT),
     },
   }),
   new webpack.ProvidePlugin({

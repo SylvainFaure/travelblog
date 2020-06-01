@@ -6,6 +6,7 @@ export default class ApiService {
   ) {
     'ngInject'
     this.BASE_PATH = process.env.BASE_PATH;
+    console.log(process.env)
     this.NETLIFY_DEPLOY_ENDPOINT = process.env.NETLIFY_DEPLOY_ENDPOINT
 
     this.$http = $http;

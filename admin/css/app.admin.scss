@@ -578,11 +578,12 @@ img {
     transform: rotate(360deg);
   }
 }
-#editor, #editor-description, #editor-map {
+[id^=editor] {
   width: 100%;
   min-width: 50vw;
   padding: 20px;
   border: 1px solid lightgray;
+  height: 200px;
 }
 svg {
   width: 15px;

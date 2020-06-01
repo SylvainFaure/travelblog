@@ -27,6 +27,8 @@ export default class AddMapPoint {
     this.button = null;
     this._state = false;
     this.address = undefined
+    this.input = null
+    this.mapInitialized = false
 
     this.tag = 'SPAN';
     this.class = 'map-point';
@@ -56,7 +58,9 @@ export default class AddMapPoint {
     const selectedText = range.extractContents();
     const mapPoint = document.createElement(this.tag);
 
+    const randomId = Math.floor(Math.random() * 10000)
     mapPoint.classList.add(this.class);
+    mapPoint.setAttribute('id', randomId)
     mapPoint.appendChild(selectedText);
     range.insertNode(mapPoint);
 
@@ -76,11 +80,13 @@ export default class AddMapPoint {
   checkState() {
     // called for every inline tool when text selection is made
     const mapPoint = this.api.selection.findParentTag(this.tag);
+    // console.log('check state', mapPoint)
 
     this.state = $(mapPoint).hasClass('map-point');
-    console.log('checkState', mapPoint)
+    this.mapPointId = $(mapPoint).attr('id')
+
     if (this.state) {
-      this.showActions(mapPoint);
+      this.showActions();
     } else {
       this.hideActions();
     }
@@ -95,15 +101,23 @@ export default class AddMapPoint {
     return this.anecdotePicker;
   }
 
-  showActions(mappoint) {
+  showActions() {
+    // console.log('show action', this.mapPointId)
     const modal = `.ui.modal.choose-map-point`
     $(modal).modal('show');
-    this.initMap()
+    if (!this.mapInitialized) {
+      this.initMap()
+    }
     
     $('.confirm-map-point').click(elt => {
-      const { address, lat, lng } = this.address
-      if (!!address) {
-        $(mappoint).addClass(`map-point`).attr({'data-address': address, 'data-lat': lat, 'data-lng': lng})
+      if (this.address) {
+        const { address, lat, lng } = this.address
+        // console.log($(`#${this.mapPointId}`))
+        if ( !$(`#${this.mapPointId}`).attr('data-address') ) {
+          $(`#${this.mapPointId}`).attr({'data-address': address, 'data-lat': lat, 'data-lng': lng})
+        }
+        this.address = null
+        this.input.value = ''
       }
     })
   }
@@ -112,9 +126,10 @@ export default class AddMapPoint {
 		const map = new google.maps.Map(document.getElementById('map'), {
 			center: {lat: -33.8688, lng: 151.2195},
 			zoom: 13
-		});
-		const input = document.getElementById('pac-input');
-		const autocomplete = new google.maps.places.Autocomplete(input);
+    });
+    this.mapInitialized = true
+		this.input = document.getElementById('pac-input');
+		const autocomplete = new google.maps.places.Autocomplete(this.input);
 
 		// Bind the map's bounds (viewport) property to the autocomplete object,
 		// so that the autocomplete requests use the current map bounds for the
@@ -165,16 +180,17 @@ export default class AddMapPoint {
 					(place.address_components[2] && place.address_components[2].short_name || '')
 				].join(' ');
 			}
-
-			infowindowContent.children['place-icon'].src = place.icon;
-			infowindowContent.children['place-name'].textContent = place.name;
-			infowindowContent.children['place-address'].textContent = address;
+      if (infowindowContent) {
+        infowindowContent.children['place-icon'].src = place.icon;
+        infowindowContent.children['place-name'].textContent = place.name;
+        infowindowContent.children['place-address'].textContent = address;
+      }
       infowindow.open(map, marker);
       this.address = {address, lat, lng}
 		});
 	}
 
   hideActions() {
-    console.log('HIDE ACTION')
+    // console.log('HIDE ACTION')
   }
 }

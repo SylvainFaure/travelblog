@@ -102,13 +102,23 @@ class HomeController {
     this.isEditing = false
     this.ApiService.updateSettings(this.settings)
     .then(resp => {
-      console.log(resp)
       this.toastr.success("The main title has been correctly updated")
     })
     .catch(err => {
       console.log(err)
       this.toastr.error("There was an unexpected error, please try again")
     })
+  }
+
+  deploySite () {
+    this.ApiService.siteDeploy()
+      .then(r => {
+        console.log(r)
+        this.toastr.success("The site has successfully been built!")
+      })
+      .catch(err => {
+        this.toastr.error("There was an unexpected error, please try again")
+      })
   }
 }
 export default HomeController;

@@ -61,6 +61,7 @@ class TravelController {
 			this.initCalendar();
 			this.initEditor();
 			this.initMapEditor();
+			this.initEditorDescription();
 		})
 
 	}
@@ -89,6 +90,8 @@ class TravelController {
 		this.travel.travel_hashtags = JSON.parse(this.travel.travel_hashtags)
 		this.travel.travel_long_desc_fr = this.travel.travel_long_desc_fr ? JSON.parse(this.travel.travel_long_desc_fr) : null
 		this.travel.travel_long_desc_it = this.travel.travel_long_desc_it ? JSON.parse(this.travel.travel_long_desc_it) : null
+		this.travel.travel_long_desc_bis_fr = this.travel.travel_long_desc_bis_fr ? JSON.parse(this.travel.travel_long_desc_bis_fr) : null
+		this.travel.travel_long_desc_bis_it = this.travel.travel_long_desc_bis_it ? JSON.parse(this.travel.travel_long_desc_bis_it) : null
 		this.travel.travel_desc_map_fr = this.travel.travel_desc_map_fr ? JSON.parse(this.travel.travel_desc_map_fr) : null
 		this.travel.travel_desc_map_it = this.travel.travel_desc_map_it ? JSON.parse(this.travel.travel_desc_map_it) : null
 		this.travel.travel_published_fr = this.handleBoolean(this.travel.travel_published_fr)
@@ -113,14 +116,18 @@ class TravelController {
 		if (this.fr) {
 			const d = this.travel.travel_long_desc_fr
 			const m = this.travel.travel_desc_map_fr
+			const b = this.travel.travel_long_desc_bis_fr
 			this.descEditorContent = d && d[0] && d[0].rawContent ? d[0].rawContent : {} 
 			this.mapEditorContent = m && m[0] && m[0].rawContent ? m[0].rawContent : {} 
+			this.descBisEditorContent = b && b[0] && b[0].rawContent ? b[0].rawContent : {} 
 		}
 		if (this.it) {
 			const d = this.travel.travel_long_desc_it
 			const m = this.travel.travel_desc_map_it
+			const b = this.travel.travel_long_desc_bis_it
 			this.descEditorContent = d && d[0] && d[0].rawContent ? d[0].rawContent : {} 
 			this.mapEditorContent = m && m[0] && m[0].rawContent ? m[0].rawContent : {} 
+			this.descBisEditorContent = b && b[0] && b[0].rawContent ? b[0].rawContent : {} 
 		}
 	}
 
@@ -180,6 +187,8 @@ class TravelController {
 		formattedTravel.travel_hashtags = formattedTravel.travel_hashtags ? JSON.stringify(formattedTravel.travel_hashtags) : JSON.stringify([])
 		formattedTravel.travel_long_desc_fr = formattedTravel.travel_long_desc_fr ? JSON.stringify(formattedTravel.travel_long_desc_fr) : '[]'
 		formattedTravel.travel_long_desc_it = formattedTravel.travel_long_desc_it ? JSON.stringify(formattedTravel.travel_long_desc_it) : '[]'
+		formattedTravel.travel_long_desc_bis_fr = formattedTravel.travel_long_desc_bis_fr ? JSON.stringify(formattedTravel.travel_long_desc_bis_fr) : '[]'
+		formattedTravel.travel_long_desc_bis_it = formattedTravel.travel_long_desc_bis_it ? JSON.stringify(formattedTravel.travel_long_desc_bis_it) : '[]'
 		formattedTravel.travel_desc_map_fr = formattedTravel.travel_desc_map_fr ? JSON.stringify(formattedTravel.travel_desc_map_fr) : '[]'
 		formattedTravel.travel_desc_map_it = formattedTravel.travel_desc_map_it ? JSON.stringify(formattedTravel.travel_desc_map_it) : '[]'
 		const publishedFr = this.handleBoolean(formattedTravel.travel_published_fr)
@@ -262,20 +271,33 @@ class TravelController {
 		})
 	}
 
+	initEditorDescription () {
+		this.complementaryEditor = new EditorJS({
+			holderId: 'editor-description-bis',
+			onReady: () => {
+				// console.log('Editor.js is ready to work!')
+		  },
+		 	onChange: () => {
+			 // console.log('Now I know that Editor\'s content changed!')
+			},
+			data: this.descBisEditorContent
+		})
+	}
+
 	async handleEditorsContent () {
 		return new Promise(async (resolve, reject) => {
 			const descRawContent = await this.descEditor.save()
 			const mapRawContent = await this.mapEditor.save()
+			const descBisRawContent = await this.complementaryEditor.save()
 			const descContent = jsonToHTML(descRawContent)
 			const mapContent = jsonToHTML(mapRawContent)
-			if (this.fr) {
-				this.travel.travel_long_desc_fr = [{ rawContent: descRawContent, content: descContent }]
-				this.travel.travel_desc_map_fr = [{ rawContent: mapRawContent, content: mapContent }]
-			}
-			if (this.it) {
-				this.travel.travel_long_desc_it = [{ rawContent: descRawContent, content: descContent }]
-				this.travel.travel_desc_map_it = [{ rawContent: mapRawContent, content: mapContent }]
-			}
+			const descBisContent = jsonToHTML(descBisRawContent)
+
+			const lang = this.fr ? 'fr' : 'it'
+			this.travel[`travel_long_desc_${lang}`] = [{ rawContent: descRawContent, content: descContent }]
+			this.travel[`travel_desc_map_${lang}`] = [{ rawContent: mapRawContent, content: mapContent }]
+			this.travel[`travel_long_desc_bis_${lang}`] = [{ rawContent: descBisRawContent, content: descBisContent }]
+
 			resolve()
 		})
 	}

@@ -74,6 +74,16 @@
                   ng-src="{{vm.AWS_BUCKET_PATH}}img/{{vm.cover.asset_name}}"
                 >
               </div>
+              <div class="ui basic segment">
+                <div class="ui vertical animated button blue right floated" 
+                      ng-click="vm.deploySite()">
+                  <div ng-if="rvm.fr" class="hidden content">Deployer</div>
+                  <div ng-if="rvm.it" class="hidden content">Deploy</div>        
+                  <div class="visible content">
+                    <i class="rocket icon"></i>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="ui sixteen wide column">
                 <div class="segment">

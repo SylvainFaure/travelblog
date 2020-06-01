@@ -6,7 +6,7 @@ export default class ApiService {
   ) {
     'ngInject'
     this.BASE_PATH = process.env.BASE_PATH;
-    this.NETLIFY_DEPLOY_ENPOINT = process.env.NETLIFY_DEPLOY_ENPOINT
+    this.NETLIFY_DEPLOY_ENDPOINT = process.env.NETLIFY_DEPLOY_ENDPOINT
 
     this.$http = $http;
     this.$rootScope = $rootScope;
@@ -146,6 +146,6 @@ export default class ApiService {
   }
 
   siteDeploy() {
-    return this.$http.post(this.NETLIFY_DEPLOY_ENPOINT)
+    return this.$http.post(this.NETLIFY_DEPLOY_ENDPOINT)
   }
 }

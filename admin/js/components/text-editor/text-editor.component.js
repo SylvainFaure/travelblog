@@ -18,7 +18,8 @@ export default class textEditorController {
 	triggerAction(action) {
 		this.TextEditor.isEditingComponent = true
 		let elmt = $('.text-editor_active-action')
-		let assets = action == "image" ? JSON.stringify(this.assets) : '';
+		// let assets = action == "image" ? JSON.stringify(this.assets) : '';
+
 		let anecdotes = JSON.stringify(this.anecdotes)
 		const isAnecdote = this.TextEditor.elementActions.filter(anec => anec.action == 'addanecdote')
 		if(this.TextEditor.context == 'article' && !!isAnecdote.length) {
@@ -27,7 +28,7 @@ export default class textEditorController {
 				action: 'addanecdote'
 			})
 		}
-		elmt.append(`<editor-comp type="${action}" actions='${JSON.stringify(this.TextEditor.elementActions)}' anecdotes='${anecdotes}' assets='${assets}'></editor-comp>`)
+		elmt.append(`<editor-comp type="${action}" actions='${JSON.stringify(this.TextEditor.elementActions)}' anecdotes='${anecdotes}'></editor-comp>`)
 		this.$compile($('editor-comp'))(this.$scope)
   }
 

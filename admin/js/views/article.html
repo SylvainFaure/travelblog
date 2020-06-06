@@ -397,7 +397,6 @@
               <text-editor actions="vm.actions" anecdotes="vm.anecdotes" assets="vm.articleAssets"></text-editor>
               <preview-editor 
                 ng-if="vm.articleComponents.length" 
-                components="vm.articleComponents"
                 editable="true"
                 preview-editor-assets="vm.articleAssets"
                 preview-editor-anecdotes="vm.anecdotes"
@@ -410,7 +409,6 @@
           <div class="ui basic segment" ng-if="!vm.isEditing">
             <preview-editor 
               ng-if="vm.articleComponents.length" 
-              components="vm.articleComponents"
               editable="false"
               context="article"
             >
@@ -427,7 +425,7 @@
         </div>
         <div class="ui vertical animated button blue right floated large-button" 
               ng-if="vm.isEditing"
-              ng-click="vm.saveArticle()">
+              ng-click="vm.saveArticle('direct')">
           <div ng-if="vm.fr" class="hidden content">Enregistrer</div>
           <div ng-if="vm.it" class="hidden content">Salvare</div>        
           <div class="visible content">

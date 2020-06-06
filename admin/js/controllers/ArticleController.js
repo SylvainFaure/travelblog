@@ -372,6 +372,7 @@ class ArticleController {
       this.ApiService.articleUpdate(article, article.article_id).then((resp) => {
         console.log(resp)
         this.isEditing = false;
+        console.log(mode)
         if (mode == 'direct') {
           this.$state.reload();
         }

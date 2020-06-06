@@ -13,12 +13,23 @@ export default class previewEditorController {
 				this.editingImage = asset;
 			}
 		});
+		this.components = this.TextEditor.components
 		this.rvm = $rootScope.rvm;
 		this.$sce = $sce
 		this.tooltipAnecdote()
+		$rootScope.$on('componentsChange', components => {
+			this.components = this.TextEditor.components.map(c => {
+				c.isEditing = false
+				return c
+			})
+			this.TextEditor.isEditingComponent = false
+			$scope.$apply()
+			// console.log('Watch preview editor', this.components, this.TextEditor)
+		})
 	}	
 
 	$onInit() {
+		console.log('preview editor init')
 		if (this.components.length) {
 			this.components.forEach(comp => {
 				comp.isEditing = false;
@@ -108,7 +119,7 @@ export const previewEditorComponent = {
 	controller: previewEditorController,
 	controllerAs: 'vm',
 	bindings: {
-		components: "=",
+		// components: "=",
 		editable: "<",
 		previewEditorAssets: "=",
 		previewEditorAnecdotes: "<"

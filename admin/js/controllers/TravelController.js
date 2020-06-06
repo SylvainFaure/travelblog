@@ -30,7 +30,6 @@ class TravelController {
 		this.$window = $window;
 		this.toastr = toastr
 		this.AWS_BUCKET_PATH = process.env.AWS_BUCKET_PATH 
-		this.travelModalId = `travel_${this.travel.travel_id}`
 
 		this.fr = $rootScope.rvm.fr;
 		this.it = $rootScope.rvm.it;
@@ -40,6 +39,7 @@ class TravelController {
 		})
 		this.isPublished = false;
 		this.editingCover = '';
+		this.editingImage = '';
 
 		$rootScope.$on('changeCover', (e, from, asset) => {
 			if (from == "travel") {
@@ -50,6 +50,9 @@ class TravelController {
 		$rootScope.$on('changeAsset', (e, from, asset) => {
 			if (from == "travel" && this.travel) {
 				this.editingCover = asset.asset_name
+			}
+			if (from == "travel-image" && this.travel) {
+				this.editingImage = asset.asset_name
 			}
 		});
 
@@ -67,20 +70,34 @@ class TravelController {
 	}
 
 	openCoverModal() {
-		$(`.ui.modal.travelcover#${this.travelModalId}`).modal('show')
+		this.randomId = Math.floor(Math.random() * 1000)
+		setTimeout(() => {
+			$(`.ui.modal.travelcover#cover-${this.randomId}`).modal('show')
+		})
 	}
 
 	closeCoverModal() {
-		$('.ui.modal.cover').modal('hide')
+		$('.ui.modal.travelcover').modal('hide')
+	}
+
+	openImageModal() {
+		this.randomId = Math.floor(Math.random() * 1000)
+		setTimeout(() => {
+			$(`.ui.modal.travelimage#image-${this.randomId}`).modal('show')
+		})
+	}
+
+	closeImageModal() {
+		$('.ui.modal.travelimage').modal('hide')
 	}
 
 	saveCover() {
-		if (this.fr) {
-			this.travel.travel_cover_fr = this.editingCover;
-		}
-		if (this.it) {
-			this.travel.travel_cover_it = this.editingCover;
-		}
+		const lang = this.fr ? 'fr' : 'it'
+		this.travel[`travel_cover_${lang}`] = this.editingCover;
+	}
+	saveImage() {
+		const lang = this.fr ? 'fr' : 'it'
+		this.travel[`travel_desc_image_${lang}`] = this.editingImage;
 	}
 
 

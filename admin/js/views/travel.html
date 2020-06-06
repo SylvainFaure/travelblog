@@ -255,6 +255,30 @@
           <div id="editor-description-bis"></div>
         </div>
       </div>
+
+      <!--IMAGE-->
+      <div class="field">
+        <div class="ui basic segment">
+          <h4 ng-show="vm.fr" class="ui horizontal divider">Photo en page</h4>
+          <h4 ng-show="vm.it" class="ui horizontal divider">Foto in pagina</h4>
+          <div ng-show="vm.fr && vm.travel.travel_desc_image_fr">
+            <img class="travel-img" ng-src="{{vm.AWS_BUCKET_PATH}}thumb/mini_{{vm.travel.travel_desc_image_fr}}" alt="">
+          </div>
+          <div ng-show="vm.it && vm.travel.travel_desc_image_it">
+            <img class="travel-img" ng-src="{{vm.AWS_BUCKET_PATH}}thumb/mini_{{vm.travel.travel_desc_image_it}}" alt="">
+          </div>
+          <div>
+            <div class="ui vertical animated button blue right floated" 
+                ng-click="vm.openImageModal()">
+            <div ng-if="vm.fr" class="hidden content">Editer</div>
+            <div ng-if="vm.it" class="hidden content">Cambiare</div>
+            <div class="visible content">
+              <i class="pencil alternate icon"></i>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
      
 
       <!--SLUG-->
@@ -319,7 +343,7 @@
 
 
   <!--MODAL COVER-->
-  <div class="ui modal travelcover" id="{{vm.travelModalId}}">
+  <div class="ui modal travelcover" id="cover-{{vm.randomId}}">
     <i class="close icon"></i>
     <div class="header">
       <span ng-show="vm.fr">Choisis une image principale pour ce pays</span>
@@ -346,8 +370,36 @@
     </div>
   </div>
 
+  <!--MODAL IMAGE-->
+  <div class="ui modal travelimage" id="image-{{vm.randomId}}">
+    <i class="close icon"></i>
+    <div class="header">
+      <span ng-show="vm.fr">Choisis une image</span>
+      <span ng-show="vm.it">Scegli un'immagine</span>      
+    </div>
+    <div class="description">
+      <div class="field assets_modal">
+        <asset-picker 
+          assets="vm.assets" 
+          disable-place="true" 
+          context="travel-image"
+        ></asset-picker> 
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui black deny button" ng-click="vm.closeImageModal()">
+        <span ng-if="vm.fr">Annuler</span>
+        <span ng-if="vm.it">Annula</span>
+      </div>
+      <div class="ui positive right labeled icon button" ng-click="vm.saveImage()">
+          <span ng-if="vm.fr">Enregistrer</span>
+          <span ng-if="vm.it">Salva</span>
+          <i class="checkmark icon"></i></div>
+    </div>
+  </div>
 
-  <div class="ui modal choose-map-point" id="{{vm.travelModalId}}">
+  <!--MODAL MAP EDITOR-->
+  <div class="ui modal choose-map-point">
     <i class="close icon"></i>
     <div class="header">
       <span ng-show="vm.fr">Choisis un endroit sur la carte</span>

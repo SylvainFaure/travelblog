@@ -7,7 +7,8 @@ export default class editorCompController {
 		TextEditor,
 		$rootScope,
 		ApiService,
-		$state
+		$state,
+		$scope
 	) {
 		'ngInject'
 		this.$state = $state;
@@ -15,6 +16,7 @@ export default class editorCompController {
 		this.editorUpdated = false
 		this.ApiService = ApiService;
 		this.TextEditor = TextEditor;
+		this.assets = $scope.$parent.vm.assets
 		this.AWS_BUCKET_PATH = process.env.AWS_BUCKET_PATH
 		this.init()
 		$rootScope.$on('changeAsset', (e, from, asset) => {
@@ -226,8 +228,8 @@ export default class editorCompController {
 		this.comp.content = {
 			name: this.asset.asset_name,
 			src: this.asset.asset_src,
-			fullWidth: this.comp.content.fullWidth,
-			position: this.comp.content.position,
+			// fullWidth: this.comp.content.fullWidth,
+			// position: this.comp.content.position,
 			originalAsset: this.asset
 		};
 		this.asset = null;
@@ -249,7 +251,7 @@ export const editorCompComponent = {
 	bindings: {
 		type: '@',
 		actions: '<',
-		assets: "<",
+		// assets: "<",
 		anecdotes: '<',
 		comp: "<"
 	}

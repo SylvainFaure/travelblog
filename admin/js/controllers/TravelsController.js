@@ -173,7 +173,7 @@ class TravelsController {
 				this.toastr.error("There was an unexpected error...try again!", "Ops!")
 			})
 	}
-	updateCategory(category) {
+		updateCategory(category) {
 		delete category.isEditing
 		this.ApiService
 			.categoryUpdate(category, category.category_id)

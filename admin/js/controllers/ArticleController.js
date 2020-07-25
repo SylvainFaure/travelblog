@@ -423,7 +423,7 @@ class ArticleController {
   deleteArticle(id) {
     this.ApiService.articleDelete(id).then((result) => {
       console.log(result)
-      this.$state.go('articles', {success: true})
+      this.$state.go('logged.articles', {success: true})
     })
   }
 

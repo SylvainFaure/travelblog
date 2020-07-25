@@ -214,25 +214,27 @@ export default function Router ($stateProvider, $urlRouterProvider) {
       controllerAs: "vm",
       resolve: {
         Travel: ($stateParams, ApiService, $state) => {
-          if ($stateParams.travelId === "new") {
+          if ($stateParams.travelId === "newtravel") {
             return {
               newtravel: true
             }
-          } else {
-            return ApiService
-              .travelDetail($stateParams.travelId)
-              .then((r) => {
-                if (!r.data.length) {
-                  $state.go("logged.travels", {location: "replace"});
-                }
-                return r.data[0]
-              })
-              .catch(err => {
-                console.log(err)
-              })
-          }
+          } 
+          return ApiService
+            .travelDetail($stateParams.travelId)
+            .then((r) => {
+              if (!r.data.length) {
+                $state.go("logged.travels", {location: "replace"});
+              }
+              return r.data[0]
+            })
+            .catch(err => {
+              console.log(err)
+            })
         },
         TravelArticles: ($stateParams, ApiService) => {
+          if ($stateParams.travelId === "newtravel") {
+            return []
+          }
           return ApiService 
             .travelArticles($stateParams.travelId)
             .then((r) => {
@@ -260,13 +262,6 @@ export default function Router ($stateProvider, $urlRouterProvider) {
             })
         }
       }
-    })
-    .state('logged.newtravel', {
-      url: 'newtravel',
-      sticky: true,
-      templateUrl: "../js/views/newtravel.html",
-      controller: "AddCountryController",
-      controllerAs: 'vm'
     })
     .state('logged.article', {
       url: 'article/{articleId}',

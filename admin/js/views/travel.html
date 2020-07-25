@@ -167,7 +167,7 @@
               </tr>
             </thead>
             <tbody id="sortable">
-              <tr data-article={{article}} ng-repeat="article in vm.travelArticles" style="cursor: pointer;"> 
+              <tr ng-if="wm.travelArticles.length" data-article={{article}} ng-repeat="article in vm.travelArticles" style="cursor: pointer;"> 
                 <td><p ng-show="vm.fr">{{article.article_place_fr}}</p><p ng-show="vm.it">{{article.article_place_it}}</p></td>
                 <td><p ng-show="vm.fr">{{article.article_title_fr}}</p><p ng-show="vm.it">{{article.article_title_it}}</p></td>
                 <td>

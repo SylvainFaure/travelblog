@@ -102,49 +102,93 @@ class TravelController {
 
 
 	mapTravel() {
-		this.travel.travel_countries_fr = JSON.parse(this.travel.travel_countries_fr)
-		this.travel.travel_countries_it = JSON.parse(this.travel.travel_countries_it)
-		this.travel.travel_hashtags = JSON.parse(this.travel.travel_hashtags)
-		this.travel.travel_long_desc_fr = this.travel.travel_long_desc_fr ? JSON.parse(this.travel.travel_long_desc_fr) : null
-		this.travel.travel_long_desc_it = this.travel.travel_long_desc_it ? JSON.parse(this.travel.travel_long_desc_it) : null
-		this.travel.travel_long_desc_bis_fr = this.travel.travel_long_desc_bis_fr ? JSON.parse(this.travel.travel_long_desc_bis_fr) : null
-		this.travel.travel_long_desc_bis_it = this.travel.travel_long_desc_bis_it ? JSON.parse(this.travel.travel_long_desc_bis_it) : null
-		this.travel.travel_desc_map_fr = this.travel.travel_desc_map_fr ? JSON.parse(this.travel.travel_desc_map_fr) : null
-		this.travel.travel_desc_map_it = this.travel.travel_desc_map_it ? JSON.parse(this.travel.travel_desc_map_it) : null
-		this.travel.travel_published_fr = this.handleBoolean(this.travel.travel_published_fr)
-		this.travel.travel_published_it = this.handleBoolean(this.travel.travel_published_it)
-		this.travel.travel_same_start_end = this.handleBoolean(this.travel.travel_same_start_end)
-		this.travel.travel_category = this.travel.travel_category ? this.travel.travel_category : this.categories[0].category_id
-
-		this.travel.dates_raw = {
-			start_date: this.travel.travel_start_date,
-			end_date: this.travel.travel_end_date,
-			published_fr: this.travel.travel_published_date_fr,
-			published_it: this.travel.travel_published_date_it
-		}
-		this.travel.travel_start_date = this.travel.travel_start_date ? this.format(new Date(this.travel.travel_start_date), 'dd/M/yyyy') : ''
-		this.travel.travel_end_date = this.travel.travel_end_date ? this.format(new Date(this.travel.travel_end_date), 'dd/M/yyyy') : ''
-		this.travel.travel_published_date_fr = this.travel.travel_published_date_fr ? this.format(new Date(this.travel.travel_published_date_fr), 'dd/M/yyyy') : ''
-		this.travel.travel_published_date_it = this.travel.travel_published_date_it ? this.format(new Date(this.travel.travel_published_date_it), 'dd/M/yyyy') : ''
-		
-		if ((this.fr && this.travel.travel_published_fr) || (this.it && this.travel.travel_published_it)) {
-			this.isPublished = true
-		}
-		if (this.fr) {
-			const d = this.travel.travel_long_desc_fr
-			const m = this.travel.travel_desc_map_fr
-			const b = this.travel.travel_long_desc_bis_fr
-			this.descEditorContent = d && d[0] && d[0].rawContent ? d[0].rawContent : {} 
-			this.mapEditorContent = m && m[0] && m[0].rawContent ? m[0].rawContent : {} 
-			this.descBisEditorContent = b && b[0] && b[0].rawContent ? b[0].rawContent : {} 
-		}
-		if (this.it) {
-			const d = this.travel.travel_long_desc_it
-			const m = this.travel.travel_desc_map_it
-			const b = this.travel.travel_long_desc_bis_it
-			this.descEditorContent = d && d[0] && d[0].rawContent ? d[0].rawContent : {} 
-			this.mapEditorContent = m && m[0] && m[0].rawContent ? m[0].rawContent : {} 
-			this.descBisEditorContent = b && b[0] && b[0].rawContent ? b[0].rawContent : {} 
+		if (!this.travel.newtravel) {
+			this.travel.travel_countries_fr = JSON.parse(this.travel.travel_countries_fr)
+			this.travel.travel_countries_it = JSON.parse(this.travel.travel_countries_it)
+			this.travel.travel_hashtags = JSON.parse(this.travel.travel_hashtags)
+			this.travel.travel_long_desc_fr = this.travel.travel_long_desc_fr ? JSON.parse(this.travel.travel_long_desc_fr) : null
+			this.travel.travel_long_desc_it = this.travel.travel_long_desc_it ? JSON.parse(this.travel.travel_long_desc_it) : null
+			this.travel.travel_long_desc_bis_fr = this.travel.travel_long_desc_bis_fr ? JSON.parse(this.travel.travel_long_desc_bis_fr) : null
+			this.travel.travel_long_desc_bis_it = this.travel.travel_long_desc_bis_it ? JSON.parse(this.travel.travel_long_desc_bis_it) : null
+			this.travel.travel_desc_map_fr = this.travel.travel_desc_map_fr ? JSON.parse(this.travel.travel_desc_map_fr) : null
+			this.travel.travel_desc_map_it = this.travel.travel_desc_map_it ? JSON.parse(this.travel.travel_desc_map_it) : null
+			this.travel.travel_published_fr = this.handleBoolean(this.travel.travel_published_fr)
+			this.travel.travel_published_it = this.handleBoolean(this.travel.travel_published_it)
+			this.travel.travel_same_start_end = this.handleBoolean(this.travel.travel_same_start_end)
+			this.travel.travel_category = this.travel.travel_category ? this.travel.travel_category : this.categories[0].category_id
+	
+			this.travel.dates_raw = {
+				start_date: this.travel.travel_start_date,
+				end_date: this.travel.travel_end_date,
+				published_fr: this.travel.travel_published_date_fr,
+				published_it: this.travel.travel_published_date_it
+			}
+			this.travel.travel_start_date = this.travel.travel_start_date ? this.format(new Date(this.travel.travel_start_date), 'dd/M/yyyy') : ''
+			this.travel.travel_end_date = this.travel.travel_end_date ? this.format(new Date(this.travel.travel_end_date), 'dd/M/yyyy') : ''
+			this.travel.travel_published_date_fr = this.travel.travel_published_date_fr ? this.format(new Date(this.travel.travel_published_date_fr), 'dd/M/yyyy') : ''
+			this.travel.travel_published_date_it = this.travel.travel_published_date_it ? this.format(new Date(this.travel.travel_published_date_it), 'dd/M/yyyy') : ''
+			
+			if ((this.fr && this.travel.travel_published_fr) || (this.it && this.travel.travel_published_it)) {
+				this.isPublished = true
+			}
+			if (this.fr) {
+				const d = this.travel.travel_long_desc_fr
+				const m = this.travel.travel_desc_map_fr
+				const b = this.travel.travel_long_desc_bis_fr
+				this.descEditorContent = d && d[0] && d[0].rawContent ? d[0].rawContent : {} 
+				this.mapEditorContent = m && m[0] && m[0].rawContent ? m[0].rawContent : {} 
+				this.descBisEditorContent = b && b[0] && b[0].rawContent ? b[0].rawContent : {} 
+			}
+			if (this.it) {
+				const d = this.travel.travel_long_desc_it
+				const m = this.travel.travel_desc_map_it
+				const b = this.travel.travel_long_desc_bis_it
+				this.descEditorContent = d && d[0] && d[0].rawContent ? d[0].rawContent : {} 
+				this.mapEditorContent = m && m[0] && m[0].rawContent ? m[0].rawContent : {} 
+				this.descBisEditorContent = b && b[0] && b[0].rawContent ? b[0].rawContent : {} 
+			}
+		} else {
+			this.travel = {
+				newtravel: true,
+				travel_countries_fr: [],
+				travel_countries_it: [],
+				travel_long_desc_fr: null,
+				travel_long_desc_it: null,
+				travel_long_desc_bis_fr: null,
+				travel_long_desc_bis_it: null,
+				travel_desc_map_fr: null,
+				travel_desc_map_it: null,
+				travel_desc_image_fr: "",
+				travel_desc_image_it: "",
+				travel_playlist_fr: "",
+				travel_playlist_it: "",
+				travel_cover_fr: "",
+				travel_cover_it: "",
+				travel_slug_fr: "",
+				travel_slug_it: "",
+				travel_title_fr: "",
+				travel_title_it: "",
+				travel_desc_fr: "",
+				travel_desc_it: "",
+				travel_published_it: false,
+				travel_published_fr: false,
+				travel_published_date_fr: null,
+				travel_published_date_it: null,
+				travel_start_date: '',
+				travel_end_date: '',
+				travel_hashtags: [],
+				travel_same_start_end: true,
+				travel_category: this.categories[0].category_id,
+				dates_raw: {
+					start_date: '',
+					end_date: '',
+					published_fr: null,
+					published_it: null
+				},
+			}
+			this.descEditorContent = {} 
+			this.mapEditorContent = {} 
+			this.descBisEditorContent = {}
 		}
 	}
 
@@ -189,10 +233,8 @@ class TravelController {
 		let val
 		if (typeof value === 'string') {
 			val = value == 'true' ? true : false
-		} else if (typeof value === 'number') {
-			val = value == 1 ? true : false
 		} else {
-			val = value
+			val = !!value
 		}
 		return val
 	}
@@ -218,6 +260,9 @@ class TravelController {
 		if (!publish) {
 			formattedTravel.travel_published_date_fr = formattedTravel.dates_raw.published_fr
 			formattedTravel.travel_published_date_it = formattedTravel.dates_raw.published_it
+		}
+		if (formattedTravel.newtravel) {
+			delete formattedTravel.newtravel
 		}
 		delete formattedTravel.dates_raw
 		delete formattedTravel.travel_editing_country
@@ -357,7 +402,7 @@ class TravelController {
 				if (publish) {
 					this.publishTravel()
 				} else {
-					this.$state.reload('logged')
+					this.$state.go('logged.travels', {success: true})
 				}
 			}).catch(err => {
 				this.toastr.error("There was an unexpected error" + err)

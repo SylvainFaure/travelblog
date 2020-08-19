@@ -318,7 +318,9 @@ class ArticleController {
       if (article.article_travel_fr) {
         delete article.article_travel_fr
       }
-      if (!article.article_gallery_fr) {
+      if (this.assetsGallery.length) {
+        article.article_gallery_fr = JSON.stringify(this.assetsGallery)
+      } else {
         article.article_gallery_fr = '[]';
       }
       if (this.articleComponents) {
@@ -329,6 +331,11 @@ class ArticleController {
       if (!article.article_long_desc_fr) {
         article.article_long_desc_fr = '[]'; 
       }
+      if (article.newarticle) {
+        article.article_title_it = ''
+        article.article_long_desc_it = '[]'
+        article.article_gallery_it = '[]'
+      }
     }
     if (this.it) {
       if (!article.article_slug_it) {
@@ -337,9 +344,13 @@ class ArticleController {
       if (article.article_travel_it) {
         delete article.article_travel_it
       }
-      if (!article.article_gallery_it) {
-        article.article_gallery_it = '[]';
+      if (this.assetsGallery.length) {
+        article.article_gallery_fr = JSON.stringify(this.assetsGallery)
+      } else {
+        article.article_gallery_fr = '[]';
       }
+      
+
       if (this.articleComponents) {
         const components = this.cleanComponents(this.articleComponents)
         article.article_long_desc_it = JSON.stringify(components);
@@ -347,6 +358,11 @@ class ArticleController {
       }
       if (!article.article_long_desc_it) {
         article.article_long_desc_it = '[]'; 
+      }
+      if (article.newarticle) {
+        article.article_title_fr = ''
+        article.article_long_desc_fr = '[]'
+        article.article_gallery_fr = '[]'
       }
     }
     return article;
@@ -361,8 +377,7 @@ class ArticleController {
     if (article.newarticle) {
       delete article.newarticle
       this.ApiService.articleCreate(article).then((resp) => {
-        console.log(resp)
-        this.$state.go('article', {resourcePath: resp.data.insertId})
+        this.$state.go('logged.article', {articleId: resp.data.insertId})
         this.toggleStep();
       }, (error) => {
         console.warn(error);

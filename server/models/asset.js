@@ -1,3 +1,4 @@
+const aws = require('aws-sdk')
 const db = require('../db.js');
 
 class Asset {
@@ -78,7 +79,7 @@ class Asset {
 			cb({type: 'DatabaseError', error: error})
 		}
 	}
-
+	
 /* 	static resizeAsset(asset) {		
 		const s3 = new aws.S3();
 		s3.getObject({
@@ -115,7 +116,7 @@ class Asset {
 	}
 
 	static deleteAssets(ids, names, cb) {
-		// console.info(ids, names)
+		console.info(ids, names)
 		try {
 			var results = []
 			for (var i = 0; i < ids.length; i++) {
@@ -138,6 +139,40 @@ class Asset {
 				}) */
 			}
 			cb(results)
+
+			const s3 = new aws.S3();
+			s3.listObjects({Bucket: process.env.S3_BUCKET_NAME}, (error, data) => {
+				if (error) {
+					return
+				}
+				if (data) {
+					//console.log(data)
+					const toDelete = []
+					data.Contents.forEach((o, i) => {
+						names.forEach((n, i) => {
+							// console.log(o.Key, n, n.includes(o.Key))
+							if (o.Key.includes(n)) {
+								toDelete.push({ Key: o.Key })
+							}
+						})
+					})
+					const params = {
+						Bucket: process.env.S3_BUCKET_NAME,
+						Delete: {
+							Objects: toDelete,
+							Quiet: false
+						}
+					}
+					s3.deleteObjects(params, (error, data) => {
+						if (error ) {
+							console.log(error)
+						} else {
+							console.log(data)
+						}
+					})
+				}
+			})
+
 		} catch (error) {
 			cb({type: 'DatabaseError', error: error})
 		}

@@ -149,6 +149,11 @@ class Travel {
 				cb({ type: "DatabaseError", error})
 			}
 		})
+		db.query('DELETE FROM `published_articles` WHERE `article_travel_id` = ?', id, (error, rows) => {
+			if (error) {
+				cb({ type: "DatabaseError", error})
+			}
+		})
 		const result = Object.assign({}, resultOne, resultTwo)
 		cb(result)
 	}

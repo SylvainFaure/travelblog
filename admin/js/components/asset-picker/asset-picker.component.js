@@ -114,10 +114,14 @@ export default class assetPickerController {
   //$('.ui.checkbox').checkbox();  
 
   chooseAsset (asset, event, from) {
-    $('.asset-picker-img').css('opacity', '0.5')
-    $(event.target).css('opacity', '1')
-    this.asset = asset;
-    this.$rootScope.$emit('changeAsset', from, this.asset)
+    if (this.context !== 'assets') {
+      $('.asset-picker-img').css('opacity', '0.5')
+      $(event.target).css('opacity', '1')
+      this.asset = asset;
+      this.$rootScope.$emit('changeAsset', from, this.asset)
+    } else {
+      this.$rootScope.$emit('addAssetGallery', asset, this.context);
+    }
   }
 
   toggleAsset(asset, checked) {

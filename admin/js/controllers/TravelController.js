@@ -123,10 +123,10 @@ class TravelController {
 				published_fr: this.travel.travel_published_date_fr,
 				published_it: this.travel.travel_published_date_it
 			}
-			this.travel.travel_start_date = this.travel.travel_start_date ? this.format(new Date(this.travel.travel_start_date), 'dd/M/yyyy') : ''
-			this.travel.travel_end_date = this.travel.travel_end_date ? this.format(new Date(this.travel.travel_end_date), 'dd/M/yyyy') : ''
-			this.travel.travel_published_date_fr = this.travel.travel_published_date_fr ? this.format(new Date(this.travel.travel_published_date_fr), 'dd/M/yyyy') : ''
-			this.travel.travel_published_date_it = this.travel.travel_published_date_it ? this.format(new Date(this.travel.travel_published_date_it), 'dd/M/yyyy') : ''
+			this.travel.travel_start_date = this.travel.travel_start_date ? this.format(new Date(this.travel.travel_start_date), 'dd/MM/yyyy') : ''
+			this.travel.travel_end_date = this.travel.travel_end_date ? this.format(new Date(this.travel.travel_end_date), 'dd/MM/yyyy') : ''
+			this.travel.travel_published_date_fr = this.travel.travel_published_date_fr ? this.format(new Date(this.travel.travel_published_date_fr), 'dd/MM/yyyy') : ''
+			this.travel.travel_published_date_it = this.travel.travel_published_date_it ? this.format(new Date(this.travel.travel_published_date_it), 'dd/MM/yyyy') : ''
 			
 			if ((this.fr && this.travel.travel_published_fr) || (this.it && this.travel.travel_published_it)) {
 				this.isPublished = true
@@ -200,6 +200,7 @@ class TravelController {
 	initCalendar() {
 		$('#rangestart').calendar({
 			type: 'date',
+			monthFirst: false,
 			endCalendar: $('#rangeend'),
 			onChange: (date) => {
 				this.parseDate(date, "start") 
@@ -207,6 +208,7 @@ class TravelController {
 		});
 		$('#rangeend').calendar({
 			type: 'date',
+			monthFirst: false,
 			startCalendar: $('#rangestart'),
 			onChange: (date) => { 
 				this.parseDate(date, "end") 
@@ -215,7 +217,7 @@ class TravelController {
 	}
 
 	parseDate(date, range) {
-		let dateObj = this.format(date, 'dd/MM/yyyy');
+		let dateObj = this.format(new Date(date), 'dd/MM/yyyy');
 		if (range == "start") {
 			this.travel.travel_start_date = dateObj;
 			this.travel.dates_raw.start_date = Date.parse(new Date(date))

@@ -33,6 +33,7 @@ class AssetsController {
     }
     
     this.activeTravelId = this.travels[0].travel_id;
+    this.chosenAssets = this.assets.filter(a => a.asset_travel_id === this.activeTravelId)
     this.modifiedAssetsId = []
     this.initMainTabs()
     this.initTravelTabs()
@@ -69,30 +70,38 @@ class AssetsController {
       $('.ui.secondary.menu.travels > a').removeClass('active')
       $(elt).addClass('active')
       this.activeTravelId = Number(elt.dataset.tab.split('/')[1])
+      this.chosenAssets = this.assets.filter(a => a.asset_travel_id === this.activeTravelId)
       $.tab('change tab', elt.dataset.tab);
     })
   }
 
   initGalleryListeners () {
     this.$rootScope.$on('addAssetGallery', (e, asset, context) => {
-      if (context == 'assets') {
+      // console.log(this.modifiedAssetsId)
+      const isAlreadyChosen = this.chosenAssets.find(a => asset.asset_id === a.asset_id)
+      if (context == 'assets' && !isAlreadyChosen) {
         asset.previous_travel_id = asset.asset_travel_id
         asset.asset_travel_id = this.activeTravelId
         this.modifiedAssetsId.push(asset.asset_id)
-        console.log(asset)
+        this.chosenAssets.push(asset)
+        // console.log('add', this.chosenAssets)
       }
 		});
 		this.$rootScope.$on('deleteAssetGallery', (e, asset, context) => {
       if (context == 'assets') {
         asset.asset_travel_id = asset.previous_travel_id
-        this.modifiedAssetsId.splice(this.modifiedAssetsId.indexOf(asset.asset_id), 1)
-        console.log(asset)
+        this.modifiedAssetsId.filter(id => id !== asset.asset_id)
+        this.chosenAssets.filter(a => a.asset_id !== asset.asset_id)
+        // console.log('delete', this.chosenAssets)
       }
     });
   }
 
-  getTravelAssets (travelId) {
-    return this.assets.filter(asset => Number(asset.asset_travel_id) == Number(travelId))
+  removeFromChosenAssets (asset) {
+    asset.asset_travel_id = asset.previous_travel_id
+    this.modifiedAssetsId.filter(id => id !== asset.asset_id)
+    this.chosenAssets = this.chosenAssets.filter(a => a.asset_id !== asset.asset_id)
+    // console.log(this.chosenAssets)
   }
 
   saveAssets () {

@@ -44,22 +44,27 @@
       ng-class="{'active': $index == 0}"
       data-tab="second/{{travel.travel_id}}"
     >
-      <div style="min-height: 150px" ng-if="!vm.getTravelAssets(travel.travel_id).length">
+      <div style="min-height: 150px" ng-if="!vm.chosenAssets.length">
           <span ng-if="vm.fr">Ce voyage n'a pas de photos associées</span>
           <span ng-if="vm.it">Questo viaggio non ha foto associate</span>
       </div>
-      <img 
-        ng-repeat="asset in vm.getTravelAssets(travel.travel_id)"
-        class="article-gallery-img"
-        ng-src="{{vm.AWS_BUCKET_PATH}}thumb/mini_{{asset.asset_name}}" 
-      >
+      <div class="article-gallery">
+        <div
+          ng-repeat="asset in vm.chosenAssets"
+          class="article-gallery-img__wrapper">
+          <i ng-click="vm.removeFromChosenAssets(asset)" class="icon close"></i>
+          <img  
+            class="article-gallery-img"
+            ng-src="{{vm.AWS_BUCKET_PATH}}thumb/mini_{{asset.asset_name}}" 
+          >
+        </div>
+      </div>
       <div class="ui divider"></div>
       <div ng-if="true">
         <asset-picker
           assets="vm.assets"
           actions="false"
           allow-upload="false"
-          is-gallery="true"
           context="assets">
         </asset-picker>
       </div>

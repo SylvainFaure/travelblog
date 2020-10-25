@@ -4,7 +4,7 @@ class Article {
 
 	static getAll(published, cb) {
 		let table = published ? 'published_articles' : 'articles';
-		db.query(`SELECT article_id, article_title_fr, article_title_it, article_published_fr, article_published_it, article_published_date_fr, article_published_date_it, article_place_fr, article_place_it, article_travel_id, article_countries_fr, article_countries_it FROM ${table}`, (err, rows) => {
+		db.query(`SELECT article_id, article_title_fr, article_title_it, article_published_fr, article_published_it, article_published_date_fr, article_published_date_it, article_place_fr, article_place_it, article_travel_id, article_country_fr, article_country_it FROM ${table}`, (err, rows) => {
 			if (err) {
 				cb({type: 'DatabaseError', error: err})
 			} else {

@@ -17,7 +17,7 @@ class Travel {
 
 	static getTravel(published, travel, cb) {
 		let table = published ? 'published_travels' : 'travels';
-		db.query(`SELECT * FROM ${table} WHERE travel_id = ?`, [travel], (err, rows) => {
+		db.query(`SELECT travel_id, travel_title_fr, travel_title_it, travel_published_fr, travel_published_it, travel_published_date_fr, travel_published_date_it, travel_desc_fr, travel_desc_it, travel_start_date, travel_end_date, travel_slug_fr, travel_slug_it, travel_category, travel_same_start_end FROM ${table} WHERE travel_id = ?`, [travel], (err, rows) => {
 			if (err) {
 				cb({type: 'DatabaseError', error: err})
 			} else {

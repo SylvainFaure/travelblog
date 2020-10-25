@@ -60,7 +60,9 @@ class Travel {
 				if (err) {
 					cb({type: 'DatabaseError', error: err});
 				} else {
-					cb(results)			
+					db.query('SELECT * FROM `travels` WHERE travel_id = ?', [results.insertId], (err, rows) => {
+						cb(rows)
+					})	
 				}
 			})
 		}

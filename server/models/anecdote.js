@@ -24,11 +24,13 @@ class Anecdote {
   }
 
   static saveAnecdote(anecdote, cb) {
-    db.query(`INSERT INTO anecdotes SET ?`, anecdote, (err, result) => {
+    db.query(`INSERT INTO anecdotes SET ?`, anecdote, (err, results) => {
       if (err) {
         cb({type: 'DatabaseError', error: err})
       } else {
-        cb(result)
+        db.query('SELECT * FROM `anecdotes` WHERE anecdote_id_id = ?', [results.insertId], (err, rows) => {
+					cb(rows)
+				})
       }
     })
   }

@@ -33,7 +33,9 @@ class Article {
 		 	if (error) { 
 				cb({type: 'DatabaseError', error: error})
 			} else {
-				cb(results)
+				db.query('SELECT * FROM `articles` WHERE article_id = ?', [results.insertId], (err, rows) => {
+					cb(rows)
+				})
 			}
 		});
 	}

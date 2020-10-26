@@ -10,7 +10,7 @@ anecdotes.route('/')
     })
   })
   .post((req, res, next) => {
-    Anecdote.saveAnecdote(req.body.anecdote, results =>{
+    Anecdote.saveAnecdote(req.body, results =>{
       handleResponse(res, next, results)
     })
   })

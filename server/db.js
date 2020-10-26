@@ -1,4 +1,4 @@
-const mysql      = require('mysql');
+const mysql      = require('mysql2');
 
 var connection;
 if (process.env.NODE_ENV !== 'development') {

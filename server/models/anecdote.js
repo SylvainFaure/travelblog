@@ -28,7 +28,7 @@ class Anecdote {
       if (err) {
         cb({type: 'DatabaseError', error: err})
       } else {
-        db.query('SELECT * FROM `anecdotes` WHERE anecdote_id_id = ?', [results.insertId], (err, rows) => {
+        db.query('SELECT * FROM `anecdotes` WHERE anecdote_id = ?', [results.insertId], (err, rows) => {
 					cb(rows)
 				})
       }

@@ -2,7 +2,7 @@ const db = require('../db');
 
 class Anecdote {
   static getAll(cb) {
-    db.query(`SELECT anecdote_id, anecdote_title FROM anecdotes`, (err, rows) => {
+    db.query(`SELECT anecdote_id, anecdote_title, anecdote_content FROM anecdotes`, (err, rows) => {
       if (err) {
         cb({type: 'DatabaseError', error: err})
       } else {

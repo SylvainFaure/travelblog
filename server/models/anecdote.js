@@ -24,7 +24,7 @@ class Anecdote {
   }
 
   static saveAnecdote(anecdote, cb) {
-    db.query(`INSERT INTO anecdotes SET ?`, anecdote, (err, results) => {
+    db.query('INSERT INTO `anecdotes` SET ?', anecdote, (err, results) => {
       if (err) {
         cb({type: 'DatabaseError', error: err})
       } else {

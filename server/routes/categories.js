@@ -10,7 +10,7 @@ categories.route('/')
     })
   })
   .post((req, res, next) => {
-    Category.saveCategory(req.body.category, results =>{
+    Category.saveCategory(req.body, results =>{
       handleResponse(res, next, results)
     })
   })

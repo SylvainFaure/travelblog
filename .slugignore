@@ -1,8 +1,5 @@
 .env
 .gitignore
-dist/
-nuxt-dist/
 node_modules/
 __git
 /build/
-public/assets/

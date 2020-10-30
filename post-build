@@ -1,0 +1,6 @@
+#! /bin/bash
+
+mkdir -p dist
+mkdir -p dist/admin dist/server
+cp -ar server/* dist/server/
+cp -ar admin/dist/* dist/admin/

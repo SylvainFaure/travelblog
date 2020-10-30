@@ -1,0 +1,4 @@
+#! /bin/bash
+
+cd admin
+npx nuxt generate

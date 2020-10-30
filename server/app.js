@@ -59,7 +59,7 @@ app.use(errorMiddleware);
 app.get('*', (req, res, next) => {
   if (req.url.indexOf('.') === -1 && req.url.indexOf('json') == -1) {
     console.log('SPA: %s', req.url)
-    const indexPath = app.get("env") === 'development' ? '../admin/js' : '../admin';
+    const indexPath = app.get("env") === 'development' ? '../admin/js' : '../admin/dist';
     res.sendFile(path.join(__dirname, indexPath, 'index.html'));
   } else {
     console.log('Static: %s', req.url)

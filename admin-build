@@ -1,4 +1,5 @@
 #! /bin/bash
 
 cd admin
+npx yarn install
 npx nuxt generate

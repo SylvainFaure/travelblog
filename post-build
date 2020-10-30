@@ -1,6 +1,13 @@
 #! /bin/bash
 
+cd admin 
+npx nuxt generate
+cd ../
 mkdir -p dist
 mkdir -p dist/admin dist/server
+mkdir -p dist/admin/_nuxt
 cp -ar server/* dist/server/
 cp -ar admin/dist/* dist/admin/
+cp -ar dist/admin/admin/_nuxt/* dist/admin/_nuxt
+rm -rf dist/admin/admin
+rm -rf admin/dist

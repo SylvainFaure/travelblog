@@ -86,9 +86,9 @@ export default {
   },
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
-    // publicPath: 'admin/'
+    publicPath: 'admin/_nuxt'
   },
   generate: {
-    dir: 'build'
+    // dir: 'build'
   }
 }

@@ -9,7 +9,6 @@
     "dev": "cross-env NODE_ENV=development env-cmd .env node server/app.js",
     "dev:monit": "cross-env NODE_ENV=development env-cmd .env pm2 start -f server/app.js && pm2 monit",
     "dev:standalone": "cross-env NODE_ENV=development STANDALONE=true env-cmd .env node server/app.standalone.js",
-    "build": "./post-build",
     "server": "cross-env NODE_ENV=development env-cmd .env node server/app.server.js",
     "report": "cross-env REPORT=true npm run dev"
   },

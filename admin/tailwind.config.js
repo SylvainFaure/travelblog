@@ -7,7 +7,11 @@ module.exports = {
     // defaultLineHeights: true,
     // standardFontWeights: true
   },
-  purge: [],
+  purge: {
+    content (contentDefaults) {
+      return false
+    }
+  },
   theme: {
     fontFamily: {
       sans: ['Lato', 'sans-serif']

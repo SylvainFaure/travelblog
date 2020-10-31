@@ -8,9 +8,7 @@ module.exports = {
     // standardFontWeights: true
   },
   purge: {
-    content (contentDefaults) {
-      return false
-    }
+    enabled: false
   },
   theme: {
     fontFamily: {

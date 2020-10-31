@@ -52,7 +52,7 @@ const formattedTravelToRawTravel = (travel, locale, otherData) => {
     travel_end_date: travel.dates[1],
     travel_hashtags: JSON.stringify(travel.hashtags)
   }
-  console.log('FORMATTER', travel, rawTravel, formatted)
+  // console.log('FORMATTER', travel, rawTravel, formatted)
 
   return formatted
 }
@@ -106,7 +106,7 @@ const formattedArticleToRawArticle = (article, locale, otherData) => {
     article_end_date: article.dates[1],
     article_travel_id: article.travel.travel_id
   }
-  console.log('FORMATTER', article, rawArticle, formatted)
+  // console.log('FORMATTER', article, rawArticle, formatted)
 
   return formatted
 }

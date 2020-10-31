@@ -1,11 +1,40 @@
 <template>
   <section>
     <div class="m-6">
-      <div>tags et filtres</div>
+      <div class="flex my-4">
+        <div class="w-1/2 flex flex-col items-center">
+          <h4>{{ $t('assets.filter_by_travel') }}</h4>
+          <div class="flex flex-wrap justify-center w-full">
+            <Tag
+              v-for="travel in data.travels"
+              :key="travel.travel_id"
+              class="mr-2 my-2"
+              :tag="travel[`travel_title_${locale}`]"
+              selectable
+              :selected="filters.travel === travel.travel_id"
+              @click="handleFilter(travel)"
+            />
+          </div>
+        </div>
+        <div class="w-1/2 flex flex-col items-center">
+          <h4>{{ $t('assets.filter_by_place') }}</h4>
+          <div class="flex flex-wrap justify-center w-full">
+            <Tag
+              v-for="place in places"
+              :key="place.key"
+              class="mr-2 my-2"
+              :tag="place.label"
+              selectable
+              :selected="filters.place === place.label"
+              @click="handleFilter(place)"
+            />
+          </div>
+        </div>
+      </div>
 
-      <div class="flex flex-wrap">
+      <div class="flex flex-wrap justify-center">
         <div
-          v-for="(asset, i) in assets"
+          v-for="(asset, i) in filteredAssets"
           :id="`container_${asset.asset_id}`"
           :key="i"
           ref="assetContainer"
@@ -59,6 +88,9 @@
             </p>
           </div>
         </div>
+        <div v-if="!filteredAssets.length" class="flex justify-center max-w-1/4 my-16">
+          {{ $t('assets.filtered_empty') }}
+        </div>
       </div>
       <RemoveModal v-if="modalId === 'asset-remove'" @confirm="removeAsset" @cancel="closeRemoveModal" />
       <EditAssetModal
@@ -91,11 +123,46 @@ export default {
       pickedAsset: null,
       pickedAssetsIds: [],
       assetToRemove: null,
-      assetToEdit: null
+      assetToEdit: null,
+      filters: {
+        travel: null,
+        place: null
+      }
     }
   },
   computed: {
-    ...mapState('modal', ['modalId'])
+    ...mapState('modal', ['modalId']),
+    places() {
+      return this.data.articles
+        .map((article) => {
+          const value = article[`article_place_${this.locale}`]
+          if (value) {
+            return {
+              key: value.toLowerCase().replaceAll(' ', '_'),
+              label: value
+            }
+          }
+        })
+        .filter((obj) => !!obj)
+    },
+    filteredAssets() {
+      return this.assets.filter((asset) => {
+        if (this.filters.travel && this.filters.place) {
+          return (
+            this.filters.travel === Number(asset.asset_travel_id) &&
+            !!asset[`asset_place_${this.locale}`] &&
+            this.filters.place === asset[`asset_place_${this.locale}`]
+          )
+        } else if (this.filters.travel || this.filters.place) {
+          return (
+            this.filters.travel === Number(asset.asset_travel_id) ||
+            this.filters.place === asset[`asset_place_${this.locale}`]
+          )
+        } else {
+          return true
+        }
+      })
+    }
   },
   mounted() {
     this.locale = this.$i18n.locale
@@ -224,6 +291,13 @@ export default {
     closeRemoveModal() {
       this.setVisible(false)
       this.setModalId(null)
+    },
+    handleFilter(tag) {
+      if (tag.travel_id) {
+        this.filters.travel = this.filters.travel === tag.travel_id ? null : tag.travel_id
+      } else {
+        this.filters.place = this.filters.place === tag.label ? null : tag.label
+      }
     }
   }
 }

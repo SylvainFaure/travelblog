@@ -120,12 +120,11 @@ export default {
         })
       })
       try {
-        const res = await this.$axios.post('/api/assets', formData, {
+        await this.$axios.post('/api/assets', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
         })
-        console.log('RESPONSE', res)
         this.files = []
         this.filesData = []
         this.$toast.success(this.$t('assets.upload_success'))

@@ -14,6 +14,7 @@
         :picked="picked"
         :pick="pick"
         :pick-limit="pickLimit"
+        :data="data"
         @pick="handlePick"
         @picks="handlePicks"
       />
@@ -35,7 +36,8 @@ export default {
     assets: VueTypes.array.def([]),
     picked: VueTypes.oneOfType([VueTypes.object, VueTypes.array]).def(null),
     pick: VueTypes.string.def('one'),
-    pickLimit: VueTypes.number.def(null)
+    pickLimit: VueTypes.number.def(null),
+    data: VueTypes.object.def(null)
   },
   data() {
     return {

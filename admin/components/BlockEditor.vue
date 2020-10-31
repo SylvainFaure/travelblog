@@ -92,7 +92,7 @@ export default {
   methods: {
     confirmModification(type, content, id) {
       if (id === 'new-block') {
-        console.log('new block', type, content)
+        // console.log('new block', type, content)
         this.createNewBlock(type, content)
         this.activeAction = null
       } else {

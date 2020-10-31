@@ -74,12 +74,12 @@ export default {
     handleAssetChange(event, travelId) {
       if (event.added) {
         const asset = event.added.element
-        console.log(asset.asset_id, travelId)
+        // console.log(asset.asset_id, travelId)
         this.modifiedAssetsIds[asset.asset_id] = {
           past: asset.asset_travel_id,
           present: travelId
         }
-        console.log(this.modifiedAssetsIds)
+        // console.log(this.modifiedAssetsIds)
       }
     },
     getModifiedAssets() {

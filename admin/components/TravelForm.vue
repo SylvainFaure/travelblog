@@ -17,7 +17,13 @@
           :options="categories"
           :option-label="`category_label_${locale}`"
         />
-        <ChooseImage :image="model.cover" :assets="assets" :label="$t('travel.cover')" @change="model.cover = $event" />
+        <ChooseImage
+          :image="model.cover"
+          :assets="assets"
+          :label="$t('travel.cover')"
+          :data="{ travels, articles }"
+          @change="model.cover = $event"
+        />
         <InputTags :label="$t('travel.countries')" :value="model.countries" @change="model.countries = $event" />
         <Datepicker :label="$t('travel.dates')" :model="model.dates" @change="model.dates = $event" />
         <InputTags :label="$t('travel.hashtags')" :value="model.hashtags" @change="model.hashtags = $event" />
@@ -46,6 +52,7 @@ export default {
   props: {
     assets: VueTypes.array.def([]),
     travels: VueTypes.array.def([]),
+    articles: VueTypes.array.def([]),
     categories: VueTypes.array.def([])
   },
   data() {

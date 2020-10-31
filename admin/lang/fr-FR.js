@@ -107,6 +107,10 @@ export default {
     library: 'Librairie',
     travel_assets: 'Photos par voyages',
     article_assets: 'Photos par articles',
+    filter_by_travel: 'Filtrer par voyage',
+    filter_by_place: 'Filtrer par lieu',
+    filtered_empty:
+      "Il n'y a pas de photos pour ces filtres. Associez les photos aux voyages et articles pour les voir apparaitre correctement.",
     upload: 'Télécharger une image',
     do_upload: 'Go !',
     uploaded: 'Téléchargé le: ',

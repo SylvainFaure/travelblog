@@ -14,6 +14,7 @@
         v-if="modalId === `pick-image-${id}`"
         :assets="assets"
         :picked="imageModel"
+        :data="data"
         @confirm="confirmImage"
       />
     </div>
@@ -28,7 +29,8 @@ export default {
     id: VueTypes.string.def(''),
     label: VueTypes.string.def('Choose an image'),
     image: VueTypes.object.def(null),
-    assets: VueTypes.array.def([])
+    assets: VueTypes.array.def([]),
+    data: VueTypes.object.def(null)
   },
   data() {
     const i = Math.floor(Math.random() * 10000)

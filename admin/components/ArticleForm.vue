@@ -13,6 +13,7 @@
         <ChooseImage
           :image="model.cover"
           :assets="assets"
+          :data="{ travels, articles }"
           :label="$t('article.cover')"
           @change="model.cover = $event"
         />

@@ -86,7 +86,7 @@ export default {
   },
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
-    publicPath: process.env === 'production' ? 'admin/_nuxt' : '/_nuxt'
+    publicPath: process.env.NODE_ENV === 'production' ? 'admin/_nuxt' : '/_nuxt'
   },
   generate: {
     // dir: 'build'

@@ -400,6 +400,11 @@
 <symbol id="icon-floppy-disk" viewBox="0 0 32 32">
 <path d="M28 0h-28v32h32v-28l-4-4zM16 4h4v8h-4v-8zM28 28h-24v-24h2v10h18v-10h2.343l1.657 1.657v22.343z"></path>
 </symbol>
+<symbol id="icon-menu2" viewBox="0 0 44 32">
+<path d="M0 6h28v6h-28v-6zM0 14h28v6h-28v-6zM0 22h28v6h-28v-6z"></path>
+<path d="M31 18l6 6 6-6z"></path>
+<path d="M43 16l-6-6-6 6z"></path>
+</symbol>
 <symbol id="icon-paragraph-left" viewBox="0 0 32 32">
 <path d="M0 2h32v4h-32zM0 8h20v4h-20zM0 20h20v4h-20zM0 14h32v4h-32zM0 26h32v4h-32z"></path>
 </symbol>

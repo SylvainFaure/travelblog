@@ -186,5 +186,21 @@ export default {
     email: 'Email',
     password: 'Mot de passe',
     send: 'Envoyer'
+  },
+  highlights: {
+    travel: {
+      select: "Choisis les voyages que tu veux voir en évidence sur la page d'accueil du site",
+      selected: 'Voyages en évidence',
+      selected_empty: "Il n'y a pas de voyages sélectionnés en évidence",
+      unpublished_title: 'Ces voyages ne sont pas encore publiés.',
+      unpublished_subtitle: 'Publie-les pour pouvoir les mettre en évidence'
+    },
+    article: {
+      select: "Choisis les articles que tu veux voir en évidence sur la page d'accueil du site",
+      selected: 'Articles en évidence',
+      selected_empty: "Il n'y a pas d'articles sélectionnés en évidence",
+      unpublished_title: 'Ces articles ne sont pas encore publiés.',
+      unpublished_subtitle: 'Publie-les pour pouvoir les mettre en évidence'
+    }
   }
 }

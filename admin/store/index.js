@@ -28,17 +28,9 @@ export const mutations = {
   }
 }
 export const actions = {
-  async fetchEverything({ commit }) {
+  fetchEverything({ commit }) {
     commit('setIsError', false)
-    const getAnecdotes = this.$axios.get(`/api/anecdotes`)
-    const getSettings = this.$axios.get(`/api/settings`)
-    const getCategories = this.$axios.get(`/api/categories`)
-
     try {
-      const [anecdotes, settings, categories] = await Promise.all([getAnecdotes, getSettings, getCategories])
-      commit('setAnecdotes', anecdotes.data)
-      commit('setSettings', settings.data)
-      commit('setCategories', categories.data)
       commit('setIsReady', true)
     } catch (error) {
       commit('setIsError', true)

@@ -1779,7 +1779,7 @@
       "properties": {
         "ligatures": "fire, flame",
         "name": "fire",
-        "order": 62,
+        "order": 126,
         "id": 59,
         "prevSize": 32
       },
@@ -3400,6 +3400,35 @@
       "setIdx": 1,
       "setId": 1,
       "iconIdx": 99
+    },
+    {
+      "icon": {
+        "width": 1408,
+        "paths": [
+          "M0 192h896v192h-896v-192zM0 448h896v192h-896v-192zM0 704h896v192h-896v-192z",
+          "M992 576l192 192 192-192z",
+          "M1376 512l-192-192-192 192z"
+        ],
+        "tags": [
+          "menu",
+          "options",
+          "hamburger"
+        ],
+        "defaultCode": 59838,
+        "grid": 16,
+        "attrs": []
+      },
+      "attrs": [],
+      "properties": {
+        "ligatures": "menu2, options2",
+        "name": "menu2",
+        "order": 127,
+        "id": 191,
+        "prevSize": 32
+      },
+      "setIdx": 1,
+      "setId": 1,
+      "iconIdx": 191
     },
     {
       "icon": {

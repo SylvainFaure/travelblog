@@ -37,7 +37,7 @@ class Travel {
 					console.log(rows)
 					if (rows.length) {
 						// update
-						db.query('UPDATE published_travels SET ? WHERE travel_id = ?', [travel, travel.travel_id], (error, results) => {
+						db.query('UPDATE `published_travels` SET ? WHERE travel_id = ?', [travel, travel.travel_id], (error, results) => {
 							if (error) {
 								cb({type: 'DatabaseError', error: error})
 							} else {
@@ -45,18 +45,20 @@ class Travel {
 							}
 						})
 					} else {
-						db.query(`INSERT INTO published_travels SET ?`, travel, (err, results, fields) => { 
+						db.query('INSERT INTO `published_travels` SET ?', travel, (err, results, fields) => { 
 							if (err) {
 								cb({type: 'DatabaseError', error: err});
 							} else {
-								cb(results)			
+								db.query('SELECT * FROM `published_travels` WHERE travel_published_id = ?', [results.insertId], (err, rows) => {
+									cb(rows)
+								})		
 							}
 						})
 					}
 				} 
 			});
 		} else {
-			db.query(`INSERT INTO travels SET ?`, travel, (err, results, fields) => { 
+			db.query('INSERT INTO travels SET ?', travel, (err, results, fields) => { 
 				if (err) {
 					cb({type: 'DatabaseError', error: err});
 				} else {

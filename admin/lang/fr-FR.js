@@ -16,7 +16,8 @@ export default {
     travels: 'Voyages',
     articles: 'Articles',
     assets: 'Images',
-    anecdotes: 'Anecdotes'
+    anecdotes: 'Anecdotes',
+    homepage: 'Homepage'
   },
   travels: {
     title: 'Voyages',
@@ -181,6 +182,12 @@ export default {
       error: "Oups ! Il y a eu un petit problème. Vérifie qu'il ne manque rien et essaie une nouvelle fois"
     }
   },
+  settings: {
+    save: {
+      success: "Les paramètres de la page d'accueil a été correctement créé !",
+      error: "Oups ! Il y a eu un petit problème. Vérifie qu'il ne manque rien et essaie une nouvelle fois"
+    }
+  },
   login: {
     title: 'Login',
     email: 'Email',
@@ -188,19 +195,25 @@ export default {
     send: 'Envoyer'
   },
   highlights: {
+    slider_title: 'Slider de homepage',
+    travel_title: 'Voyages en évidence',
+    article_title: 'Articles en évidence',
     travel: {
-      select: "Choisis les voyages que tu veux voir en évidence sur la page d'accueil du site",
+      select: "Choisis les voyages publiés que tu veux voir en évidence sur la page d'accueil du site",
       selected: 'Voyages en évidence',
       selected_empty: "Il n'y a pas de voyages sélectionnés en évidence",
       unpublished_title: 'Ces voyages ne sont pas encore publiés.',
       unpublished_subtitle: 'Publie-les pour pouvoir les mettre en évidence'
     },
     article: {
-      select: "Choisis les articles que tu veux voir en évidence sur la page d'accueil du site",
+      select: "Choisis les articles publiés que tu veux voir en évidence sur la page d'accueil du site",
       selected: 'Articles en évidence',
       selected_empty: "Il n'y a pas d'articles sélectionnés en évidence",
       unpublished_title: 'Ces articles ne sont pas encore publiés.',
       unpublished_subtitle: 'Publie-les pour pouvoir les mettre en évidence'
     }
+  },
+  homepage: {
+    description: 'Description générale du site'
   }
 }

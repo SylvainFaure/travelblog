@@ -30,7 +30,7 @@ export default {
   data() {
     return {
       title: 'Carte de voyages',
-      menu: ['travels', 'articles', 'assets', 'anecdotes']
+      menu: ['homepage', 'travels', 'articles', 'assets', 'anecdotes']
     }
   },
   methods: {

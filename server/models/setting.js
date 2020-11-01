@@ -19,7 +19,9 @@ class Setting {
 			if (err) {
 				cb({type: 'DatabaseError', error: err});
 			} else {
-				cb(results)
+				db.query('SELECT * FROM `settings`', (err, rows) => {
+					cb(rows[0])
+				})	
 			}
 		})
 	}

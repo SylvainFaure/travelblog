@@ -7,12 +7,11 @@
       ]"
     >
       <div class="font-bold">{{ entity[`${type}_title_${locale}`] }}</div>
-      <div class="mx-2">
-        {{
-          entity[`${type}_${type === 'article' ? 'country' : 'countries'}_${locale}`].join(
-            `${type === 'article' ? '' : ', '}`
-          )
-        }}
+      <div v-if="type === 'article'" class="mx-2">
+        {{ entity[`${type}_country_${locale}`] }}
+      </div>
+      <div v-if="type === 'travel'" class="mx-2">
+        {{ entity[`${type}_countries_${locale}`].join(', ') }}
       </div>
     </div>
     <div v-if="!unpublished" class="flex items-center px-2 text-gray-600">
@@ -20,7 +19,7 @@
     </div>
     <div v-else class="flex items-center">
       <Btn icon-btn :label="$t('general.edit')" icon="pencil" type="raw" @click="$emit('edit')" />
-      <Btn icon-btn :label="$t('general.publish')" icon="rocket" type="raw" @click="$emit('publish')" />
+      <!-- <Btn icon-btn :label="$t('general.publish')" icon="rocket" type="raw" @click="$emit('publish')" /> -->
     </div>
   </div>
 </template>

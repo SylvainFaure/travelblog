@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[4],{198:function(e,t,n){"use strict";n.r(t),t.default={title:"Carte de voyages",menu:{travels:"Viaggi",articles:"Articoli",assets:"Immagine",anecdotes:"Anedotti"}}}}]);

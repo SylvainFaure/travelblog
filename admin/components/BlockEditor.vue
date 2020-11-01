@@ -44,7 +44,8 @@ export default {
     label: VueTypes.string.def(''),
     blocks: VueTypes.array.def([]),
     addons: VueTypes.array.def(null),
-    assets: VueTypes.array.def([])
+    assets: VueTypes.array.def([]),
+    removeActions: VueTypes.array.def([])
   },
   data() {
     const defaultActions = [
@@ -83,7 +84,7 @@ export default {
     return {
       orderedBlocks: [],
       activeAction: null,
-      actions: [...defaultActions, ...addonsActions]
+      actions: [...defaultActions, ...addonsActions].filter((action) => !this.removeActions.includes(action.key))
     }
   },
   mounted() {

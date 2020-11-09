@@ -18,6 +18,7 @@
       <BlockEditorComp
         :type="activeAction"
         :assets="assets"
+        :data="data"
         @confirm="confirmModification"
         @cancel="activeAction = null"
       />
@@ -27,6 +28,8 @@
         v-for="(block, i) in orderedBlocks"
         :key="`${block.type}-${i}-${block.position}`"
         v-bind="block"
+        :data="data"
+        :assets="assets"
         @up="handleOrder('up', $event)"
         @down="handleOrder('down', $event)"
         @remove="handleRemove"
@@ -45,6 +48,7 @@ export default {
     blocks: VueTypes.array.def([]),
     addons: VueTypes.array.def(null),
     assets: VueTypes.array.def([]),
+    data: VueTypes.object.def({}),
     removeActions: VueTypes.array.def([])
   },
   data() {

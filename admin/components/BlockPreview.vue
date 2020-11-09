@@ -28,6 +28,8 @@
         :id="id"
         edit
         :type="type"
+        :assets="assets"
+        :data="data"
         :content="['image', 'playlist'].includes(type) ? content : rawContent"
         @confirm="confirmModification"
         @cancel="isEditing = false"
@@ -44,6 +46,8 @@ export default {
     position: VueTypes.number.def(0),
     type: VueTypes.string.def(null),
     content: VueTypes.any.def(null),
+    assets: VueTypes.array.def([]),
+    data: VueTypes.object.def({}),
     rawContent: VueTypes.object.def({})
   },
   data() {

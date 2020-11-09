@@ -1,6 +1,5 @@
 <template>
-  <section class="articles-page flex justify-between">
-    <div class="sidebar"></div>
+  <section class="articles-page flex justify-center">
     <div class="articles-page__container m-4">
       <table class="table-fixed">
         <thead class="border-t-2 border-blue-500">

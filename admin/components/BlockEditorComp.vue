@@ -26,6 +26,7 @@
     <AssetsModal
       v-if="modalId === 'editor-asset'"
       :assets="assets"
+      :data="data"
       :picked="edit ? content.originalAsset : null"
       @confirm="model.image = $event"
     />
@@ -41,7 +42,8 @@ export default {
     type: VueTypes.string.def('paragraph'),
     content: VueTypes.any.def(null),
     edit: VueTypes.bool.def(false),
-    assets: VueTypes.array.def([])
+    assets: VueTypes.array.def([]),
+    data: VueTypes.object.def({})
   },
   data() {
     return {

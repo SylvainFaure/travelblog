@@ -1,6 +1,5 @@
 <template>
-  <section class="anecdotes-page flex justify-between">
-    <div class="sidebar"></div>
+  <section class="anecdotes-page flex justify-center">
     <div class="anecdotes-page__container m-4 w-2/3">
       <table class="table-fixed w-full">
         <thead class="border-t-2 border-blue-500">
@@ -23,7 +22,9 @@
             <td v-for="(col, index) in columns" :key="`${col}-${index}`" class="border-b-2 border px-4 py-2">
               <div v-if="col !== 'actions'" v-html="getColumnValue(col, anecdote)"></div>
               <div v-else class="flex justify-center">
-                <Icon class="mx-4" name="pencil" @click="openModifyModal(anecdote)" />
+                <nuxt-link :to="`/anecdotes/${anecdote.anecdote_id}`">
+                  <Icon name="pencil" />
+                </nuxt-link>
                 <Icon class="mx-4" name="bin" @click="openRemoveModal(anecdote)" />
               </div>
             </td>
@@ -31,17 +32,10 @@
         </tbody>
       </table>
       <div class="flex justify-end w-full my-4">
-        <Btn icon-btn icon="plus" @click="openModifyModal" />
+        <Btn icon-btn icon="plus" @click="goToNewAnecdote" />
       </div>
     </div>
     <RemoveModal v-if="modalId === 'remove-anecdote'" @confirm="removeAnecdote" @cancel="closeModal" />
-    <EditAnecdoteModal
-      v-if="modalId === 'edit-anecdote'"
-      :anecdote="anecdoteToEdit"
-      :assets="assets"
-      @confirm="saveAnecdote"
-      @cancel="closeModal"
-    />
   </section>
 </template>
 
@@ -116,29 +110,8 @@ export default {
         this.$toast.error(this.$t('anecdotes.remove.error'))
       }
     },
-    async saveAnecdote(anecdote) {
-      if (!anecdote.anecdote_id) {
-        try {
-          await this.$axios.post('/api/anecdotes', anecdote)
-          this.$toast.success(this.$t('anecdotes.save.success'))
-          this.reloadData()
-        } catch (error) {
-          this.$toast.error(this.$t('anecdotes.save.error'))
-        }
-      } else {
-        try {
-          await this.$axios.put(`/api/anecdotes/${anecdote.anecdote_id}`, anecdote)
-          this.$toast.success(this.$t('anecdotes.save.success'))
-          this.reloadData()
-        } catch (error) {
-          this.$toast.error(this.$t('anecdotes.save.error'))
-        }
-      }
-    },
-    openModifyModal(anecdote) {
-      this.anecdoteToEdit = anecdote || {}
-      this.setVisible(true)
-      this.setModalId('edit-anecdote')
+    goToNewAnecdote() {
+      this.$router.push('/anecdotes/new')
     }
   }
 }

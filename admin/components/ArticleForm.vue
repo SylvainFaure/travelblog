@@ -43,6 +43,7 @@
           :addons="['map-description']"
           :blocks="model.long_desc"
           :assets="assets"
+          :data="{ travels, articles }"
         />
       </form>
     </EntityActions>

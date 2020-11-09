@@ -23,7 +23,7 @@
           :blocks="model[`desc_${locale}`]"
         />
       </div>
-      <div class="py-8 flex">
+      <div class="py-8 flex justify-center">
         <ChooseHighlights
           ref="highlightsTravels"
           :title="$t('highlights.travel_title')"

@@ -40,7 +40,7 @@
         <BlockEditor
           ref="longDescription"
           :label="$t('travel.long_desc')"
-          :addons="['map-description']"
+          :addons="['map-description', 'anecdote']"
           :blocks="model.long_desc"
           :assets="assets"
           :data="{ travels, articles }"

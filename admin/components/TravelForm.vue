@@ -36,7 +36,7 @@
           :addons="['map-description', 'anecdote']"
           :blocks="model.long_desc"
           :assets="assets"
-          :data="{ travels, articles }"
+          :data="{ travels, articles, anecdotes }"
         />
       </form>
     </EntityActions>
@@ -54,7 +54,8 @@ export default {
     assets: VueTypes.array.def([]),
     travels: VueTypes.array.def([]),
     articles: VueTypes.array.def([]),
-    categories: VueTypes.array.def([])
+    categories: VueTypes.array.def([]),
+    anecdotes: VueTypes.array.def([])
   },
   data() {
     return {

@@ -1,7 +1,7 @@
 <template>
   <portal to="modal">
     <div class="p-8">
-      <Select :options="anecdotes" label="anecdote_title" :value="anecdoteModel" @input="handleInput" />
+      <Select :options="anecdotes" option-label="anecdote_title" :value="anecdoteModel" @input="handleInput" />
       <div class="flex justify-end my-4">
         <Btn :label="$t('general.confirm')" additional-classes="confirm-anecdote" />
       </div>
@@ -10,15 +10,16 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import VueTypes from 'vue-types'
+import { mapMutations } from 'vuex'
 export default {
+  props: {
+    anecdotes: VueTypes.array.def([])
+  },
   data() {
     return {
       anecdoteModel: {}
     }
-  },
-  computed: {
-    ...mapState(['anecdotes'])
   },
   methods: {
     ...mapMutations('editor', ['setValue']),

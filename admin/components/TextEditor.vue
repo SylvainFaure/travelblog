@@ -1,7 +1,7 @@
 <template>
   <div>
     <div :id="`editor-${name}`"></div>
-    <AnecdoteModal v-if="modalId === 'anecdote'" />
+    <AnecdoteModal v-if="modalId === 'anecdote'" :anecdotes="anecdotes" />
     <MapPointModal v-if="modalId === 'map-point'" />
   </div>
 </template>
@@ -19,6 +19,7 @@ export default {
   props: {
     name: VueTypes.string.def('editor'),
     data: VueTypes.object.def({}),
+    anecdotes: VueTypes.array.def([]),
     tools: VueTypes.array.def([])
   },
   data() {

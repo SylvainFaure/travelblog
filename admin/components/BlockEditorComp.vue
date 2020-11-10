@@ -16,6 +16,7 @@
         ref="textEditor"
         :name="`block-editor-comp-${type}`"
         :data="edit ? content : null"
+        :anecdotes="data ? data.anecdotes : null"
         :tools="getTools(type)"
       />
     </div>
@@ -59,7 +60,7 @@ export default {
   methods: {
     ...mapMutations('modal', ['setVisible', 'setModalId']),
     getTools(type) {
-      return type === 'map-description' ? ['map'] : type === 'anecdotes' ? ['anecdote'] : []
+      return type === 'map-description' ? ['map'] : type === 'anecdote' ? ['anecdote'] : []
     },
     selectImage() {
       this.setModalId('editor-asset')

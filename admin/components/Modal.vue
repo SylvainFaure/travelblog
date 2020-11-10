@@ -5,7 +5,7 @@
     class="h-screen w-screen fixed inset-0 bg-gray-700 bg-opacity-50 flex z-40 justify-center items-center"
     @click="handleOutsideClick"
   >
-    <section class="bg-white rounded-lg max-w-2/3 max-h-3/4 overflow-y-auto z-50">
+    <section class="modal-content bg-white rounded-lg max-w-2/3 max-h-3/4 overflow-y-auto z-50">
       <portal-target name="modal" slim></portal-target>
     </section>
   </div>
@@ -28,3 +28,8 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.modal-content {
+  min-width: 33vw;
+}
+</style>

@@ -63,11 +63,7 @@ export default {
       locale,
       anecdotes,
       articles,
-      assets
-    }
-  },
-  data() {
-    return {
+      assets,
       columns: ['title', 'actions'],
       anecdoteToDelete: null,
       anecdoteToEdit: null

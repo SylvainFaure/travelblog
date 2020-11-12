@@ -77,7 +77,7 @@ export default {
       this.assets = data
     },
     saveAssociatedAssets() {
-      const context = this.activeTabs === 'travel-assets' ? 'travel' : 'article'
+      const context = this.activeTab === 'travel-assets' ? 'travel' : 'article'
       try {
         let modifiedAssetsIds = {}
         if (context === 'travel') {
@@ -106,7 +106,8 @@ export default {
         })
         this.$toast.success(this.$t('assets.updated_success'))
       } catch (error) {
-        this.$toast.success(this.$t('assets.updated_error'))
+        console.warn(error)
+        this.$toast.error(this.$t('assets.updated_error'))
       }
     }
   }

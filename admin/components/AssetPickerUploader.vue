@@ -116,7 +116,8 @@ export default {
       this.files.forEach((file, index) => {
         formData.append(`file[${index}]`, file.file)
         Object.keys(this.filesData[index]).forEach((info, i) => {
-          formData.append(`infos[${index}][${info}]`, this.filesData[index][info])
+          const value = info === 'travel_id' ? this.filesData[index][info].travel_id : this.filesData[index][info]
+          formData.append(`infos[${index}][${info}]`, value)
         })
       })
       try {

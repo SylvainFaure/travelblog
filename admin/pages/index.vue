@@ -23,7 +23,7 @@ export default {
   methods: {
     async handleNetlifyPublish() {
       try {
-        await this.$axios.post(process.env.NETLIFY_DEPLOY_ENDPOINT)
+        await this.$axios.post('https://api.netlify.com/build_hooks/5eb4101953d2dfecaae2ce31')
         this.$toast.success(this.$t('site.publish.success'))
       } catch (error) {
         console.warn(error)

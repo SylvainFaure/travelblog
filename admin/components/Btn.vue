@@ -1,6 +1,11 @@
 <template>
-  <button type="button" :class="[classes, additionalClasses, 'rounded text-center']" @click="$emit('click')">
+  <button
+    type="button"
+    :class="[classes, additionalClasses, 'rounded text-center flex items-center']"
+    @click="$emit('click')"
+  >
     <span v-if="!iconBtn">{{ label }}</span>
+    <span v-if="icon && !iconBtn" class="pl-2"><Icon :name="icon" /></span>
     <span v-else v-tooltip="label"><Icon :name="icon" /></span>
   </button>
 </template>

@@ -86,6 +86,9 @@
               {{ $t('assets.description') }}
               {{ asset[`asset_desc_${$i18n.locale}`] }}
             </p>
+            <p v-if="asset.asset_travel_id" class="text-sm text-gray-600 font-bold">
+              {{ getTravelTitle(asset.asset_travel_id) }}
+            </p>
           </div>
         </div>
         <div v-if="!filteredAssets.length" class="flex justify-center max-w-1/4 my-16">
@@ -182,6 +185,9 @@ export default {
     getUploadDate(name) {
       const timestamp = name.split('_')[0]
       return format(new Date(Number(timestamp)), 'dd/MM/yyyy')
+    },
+    getTravelTitle(travelId) {
+      return this.data.travels.find((travel) => travel.travel_id === travelId)[`travel_title_${this.locale}`]
     },
     initWithPicked() {
       this.$refs.asset.forEach((a) => {

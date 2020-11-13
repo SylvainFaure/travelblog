@@ -10,7 +10,18 @@ export default {
     unpublish: 'Dépublier',
     sure: 'Etes-vous sur ?',
     confirm: 'Confirmer',
-    cancel: 'Annuler'
+    cancel: 'Annuler',
+    welcome: {
+      title: "Bienvenu/e dans l'espace admin de Carte de voyages",
+      text: `D'ici vous pouvez charger les photos, éditer les voyages et écrire les articles qui seront ensuite présents sur <a href="http://www.cartedevoyages.com" target="_blank" class="text-blue-700">www.cartedevoyages.com</a>.
+      Pour publier vos modifications sur le site principal, il faudra appuyer sur ce bouton ! La publication peut prendre quelques minutes a etre effective.`
+    }
+  },
+  site: {
+    publish: {
+      success: 'Le site a été publié avec succés !',
+      error: 'Ops ! Il y a eu un petit problème, reessaye plus tard'
+    }
   },
   menu: {
     travels: 'Voyages',

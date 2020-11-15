@@ -162,6 +162,29 @@ class User {
 			}
 	 })
 	}
+
+	static resetPasswordRequest(email, password, token, cb) {
+		this.signin(email, password, response => {
+			if (response.status === 200) {
+				this.getUserByEmail(email, (user) => {
+					this.updateUser({...user, user_pwd_token: token }, user.user_id, (response) => {
+						const params = {
+							type: 'resetPasswordRequest',
+							email,
+							pwd_token: token
+						}
+						this.getSuperAdmin((admin) => {
+							Mail.sendMail(admin.user_email, params, (res) => {
+								cb(res)
+							})
+						})
+					})
+				})
+				// update de l'user pour mettre le token
+				// envoi du mail avec le lien et le token
+			}
+		})
+	}
 	
 	static postUser(_user, cb) {
       const user = {
@@ -210,9 +233,9 @@ class User {
 	static userRequest(type, email, role, token, cb) {
 		// TO TEST
 		const params = {
-		  type: type,
+		  type,
 	  	requestedRole: role,
-			email: email,
+			email,
 			pwd_token: token
 		}
 		// Handle confirm (and refuse) for db
@@ -228,7 +251,6 @@ class User {
 				cb(res)
 			})
 		})
-	
 	}
 
 	static verifyToken(token, cb) {

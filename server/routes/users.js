@@ -118,6 +118,19 @@ users.route('/signup')
       })
   })
 
+users.route('/reset-password')
+  .post((req, res, next) => {
+    validate(req.body, 'user', 'signup')
+      .then((value) => {
+        User.resetPasswordRequest(req.body.email, req.body.password, req.body.token, (result) => {
+          handleResponse(res, next, result);
+        })
+      })
+      .catch((err) => {
+        res.json(err);
+      })
+  })
+
   /**TODO: differenciate the signup and the change password route, its not secure */
 
 module.exports = users

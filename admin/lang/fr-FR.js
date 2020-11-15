@@ -11,6 +11,8 @@ export default {
     sure: 'Etes-vous sur ?',
     confirm: 'Confirmer',
     cancel: 'Annuler',
+    desktop: 'Photo desktop',
+    mobile: 'Photo mobile',
     welcome: {
       title: "Bienvenu/e dans l'espace admin de Carte de voyages",
       text: `D'ici vous pouvez charger les photos, éditer les voyages et écrire les articles qui seront ensuite présents sur <a href="http://www.cartedevoyages.com" target="_blank" class="text-blue-700">www.cartedevoyages.com</a>.
@@ -42,7 +44,8 @@ export default {
   travel: {
     title: 'Titre',
     category: 'Catégorie',
-    cover: 'Photo de couverture',
+    cover_desktop: 'Photo de couverture (desktop)',
+    cover_mobile: 'Photo de couverture (mobile)',
     countries: 'Pays traversés',
     dates: 'Dates du voyage',
     start: 'Début',
@@ -83,7 +86,8 @@ export default {
   },
   article: {
     title: 'Titre',
-    cover: 'Photo de couverture',
+    cover_desktop: 'Photo de couverture (desktop)',
+    cover_mobile: 'Photo de couverture (mobile)',
     travel: 'Voyage',
     country: 'Pays',
     place: 'Lieu',
@@ -94,6 +98,13 @@ export default {
     gallery: 'Gallerie photo',
     short_desc: 'Description courte',
     long_desc: 'Description longue',
+    size: {
+      title: "Importance e l'article",
+      subtitle: "De la taille de l'article dépend sa visualisation. Le petit n'aura par exemple pas de page dédiée.",
+      small: 'Petit',
+      normal: 'Normal',
+      large: 'Grand'
+    },
     save: {
       success: "L'article a été correctement créé !",
       error: "Oups ! Il y a eu un petit problème. Vérifie qu'il ne manque rien et essaie une nouvelle fois"
@@ -203,7 +214,15 @@ export default {
     title: 'Login',
     email: 'Email',
     password: 'Mot de passe',
-    send: 'Envoyer'
+    send: 'Envoyer',
+    'forgotten-password': 'Vous avez oublié votre mot de passe ou vous voulez le changer ?',
+    'go-to-reset': 'Réinitialisez votre mot de passe',
+    'back-to-login': 'Retour au login',
+    'password-request': {
+      success:
+        'Votre demande a été envoyée avec succés. Vous recevrez un email avec les instructiins pour changer votre mot de passe.',
+      error: "Il y a eu un problème et votre demande n'a pas été envoyée."
+    }
   },
   highlights: {
     slider_title: 'Slider de homepage',

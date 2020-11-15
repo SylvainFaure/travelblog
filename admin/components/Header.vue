@@ -21,11 +21,13 @@
         <img :src="`/${locale.code}.png`" class="w-4 h-4 mr-2" />
         {{ locale.code.toUpperCase() }}
       </a>
+      <p class="cursor-pointer font-bold ml-2" @click="handleLogout">Logout</p>
     </div>
   </header>
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 export default {
   data() {
     return {
@@ -34,9 +36,16 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('auth', ['setUser', 'setIsLogged']),
     setLocale(code) {
       this.$i18n.setLocale(code)
       this.$router.go()
+    },
+    handleLogout() {
+      window.localStorage.removeItem('user')
+      this.setUser(null)
+      this.setIsLogged(false)
+      this.$router.push('/')
     }
   }
 }

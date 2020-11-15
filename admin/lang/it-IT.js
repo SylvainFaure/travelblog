@@ -11,6 +11,8 @@ export default {
     sure: 'Sei sicuro/a ?',
     confirm: 'Conferma',
     cancel: 'Cancella',
+    desktop: 'Immagine desktop',
+    mobile: 'Immagine mobile',
     welcome: {
       title: "Benvenuto/a nell'area admin di Carte de Voyages",
       text: `Di qua potreste caricare le foto e modificare i viaggi e gli articoli che saranno visibili su <a href="http://www.cartedevoyages.com" target="_blank" class="text-blue-700">www.cartedevoyages.com</a>.
@@ -42,7 +44,8 @@ export default {
   travel: {
     title: 'Titolo',
     category: 'Categoria',
-    cover: 'Foto di copertina',
+    cover_desktop: 'Foto di copertina (desktop)',
+    cover_mobile: 'Foto di copertina (mobile)',
     countries: 'Paesi attraversati',
     dates: 'Date del viaggio',
     start: 'Inizio',
@@ -83,7 +86,8 @@ export default {
   },
   article: {
     title: 'Titolo',
-    cover: 'Foto di copertina',
+    cover_desktop: 'Foto di copertina (desktop)',
+    cover_mobile: 'Foto di copertina (mobile)',
     travel: 'Viaggio',
     country: 'Paese',
     place: 'Luogo',
@@ -94,6 +98,14 @@ export default {
     gallery: 'Galleria foto',
     short_desc: 'Descrizione corta',
     long_desc: 'Descrizione lunga',
+    size: {
+      title: "Importanza dell'articolo",
+      subtitle:
+        "Se l'articolo è piccolo non avrà una pagina dedicata. Invece se è grande sarà messo più in evidenza nella timeline",
+      small: 'Piccolo',
+      normal: 'Normale',
+      large: 'Grande'
+    },
     save: {
       success: "L'articolo è stato correttamente creato!",
       error: "Ops ! C'è stato un piccolo problema. Verifica che non manca niente e riprova"

@@ -3,6 +3,7 @@
     <h4 v-if="label" class="label font-bold my-4">
       <span class="bg-white z-10 pr-6">{{ label }}</span>
     </h4>
+    <p v-if="sublabel">{{ sublabel }}</p>
     <v-select
       :options="options"
       :label="optionLabel"
@@ -26,6 +27,7 @@ export default {
   },
   props: {
     label: VueTypes.string.def(null),
+    sublabel: VueTypes.string.def(null),
     placeholder: VueTypes.string.def(null),
     options: VueTypes.array.def([]),
     optionLabel: VueTypes.string.def('label'),

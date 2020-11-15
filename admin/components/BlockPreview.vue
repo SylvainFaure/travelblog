@@ -16,8 +16,15 @@
             </div>
           </div>
         </div>
-        <div v-if="type === 'image'">
-          <img :src="content.src" class="h-48" />
+        <div v-if="type === 'image'" class="flex">
+          <div class="mr-2">
+            <img :src="content.desktop ? content.desktop.asset_src : ''" class="h-48" />
+            <p>{{ $t('general.desktop') }}</p>
+          </div>
+          <div>
+            <img :src="content.mobile ? content.mobile.asset_src : ''" class="h-48" />
+            <p>{{ $t('general.mobile') }}</p>
+          </div>
         </div>
         <p v-else v-html="content"></p>
       </div>

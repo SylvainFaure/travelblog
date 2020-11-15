@@ -33,7 +33,7 @@ class Mail {
   
   static sendMail(adminMail, params, cb) { 
   /* params = {
-      type = 'request' | 'confirm' | 'refuse' | 'add/publish/Article/Travel',
+      type = 'request' | 'confirm' | 'refuse' | 'resetPasswordRequest' | 'add/publish/Article/Travel',
       requestedRole = 'visitor', etc,
 			email = string,
 			pwd_token = string

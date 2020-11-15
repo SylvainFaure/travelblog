@@ -17,8 +17,11 @@ const rawTravelToFormattedTravel = (travel, locale, otherData) => {
     category: travel.travel_category
       ? otherData.categories.find((cat) => cat.category_id === travel.travel_category)
       : {},
-    cover: travel[`travel_cover_${locale}`]
+    cover_desktop: travel[`travel_cover_${locale}`]
       ? otherData.assets.find((asset) => asset.asset_id === travel[`travel_cover_${locale}`])
+      : null,
+    cover_mobile: travel[`travel_cover_mobile_${locale}`]
+      ? otherData.assets.find((asset) => asset.asset_id === travel[`travel_cover_mobile_${locale}`])
       : null,
     countries: travel[`travel_countries_${locale}`],
     dates: [travel.travel_start_date, travel.travel_end_date],
@@ -42,7 +45,8 @@ const formattedTravelToRawTravel = (travel, locale, otherData) => {
     ...formatted,
     [`travel_title_${locale}`]: travel.title,
     travel_category: travel.category.category_id,
-    [`travel_cover_${locale}`]: travel.cover ? travel.cover.asset_id : null,
+    [`travel_cover_${locale}`]: travel.cover_desktop ? travel.cover_desktop.asset_id : null,
+    [`travel_cover_mobile_${locale}`]: travel.cover_mobile ? travel.cover_mobile.asset_id : null,
     [`travel_countries_${locale}`]: JSON.stringify(travel.countries),
     [`travel_slug_${locale}`]: travel.slug,
     [`travel_desc_${locale}`]: travel.short_desc,
@@ -64,15 +68,18 @@ const rawArticleToFormattedArticle = (article, locale, otherData) => {
     published_date: article[`article_published_date_${locale}`] || '',
     title: article[`article_title_${locale}`] || '',
     slug: article[`article_slug_${locale}`] || '',
-    // TODO: changer la logique de la cover aussi pour l'article
-    cover: article[`article_cover_${locale}`]
+    cover_desktop: article[`article_cover_${locale}`]
       ? otherData.assets.find((asset) => asset.asset_id === article[`article_cover_${locale}`])
+      : null,
+    cover_mobile: article[`article_cover_mobile_${locale}`]
+      ? otherData.assets.find((asset) => asset.asset_id === article[`article_cover_mobile_${locale}`])
       : null,
     place: article[`article_place_${locale}`] || '',
     country: {
       key: article[`article_country_${locale}`].toLowerCase().replace(' ', '_'),
       label: article[`article_country_${locale}`]
     },
+    size: article[`article_size_${locale}`],
     travel: article.article_travel_id
       ? otherData.travels.find((travel) => travel.travel_id === article.article_travel_id)
       : null,
@@ -95,13 +102,15 @@ const formattedArticleToRawArticle = (article, locale, otherData) => {
   formatted = {
     ...formatted,
     [`article_title_${locale}`]: article.title,
-    [`article_cover_${locale}`]: article.cover ? article.cover.asset_id : null,
+    [`article_cover_${locale}`]: article.cover_desktop ? article.cover_desktop.asset_id : null,
+    [`article_cover_mobile_${locale}`]: article.cover_mobile ? article.cover_mobile.asset_id : null,
     [`article_country_${locale}`]: article.country.label,
     [`article_place_${locale}`]: article.place,
     [`article_slug_${locale}`]: article.slug,
     [`article_short_desc_${locale}`]: article.short_desc,
     [`article_long_desc_${locale}`]: JSON.stringify(article.long_desc),
     [`article_gallery_${locale}`]: JSON.stringify(article.gallery),
+    [`article_size_${locale}`]: article.size.key,
     article_start_date: article.dates[0],
     article_end_date: article.dates[1],
     article_travel_id: article.travel.travel_id

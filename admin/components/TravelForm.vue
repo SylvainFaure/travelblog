@@ -18,11 +18,20 @@
           :option-label="`category_label_${locale}`"
         />
         <ChooseImage
-          :image="model.cover"
+          id="desktop"
+          :image="model.cover_desktop"
           :assets="assets"
-          :label="$t('travel.cover')"
+          :label="$t('travel.cover_desktop')"
           :data="{ travels, articles }"
-          @change="model.cover = $event"
+          @change="model.cover_desktop = $event"
+        />
+        <ChooseImage
+          id="mobile"
+          :image="model.cover_mobile"
+          :assets="assets"
+          :label="$t('travel.cover_mobile')"
+          :data="{ travels, articles }"
+          @change="model.cover_mobile = $event"
         />
         <InputTags :label="$t('travel.countries')" :value="model.countries" @change="model.countries = $event" />
         <Datepicker :label="$t('travel.dates')" :model="model.dates" @change="model.dates = $event" />
@@ -68,7 +77,8 @@ export default {
         published_date: '',
         title: '', // inputtext
         category: {}, // select category
-        cover: null, // image
+        cover_desktop: null, // image
+        cover_mobile: null, // image
         countries: [], // inputtags
         dates: [], // datepicker
         hashtags: '', // inputtags

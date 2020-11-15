@@ -11,11 +11,20 @@
       <form v-if="mounted">
         <InputText v-model="model.title" :label="$t('article.title')" />
         <ChooseImage
-          :image="model.cover"
+          id="desktop"
+          :image="model.cover_desktop"
           :assets="assets"
           :data="{ travels, articles }"
-          :label="$t('article.cover')"
-          @change="model.cover = $event"
+          :label="$t('article.cover_desktop')"
+          @change="handleCoverChange($event, 'desktop')"
+        />
+        <ChooseImage
+          id="mobile"
+          :image="model.cover_mobile"
+          :assets="assets"
+          :data="{ travels, articles }"
+          :label="$t('article.cover_mobile')"
+          @change="handleCoverChange($event, 'mobile')"
         />
         <Select
           v-model="model.travel"
@@ -25,6 +34,12 @@
           @input="getCountries"
         />
         <Select v-model="model.country" :label="$t('article.country')" :options="countries" />
+        <Select
+          v-model="model.size"
+          :label="$t('article.size.title')"
+          :sublabel="$t('article.size.subtitle')"
+          :options="sizes"
+        />
         <InputText v-model="model.place" :label="$t('article.place')" />
         <Datepicker :label="$t('article.dates')" :model="model.dates" @change="model.dates = $event" />
         <InputText v-model="model.slug" :label="$t('article.slug')" />
@@ -65,19 +80,36 @@ export default {
     article: VueTypes.array.def(null)
   },
   data() {
+    const sizes = [
+      {
+        key: 'small',
+        label: this.$t('article.size.small')
+      },
+      {
+        key: 'normal',
+        label: this.$t('article.size.normal')
+      },
+      {
+        key: 'large',
+        label: this.$t('article.size.large')
+      }
+    ]
     return {
       isNew: true,
       isPublished: false,
       mounted: false,
       countries: [],
+      sizes,
       model: {
         id: '',
         published: false,
         published_date: '',
         title: '', // inputtext
-        cover: null, // image
+        cover_desktop: null, // image
+        cover_mobile: null, // image
         travel: null, // select
         country: {}, // select
+        size: sizes[1], // select
         place: '', // inputtext
         dates: null, // datepicker
         slug: '', // inputtext
@@ -103,7 +135,14 @@ export default {
           otherData: { travels: this.travels, assets: this.assets, articles: this.articles }
         })
         Object.keys(m).forEach((key) => {
-          this.model[key] = m[key]
+          if (key === 'size') {
+            this.model[key] = {
+              key: m[key],
+              label: this.$t(`article.size.${m[key]}`)
+            }
+          } else {
+            this.model[key] = m[key]
+          }
           // if (key === 'country') console.log(this.model[key])
         })
         this.isPublished = this.model.published
@@ -134,6 +173,9 @@ export default {
     },
     handleGalleryChange(gallery) {
       this.model.gallery = gallery
+    },
+    handleCoverChange(e, type) {
+      this.model[`cover_${type}`] = e
     },
     async reloadData() {
       this.mounted = false

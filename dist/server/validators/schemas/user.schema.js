@@ -15,6 +15,12 @@ const signin = Joi.object({
   password: Joi.string().required()
 });
 
+const reset = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().required(),
+  token: Joi.string().required()
+});
+
 const token = Joi.object({
   token: Joi.string().required(),
 });
@@ -26,6 +32,6 @@ const request = Joi.object({
   pwd_token: Joi.any()
 })
 
-const userSchemas = { create, signup, signin, request, token };
+const userSchemas = { create, signup, signin, request, token, reset };
 
 module.exports = userSchemas; 

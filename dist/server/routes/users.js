@@ -120,7 +120,7 @@ users.route('/signup')
 
 users.route('/reset-password')
   .post((req, res, next) => {
-    validate(req.body, 'user', 'signup')
+    validate(req.body, 'user', 'reset')
       .then((value) => {
         User.resetPasswordRequest(req.body.email, req.body.password, req.body.token, (result) => {
           handleResponse(res, next, result);

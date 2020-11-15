@@ -45,6 +45,7 @@ class User {
 			if (err) {
 				cb({type: 'DatabaseError', error: err})
 			} else {
+				console.log(rows)
 				var records = JSON.stringify(rows[0]);
 				var user = JSON.parse(records);
 				cb(user)
@@ -167,6 +168,7 @@ class User {
 		this.signin(email, password, response => {
 			if (response.status === 200) {
 				this.getUserByEmail(email, (user) => {
+					console.log('Reset', user)
 					this.updateUser({...user, user_pwd_token: token }, user.user_id, (response) => {
 						const params = {
 							type: 'resetPasswordRequest',

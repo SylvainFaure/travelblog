@@ -1,6 +1,7 @@
 export default {
   title: 'Carte de voyages',
   general: {
+    send: 'Invia',
     add: 'Aggiungere',
     save: 'Salva',
     edit: 'Modifica',
@@ -216,15 +217,15 @@ export default {
     email: 'Email',
     password: 'Password',
     send: 'Invia',
-    'forgotten-password': 'Ti sei dimenticata la password o vuoi cambiarla?',
-    'reset-password': 'Reinizializza la tua password',
-    'go-to-reset': 'Reinizializza la tua password',
-    'back-to-login': 'Torna al login',
-    'password-request': {
+    forgotten_password: 'Ti sei dimenticata la password o vuoi cambiarla?',
+    reset_password: 'Reinizializza la tua password',
+    go_to_reset: 'Reinizializza la tua password',
+    back_to_login: 'Torna al login',
+    password_request: {
       success: 'La tua richiesta è stata mandata. Riceverai un email con le istruzioni per cambiare password.',
       error: "C'è stato un problema e la tua richiesta non è stata inviata.",
       changed: 'La tua password è stata modificata',
-      'not-changed': "C'è stato un problema e la tua richiesta non è stata inviata."
+      not_changed: "C'è stato un problema e la tua richiesta non è stata inviata."
     }
   },
   highlights: {

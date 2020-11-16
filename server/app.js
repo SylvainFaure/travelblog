@@ -57,7 +57,8 @@ app.use(errorMiddleware);
 
 /*** ANGULAR ONE PAGE APP ***/
 app.get('*', (req, res, next) => {
-  if (req.url.indexOf('.') === -1 && req.url.indexOf('json') == -1) {
+  const queryStringRegex = /\?([^&=]+)=([^&=]+)(?:&([^&=]+)=([^&=]+))*$/gm
+  if ((req.url.indexOf('.') === -1 && req.url.indexOf('json') == -1) || req.url.match(queryStringRegex)) {
     console.log('SPA: %s', req.url)
     const indexPath = app.get("env") === 'development' ? '../admin/js' : '../admin/';
     res.sendFile(path.join(__dirname, indexPath, 'index.html'));

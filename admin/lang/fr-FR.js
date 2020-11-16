@@ -1,6 +1,7 @@
 export default {
   title: 'Carte de voyages',
   general: {
+    send: 'Envoyer',
     add: 'Ajouter',
     save: 'Sauvegarder',
     edit: 'Modifier',
@@ -215,16 +216,16 @@ export default {
     email: 'Email',
     password: 'Mot de passe',
     send: 'Envoyer',
-    'forgotten-password': 'Vous avez oublié votre mot de passe ou vous voulez le changer ?',
-    'reset-password': 'Réinitialisez votre mot de passe',
-    'go-to-reset': 'Réinitialisez votre mot de passe',
-    'back-to-login': 'Retour au login',
-    'password-request': {
+    forgotten_password: 'Vous avez oublié votre mot de passe ou vous voulez le changer ?',
+    reset_password: 'Réinitialisez votre mot de passe',
+    go_to_reset: 'Réinitialisez votre mot de passe',
+    back_to_login: 'Retour au login',
+    password_request: {
       success:
         'Votre demande a été envoyée avec succés. Vous recevrez un email avec les instructiins pour changer votre mot de passe.',
       error: "Il y a eu un problème et votre demande n'a pas été envoyée.",
       changed: 'Votre mot de passe a été modifié avec succés',
-      'not-changed': "Il y a eu un problème et votre demande n'a pas été envoyée."
+      not_changed: "Il y a eu un problème et votre demande n'a pas été envoyée."
     }
   },
   highlights: {

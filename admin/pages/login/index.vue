@@ -1,5 +1,5 @@
 <template>
-  <div class="login w-screen flex justify-center items-center">
+  <div v-if="mounted" class="login w-screen flex justify-center items-center">
     <div v-if="isSignin">
       <p>{{ $t('login.title') }}</p>
       <InputText v-model="loginModel.email" class="my-2" :placeholder="$t('login.email')" />
@@ -17,7 +17,6 @@
     <div v-if="isResetPasswordRequest">
       <p>{{ $t('login.reset-password') }}</p>
       <InputText v-model="resetPasswordRequestModel.email" class="my-2" :placeholder="$t('login.email')" />
-      <InputText v-model="resetPasswordRequestModel.password" class="my-2" :placeholder="$t('login.password')" />
       <div class="flex justify-end">
         <Btn icon-btn :label="$t('general.send')" @click="handleResetPasswordRequest" />
       </div>
@@ -43,7 +42,7 @@
       />
       <div class="flex justify-end">
         <Btn icon-btn :label="$t('general.send')" @click="handleResetPasswordChange" />
-        <p class="font-bold cursor-pointer text-primary" @click="goToLogin">{{ $t('login.back-to-login') }}</p>
+        <p class="font-bold cursor-pointer text-primary" @click="goToLogin">{{ $t('login.back_to_login') }}</p>
       </div>
     </div>
   </div>
@@ -63,8 +62,7 @@ export default {
         password: ''
       },
       resetPasswordRequestModel: {
-        email: '',
-        password: ''
+        email: ''
       },
       resetPasswordChangeModel: {
         email: '',
@@ -74,7 +72,6 @@ export default {
     }
   },
   async mounted() {
-    console.log(this.$route)
     const params = this.$route.query
     if (params.email && params.pwd_token) {
       try {
@@ -155,9 +152,9 @@ export default {
           ...this.resetPasswordRequestModel,
           token: this.generateToken()
         })
-        this.$toast.success('login.password-request.success')
+        this.$toast.success(this.$t('login.password_request.success'))
       } catch (error) {
-        this.$toast.error('login.password-request.error')
+        this.$toast.error(this.$t('login.password_request.error'))
         console.warn(error)
       }
     },
@@ -166,10 +163,10 @@ export default {
       if (!!model.password && model.password === model.confirmPassword) {
         try {
           await this.$axios.post('/api/users/confirm-reset-password', { email: model.email, password: model.password })
-          this.$toast.success('login.password-request.changed')
+          this.$toast.success(this.$t('login.password_request.changed'))
         } catch (error) {
           console.warn(error)
-          this.$toast.success('login.password-request.not-changed')
+          this.$toast.success(this.$t('login.password_request.not_changed'))
         }
       }
     }

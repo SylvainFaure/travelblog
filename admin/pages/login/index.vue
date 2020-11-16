@@ -15,7 +15,7 @@
     </div>
 
     <div v-if="isResetPasswordRequest">
-      <p>{{ $t('login.reset-password') }}</p>
+      <p>{{ $t('login.reset_password') }}</p>
       <InputText v-model="resetPasswordRequestModel.email" class="my-2" :placeholder="$t('login.email')" />
       <div class="flex justify-end">
         <Btn icon-btn :label="$t('general.send')" @click="handleResetPasswordRequest" />

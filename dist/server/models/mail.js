@@ -39,7 +39,7 @@ class Mail {
 			pwd_token = string
      }
   */ 
-	const formattedAdminMail = `Carte de Voyages <${adminMail}>`
+	const formattedAdminMail = `"Carte de Voyages" <${adminMail}>`
 	let emailFrom = params.email;
 	let emailTo = formattedAdminMail;
 	if (params.type !== 'request') {

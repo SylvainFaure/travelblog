@@ -180,9 +180,7 @@ class User {
 							email,
 							pwd_token: token
 						}
-						console.log(params)
 						this.getSuperAdmin((admin) => {
-							console.log(admin)
 							Mail.sendMail(admin.user_email, params, (res) => {
 								cb(res)
 							})

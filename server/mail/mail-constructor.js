@@ -3,6 +3,7 @@ const elements = require('./elements');
 
 class MailConstructor {
   static getMailOptions(fromEmail, toEmail, type, template) {
+    console.log('Constructor', fromEmail, toEmail, type, template)
     let subject = {
      subject: '',
      text: ''
@@ -263,7 +264,7 @@ class MailConstructor {
     </html>`
   }
 
-  static getResetPasswordRequestTemplate(email) {
+  static getResetPasswordRequestTemplate(email, pwdToken) {
     return `<!doctype html>
     <html>
       ${elements.head}

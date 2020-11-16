@@ -39,12 +39,11 @@ class Mail {
 			pwd_token = string
      }
   */ 
-	const formattedAdminMail = `CarteDeVoyages <${adminMail}>`
 	let emailFrom = params.email;
-	let emailTo = formattedAdminMail;
+	let emailTo = adminMail;
 	if (params.type !== 'request') {
 		emailTo = params.email;
-		emailFrom = formattedAdminMail;
+		emailFrom = adminMail;
 	}
 	const getSmtpTransport = new Promise((resolve, reject) => {
 		this.setupMail(adminMail, (resp) => {

@@ -122,7 +122,20 @@ users.route('/reset-password')
   .post((req, res, next) => {
     validate(req.body, 'user', 'reset')
       .then((value) => {
-        User.resetPasswordRequest(req.body.email, req.body.password, req.body.token, (result) => {
+        User.resetPasswordRequest(req.body.email, req.body.token, (result) => {
+          handleResponse(res, next, result);
+        })
+      })
+      .catch((err) => {
+        res.json(err);
+      })
+  })
+
+  users.route('/confirm-reset-password')
+  .post((req, res, next) => {
+    validate(req.body, 'user', 'signup')
+      .then((value) => {
+        User.signup(req.body.email, req.body.password, (result) => {
           handleResponse(res, next, result);
         })
       })

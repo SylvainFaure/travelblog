@@ -17,7 +17,6 @@ const signin = Joi.object({
 
 const reset = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.string().required(),
   token: Joi.string().required()
 });
 

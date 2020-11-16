@@ -39,11 +39,15 @@ class Mail {
 			pwd_token = string
      }
   */ 
+	const formattedAdminMail = {
+		name: 'Carte de Voyages',
+		address: adminMail
+	}
 	let emailFrom = params.email;
-	let emailTo = adminMail;
+	let emailTo = formattedAdminMail;
 	if (params.type !== 'request') {
 		emailTo = params.email;
-		emailFrom = adminMail;
+		emailFrom = formattedAdminMail;
 	}
 	const getSmtpTransport = new Promise((resolve, reject) => {
 		this.setupMail(adminMail, (resp) => {
@@ -62,7 +66,6 @@ class Mail {
 			smtpTransport.sendMail(mailOptions, (error, info) => {
 				if (error) throw error
 				smtpTransport.close();
-				console.log('DONE', info)
 				cb(info)
 			});
 		})

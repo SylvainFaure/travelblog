@@ -215,7 +215,17 @@ export default {
     title: 'Login',
     email: 'Email',
     password: 'Password',
-    send: 'Invia'
+    send: 'Invia',
+    'forgotten-password': 'Ti sei dimenticata la password o vuoi cambiarla?',
+    'reset-password': 'Reinizializza la tua password',
+    'go-to-reset': 'Reinizializza la tua password',
+    'back-to-login': 'Torna al login',
+    'password-request': {
+      success: 'La tua richiesta è stata mandata. Riceverai un email con le istruzioni per cambiare password.',
+      error: "C'è stato un problema e la tua richiesta non è stata inviata.",
+      changed: 'La tua password è stata modificata',
+      'not-changed': "C'è stato un problema e la tua richiesta non è stata inviata."
+    }
   },
   highlights: {
     slider_title: 'Slider della homepage',

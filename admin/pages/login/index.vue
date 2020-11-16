@@ -7,30 +7,30 @@
       <div class="flex justify-end">
         <Btn icon-btn :label="$t('general.send')" @click="handleLogin" />
       </div>
-      <div>
-        <p>{{ $t('login.forgotten-password') }}</p>
-        <Btn icon-btn :label="$t('login-go-to-reset')" @click="goToResetPassword" />
+      <div class="flex justify-end">
+        <p class="font-bold cursor-pointer text-primary" @click="goToResetPassword">
+          {{ $t('login.forgotten-password') }}
+        </p>
       </div>
     </div>
 
     <div v-if="isResetPasswordRequest">
-      <p>{{ $t('reset_password.title') }}</p>
+      <p>{{ $t('login.reset-password') }}</p>
       <InputText v-model="resetPasswordRequestModel.email" class="my-2" :placeholder="$t('login.email')" />
       <InputText v-model="resetPasswordRequestModel.password" class="my-2" :placeholder="$t('login.password')" />
       <div class="flex justify-end">
         <Btn icon-btn :label="$t('general.send')" @click="handleResetPasswordRequest" />
       </div>
-      <div>
-        <p>{{ $t('login.back-to-login') }}</p>
-        <Btn icon-btn :label="$t('login.back-to-login')" @click="goToLogin" />
+      <div class="flex justify-end">
+        <p class="font-bold cursor-pointer text-primary" @click="goToLogin">{{ $t('login.back-to-login') }}</p>
       </div>
     </div>
 
     <div v-if="isResetPasswordChange">
-      <p>{{ $t('reset_password.title') }}</p>
+      <p>{{ $t('login.reset-password') }}</p>
       <InputText v-model="resetPasswordChangeModel.email" class="my-2" :placeholder="$t('login.email')" />
       <InputText
-        v-model="resetPasswordChangeModel.passsword"
+        v-model="resetPasswordChangeModel.password"
         type="password"
         class="my-2"
         :placeholder="$t('login.password')"
@@ -43,6 +43,7 @@
       />
       <div class="flex justify-end">
         <Btn icon-btn :label="$t('general.send')" @click="handleResetPasswordChange" />
+        <p class="font-bold cursor-pointer text-primary" @click="goToLogin">{{ $t('login.back-to-login') }}</p>
       </div>
     </div>
   </div>
@@ -53,6 +54,7 @@ import { mapMutations } from 'vuex'
 export default {
   data() {
     return {
+      mounted: false,
       isSignin: true,
       isResetPasswordRequest: false,
       isResetPasswordChange: false,
@@ -69,6 +71,27 @@ export default {
         password: '',
         confirmPassword: ''
       }
+    }
+  },
+  async mounted() {
+    console.log(this.$route)
+    const params = this.$route.query
+    if (params.email && params.pwd_token) {
+      try {
+        const user = await this.$axios.get(`/api/users/email/${params.email}`)
+        if (user && user.user_pwd_token === params.pwd_token) {
+          // update user per cancellare token
+          this.isSignin = false
+          this.isResetPasswordChange = true
+          this.resetPasswordChangeModel.email = params.email
+        }
+      } catch (error) {
+        console.warn(error)
+      } finally {
+        this.mounted = true
+      }
+    } else {
+      this.mounted = true
     }
   },
   methods: {
@@ -138,7 +161,18 @@ export default {
         console.warn(error)
       }
     },
-    async handleResetPasswordhange() {}
+    async handleResetPasswordChange() {
+      const model = this.resetPasswordChangeModel
+      if (!!model.password && model.password === model.confirmPassword) {
+        try {
+          await this.$axios.post('/api/users/confirm-reset-password', { email: model.email, password: model.password })
+          this.$toast.success('login.password-request.changed')
+        } catch (error) {
+          console.warn(error)
+          this.$toast.success('login.password-request.not-changed')
+        }
+      }
+    }
   }
 }
 </script>

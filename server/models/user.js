@@ -169,27 +169,21 @@ class User {
 	 })
 	}
 
-	static resetPasswordRequest(email, password, token, cb) {
-		this.signin(email, password, response => {
-			if (response.status === 200) {
-				this.getUserByEmail(email, (user) => {
-					// console.log('Reset', user)
-					this.updateUser({...user, user_pwd_token: token }, user.user_id, (response) => {
-						const params = {
-							type: 'resetPasswordRequest',
-							email,
-							pwd_token: token
-						}
-						this.getSuperAdmin((admin) => {
-							Mail.sendMail(admin.user_email, params, (res) => {
-								cb(res)
-							})
-						})
+	static resetPasswordRequest(email, token, cb) {
+		this.getUserByEmail(email, (user) => {
+			// console.log('Reset', user)
+			this.updateUser({...user, user_pwd_token: token }, user.user_id, (response) => {
+				const params = {
+					type: 'resetPasswordRequest',
+					email,
+					pwd_token: token
+				}
+				this.getSuperAdmin((admin) => {
+					Mail.sendMail(admin.user_email, params, (res) => {
+						cb(res)
 					})
 				})
-				// update de l'user pour mettre le token
-				// envoi du mail avec le lien et le token
-			}
+			})
 		})
 	}
 	

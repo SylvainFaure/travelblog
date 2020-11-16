@@ -222,7 +222,7 @@ export default {
     back_to_login: 'Retour au login',
     password_request: {
       success:
-        'Votre demande a été envoyée avec succés. Vous recevrez un email avec les instructiins pour changer votre mot de passe.',
+        'Votre demande a été envoyée avec succés. Vous recevrez un email avec les instructions pour changer votre mot de passe.',
       error: "Il y a eu un problème et votre demande n'a pas été envoyée.",
       changed: 'Votre mot de passe a été modifié avec succés',
       not_changed: "Il y a eu un problème et votre demande n'a pas été envoyée."

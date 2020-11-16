@@ -9,7 +9,7 @@
       </div>
       <div class="flex justify-end">
         <p class="font-bold cursor-pointer text-primary" @click="goToResetPassword">
-          {{ $t('login.forgotten-password') }}
+          {{ $t('login.forgotten_password') }}
         </p>
       </div>
     </div>
@@ -21,12 +21,12 @@
         <Btn icon-btn :label="$t('general.send')" @click="handleResetPasswordRequest" />
       </div>
       <div class="flex justify-end">
-        <p class="font-bold cursor-pointer text-primary" @click="goToLogin">{{ $t('login.back-to-login') }}</p>
+        <p class="font-bold cursor-pointer text-primary" @click="goToLogin">{{ $t('login.back_to_login') }}</p>
       </div>
     </div>
 
     <div v-if="isResetPasswordChange">
-      <p>{{ $t('login.reset-password') }}</p>
+      <p>{{ $t('login.reset_password') }}</p>
       <InputText v-model="resetPasswordChangeModel.email" class="my-2" :placeholder="$t('login.email')" />
       <InputText
         v-model="resetPasswordChangeModel.password"

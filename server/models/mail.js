@@ -58,9 +58,11 @@ class Mail {
 		.then(smtpTransport => {
 			const emailTemplate = mailConstructor.getMailTemplate(params)
 			const mailOptions = mailConstructor.getMailOptions(emailFrom, emailTo, params.type, emailTemplate);
+			console.log('SMTP', emailFrom, emailTo)
 			smtpTransport.sendMail(mailOptions, (error, info) => {
 				if (error) throw error
 				smtpTransport.close();
+				console.log('DONE', info)
 				cb(info)
 			});
 		})

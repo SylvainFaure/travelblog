@@ -58,7 +58,9 @@ class Article {
 									if (error) {
 										cb({type: "DatabaseError", error: error, message: "Could not update in published_article"})
 									} else {
-										cb(result)
+										db.query('SELECT * FROM `articles` WHERE article_id = ?', [id], (err, rows) => {
+											cb(rows)
+										})
 									}
 								})
 							} else {
@@ -66,7 +68,9 @@ class Article {
 									if (error) {
 										cb({type: "DatabaseError", error: error})
 									} else {
-										cb(result)
+										db.query('SELECT * FROM `articles` WHERE article_id = ?', [id], (err, rows) => {
+											cb(rows)
+										})
 									}
 								})
 							}
@@ -79,7 +83,9 @@ class Article {
 				if (error) { 
 					cb({type: 'DatabaseError', error: error})
 				} else {
-					cb(results)
+					db.query('SELECT * FROM `articles` WHERE article_id = ?', [id], (err, rows) => {
+						cb(rows)
+					})
 				}
 			})
 		}

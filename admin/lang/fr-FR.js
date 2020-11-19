@@ -215,6 +215,7 @@ export default {
     title: 'Login',
     email: 'Email',
     password: 'Mot de passe',
+    confirm_password: 'Confirmez le mot de passe',
     send: 'Envoyer',
     forgotten_password: 'Vous avez oublié votre mot de passe ou vous voulez le changer ?',
     reset_password: 'Réinitialisez votre mot de passe',

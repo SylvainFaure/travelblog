@@ -7,12 +7,13 @@ export function formatOutput(entity, { data, locale, otherData = {} }) {
 }
 
 const rawTravelToFormattedTravel = (travel, locale, otherData) => {
+  const otherLocale = locale === 'fr' ? 'it' : 'fr'
   return {
     id: travel.travel_id,
     published: !!travel[`travel_published_${locale}`],
     published_date: travel[`travel_published_date_${locale}`] || '',
     same_start_end: !!travel.travel_same_start_end,
-    title: travel[`travel_title_${locale}`] || '',
+    title: travel[`travel_title_${locale}`] || `<span class="italic">${travel[`travel_title_${otherLocale}`]}</span>`,
     slug: travel[`travel_slug_${locale}`] || '',
     category: travel.travel_category
       ? otherData.categories.find((cat) => cat.category_id === travel.travel_category)
@@ -62,11 +63,13 @@ const formattedTravelToRawTravel = (travel, locale, otherData) => {
 }
 
 const rawArticleToFormattedArticle = (article, locale, otherData) => {
+  const otherLocale = locale === 'fr' ? 'it' : 'fr'
   return {
     id: article.article_id,
     published: !!article[`article_published_${locale}`],
     published_date: article[`article_published_date_${locale}`] || '',
-    title: article[`article_title_${locale}`] || '',
+    title:
+      article[`article_title_${locale}`] || `<span class="italic">${article[`article_title_${otherLocale}`]}</span>`,
     slug: article[`article_slug_${locale}`] || '',
     cover_desktop: article[`article_cover_${locale}`]
       ? otherData.assets.find((asset) => asset.asset_id === article[`article_cover_${locale}`])

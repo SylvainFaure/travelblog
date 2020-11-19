@@ -207,15 +207,16 @@ class User {
 	
 	static saveUserPwd(user, pwd, cb) {
 	   let userToSave = {
-			user_email: user.user_email,
-			user_role: user.user_role,
-      user_password: pwd
+			...user,
+			user_password: pwd,
+			user_pwd_token: null
 	   }
 	   db.query('UPDATE `users` SET ? WHERE `user_email` = ?', [userToSave, user.user_email], (err, results) => {
 	  	if (err) {
 				cb({type: 'DatabaseError', error: err})
 			} else {
 				cb(results)
+				// TODO: send mail pour dire que tout est ok!
 			}
 	   })
 	}

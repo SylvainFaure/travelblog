@@ -105,6 +105,7 @@ export default {
           }
         })
         this.$toast.success(this.$t('assets.updated_success'))
+        this.reloadAssets()
       } catch (error) {
         console.warn(error)
         this.$toast.error(this.$t('assets.updated_error'))

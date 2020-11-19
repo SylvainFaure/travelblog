@@ -88,6 +88,7 @@ import { format } from 'date-fns'
 export default {
   async asyncData({ app, $axios }) {
     const locale = app.i18n.locale
+    const otherLocale = locale === 'fr' ? 'it' : 'fr'
     let travels = []
     let articles = []
     let categories = []
@@ -105,6 +106,7 @@ export default {
     }
     return {
       locale,
+      otherLocale,
       travels,
       articles,
       categories
@@ -160,6 +162,8 @@ export default {
           return entity[`${type}_${col}`]
         default:
           return entity[`${type}_${col}_${this.locale}`]
+            ? entity[`${type}_${col}_${this.locale}`]
+            : `<span class="italic text-gray-500">${entity[`${type}_${col}_${this.otherLocale}`]}</span>`
       }
     },
     openRemoveModal(type, entity) {

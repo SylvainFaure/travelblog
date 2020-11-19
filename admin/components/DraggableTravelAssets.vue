@@ -20,7 +20,11 @@
     </div>
     <div class="travels-list w-2/3 bg-gray-200 p-4 h-3/4 overflow-y-scroll">
       <div v-for="travel in travels" :key="`travel-${travel.travel_id}`">
-        <h3>{{ travel[`travel_title_${locale}`] }}</h3>
+        <h3 :class="travel[`travel_title_${locale}`] ? '' : 'italic text-gray-500'">
+          {{
+            travel[`travel_title_${locale}`] ? travel[`travel_title_${locale}`] : travel[`travel_title_${otherLocale}`]
+          }}
+        </h3>
         <draggable
           :list="assetsByTravel[travel.travel_id]"
           :group="{ name: 'assets', pull: true, put: true }"
@@ -50,8 +54,11 @@ export default {
     articles: VueTypes.array.def([])
   },
   data() {
+    const locale = this.$i18n.locale
+    const otherLocale = locale === 'fr' ? 'it' : 'fr'
     return {
-      locale: 'fr',
+      locale,
+      otherLocale,
       mounted: false,
       assetsByTravel: {},
       filteredAssets: [],

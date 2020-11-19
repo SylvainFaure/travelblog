@@ -15,7 +15,13 @@
     </div>
     <div class="articles-list w-2/3 bg-gray-200 p-4 h-3/4 overflow-y-scroll">
       <div v-for="article in articles" :key="`article-${article.article_id}`">
-        <h3>{{ article[`article_title_${locale}`] }}</h3>
+        <h3 :class="article[`article_title_${locale}`] ? '' : 'italic text-gray-500'">
+          {{
+            article[`article_title_${locale}`]
+              ? article[`article_title_${locale}`]
+              : article[`article_title_${otherLocale}`]
+          }}
+        </h3>
         <draggable
           :list="assetsByArticle[article.article_id]"
           :group="{ name: 'assets', pull: false, put: true }"
@@ -57,8 +63,12 @@ export default {
     articles: VueTypes.array.def([])
   },
   data() {
+    const locale = this.$i18n.locale
+    const otherLocale = locale === 'fr' ? 'it' : 'fr'
+
     return {
-      locale: 'fr',
+      locale,
+      otherLocale,
       mounted: false,
       assetsByArticle: {},
       modifiedAssetsIds: {}

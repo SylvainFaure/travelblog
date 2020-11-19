@@ -17,11 +17,9 @@
     <div v-if="isResetPasswordRequest">
       <p>{{ $t('login.reset_password') }}</p>
       <InputText v-model="resetPasswordRequestModel.email" class="my-2" :placeholder="$t('login.email')" />
-      <div class="flex justify-end">
-        <Btn icon-btn :label="$t('general.send')" @click="handleResetPasswordRequest" />
-      </div>
-      <div class="flex justify-end">
+      <div class="flex justify-between">
         <p class="font-bold cursor-pointer text-primary" @click="goToLogin">{{ $t('login.back_to_login') }}</p>
+        <Btn icon-btn :label="$t('general.send')" @click="handleResetPasswordRequest" />
       </div>
     </div>
 
@@ -38,11 +36,11 @@
         v-model="resetPasswordChangeModel.confirmPassword"
         type="password"
         class="my-2"
-        :placeholder="$t('login.confirmPassword')"
+        :placeholder="$t('login.confirm_password')"
       />
-      <div class="flex justify-end">
-        <Btn icon-btn :label="$t('general.send')" @click="handleResetPasswordChange" />
+      <div class="flex justify-between">
         <p class="font-bold cursor-pointer text-primary" @click="goToLogin">{{ $t('login.back_to_login') }}</p>
+        <Btn icon-btn :label="$t('general.send')" @click="handleResetPasswordChange" />
       </div>
     </div>
   </div>
@@ -75,9 +73,8 @@ export default {
     const params = this.$route.query
     if (params.email && params.pwd_token) {
       try {
-        const user = await this.$axios.get(`/api/users/email/${params.email}`)
-        if (user && user.user_pwd_token === params.pwd_token) {
-          // update user per cancellare token
+        const { data } = await this.$axios.get(`/api/users/email/${params.email}`)
+        if (data && data.user_pwd_token === params.pwd_token) {
           this.isSignin = false
           this.isResetPasswordChange = true
           this.resetPasswordChangeModel.email = params.email
@@ -96,10 +93,12 @@ export default {
     goToResetPassword() {
       this.isSignin = false
       this.isResetPasswordRequest = true
+      this.isResetPasswordChange = false
     },
     goToLogin() {
       this.isSignin = true
       this.isResetPasswordRequest = false
+      this.isResetPasswordChange = false
     },
     saveToken(token) {
       this.setToken(token)
@@ -164,6 +163,13 @@ export default {
         try {
           await this.$axios.post('/api/users/confirm-reset-password', { email: model.email, password: model.password })
           this.$toast.success(this.$t('login.password_request.changed'))
+          this.goToLogin()
+          window.history.pushState({}, null, '/login')
+          this.resetPasswordChangeModel = {
+            email: '',
+            password: '',
+            confirmPassword: ''
+          }
         } catch (error) {
           console.warn(error)
           this.$toast.success(this.$t('login.password_request.not_changed'))

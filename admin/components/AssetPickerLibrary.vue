@@ -86,9 +86,11 @@
               {{ $t('assets.description') }}
               {{ asset[`asset_desc_${$i18n.locale}`] }}
             </p>
-            <p v-if="asset.asset_travel_id" class="text-sm text-gray-600 font-bold">
-              {{ getTravelTitle(asset.asset_travel_id) }}
-            </p>
+            <p
+              v-if="asset.asset_travel_id"
+              class="text-sm text-gray-600 font-bold"
+              v-html="getTravelTitle(asset.asset_travel_id)"
+            ></p>
           </div>
         </div>
         <div v-if="!filteredAssets.length" class="flex justify-center max-w-1/4 my-16">
@@ -121,8 +123,11 @@ export default {
     pickLimit: VueTypes.number.def(null)
   },
   data() {
+    const locale = this.$i18n.locale
+    const otherLocale = locale === 'fr' ? 'it' : 'fr'
     return {
-      locale: '',
+      locale,
+      otherLocale,
       pickedAsset: null,
       pickedAssetsIds: [],
       assetToRemove: null,
@@ -187,7 +192,10 @@ export default {
       return format(new Date(Number(timestamp)), 'dd/MM/yyyy')
     },
     getTravelTitle(travelId) {
-      return this.data.travels.find((travel) => travel.travel_id === travelId)[`travel_title_${this.locale}`]
+      const t = this.data.travels.find((travel) => travel.travel_id === travelId)
+      return t[`travel_title_${this.locale}`]
+        ? t[`travel_title_${this.locale}`]
+        : `<span class="italic text-gray-400">${t[`travel_title_${this.otherLocale}`]}</span>`
     },
     initWithPicked() {
       this.$refs.asset.forEach((a) => {

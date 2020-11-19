@@ -216,6 +216,7 @@ export default {
     title: 'Login',
     email: 'Email',
     password: 'Password',
+    confirm_password: 'Conferma password',
     send: 'Invia',
     forgotten_password: 'Ti sei dimenticata la password o vuoi cambiarla?',
     reset_password: 'Reinizializza la tua password',

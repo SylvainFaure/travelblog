@@ -26,7 +26,9 @@ const create = Joi.alternatives().try(
     article_slug_fr: Joi.string().allow(''),
     article_slug_it: Joi.string().allow(''),
     article_cover_fr: Joi.number().allow(null),
-    article_cover_it: Joi.number().allow(null)
+    article_cover_it: Joi.number().allow(null),
+    article_cover_mobile_fr: Joi.number().allow(null),
+    article_cover_mobile_it: Joi.number().allow(null)
   }),
   Joi.object().keys({
     article_title_fr: Joi.string().allow(''),
@@ -53,7 +55,9 @@ const create = Joi.alternatives().try(
     article_slug_fr: Joi.string().allow(''),
     article_slug_it: Joi.string().allow(''),
     article_cover_fr: Joi.number().allow(null),
-    article_cover_it: Joi.number().allow(null)
+    article_cover_it: Joi.number().allow(null),
+    article_cover_mobile_fr: Joi.number().allow(null),
+    article_cover_mobile_it: Joi.number().allow(null)
   })
 );
 
@@ -79,6 +83,8 @@ const publish = Joi.alternatives().try(
     article_gallery_it: Joi.string().allow(''),
     article_cover_fr: Joi.number().allow(null),
     article_cover_it: Joi.number().allow(null),
+    article_cover_mobile_fr: Joi.number().allow(null),
+    article_cover_mobile_it: Joi.number().allow(null),
     article_start_date: Joi.number(),
     article_end_date: Joi.number(),
     article_published_fr: Joi.any(),
@@ -107,6 +113,8 @@ const publish = Joi.alternatives().try(
     article_gallery_it: Joi.string().allow(''),
     article_cover_fr: Joi.number().allow(null),
     article_cover_it: Joi.number().allow(null),
+    article_cover_mobile_fr: Joi.number().allow(null),
+    article_cover_mobile_it: Joi.number().allow(null),
     article_start_date: Joi.number(),
     article_end_date: Joi.number(),
     article_published_fr: Joi.any(),

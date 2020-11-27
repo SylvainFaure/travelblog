@@ -35,11 +35,13 @@ const rawTravelToFormattedTravel = (travel, locale, otherData) => {
 }
 const formattedTravelToRawTravel = (travel, locale, otherData) => {
   const rawTravel = travel.id ? otherData.travels.find((t) => travel.id === t.travel_id) : null
-  Object.keys(rawTravel).forEach((key) => {
-    if (typeof rawTravel[key] === 'object') {
-      rawTravel[key] = JSON.stringify(rawTravel[key])
-    }
-  })
+  if (rawTravel) {
+    Object.keys(rawTravel).forEach((key) => {
+      if (typeof rawTravel[key] === 'object') {
+        rawTravel[key] = JSON.stringify(rawTravel[key])
+      }
+    })
+  }
   let formatted = rawTravel || {}
 
   formatted = {
@@ -95,11 +97,13 @@ const rawArticleToFormattedArticle = (article, locale, otherData) => {
 
 const formattedArticleToRawArticle = (article, locale, otherData) => {
   const rawArticle = article.id ? otherData.articles.find((t) => article.id === t.article_id) : null
-  Object.keys(rawArticle).forEach((key) => {
-    if (typeof rawArticle[key] === 'object') {
-      rawArticle[key] = JSON.stringify(rawArticle[key])
-    }
-  })
+  if (rawArticle) {
+    Object.keys(rawArticle).forEach((key) => {
+      if (typeof rawArticle[key] === 'object') {
+        rawArticle[key] = JSON.stringify(rawArticle[key])
+      }
+    })
+  }
   let formatted = rawArticle || {}
 
   formatted = {

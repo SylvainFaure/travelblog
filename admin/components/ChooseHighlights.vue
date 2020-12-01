@@ -15,7 +15,7 @@
     </div>
     <draggable :list="selected">
       <div v-for="entity in selected" :key="`${type}-${entity[`${type}_id`]}`">
-        <EntityRow :type="type" :entity="entity" />
+        <EntityRow :type="type" :entity="entity" @remove="$emit('remove', { type, id: entity[`${type}_id`] })" />
       </div>
     </draggable>
 
@@ -38,6 +38,7 @@
 <script>
 import VueTypes from 'vue-types'
 import draggable from 'vuedraggable'
+import isEqual from 'lodash.isequal'
 
 export default {
   components: {
@@ -51,8 +52,9 @@ export default {
     unpublished: VueTypes.array.def([])
   },
   data() {
+    const locale = this.$i18n.locale
     return {
-      locale: 'fr',
+      locale,
       selected: [],
       mounted: false
     }
@@ -68,12 +70,19 @@ export default {
       }, [])
     }
   },
+  watch: {
+    highlighted(n, o) {
+      const nIds = n.map((e) => e[`${this.type}_id`]).sort()
+      const oIds = o.map((e) => e[`${this.type}_id`]).sort()
+      if (!isEqual(nIds, oIds)) {
+        this.selected = n
+      }
+    }
+  },
   mounted() {
-    this.locale = this.$i18n.locale
     if (this.highlighted) {
       this.selected = this.highlighted
     }
-    console.log(this.selected)
     this.mounted = true
   },
   methods: {

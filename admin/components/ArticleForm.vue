@@ -179,15 +179,18 @@ export default {
     },
     async reloadData() {
       this.mounted = false
+      this.model = {}
       try {
         const { data } = await this.$axios.get(`/api/articles/${this.$route.params.id}`)
         if (data) {
           const m = formatInput('article', {
-            data: this.article[0],
+            data: data[0],
             locale: this.locale,
             otherData: { travels: this.travels, assets: this.assets, articles: this.articles }
           })
-          this.model = m
+          Object.keys(m).map((key) => {
+            this.$set(this.model, key, m[key])
+          })
           this.isPublished = this.model.published
           this.mounted = true
         } else {

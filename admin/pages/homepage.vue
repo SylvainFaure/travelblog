@@ -12,6 +12,7 @@
             :highlighted="model[`slider_${locale}`]"
             class="mr-2"
             @edit="handleEdit"
+            @remove="handleRemove('slider', $event)"
           />
         </div>
       </div>
@@ -33,6 +34,7 @@
           :highlighted="model[`highlighted_travels_${locale}`]"
           class="mr-2"
           @edit="handleEdit"
+          @remove="handleRemove('highlighted_travels', $event)"
         />
         <ChooseHighlights
           ref="highlightsArticles"
@@ -43,6 +45,7 @@
           :highlighted="model[`highlighted_articles_${locale}`]"
           class="ml-2"
           @edit="handleEdit"
+          @remove="handleRemove('highlighted_articles', $event)"
         />
       </div>
     </div>
@@ -101,11 +104,26 @@ export default {
     handleEdit(type, id) {
       window.open(`/${type}s/${id}`, '_blank')
     },
+    handleRemove(highlight, { type, id }) {
+      const prop = `${highlight}_${this.locale}`
+      console.log(highlight, type, id, prop)
+      this.$set(
+        this.model,
+        prop,
+        this.model[prop].filter((entity) => entity[`${type}_id`] !== id)
+      )
+    },
     async saveSettings() {
       const desc = this.$refs.homepageDescription.getBlocks()
       const slider = this.$refs.slider.getSelected()
       const travels = this.$refs.highlightsTravels.getSelected()
       const articles = this.$refs.highlightsArticles.getSelected()
+
+      Object.keys(this.settings).forEach((key) => {
+        if (typeof this.settings[key] === 'object') {
+          this.settings[key] = JSON.stringify(this.settings[key])
+        }
+      })
 
       const payload = {
         ...this.settings,

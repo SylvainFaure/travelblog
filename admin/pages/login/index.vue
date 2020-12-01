@@ -3,7 +3,13 @@
     <div v-if="isSignin">
       <p>{{ $t('login.title') }}</p>
       <InputText v-model="loginModel.email" class="my-2" :placeholder="$t('login.email')" />
-      <InputText v-model="loginModel.password" type="password" class="my-2" :placeholder="$t('login.password')" />
+      <InputText
+        v-model="loginModel.password"
+        type="password"
+        class="my-2"
+        :placeholder="$t('login.password')"
+        @enter="handleLogin"
+      />
       <div class="flex justify-end">
         <Btn icon-btn :label="$t('general.send')" @click="handleLogin" />
       </div>

@@ -60,8 +60,7 @@
             <td v-for="(col, index) in categoriesColumns" :key="`${col}-${index}`" class="border-b-2 border px-4 py-2">
               <div v-if="col !== 'actions'" v-html="getColumnValue(col, category, 'category')"></div>
               <div v-else class="flex justify-between">
-                <Icon class="mx-4" name="pencil" @click="openEditCategory(category)" />
-                <Icon class="mx-4" name="bin" @click="openRemoveModal('category', category)" />
+                <Icon class="mx-4" name="pencil" @click="goToCategory(category.category_id)" />
               </div>
             </td>
           </tr>
@@ -69,16 +68,9 @@
       </table>
 
       <div class="flex justify-end w-full my-4">
-        <Btn icon-btn icon="plus" @click="openEditCategory" />
+        <Btn icon-btn icon="plus" @click="goToCategory('new')" />
       </div>
     </div>
-    <RemoveModal v-if="modalId === 'remove-category'" @confirm="removeEntity('category')" @cancel="closeRemoveModal" />
-    <EditCategoryModal
-      v-if="modalId === 'category-edit'"
-      :category="categoryToEdit"
-      @confirm="saveCategory"
-      @cancel="closeRemoveModal"
-    />
   </section>
 </template>
 
@@ -165,6 +157,9 @@ export default {
             ? entity[`${type}_${col}_${this.locale}`]
             : `<span class="italic text-gray-500">${entity[`${type}_${col}_${this.otherLocale}`]}</span>`
       }
+    },
+    goToCategory(categoryId) {
+      this.$router.push(`/categories/${categoryId}`)
     },
     openRemoveModal(type, entity) {
       if (type === 'travel') {

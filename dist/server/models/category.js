@@ -28,7 +28,9 @@ class Category {
       if (err) {
         cb({type: 'DatabaseError', error: err})
       } else {
-        cb(result)
+        db.query('SELECT * FROM `categories` WHERE category_id = ?', [results.insertId], (err, rows) => {
+          cb(rows)
+        })	
       }
     })
   }
@@ -38,7 +40,9 @@ class Category {
       if (err) {
         cb({type: 'DatabaseError', error: err})
       } else {
-        cb(result)
+        db.query('SELECT * FROM `categories` WHERE category_id = ?', [id], (err, rows) => {
+          cb(rows)
+        })
       }
     })
   }

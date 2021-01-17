@@ -156,6 +156,7 @@ export default {
     edit: {
       name: 'Nom',
       title: 'Titolo',
+      place: 'Luogo',
       description: 'Descrizione',
       articles: 'Articoli associati',
       travel: 'Viaggio associato'

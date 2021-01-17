@@ -30,6 +30,6 @@ export default {
 </script>
 <style lang="scss">
 .modal-content {
-  min-width: 33vw;
+  min-width: 50vw;
 }
 </style>

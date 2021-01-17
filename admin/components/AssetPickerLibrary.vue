@@ -40,7 +40,7 @@
           ref="assetContainer"
           :class="{
             'w-64 mr-4 my-2 relative': true,
-            'h-72 border border-grey-100': !pick
+            'h-80 border border-grey-100': !pick
           }"
         >
           <span v-if="pick === 'multiple'" class="absolute top-0 right-0">
@@ -77,6 +77,9 @@
           <div v-if="!pick" class="asset__infos p-4">
             <p v-if="asset[`asset_title_${$i18n.locale}`]" class="font-bold text-lg">
               {{ asset[`asset_title_${$i18n.locale}`] }}
+            </p>
+            <p v-if="asset[`asset_place_${$i18n.locale}`]" class="font-bold text-sm">
+              {{ asset[`asset_place_${$i18n.locale}`] }}
             </p>
             <p class="text-sm text-gray-600">
               {{ $t('assets.uploaded') }}

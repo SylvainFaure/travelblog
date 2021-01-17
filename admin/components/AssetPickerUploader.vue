@@ -12,6 +12,34 @@
     </file-upload>
 
     <div class="flex flex-wrap">
+      <div v-if="files.length >= 2" class="mr-4 my-4 w-56">
+        <input-text
+          small
+          :placeholder="$t('assets.form.title')"
+          @input="handleFillEverything($event, `title_${$i18n.locale}`)"
+        />
+        <input-text
+          small
+          :placeholder="$t('assets.form.place')"
+          @input="handleFillEverything($event, `place_${$i18n.locale}`)"
+        />
+        <Select
+          :placeholder="$t('assets.form.travel')"
+          :options="travels"
+          :option-label="`travel_title_${$i18n.locale}`"
+          @input="handleFillEverything($event, `travel_id`)"
+        />
+        <input-text
+          small
+          :placeholder="$t('assets.form.country')"
+          @input="handleFillEverything($event, `country_${$i18n.locale}`)"
+        />
+        <input-text
+          small
+          :placeholder="$t('assets.form.description')"
+          @input="handleFillEverything($event, `desc_${$i18n.locale}`)"
+        />
+      </div>
       <div v-for="(file, i) in files" :key="i" class="mr-4 my-4 w-56">
         <input-text v-model="filesData[i][`title_${$i18n.locale}`]" small :placeholder="$t('assets.form.title')" />
         <input-text v-model="filesData[i][`place_${$i18n.locale}`]" small :placeholder="$t('assets.form.place')" />
@@ -20,13 +48,8 @@
           :placeholder="$t('assets.form.travel')"
           :options="travels"
           :option-label="`travel_title_${$i18n.locale}`"
-          :reduce-fn="(travel) => travel.travel_id"
         />
-        <input-text
-          v-model="filesData[i][`countries_${$i18n.locale}`]"
-          small
-          :placeholder="$t('assets.form.country')"
-        />
+        <input-text v-model="filesData[i][`country_${$i18n.locale}`]" small :placeholder="$t('assets.form.country')" />
         <input-text v-model="filesData[i][`desc_${$i18n.locale}`]" small :placeholder="$t('assets.form.description')" />
 
         <img class="w-56" :src="file.blob" />
@@ -66,6 +89,11 @@ export default {
     handleUpload() {
       this.$refs.upload.active = true
       this.loading = true
+    },
+    handleFillEverything(value, field) {
+      this.filesData.forEach((file) => {
+        file[field] = value
+      })
     },
     inputFile(newFile, oldFile) {
       const defaultFileData = {
@@ -121,7 +149,7 @@ export default {
         })
       })
       try {
-        await this.$axios.post('/api/assets', formData, {
+        await this.$axios.post('/api/asset', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }

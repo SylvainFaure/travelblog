@@ -50,6 +50,7 @@
           :assets="assets"
           :gallery="model.gallery"
           :picked="model.gallery"
+          :data="{ articles, travels }"
           @gallery-change="handleGalleryChange"
         />
         <BlockEditor

@@ -21,6 +21,7 @@
         pick="multiple"
         :picked="[...galleryModel]"
         :pick-limit="4"
+        :data="data"
         @confirm="confirmGallery"
       />
     </div>
@@ -35,7 +36,8 @@ export default {
     id: VueTypes.string.def(null),
     label: VueTypes.string.def('Choose an image'),
     gallery: VueTypes.array.def([]),
-    assets: VueTypes.array.def([])
+    assets: VueTypes.array.def([]),
+    data: VueTypes.object.def({})
   },
   data() {
     const i = Math.floor(Math.random() * 10000)

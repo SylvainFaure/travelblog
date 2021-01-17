@@ -5,9 +5,10 @@
         <div class="m-8">
           <img :src="image.asset_src" class="h-48" />
         </div>
-        <div class="mr-8 mb-8 max-w-1/2">
+        <div class="mr-8 mb-8 w-full max-w-2/3">
           <InputText v-model="model.name" :label="$t('assets.edit.name')" disabled />
           <InputText v-model="model.title" :label="$t('assets.edit.title')" />
+          <InputText v-model="model.place" :label="$t('assets.edit.place')" />
           <Textarea v-model="model.description" :label="$t('assets.edit.description')" />
           <Select
             v-model="model.article_ids"
@@ -50,6 +51,7 @@ export default {
       model: {
         name: '',
         title: '',
+        place: '',
         description: '',
         article_ids: [],
         travel: null
@@ -63,6 +65,7 @@ export default {
     this.model = {
       name: asset_name,
       title: this.image[`asset_title_${locale}`],
+      place: this.image[`asset_place_${locale}`],
       description: this.image[`asset_desc_${locale}`],
       article_ids: asset_article_ids
         ? this.articles.filter((article) => asset_article_ids.includes(article.article_id))

@@ -23,7 +23,7 @@ export default {
   computed: {
     classes() {
       const others = this.iconBtn ? 'px-4 py-2' : 'p-2'
-      return `bg-${this.type || 'primary'} ${this.type === 'raw' ? '' : 'border text-white'} ${others}`
+      return `cursor-pointer bg-${this.type || 'primary'} ${this.type === 'raw' ? '' : 'border text-white'} ${others}`
     }
   }
 }

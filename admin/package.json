@@ -21,6 +21,7 @@
     "nuxt": "^2.14.6",
     "nuxt-i18n": "^6.15.2",
     "portal-vue": "^2.1.7",
+    "scroll-into-view": "^1.15.0",
     "v-tooltip": "^2.0.3",
     "vee-validate": "^3.4.1",
     "vue-select": "^3.10.8",

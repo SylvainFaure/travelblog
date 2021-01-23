@@ -149,7 +149,7 @@ export default {
         })
       })
       try {
-        await this.$axios.post('/api/asset', formData, {
+        await this.$axios.post('/api/assets', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }

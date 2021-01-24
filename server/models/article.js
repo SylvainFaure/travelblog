@@ -1,4 +1,5 @@
 const db = require('../db.js');
+const Setting = require('./setting.js');
 
 class Article {
 
@@ -126,6 +127,9 @@ class Article {
 					cb({type: "ServerError", message: "There is no article with such id in DB"})
 				} else {
 					cb(result)
+					Setting.postUnpublishEntity('article', id, (results) => {
+						console.log('Settings updated', results)
+					})
 				}
 			}
 		})

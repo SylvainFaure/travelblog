@@ -1,4 +1,5 @@
 const db = require('../db.js');
+const Setting = require('./setting.js');
 
 class Travel {
 
@@ -122,7 +123,10 @@ class Travel {
 				if (result.affectedRows !== 1) {
 					cb({type: "ServerError", message: "There is no travel with such id in DB"})
 				} else {
-					cb(result)			
+					cb(result)
+					Setting.postUnpublishEntity('travel', id, (results) => {
+						console.log('Settings updated', results)
+					})		
 				}
 			}
 		})

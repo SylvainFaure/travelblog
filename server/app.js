@@ -23,7 +23,7 @@ app.use('/', express.static('admin'));
 
 if (app.get("env") === 'development') {
   /**WEBPACK */
-  const webpack = require('webpack');
+  /* const webpack = require('webpack');
   const webpackDevMiddleware = require('webpack-dev-middleware');
   const webpackConfig = require('../webpack.config.js');
   const webpackHotMiddleware = require('webpack-hot-middleware');
@@ -32,7 +32,7 @@ if (app.get("env") === 'development') {
   app.use(webpackDevMiddleware(compiler, {
     publicPath: webpackConfig.output.publicPath
   }));
-  app.use(webpackHotMiddleware(compiler));
+  app.use(webpackHotMiddleware(compiler)); */
 }
 
 /** MIDDLEWARES **/

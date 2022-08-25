@@ -85,6 +85,6 @@
   "author": "Sylvain Faure",
   "license": "ISC",
   "volta": {
-    "node": "10.15.1"
+    "node": "16.17.0"
   }
 }

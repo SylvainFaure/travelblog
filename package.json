@@ -83,5 +83,8 @@
     "npm": "6.7.0"
   },
   "author": "Sylvain Faure",
-  "license": "ISC"
+  "license": "ISC",
+  "volta": {
+    "node": "10.15.1"
+  }
 }

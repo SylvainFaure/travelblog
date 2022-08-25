@@ -144,7 +144,9 @@ export default {
         case 'steps':
           return this.getTravelSteps(entity)
         case 'countries':
-          return entity[`${type}_${col}_${this.locale}`].join(', ')
+          // eslint-disable-next-line no-case-declarations
+          const _value = entity[`${type}_${col}_${this.locale}`] || []
+          return _value.join(', ')
         case 'published':
           // eslint-disable-next-line no-extra-boolean-cast
           return !!entity[`${type}_${col}_${this.locale}`]

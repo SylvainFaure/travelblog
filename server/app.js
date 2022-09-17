@@ -55,7 +55,7 @@ app.use('/api/categories', categoriesRouter);
 
 app.use(errorMiddleware);
 
-/*** ANGULAR ONE PAGE APP ***/
+/*** NUXT ONE PAGE APP ***/
 app.get('*', (req, res, next) => {
   const queryStringRegex = /\?([^&=]+)=([^&=]+)(?:&([^&=]+)=([^&=]+))*$/gm
   if ((req.url.indexOf('.') === -1 && req.url.indexOf('json') == -1) || req.url.match(queryStringRegex)) {

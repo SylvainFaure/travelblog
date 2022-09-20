@@ -1,6 +1,11 @@
 <template>
   <section class="articles-page flex justify-center">
     <div class="articles-page__container m-4">
+      <div class="flex">
+        <div v-for="input in Object.keys(model)" :key="input" class="w-1/4 mr-2">
+          <InputText v-model="model[input]" :label="$t(`article.${input}`)" @input="handleFilter" />
+        </div>
+      </div>
       <table class="table-fixed">
         <thead class="border-t-2 border-blue-500">
           <tr>
@@ -18,7 +23,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(article, i) in articles" :key="article.article_id" :class="{ 'bg-gray-200': i % 2 === 0 }">
+          <tr
+            v-for="(article, i) in filteredArticles"
+            :key="article.article_id"
+            :class="{ 'bg-gray-200': i % 2 === 0 }"
+          >
             <td v-for="(col, index) in columns" :key="`${col}-${index}`" class="border-b-2 border px-4 py-2">
               <div v-if="col !== 'actions'" v-html="getColumnValue(col, article)"></div>
               <div v-else class="flex justify-between">
@@ -59,13 +68,20 @@ export default {
       locale,
       otherLocale,
       travels,
-      articles
+      articles,
+      filteredArticles: articles
     }
   },
   data() {
     return {
       columns: ['place', 'title', 'travel', 'country', 'published', 'actions'],
-      articleToDelete: null
+      articleToDelete: null,
+      model: {
+        place: '',
+        title: '',
+        travel: '',
+        country: ''
+      }
     }
   },
   computed: {
@@ -128,6 +144,23 @@ export default {
     },
     openNewArticle() {
       this.$router.push('/articles/new')
+    },
+    handleFilter() {
+      const populatedFilters = {}
+      Object.keys(this.model).filter((key) => {
+        if (this.model[key]) {
+          populatedFilters[key] = this.model[key]
+        }
+      })
+      this.filteredArticles = this.articles.filter((article) => {
+        const travel = this.travels.find((t) => t.travel_id === article.article_travel_id)[
+          `travel_title_${this.locale}`
+        ]
+        const _article = { ...article, [`article_travel_${this.locale}`]: travel }
+        return Object.keys(populatedFilters).every((key) => {
+          return _article[`article_${key}_${this.locale}`].toLowerCase().includes(this.model[key].toLowerCase())
+        })
+      })
     }
   }
 }

@@ -1,43 +1,14 @@
-/*!
-  * vue-router v3.4.6
-  * (c) 2020 Evan You
-  * @license MIT
-  */
-
-/*!
- * @license deepcopy.js Copyright(c) 2013 sasa+1
- * https://github.com/sasaplus1/deepcopy.js
- * Released under the MIT license.
- *
- * type-detect
- * Copyright(c) 2013 jake luer <jake@alogicalparadox.com>
- * MIT Licensed
+/**!
+ * Sortable 1.10.2
+ * @author	RubaXa   <trash@rubaxa.org>
+ * @author	owenm    <owen23355@gmail.com>
+ * @license MIT
  */
 
-/*!
- * JavaScript Cookie v2.2.1
- * https://github.com/js-cookie/js-cookie
- *
- * Copyright 2006, 2015 Klaus Hartl & Fagner Brack
- * Released under the MIT license
- */
 
 /*!
- * Name: vue-upload-component
- * Version: 2.8.20
- * Author: LianYue
- */
-
-/*!
- * The buffer module from node.js, for the browser.
- *
- * @author   Feross Aboukhadijeh <http://feross.org>
- * @license  MIT
- */
-
-/*!
- * Vue.js v2.6.12
- * (c) 2014-2020 Evan You
+ * Vue.js v2.7.10
+ * (c) 2014-2022 Evan You
  * Released under the MIT License.
  */
 
@@ -49,8 +20,32 @@
  */
 
 /*!
- * vue-client-only v2.0.0
- * (c) 2019-present egoist <0x142857@gmail.com>
+ * vuex v3.6.2
+ * (c) 2021 Evan You
+ * @license MIT
+ */
+
+
+/*!
+ * Name: vue-upload-component
+ * Version: 2.8.21
+ * Author: Marco Lang
+ */
+
+
+/*! For license information please see editor.js.LICENSE.txt */
+
+
+/*!
+ * Name: vue-upload-component
+ * Version: 2.8.21
+ * Author: Marco Lang
+ */
+
+
+/*!
+ * vue-client-only v0.0.0-semantic-release
+ * (c) 2021-present egoist <0x142857@gmail.com>
  * Released under the MIT License.
  */
 
@@ -58,12 +53,6 @@
  * vue-no-ssr v1.1.1
  * (c) 2018-present egoist <0x142857@gmail.com>
  * Released under the MIT License.
- */
-
-/*!
- * vuex v3.5.1
- * (c) 2020 Evan You
- * @license MIT
  */
 
 /*! 
@@ -76,8 +65,6 @@
   * https://github.com/linusborg/portal-vue
   * 
  */
-
-/*! For license information please see editor.js.LICENSE.txt */
 
 /**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
@@ -102,11 +89,4 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- */
-
-/**!
- * Sortable 1.10.2
- * @author	RubaXa   <trash@rubaxa.org>
- * @author	owenm    <owen23355@gmail.com>
- * @license MIT
  */

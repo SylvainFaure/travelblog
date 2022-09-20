@@ -30,8 +30,7 @@ export default {
       positions: {},
       currentIndex: 0,
       dates: ['08-2019', '10-2019', '01-2020', '04-2020', '06-2020'],
-      msg:
-        'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolore nesciunt voluptatibus delectus, laborum sint sequi exercitationem asperiores saepe vitae nihil minima necessitatibus maiores incidunt commodi. Voluptas nulla dolores at facere.'
+      msg: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolore nesciunt voluptatibus delectus'
     }
   },
   mounted() {

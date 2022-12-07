@@ -1,4 +1,4 @@
-const db = require('../db.js');
+const db = require('../db/index.js');
 const Setting = require('./setting.js');
 
 class Travel {

@@ -7,6 +7,7 @@ const handleResponse = require('../responseHandler')
 
 articles.route('/')
   .get((req, res, next) => {
+    console.log('Articles route')
     Article.getAll(false, allarticles => {
       handleResponse(res, next, allarticles)
     })

@@ -12,9 +12,9 @@ cp -aR admin/dist/* dist/admin/
 cp -aR dist/admin/admin/_nuxt/* dist/admin/_nuxt
 rm -rf dist/admin/admin
 rm -rf admin/dist
-read -r -p 'Commit message: ' desc  # prompt user for commit message
-git add .                           # track all files
-git add -u                          # track deletes
-git commit -m "$desc"               # commit with message
-git push
-git push heroku master
+# read -r -p 'Commit message: ' desc  # prompt user for commit message
+# git add .                           # track all files
+# git add -u                          # track deletes
+# git commit -m "$desc"               # commit with message
+# git push
+# git push heroku master

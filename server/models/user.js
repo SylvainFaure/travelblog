@@ -1,4 +1,4 @@
-const db = require('../db.js');
+const db = require('../db/index.js');
 const Mail = require ('./mail.js');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');

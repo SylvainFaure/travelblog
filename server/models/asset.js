@@ -1,5 +1,5 @@
 const aws = require('aws-sdk')
-const db = require('../db.js');
+const db = require('../db/index.js');
 
 class Asset {
 

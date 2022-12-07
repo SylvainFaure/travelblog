@@ -1,7 +1,9 @@
+'use strict'
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 const path = require('path');
+const serverless = require('serverless-http');
 
 /** MIDDLEWARES **/
 const corsMiddleware = require('./middleware/cors');
@@ -19,7 +21,7 @@ const categoriesRouter = require('./routes/categories');
 const settingsRouter = require('./routes/settings');
 
 /** STATIC FILES **/
-app.use('/', express.static('admin'));
+// app.use('/', express.static('admin'));
 
 if (app.get("env") === 'development') {
   /**WEBPACK */
@@ -44,14 +46,22 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(tokenMiddleware);
 
 /*** ROUTES ****/
-app.use('/api/articles', articlesRouter);
-app.use('/api/travels', travelsRouter);
-app.use('/api/users', usersRouter);
-app.use('/api/assets', assetsRouter);
-app.use('/api/settings', settingsRouter);
-app.use('/api/anecdotes', anecdotesRouter);
-app.use('/api/categories', categoriesRouter);
+const routerBasePath = `/.netlify/functions/app`
 
+
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Hello World!'
+  })
+})
+
+app.use(`${routerBasePath}/api/articles`, articlesRouter);
+app.use(`${routerBasePath}/api/travels`, travelsRouter);
+app.use(`${routerBasePath}/api/users`, usersRouter);
+app.use(`${routerBasePath}/api/assets`, assetsRouter);
+app.use(`${routerBasePath}/api/settings`, settingsRouter);
+app.use(`${routerBasePath}/api/anecdotes`, anecdotesRouter);
+app.use(`${routerBasePath}/api/categories`, categoriesRouter);
 
 app.use(errorMiddleware);
 
@@ -60,7 +70,7 @@ app.get('*', (req, res, next) => {
   const queryStringRegex = /\?([^&=]+)=([^&=]+)(?:&([^&=]+)=([^&=]+))*$/gm
   if ((req.url.indexOf('.') === -1 && req.url.indexOf('json') == -1) || req.url.match(queryStringRegex)) {
     console.log('SPA: %s', req.url)
-    const indexPath = app.get("env") === 'development' ? '../admin/js' : '../admin/';
+    const indexPath = '../admin/';
     res.sendFile(path.join(__dirname, indexPath, 'index.html'));
   } else {
     console.log('Static: %s', req.url)
@@ -68,6 +78,9 @@ app.get('*', (req, res, next) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Listening on port ${port}!`)
-})
+// app.listen(port, () => {
+//   console.log(`Listening on port ${port}!`)
+// })
+
+module.exports = app
+module.exports.handler = serverless(app)

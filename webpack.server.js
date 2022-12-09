@@ -7,7 +7,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'functions'),
     publicPath: '/',
-    filename: '[name].js'
+    filename: 'app.js'
   },
   target: 'node',
   node: {

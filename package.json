@@ -8,8 +8,8 @@
     "start": "node dist/server/app.js",
     "dev": "cross-env NODE_ENV=development env-cmd .env node server/app.js",
     "dev:monit": "cross-env NODE_ENV=development env-cmd .env pm2 start -f server/app.js && pm2 monit",
-    "dev:standalone": "cross-env NODE_ENV=development STANDALONE=true env-cmd .env node server/app.standalone.js",
-    "server": "cross-env NODE_ENV=development env-cmd .env node server/app.server.js",
+    "dev:standalone": "cross-env NODE_ENV=development STANDALONE=true env-cmd .env node server/app-standalone.js",
+    "server": "cross-env NODE_ENV=development env-cmd .env node server/app-server.js",
     "report": "cross-env REPORT=true npm run dev",
     "build": " env-cmd .env netlify-lambda build ./server",
     "start:server": "cross-env NODE_ENV=development env-cmd .env node server-local"

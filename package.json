@@ -11,7 +11,8 @@
     "dev:standalone": "cross-env NODE_ENV=development STANDALONE=true env-cmd .env node server/app-standalone.js",
     "server": "cross-env NODE_ENV=development env-cmd .env node server/app-server.js",
     "report": "cross-env REPORT=true npm run dev",
-    "build": " env-cmd .env netlify-lambda build ./server",
+    "build": " env-cmd .env webpack --config ./webpack.server.js",
+    "serve": " env-cmd .env netlify-lambda serve ./server",
     "postinstall": " env-cmd .env netlify-lambda install functions",
     "start:server": "cross-env NODE_ENV=development env-cmd .env node server-local"
   },

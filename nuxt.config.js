@@ -58,12 +58,12 @@ export default {
     baseUrl: 'https://travelblog-server.onrender.com/api',
     proxy: true
   },
-  proxy: {
-    '/api/': {
-      target: 'https://travelblog-server.onrender.com/api',
-      pathRewrite: { '^/api': '' }
-    }
-  },
+  // proxy: {
+  //   '/api/': {
+  //     target: 'https://travelblog-server.onrender.com/api',
+  //     pathRewrite: { '^/api': '' }
+  //   }
+  // },
   i18n: {
     locales: [
       {

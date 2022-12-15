@@ -55,12 +55,12 @@ export default {
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: ['@nuxtjs/axios', 'nuxt-i18n', '@nuxtjs/toast', 'portal-vue/nuxt'],
   axios: {
-    baseUrl: 'http://admin.cartedevoyages.com/api',
+    baseUrl: 'https://travelblog-server.onrender.com/api',
     proxy: true
   },
   proxy: {
     '/api/': {
-      target: 'http://admin.cartedevoyages.com/api',
+      target: 'https://travelblog-server.onrender.com/api',
       pathRewrite: { '^/api': '' }
     }
   },

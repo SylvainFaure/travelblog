@@ -55,15 +55,15 @@ export default {
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: ['@nuxtjs/axios', 'nuxt-i18n', '@nuxtjs/toast', 'portal-vue/nuxt'],
   axios: {
-    baseUrl: 'https://travelblog-server.onrender.com/api'
-    // proxy: true
+    baseUrl: 'https://travelblog-server.onrender.com/api',
+    proxy: true
   },
-  // proxy: {
-  //   '/api/': {
-  //     target: 'https://travelblog-server.onrender.com/api',
-  //     pathRewrite: { '^/api': '' }
-  //   }
-  // },
+  proxy: {
+    '/api/': {
+      target: 'https://travelblog-server.onrender.com/api'
+      // pathRewrite: { '^/api': '' }
+    }
+  },
   i18n: {
     locales: [
       {
